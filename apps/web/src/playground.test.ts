@@ -8,8 +8,12 @@ import {
 } from "./playground";
 
 describe("playground snippet builders", () => {
-  it("builds a React snippet that maps the selected shortcut", () => {
-    expect(buildReactSnippet(defaultConfig)).toContain('shortcut="mod+k"');
+  it("builds a React snippet that maps the selected shortcut and sections", () => {
+    const snippet = buildReactSnippet(defaultConfig);
+
+    expect(snippet).toContain('shortcut="mod+k"');
+    expect(snippet).toContain("const sections = [");
+    expect(snippet).toContain("<CommandPalette");
   });
 
   it("builds CSS variables for the theme tokens", () => {
@@ -17,6 +21,9 @@ describe("playground snippet builders", () => {
   });
 
   it("builds a Tailwind-oriented wrapper snippet", () => {
-    expect(buildTailwindSnippet(defaultConfig)).toContain("CommandPalette");
+    const snippet = buildTailwindSnippet(defaultConfig);
+
+    expect(snippet).toContain("CommandPalette");
+    expect(snippet).toContain("sections={sections}");
   });
 });

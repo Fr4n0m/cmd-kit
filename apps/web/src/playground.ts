@@ -1,4 +1,4 @@
-import type { CommandItem, CommandTheme } from "@cmd-kit/react";
+import type { CommandSection, CommandTheme } from "@cmd-kit/react";
 
 export type Language = "en" | "es";
 
@@ -15,32 +15,48 @@ export interface PlaygroundConfig {
   radius: string;
   shortcut: string;
   layout: "centered" | "wide";
+  sections: CommandSection[];
 }
 
-export const baseItems: CommandItem[] = [
+export const defaultSections: CommandSection[] = [
   {
-    id: "home",
-    title: "Go to dashboard",
-    subtitle: "Open the main application view",
-    section: "Navigation",
-    icon: "⌂",
-    shortcut: "G D"
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      {
+        id: "home",
+        title: "Go to dashboard",
+        subtitle: "Open the main application view",
+        icon: "⌂",
+        shortcut: "G D"
+      }
+    ]
   },
   {
-    id: "search",
-    title: "Search everything",
-    subtitle: "Jump across the whole workspace",
-    section: "Actions",
-    icon: "⌕",
-    shortcut: "S"
+    id: "actions",
+    title: "Actions",
+    items: [
+      {
+        id: "search",
+        title: "Search everything",
+        subtitle: "Jump across the whole workspace",
+        icon: "⌕",
+        shortcut: "S"
+      }
+    ]
   },
   {
-    id: "theme",
-    title: "Switch theme",
-    subtitle: "Preview alternate visual presets",
-    section: "Preferences",
-    icon: "◐",
-    shortcut: "T"
+    id: "preferences",
+    title: "Preferences",
+    items: [
+      {
+        id: "theme",
+        title: "Switch theme",
+        subtitle: "Preview alternate visual presets",
+        icon: "◐",
+        shortcut: "T"
+      }
+    ]
   }
 ];
 
@@ -48,7 +64,7 @@ export const defaultConfig: PlaygroundConfig = {
   language: "en",
   title: "Build your command palette live",
   description:
-    "Tune colors, copy code, and preview the exact experience your users will get.",
+    "Tune colors, sections, and commands while exporting the exact code your project needs.",
   placeholder: "Search commands...",
   noResults: "No results found.",
   accentColor: "#ff6b35",
@@ -57,7 +73,8 @@ export const defaultConfig: PlaygroundConfig = {
   borderColor: "#334155",
   radius: "26px",
   shortcut: "mod+k",
-  layout: "centered"
+  layout: "centered",
+  sections: defaultSections
 };
 
 export function toTheme(config: PlaygroundConfig): CommandTheme {
@@ -73,18 +90,16 @@ export function toTheme(config: PlaygroundConfig): CommandTheme {
 }
 
 export function buildReactSnippet(config: PlaygroundConfig): string {
+  const sectionsSnippet = toSectionsSnippet(config.sections);
+
   return `import { CommandPalette } from "@cmd-kit/react";
 
-const items = [
-  { id: "home", title: "Go to dashboard", section: "Navigation", icon: "⌂" },
-  { id: "search", title: "Search everything", section: "Actions", icon: "⌕" },
-  { id: "theme", title: "Switch theme", section: "Preferences", icon: "◐" }
-];
+const sections = ${sectionsSnippet};
 
 export function Demo() {
   return (
     <CommandPalette
-      items={items}
+      sections={sections}
       shortcut="${escapeString(config.shortcut)}"
       title="${escapeString(config.title)}"
       messages={{
@@ -116,9 +131,39 @@ export function buildCssSnippet(config: PlaygroundConfig): string {
 export function buildTailwindSnippet(config: PlaygroundConfig): string {
   return `import { CommandPalette } from "@cmd-kit/react";
 
+const sections = ${toSectionsSnippet(config.sections)};
+
 <div className="rounded-[${config.radius}] border bg-[${config.backgroundColor}] text-[${config.textColor}]">
-  <CommandPalette items={items} shortcut="${config.shortcut}" />
+  <CommandPalette sections={sections} shortcut="${config.shortcut}" />
 </div>`;
+}
+
+export function createSection(): CommandSection {
+  return {
+    id: createId("section"),
+    title: "New section",
+    items: [createItem()]
+  };
+}
+
+export function createItem() {
+  return {
+    id: createId("item"),
+    title: "New item",
+    subtitle: "Describe this command",
+    icon: "•",
+    shortcut: ""
+  };
+}
+
+function toSectionsSnippet(sections: CommandSection[]): string {
+  return JSON.stringify(sections, null, 2)
+    .replace(/"([^"]+)":/g, "$1:")
+    .replace(/"/g, "'");
+}
+
+function createId(prefix: string): string {
+  return `${prefix}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 function escapeString(value: string): string {

@@ -3,10 +3,11 @@ import { type ReactNode, useMemo, useState } from "react";
 import { CommandPalette } from "@cmd-kit/react";
 
 import {
-  baseItems,
   buildCssSnippet,
   buildReactSnippet,
   buildTailwindSnippet,
+  createItem,
+  createSection,
   defaultConfig,
   toTheme,
   type Language,
@@ -32,6 +33,15 @@ const ui = {
     border: "Border color",
     radius: "Radius",
     shortcut: "Shortcut",
+    sections: "Sections",
+    sectionTitle: "Section title",
+    itemTitle: "Item title",
+    itemSubtitle: "Item subtitle",
+    itemIcon: "Item icon",
+    itemShortcut: "Item shortcut",
+    addSection: "Add section",
+    addItem: "Add item",
+    remove: "Remove",
     layout: "Layout",
     centered: "Centered",
     wide: "Wide",
@@ -56,6 +66,15 @@ const ui = {
     border: "Color del borde",
     radius: "Radio",
     shortcut: "Atajo",
+    sections: "Secciones",
+    sectionTitle: "Titulo de seccion",
+    itemTitle: "Titulo del item",
+    itemSubtitle: "Subtitulo del item",
+    itemIcon: "Icono del item",
+    itemShortcut: "Atajo del item",
+    addSection: "Anadir seccion",
+    addItem: "Anadir item",
+    remove: "Eliminar",
     layout: "Layout",
     centered: "Centrado",
     wide: "Ancho",
@@ -86,16 +105,69 @@ export default function PlaygroundIsland() {
     await navigator.clipboard.writeText(code);
   }
 
+  function updateSection(
+    sectionId: string,
+    updater: (section: PlaygroundConfig["sections"][number]) => PlaygroundConfig["sections"][number]
+  ) {
+    setConfig((current) => ({
+      ...current,
+      sections: current.sections.map((section) =>
+        section.id === sectionId ? updater(section) : section
+      )
+    }));
+  }
+
+  function removeSection(sectionId: string) {
+    setConfig((current) => ({
+      ...current,
+      sections: current.sections.filter((section) => section.id !== sectionId)
+    }));
+  }
+
+  function addSectionToConfig() {
+    setConfig((current) => ({
+      ...current,
+      sections: [...current.sections, createSection()]
+    }));
+  }
+
+  function addItemToSection(sectionId: string) {
+    updateSection(sectionId, (section) => ({
+      ...section,
+      items: [...section.items, createItem()]
+    }));
+  }
+
+  function updateItem(
+    sectionId: string,
+    itemId: string,
+    updater: (
+      item: PlaygroundConfig["sections"][number]["items"][number]
+    ) => PlaygroundConfig["sections"][number]["items"][number]
+  ) {
+    updateSection(sectionId, (section) => ({
+      ...section,
+      items: section.items.map((item) => (item.id === itemId ? updater(item) : item))
+    }));
+  }
+
+  function removeItem(sectionId: string, itemId: string) {
+    updateSection(sectionId, (section) => ({
+      ...section,
+      items: section.items.filter((item) => item.id !== itemId)
+    }));
+  }
+
   return (
     <section className="playground-shell" id="playground">
       <CommandPalette
-        items={baseItems}
         messages={{
           noResults: config.noResults,
           searchPlaceholder: config.placeholder
         }}
         onOpenChange={setIsOpen}
         open={isOpen}
+        sections={config.sections}
         shortcut={config.shortcut}
         theme={toTheme(config)}
         title="cmd+kit preview"
@@ -272,6 +344,111 @@ export default function PlaygroundIsland() {
                 value={config.shortcut}
               />
             </Field>
+          </div>
+          <div className="section-builder">
+            <div className="row-between builder-header">
+              <div>
+                <p className="eyebrow">{labels.sections}</p>
+              </div>
+              <button className="ghost-button" onClick={addSectionToConfig} type="button">
+                {labels.addSection}
+              </button>
+            </div>
+            <div className="section-list">
+              {config.sections.map((section) => (
+                <div className="section-card" key={section.id}>
+                  <div className="row-between">
+                    <Field label={labels.sectionTitle}>
+                      <input
+                        onChange={(event) =>
+                          updateSection(section.id, (current) => ({
+                            ...current,
+                            title: event.target.value
+                          }))
+                        }
+                        value={section.title}
+                      />
+                    </Field>
+                    <button
+                      className="inline-button"
+                      onClick={() => removeSection(section.id)}
+                      type="button"
+                    >
+                      {labels.remove}
+                    </button>
+                  </div>
+                  <div className="section-items">
+                    {section.items.map((item) => (
+                      <div className="item-card" key={item.id}>
+                        <div className="item-grid">
+                          <Field label={labels.itemTitle}>
+                            <input
+                              onChange={(event) =>
+                                updateItem(section.id, item.id, (current) => ({
+                                  ...current,
+                                  title: event.target.value
+                                }))
+                              }
+                              value={item.title}
+                            />
+                          </Field>
+                          <Field label={labels.itemIcon}>
+                            <input
+                              onChange={(event) =>
+                                updateItem(section.id, item.id, (current) => ({
+                                  ...current,
+                                  icon: event.target.value
+                                }))
+                              }
+                              value={item.icon ?? ""}
+                            />
+                          </Field>
+                          <Field label={labels.itemSubtitle}>
+                            <input
+                              onChange={(event) =>
+                                updateItem(section.id, item.id, (current) => ({
+                                  ...current,
+                                  subtitle: event.target.value
+                                }))
+                              }
+                              value={item.subtitle ?? ""}
+                            />
+                          </Field>
+                          <Field label={labels.itemShortcut}>
+                            <input
+                              onChange={(event) =>
+                                updateItem(section.id, item.id, (current) => ({
+                                  ...current,
+                                  shortcut: event.target.value
+                                }))
+                              }
+                              value={item.shortcut ?? ""}
+                            />
+                          </Field>
+                        </div>
+                        <div className="row-between">
+                          <span className="item-meta">{item.id}</span>
+                          <button
+                            className="inline-button"
+                            onClick={() => removeItem(section.id, item.id)}
+                            type="button"
+                          >
+                            {labels.remove}
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    className="ghost-button full-width"
+                    onClick={() => addItemToSection(section.id)}
+                    type="button"
+                  >
+                    {labels.addItem}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
