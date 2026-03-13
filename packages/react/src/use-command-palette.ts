@@ -144,6 +144,32 @@ export function useCommandPalette({
     setActiveIndex(0);
   }
 
+  function resetNavigation() {
+    setNavigationStack([]);
+    setQuery("");
+    setActiveIndex(0);
+  }
+
+  function navigateToSections(sections: CommandSection[], nextTitle: string) {
+    setNavigationStack((current) => [
+      ...current,
+      {
+        sections,
+        title: nextTitle
+      }
+    ]);
+    setQuery("");
+    setActiveIndex(0);
+  }
+
+  function openRoot(nextOpen = true) {
+    if (nextOpen) {
+      resetNavigation();
+    }
+
+    setOpenState(nextOpen);
+  }
+
   function moveNext() {
     if (flatItems.length) {
       setActiveIndex((index) => (index + 1) % flatItems.length);
@@ -172,8 +198,11 @@ export function useCommandPalette({
     setQuery,
     runItem,
     goBack,
+    navigateToSections,
     moveNext,
-    movePrevious
+    movePrevious,
+    openRoot,
+    resetNavigation
   };
 }
 

@@ -48,4 +48,50 @@ describe("useCommandPalette", () => {
     expect(onSelect).toHaveBeenCalledTimes(1);
     expect(result.current.resolvedOpen).toBe(false);
   });
+
+  it("supports programmatic navigation and reset", async () => {
+    const { result } = renderHook(() =>
+      useCommandPalette({
+        items: [{ id: "root", title: "Root" }],
+        defaultOpen: true
+      })
+    );
+
+    act(() => {
+      result.current.navigateToSections(
+        [
+          {
+            id: "advanced",
+            title: "Advanced",
+            items: [{ id: "logs", title: "Logs" }]
+          }
+        ],
+        "Settings"
+      );
+    });
+
+    expect(result.current.activeTitle).toBe("Settings");
+    expect(result.current.snapshot.groups[0]?.title).toBe("Advanced");
+
+    act(() => {
+      result.current.resetNavigation();
+    });
+
+    expect(result.current.activeTitle).toBe("Command menu");
+  });
+
+  it("can reopen the root palette programmatically", () => {
+    const { result } = renderHook(() =>
+      useCommandPalette({
+        items: [{ id: "root", title: "Root" }]
+      })
+    );
+
+    act(() => {
+      result.current.openRoot(true);
+    });
+
+    expect(result.current.resolvedOpen).toBe(true);
+    expect(result.current.activeTitle).toBe("Command menu");
+  });
 });
