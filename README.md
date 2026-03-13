@@ -31,6 +31,14 @@ Useful scripts:
 - `npm run typecheck`
 - `npm run test`
 
+## Quality Gates
+
+GitHub Actions runs these checks on pushes and pull requests:
+
+- `npm run test`
+- `npm run typecheck`
+- `npm run build`
+
 ## Deployment
 
 `apps/web` is a Vite app and is suitable for static deployment on Vercel.

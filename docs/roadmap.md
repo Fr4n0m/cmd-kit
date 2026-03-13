@@ -52,6 +52,7 @@
 - validate generated examples
 - run manual QA across desktop and mobile
 - add CI quality gates for test, typecheck, and build
+- add npm publish verification in CI before release
 
 ## Phase 6: Open Source Readiness
 
