@@ -59,6 +59,18 @@ const description =
   }}
 />`}</code></pre>
 
+      <h2>CSS variables helper</h2>
+      <pre class="code-block"><code>{`import { createThemeCssText } from "@cmd-kit/core";
+
+const css = createThemeCssText({
+  accentColor: "#ff6b35",
+  backgroundColor: "#101828"
+});
+
+const themeBlock = \`:root {
+\${css}
+}\`;`}</code></pre>
+
       <h2>Messages</h2>
       <pre class="code-block"><code>{`<CommandPalette
   sections={sections}
