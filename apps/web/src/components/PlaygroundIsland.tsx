@@ -58,7 +58,7 @@ export default function PlaygroundIsland() {
         sections={config.sections}
         shortcut={config.shortcut}
         theme={toTheme(config)}
-        title="cmd+kit preview"
+        title={config.title}
       />
 
       <PlaygroundHeader

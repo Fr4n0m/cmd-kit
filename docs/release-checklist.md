@@ -25,6 +25,7 @@
 - manually test the Vue palette flows
 - manually test the Preact palette flows
 - manually test the Astro web app and playground
+- run through [manual-qa.md](./manual-qa.md)
 
 ## Documentation Gate
 

@@ -38,6 +38,7 @@ Completed:
 - initial docs page for Preact usage
 - Astro integration guidance for island-based usage
 - dedicated docs page for the headless core
+- explicit manual QA checklist for release preparation
 - local example apps for React, Vue, and Preact
 - local Astro example app for island-based verification
 - local vanilla browser example app for framework-free core verification
@@ -262,6 +263,7 @@ Completed:
 - define an initial manual versioning and release flow
 - document release units for all current published packages
 - prepare npm publish checklist
+- document a manual QA checklist across web, React, Vue, Preact, Astro, and vanilla examples
 - add a repository code of conduct
 - add a repository security policy
 - add a pull request template for external contributors
