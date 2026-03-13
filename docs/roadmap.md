@@ -135,10 +135,10 @@ Completed:
 - wire async `source` loading into the React hook and component
 - expose recent items through the React hook
 - add focus trapping and `aria-busy` semantics to the default dialog UI
+- split the React palette into smaller internal modules and clear `react-doctor` to `100/100`
 
 Remaining:
 
-- split the current component into clearer feature and adapter boundaries
 - improve accessibility semantics further where gaps remain
 - improve theming hooks for Tailwind and CSS variable consumers
 - surface recent-command UX more intentionally in the default UI
@@ -206,11 +206,11 @@ Completed:
 - run a baseline `react-doctor` scan and reduce it to component-size warnings only
 - add a code-first baseline `web-quality-audit` document for `apps/web`
 - clear the `apps/web` `react-doctor` score to `100/100` by splitting the playground feature
+- clear the shipped React package `react-doctor` score to `100/100`
 
 Remaining:
 
 - extend accessibility checks to more interaction flows across the web app and React package
-- split `CommandPalette` into smaller units so `react-doctor` is clean across the shipped React surface
 - add a deployed full web audit pass using `web-quality-audit`
 - break the web audit into explicit checks for `accessibility`, `performance`, `core-web-vitals`, `seo`, and `best-practices`
 - add manual QA passes across desktop and mobile

@@ -7,7 +7,7 @@ export type {
   CommandPaletteRenderContext,
   CommandPaletteRenderers,
   CommandPaletteSectionRenderContext
-} from "./palette";
+} from "./palette-types";
 export { useCommandPalette } from "./use-command-palette";
 export type { UseCommandPaletteOptions } from "./use-command-palette";
 export type {
