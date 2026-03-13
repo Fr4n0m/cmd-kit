@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Preact";
+const description =
+  "Use the Preact command palette with the same core API for sections, theming, and shortcuts.";
+---
+
+<BaseLayout description={description} title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">Preact</p>
+      <h1>Preact Integration</h1>
+      <p>
+        `@cmd-kit/preact` mirrors the React-facing API while targeting `preact` through
+        `preact/compat`. Use it when you want the same command palette surface in a leaner
+        component runtime.
+      </p>
+
+      <h2>Basic example</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/preact";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export function Example() {
+  return (
+    <CommandPalette
+      sections={sections}
+      shortcut="mod+k"
+      title="Project commands"
+    />
+  );
+}`}</code></pre>
+
+      <h2>Current capabilities</h2>
+      <ul>
+        <li>grouped results</li>
+        <li>keyboard navigation</li>
+        <li>nested navigation through child sections</li>
+        <li>theme tokens through props</li>
+        <li>message overrides</li>
+        <li>slot-level class names</li>
+      </ul>
+
+      <h2>Status</h2>
+      <p>
+        The adapter is validated locally with build, typecheck, and component tests. The public
+        API is intentionally aligned with `@cmd-kit/react` so the multi-framework surface stays
+        predictable.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

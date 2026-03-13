@@ -1,0 +1,95 @@
+---
+import PlaygroundIsland from "../components/PlaygroundIsland";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "cmd+kit";
+const description =
+  "Open source command palette toolkit with a framework-agnostic core, React bindings, and a live configurator.";
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  applicationCategory: "DeveloperApplication",
+  description,
+  name: "cmd+kit",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD"
+  }
+};
+---
+
+<BaseLayout description={description} structuredData={structuredData} title={title}>
+  <main class="site-shell" id="main-content" tabindex="-1">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="badge">Open source command palette toolkit</span>
+        <h1>Build, theme, and ship your own Cmd+K experience.</h1>
+        <p>
+          `cmd+kit` is a framework-agnostic command palette with official React bindings, fuzzy
+          search, strong keyboard support, and a live playground that exports real code.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-button" href="#playground">Open configurator</a>
+          <a class="ghost-button" href="/docs/getting-started">Read docs</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <p class="eyebrow">Why Astro here</p>
+        <div class="hero-card-surface">
+          <span class="preview-shortcut">Astro + React</span>
+          <span class="preview-title">Fast by default</span>
+          <span class="preview-subtitle">
+            Static landing shell, interactive islands only where the configurator needs state.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-grid">
+      <article class="feature-card">
+        <p class="eyebrow">Core</p>
+        <h2>Framework-agnostic foundation</h2>
+        <p>Shared search, grouping, theming tokens, messages, and future action orchestration.</p>
+      </article>
+      <article class="feature-card">
+        <p class="eyebrow">React</p>
+        <h2>Official integration first</h2>
+        <p>Usable today with keyboard navigation, theme props, grouped results, and render hooks.</p>
+      </article>
+      <article class="feature-card">
+        <p class="eyebrow">Playground</p>
+        <h2>Copy real code</h2>
+        <p>Configure the palette visually and export React, CSS variables, or Tailwind-oriented snippets.</p>
+      </article>
+    </section>
+
+    <section class="docs-callout">
+      <div class="panel">
+        <p class="eyebrow">Docs</p>
+        <h2>Install, configure, and ship it</h2>
+        <p>
+          The docs are now part of the product surface. They will track installation, React usage,
+          and production release requirements as the public API stabilizes.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-button" href="/docs/getting-started">Getting started</a>
+          <a class="ghost-button" href="/docs/customization">Customization</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="install-grid">
+      <article class="panel install-panel">
+        <p class="eyebrow">Install</p>
+        <h2>npm packages</h2>
+        <p>Start with the React adapter today, then drop down to the core package when needed.</p>
+        <pre class="inline-code-block"><code>{`npm install @cmd-kit/react`}</code></pre>
+        <pre class="inline-code-block"><code>{`npm install @cmd-kit/core`}</code></pre>
+      </article>
+    </section>
+
+    <PlaygroundIsland client:load />
+  </main>
+</BaseLayout>

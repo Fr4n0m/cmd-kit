@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | React";
+const description = "Use the React command palette and configure sections, theming, and behavior.";
+---
+
+<BaseLayout description={description} title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">React</p>
+      <h1>React Integration</h1>
+      <p>
+        The current public React entry point is `CommandPalette`. It accepts `items` or
+        `sections`, customizable messages, theme tokens, and a keyboard shortcut.
+      </p>
+
+      <h2>Basic example</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/react";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export function Example() {
+  return (
+    <CommandPalette
+      sections={sections}
+      shortcut="mod+k"
+      title="Project commands"
+    />
+  );
+}`}</code></pre>
+
+      <h2>Current capabilities</h2>
+      <ul>
+        <li>grouped results</li>
+        <li>keyboard navigation</li>
+        <li>nested navigation through child sections</li>
+        <li>theme tokens through props</li>
+        <li>message overrides</li>
+        <li>slot-level class names</li>
+        <li>renderer overrides for title, sections, items, and empty state</li>
+        <li>breadcrumb context for nested navigation in title renderers</li>
+      </ul>
+
+      <h2>Customization example</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/react";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export function Example() {
+  return (
+    <CommandPalette
+      classNames={{
+        dialog: "my-palette",
+        item: "my-palette-item"
+      }}
+      renderers={{
+          title: ({ activeTitle, breadcrumbs }) => (
+            <span>{breadcrumbs.join(" / ")} · {activeTitle}</span>
+          ),
+          emptyState: ({ query }) => <span>No match for "{query}"</span>
+        }}
+        sections={sections}
+    />
+  );
+}`}</code></pre>
+
+      <h2>Status</h2>
+      <p>
+        The API is usable today but still evolving. As the roadmap advances, these docs will be
+        expanded with customization patterns, accessibility guidance, and production examples.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

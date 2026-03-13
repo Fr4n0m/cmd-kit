@@ -2,6 +2,7 @@ node_modules
 dist
 .turbo
 .vite
+.astro
 coverage
+.artifacts
 *.log
-

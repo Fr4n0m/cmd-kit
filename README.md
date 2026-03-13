@@ -4,6 +4,8 @@
 
 Repository name: `cmd-kit`
 
+License: `MIT`
+
 ## Project Goals
 
 - Work across frameworks with a framework-agnostic core.
@@ -16,7 +18,14 @@ Repository name: `cmd-kit`
 
 - `packages/core`: headless framework-agnostic engine
 - `packages/react`: official React bindings and UI primitives
-- `apps/web`: landing page, docs, live playground, and code export
+- `packages/vue`: official Vue bindings and UI primitives
+- `packages/preact`: official Preact bindings and UI primitives
+- `apps/web`: Astro landing page, docs, live React playground, and code export
+- `apps/example-react`: local React verification app
+- `apps/example-vue`: local Vue verification app
+- `apps/example-preact`: local Preact verification app
+- `apps/example-astro`: local Astro island verification app
+- `apps/example-vanilla`: local framework-free browser verification app
 
 ## Local Development
 
@@ -28,23 +37,33 @@ npm run dev:web
 Useful scripts:
 
 - `npm run build`
+- `npm run changeset`
 - `npm run typecheck`
 - `npm run test`
+- `npm run format`
+- `npm run format:check`
+- `npm run pack:verify`
+- `npm run release:check`
+- `npm run version:packages`
 
-## Deployment
+## Quality Checks
 
-`apps/web` is a Vite app and is suitable for static deployment on Vercel.
+Before merging or releasing, run:
 
-Recommended Vercel settings:
-
-- Framework preset: `Vite`
-- Root directory: `apps/web`
-- Build command: `npm run build --workspace @cmd-kit/web`
-- Output directory: `dist`
+- `npm run test`
+- `npm run typecheck`
+- `npm run build`
+- `npm run pack:verify`
 
 ## Documentation
 
 - [Product Vision](./docs/product-vision.md)
 - [Architecture](./docs/architecture.md)
 - [Roadmap](./docs/roadmap.md)
+- [Dependency Health](./docs/dependency-health.md)
+- [Web Quality Audit](./docs/web-quality-audit.md)
+- [Release Checklist](./docs/release-checklist.md)
+- [Versioning And Release](./docs/versioning-and-release.md)
 - [Contributing](./CONTRIBUTING.md)
+- [Code Of Conduct](./CODE_OF_CONDUCT.md)
+- [Security Policy](./SECURITY.md)

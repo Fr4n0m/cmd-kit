@@ -1,35 +1,24 @@
+import type { CommandItem } from "@cmd-kit/core";
 import {
-  createCommandSnapshot,
-  createResolvedConfig,
-  type CommandItem,
-  type CommandMessages,
-  type CommandTheme
-} from "@cmd-kit/core";
-import {
-  type CSSProperties,
   type KeyboardEvent,
-  type ReactNode,
+  type RefObject,
   useEffect,
   useId,
-  useMemo,
-  useState
+  useRef
 } from "react";
 
-export interface CommandPaletteProps {
-  items: CommandItem[];
-  messages?: Partial<CommandMessages>;
-  theme?: CommandTheme;
-  title?: string;
-  shortcut?: string;
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  className?: string;
-  renderItem?: (item: CommandItem, active: boolean) => ReactNode;
-}
+import { PaletteHeader, PaletteInput, PaletteResults } from "./palette-content";
+import { overlayStyle, paletteStyle } from "./palette-styles";
+import type {
+  CommandPaletteProps,
+  CommandPaletteRenderContext
+} from "./palette-types";
+import { useCommandPalette } from "./use-command-palette";
 
 export function CommandPalette({
   items,
+  sections,
+  source,
   messages,
   theme,
   title = "Command menu",
@@ -38,102 +27,205 @@ export function CommandPalette({
   defaultOpen = false,
   onOpenChange,
   className,
-  renderItem
+  renderItem,
+  classNames,
+  renderers,
+  recents
 }: CommandPaletteProps) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const [query, setQuery] = useState("");
-  const [activeIndex, setActiveIndex] = useState(0);
   const titleId = useId();
+  const captionId = useId();
+  const listboxId = useId();
+  const inputId = useId();
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const {
+    activeIndex,
+    breadcrumbs,
+    activeTitle,
+    canGoBack,
+    flatItems,
+    isLoading,
+    query,
+    resolvedConfig,
+    resolvedOpen,
+    runItem,
+    setActiveIndex,
+    setOpenState,
+    setQuery,
+    snapshot,
+    goBack,
+    moveNext,
+    movePrevious
+  } = useCommandPalette({
+    items,
+    sections,
+    source,
+    messages,
+    theme,
+    title,
+    shortcut,
+    open,
+    defaultOpen,
+    onOpenChange,
+    recents
+  });
 
-  const resolvedOpen = open ?? internalOpen;
-  const resolvedConfig = useMemo(
-    () =>
-      createResolvedConfig({
-        items,
-        messages,
-        theme,
-        shortcut
-      }),
-    [items, messages, shortcut, theme]
-  );
-  const snapshot = useMemo(
-    () => createCommandSnapshot(resolvedConfig, query),
-    [query, resolvedConfig]
-  );
-  const flatItems = snapshot.items.filter((item) => !item.disabled);
+  usePaletteInputFocus(resolvedOpen, inputRef);
+  const renderContext: CommandPaletteRenderContext = {
+    activeTitle,
+    breadcrumbs,
+    canGoBack,
+    close: () => setOpenState(false),
+    goBack,
+    shortcut
+  };
 
+  if (!resolvedOpen) {
+    return null;
+  }
+
+  return (
+    <div
+      className={classNames?.overlay}
+      style={overlayStyle(resolvedConfig.theme.overlayColor)}
+    >
+      <div
+        aria-labelledby={titleId}
+        aria-modal="true"
+        className={joinClassNames(className, classNames?.dialog)}
+        onKeyDown={createDialogKeyDownHandler(dialogRef)}
+        ref={dialogRef}
+        role="dialog"
+        style={paletteStyle(resolvedConfig.theme)}
+      >
+        <PaletteHeader
+          activeTitle={activeTitle}
+          breadcrumbs={breadcrumbs}
+          canGoBack={canGoBack}
+          captionId={captionId}
+          classNames={classNames}
+          closeLabel={resolvedConfig.messages.closeLabel}
+          onClose={() => setOpenState(false)}
+          onGoBack={goBack}
+          renderContext={renderContext}
+          renderers={renderers}
+          shortcut={shortcut}
+          theme={resolvedConfig.theme}
+          titleId={titleId}
+        />
+
+        <PaletteInput
+          activeDescendant={getActiveDescendant(
+            listboxId,
+            flatItems,
+            activeIndex
+          )}
+          captionId={captionId}
+          classNames={classNames}
+          inputId={inputId}
+          inputRef={inputRef}
+          listboxId={listboxId}
+          onChange={setQuery}
+          onKeyDown={createInputKeyDownHandler({
+            activeIndex,
+            canGoBack,
+            flatItems,
+            goBack,
+            moveNext,
+            movePrevious,
+            query,
+            runItem,
+            setOpenState
+          })}
+          placeholder={resolvedConfig.messages.searchPlaceholder}
+          query={query}
+          resolvedOpen={resolvedOpen}
+          theme={resolvedConfig.theme}
+        />
+
+        <PaletteResults
+          activeIndex={activeIndex}
+          classNames={classNames}
+          flatItems={flatItems}
+          isLoading={isLoading}
+          listboxId={listboxId}
+          noResults={resolvedConfig.messages.noResults}
+          onRunItem={(item) => void runItem(item)}
+          onSetActiveIndex={setActiveIndex}
+          query={query}
+          renderItem={renderItem}
+          renderers={renderers}
+          snapshot={snapshot}
+          theme={resolvedConfig.theme}
+          titleId={titleId}
+        />
+      </div>
+    </div>
+  );
+}
+
+function usePaletteInputFocus(
+  resolvedOpen: boolean,
+  inputRef: RefObject<HTMLInputElement | null>
+) {
   useEffect(() => {
-    if (!flatItems.length) {
-      setActiveIndex(0);
+    if (!resolvedOpen) {
       return;
     }
 
-    if (activeIndex >= flatItems.length) {
-      setActiveIndex(0);
-    }
-  }, [activeIndex, flatItems]);
+    window.setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  }, [resolvedOpen, inputRef]);
+}
 
-  useEffect(() => {
-    function handleKeyDown(event: globalThis.KeyboardEvent) {
-      if (!matchesShortcut(event, shortcut) || isTypingTarget(event.target)) {
-        return;
-      }
-
-      event.preventDefault();
-      setOpenState(!resolvedOpen);
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [resolvedOpen, shortcut]);
-
-  function setOpenState(nextOpen: boolean) {
-    if (open === undefined) {
-      setInternalOpen(nextOpen);
-    }
-
-    if (!nextOpen) {
-      setQuery("");
-      setActiveIndex(0);
-    }
-
-    onOpenChange?.(nextOpen);
-  }
-
-  async function runItem(item: CommandItem | undefined) {
-    if (!item || item.disabled) {
-      return;
-    }
-
-    if (item.onSelect) {
-      await item.onSelect();
-    } else if (item.href) {
-      window.location.assign(item.href);
-    }
-
-    setOpenState(false);
-  }
-
-  function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+function createInputKeyDownHandler({
+  activeIndex,
+  canGoBack,
+  flatItems,
+  goBack,
+  moveNext,
+  movePrevious,
+  query,
+  runItem,
+  setOpenState
+}: {
+  activeIndex: number;
+  canGoBack: boolean;
+  flatItems: CommandItem[];
+  goBack: () => void;
+  moveNext: () => void;
+  movePrevious: () => void;
+  query: string;
+  runItem: (item: CommandItem | undefined) => Promise<void>;
+  setOpenState: (open: boolean) => void;
+}) {
+  return (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
       event.preventDefault();
-      setOpenState(false);
+      if (canGoBack) {
+        goBack();
+      } else {
+        setOpenState(false);
+      }
+      return;
+    }
+
+    if (event.key === "Backspace" && !query && canGoBack) {
+      event.preventDefault();
+      goBack();
       return;
     }
 
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      if (flatItems.length) {
-        setActiveIndex((index) => (index + 1) % flatItems.length);
-      }
+      moveNext();
       return;
     }
 
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      if (flatItems.length) {
-        setActiveIndex((index) => (index - 1 + flatItems.length) % flatItems.length);
-      }
+      movePrevious();
       return;
     }
 
@@ -141,323 +233,54 @@ export function CommandPalette({
       event.preventDefault();
       void runItem(flatItems[activeIndex]);
     }
-  }
-
-  if (!resolvedOpen) {
-    return null;
-  }
-
-  return (
-    <div style={overlayStyle(resolvedConfig.theme.overlayColor)}>
-      <div
-        aria-labelledby={titleId}
-        aria-modal="true"
-        className={className}
-        role="dialog"
-        style={paletteStyle(resolvedConfig.theme)}
-      >
-        <div style={headerStyle}>
-          <div>
-            <p id={titleId} style={titleStyle}>
-              {title}
-            </p>
-            <p style={captionStyle}>Press {prettyShortcut(shortcut)} to toggle.</p>
-          </div>
-          <button
-            aria-label={resolvedConfig.messages.closeLabel}
-            onClick={() => setOpenState(false)}
-            style={closeButtonStyle(resolvedConfig.theme)}
-            type="button"
-          >
-            Esc
-          </button>
-        </div>
-
-        <input
-          autoFocus
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={handleInputKeyDown}
-          placeholder={resolvedConfig.messages.searchPlaceholder}
-          style={inputStyle(resolvedConfig.theme)}
-          value={query}
-        />
-
-        <div role="listbox" style={listStyle}>
-          {snapshot.groups.length ? (
-            snapshot.groups.map((group) => (
-              <section key={group.id} style={sectionStyle}>
-                <p style={sectionTitleStyle(resolvedConfig.theme)}>{group.title}</p>
-                <div style={sectionItemsStyle}>
-                  {group.items.map((item) => {
-                    const itemIndex = flatItems.findIndex((entry) => entry.id === item.id);
-                    const isActive = itemIndex === activeIndex;
-
-                    return (
-                      <button
-                        aria-selected={isActive}
-                        disabled={item.disabled}
-                        key={item.id}
-                        onClick={() => void runItem(item)}
-                        onMouseEnter={() => {
-                          if (itemIndex >= 0) {
-                            setActiveIndex(itemIndex);
-                          }
-                        }}
-                        role="option"
-                        style={itemStyle(resolvedConfig.theme, isActive, item.disabled)}
-                        type="button"
-                      >
-                        {renderItem ? renderItem(item, isActive) : <DefaultItem item={item} isActive={isActive} />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
-            ))
-          ) : (
-            <div style={emptyStateStyle(resolvedConfig.theme)}>
-              {resolvedConfig.messages.noResults}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DefaultItem({
-  item,
-  isActive
-}: {
-  item: CommandItem;
-  isActive: boolean;
-}) {
-  return (
-    <>
-      <div style={itemLeadingStyle}>
-        <span style={iconStyle(isActive)}>{item.icon ?? "⌘"}</span>
-        <div>
-          <span style={itemTitleStyle}>{item.title}</span>
-          {item.subtitle ? <span style={itemSubtitleStyle}>{item.subtitle}</span> : null}
-        </div>
-      </div>
-      {item.shortcut ? <span style={shortcutStyle}>{item.shortcut}</span> : null}
-    </>
-  );
-}
-
-function matchesShortcut(event: globalThis.KeyboardEvent, shortcut: string): boolean {
-  const tokens = shortcut.toLowerCase().split("+").map((token) => token.trim());
-  const key = tokens.at(-1);
-
-  if (!key || event.key.toLowerCase() !== key) {
-    return false;
-  }
-
-  const expectsMod = tokens.includes("mod");
-  const expectsCtrl = tokens.includes("ctrl");
-  const expectsShift = tokens.includes("shift");
-  const expectsAlt = tokens.includes("alt");
-  const isMac = navigator.userAgent.includes("Mac");
-  const modPressed = isMac ? event.metaKey : event.ctrlKey;
-
-  return (
-    (!expectsMod || modPressed) &&
-    (!expectsCtrl || event.ctrlKey) &&
-    (!expectsShift || event.shiftKey) &&
-    (!expectsAlt || event.altKey)
-  );
-}
-
-function prettyShortcut(shortcut: string): string {
-  return shortcut
-    .split("+")
-    .map((token) => {
-      if (token === "mod") {
-        return navigator.userAgent.includes("Mac") ? "Cmd" : "Ctrl";
-      }
-
-      return token.charAt(0).toUpperCase() + token.slice(1);
-    })
-    .join(" + ");
-}
-
-function isTypingTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) {
-    return false;
-  }
-
-  const tagName = target.tagName.toLowerCase();
-  return (
-    tagName === "input" ||
-    tagName === "textarea" ||
-    target.isContentEditable ||
-    target.getAttribute("role") === "textbox"
-  );
-}
-
-function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
-    width: "min(680px, calc(100vw - 2rem))",
-    maxHeight: "min(720px, calc(100vh - 2rem))",
-    overflow: "hidden",
-    borderRadius: theme.radius,
-    border: `1px solid ${theme.borderColor}`,
-    background: theme.backgroundColor,
-    color: theme.textColor,
-    boxShadow: theme.shadow,
-    padding: "1.25rem",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem"
   };
 }
 
-function overlayStyle(color: string): CSSProperties {
-  return {
-    position: "fixed",
-    inset: 0,
-    background: color,
-    display: "grid",
-    placeItems: "center",
-    padding: "1rem",
-    zIndex: 9999,
-    backdropFilter: "blur(14px)"
+function createDialogKeyDownHandler(
+  dialogRef: RefObject<HTMLDivElement | null>
+) {
+  return (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Tab") {
+      return;
+    }
+
+    const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusableElements?.length) {
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey && document.activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+      return;
+    }
+
+    if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
   };
 }
 
-function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
-    borderRadius: "999px",
-    border: `1px solid ${theme.borderColor}`,
-    background: "transparent",
-    color: theme.mutedColor,
-    padding: "0.4rem 0.7rem"
-  };
+function getActiveDescendant(
+  listboxId: string,
+  flatItems: CommandItem[],
+  activeIndex: number
+) {
+  return flatItems[activeIndex]
+    ? `${listboxId}-${flatItems[activeIndex].id}`
+    : undefined;
 }
 
-function inputStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
-    width: "100%",
-    borderRadius: "18px",
-    border: `1px solid ${theme.borderColor}`,
-    background: "rgba(15, 23, 42, 0.35)",
-    color: theme.textColor,
-    padding: "1rem 1.1rem",
-    fontSize: "1rem",
-    outline: "none"
-  };
+function joinClassNames(
+  ...values: Array<string | undefined>
+): string | undefined {
+  const nextValue = values.filter(Boolean).join(" ");
+  return nextValue || undefined;
 }
-
-function itemStyle(
-  theme: Required<CommandTheme>,
-  active: boolean,
-  disabled?: boolean
-): CSSProperties {
-  return {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "1rem",
-    textAlign: "left",
-    border: "none",
-    borderRadius: "18px",
-    padding: "0.9rem 1rem",
-    background: active ? "rgba(59, 130, 246, 0.15)" : "transparent",
-    color: disabled ? theme.mutedColor : theme.textColor,
-    opacity: disabled ? 0.55 : 1
-  };
-}
-
-const headerStyle: CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "1rem",
-  alignItems: "start"
-};
-
-const titleStyle: CSSProperties = {
-  margin: 0,
-  fontSize: "1.1rem",
-  fontWeight: 700
-};
-
-const captionStyle: CSSProperties = {
-  margin: "0.35rem 0 0",
-  color: "#94a3b8",
-  fontSize: "0.92rem"
-};
-
-const listStyle: CSSProperties = {
-  overflow: "auto",
-  display: "flex",
-  flexDirection: "column",
-  gap: "1rem"
-};
-
-const sectionStyle: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.55rem"
-};
-
-function sectionTitleStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
-    margin: 0,
-    color: theme.mutedColor,
-    fontSize: "0.78rem",
-    textTransform: "uppercase",
-    letterSpacing: "0.08em"
-  };
-}
-
-const sectionItemsStyle: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.35rem"
-};
-
-function emptyStateStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
-    borderRadius: "18px",
-    border: `1px dashed ${theme.borderColor}`,
-    color: theme.mutedColor,
-    textAlign: "center",
-    padding: "2rem"
-  };
-}
-
-const itemLeadingStyle: CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: "0.8rem"
-};
-
-function iconStyle(active: boolean): CSSProperties {
-  return {
-    width: "2rem",
-    height: "2rem",
-    borderRadius: "12px",
-    display: "grid",
-    placeItems: "center",
-    background: active ? "rgba(59, 130, 246, 0.25)" : "rgba(148, 163, 184, 0.12)"
-  };
-}
-
-const itemTitleStyle: CSSProperties = {
-  display: "block",
-  fontWeight: 600
-};
-
-const itemSubtitleStyle: CSSProperties = {
-  display: "block",
-  fontSize: "0.88rem",
-  color: "#94a3b8",
-  marginTop: "0.15rem"
-};
-
-const shortcutStyle: CSSProperties = {
-  color: "#94a3b8",
-  fontSize: "0.82rem"
-};
