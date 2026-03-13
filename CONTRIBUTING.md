@@ -37,6 +37,9 @@ Use focused commit messages:
 - Apply SOLID where it improves maintainability of public APIs and internal boundaries.
 - Keep the headless core independent from framework concerns.
 - Design APIs so playground output maps directly to package usage.
+- Prefer hexagonal boundaries in `packages/core`: domain and application in the center, adapters at the edges.
+- Organize growing packages by architectural role first and by feature inside those boundaries when useful.
+- Do not let `packages/react` or `apps/web` become sources of business rules that should live in `packages/core`.
 
 ## Comments
 
