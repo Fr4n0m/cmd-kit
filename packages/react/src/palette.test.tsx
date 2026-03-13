@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
 
 import { CommandPalette } from "./palette";
@@ -106,5 +107,13 @@ describe("CommandPalette", () => {
     fireEvent.keyDown(input, { key: "ArrowDown" });
 
     expect(input.getAttribute("aria-activedescendant")).toContain("settings");
+  });
+
+  it("has no obvious accessibility violations in the default open state", async () => {
+    const { container } = render(<CommandPalette defaultOpen items={items} />);
+
+    const results = await axe(container);
+
+    expect(results.violations).toHaveLength(0);
   });
 });

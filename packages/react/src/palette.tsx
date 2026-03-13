@@ -266,9 +266,10 @@ export function CommandPalette({
         >
           {snapshot.groups.length ? (
             snapshot.groups.map((group) => (
-              <section
+              <div
                 aria-labelledby={`${listboxId}-${group.id}-label`}
                 key={group.id}
+                role="group"
                 style={sectionStyle}
               >
                 <p
@@ -313,7 +314,7 @@ export function CommandPalette({
                     );
                   })}
                 </div>
-              </section>
+              </div>
             ))
           ) : (
             <div style={emptyStateStyle(resolvedConfig.theme)}>

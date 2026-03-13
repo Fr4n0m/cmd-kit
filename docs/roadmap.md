@@ -180,10 +180,11 @@ Completed:
 - add component tests for React package
 - add integration-style tests for playground snippets
 - standardize local quality checks with `test`, `typecheck`, and `build`
+- add an automated accessibility smoke test for the React palette
 
 Remaining:
 
-- add accessibility checks for the React package and web app
+- extend accessibility checks to cover the web app and more interaction flows
 - expand React tests around focus, shortcuts, and nested navigation edge cases
 - add manual QA passes across desktop and mobile
 - define a release checklist for `test`, `typecheck`, and `build`
