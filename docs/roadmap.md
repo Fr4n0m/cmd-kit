@@ -60,6 +60,7 @@ Completed:
 - define repository structure
 - choose initial tooling and package manager
 - define Git workflow, engineering principles, and architectural constraints
+- adopt a `main` and `develop` branch model for release flow
 
 ## Phase 1: Monorepo Bootstrap
 
