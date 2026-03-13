@@ -27,15 +27,11 @@ What is already in place:
   - canonical link
   - Open Graph title and description
 - React playground coverage through tests
+- `react-doctor` cleared to `100/100` for both `apps/web` and `packages/react`
+- semantic tab and live-region behavior in the snippet panel
+- static docs pages for React, Vue, Preact, and Astro usage
 
 ## Findings
-
-### High
-
-- `apps/web/src/components/PlaygroundIsland.tsx`
-  The configurator is too large for comfortable maintenance at `888` lines.
-  Impact: harder review, weaker component boundaries, worse `react-doctor` output, and more risk when expanding the public API.
-  Action: split by feature slices such as preview, section editor, item editor, snippet tabs, and localized labels.
 
 ### Medium
 
@@ -57,15 +53,21 @@ What is already in place:
 ### Low
 
 - `apps/web/src/layouts/BaseLayout.astro`
-  Metadata is still minimal.
-  Impact: acceptable for development, but richer social metadata and structured data will improve launch quality.
-  Action: add richer Open Graph fields and structured data once the public brand assets and domain are fixed.
+  Metadata is still intentionally conservative because the public domain and branded social assets do not exist yet.
+  Impact: acceptable for local validation, but launch quality will still need final Open Graph image, URL, and sharing metadata.
+  Action: add final brand-linked social metadata once the public site URL and assets exist.
+
+- `apps/web`
+  Security headers and CSP are not enforced from inside the app code.
+  Impact: this is normal for a static front-end repo, but a production review still needs to verify deployment-layer headers.
+  Action: verify headers in the final host configuration during the deployment audit.
 
 ## Follow-Up Checklist
 
-- split `PlaygroundIsland` into smaller feature components
+- keep the configurator split by feature as new public API surface is added
 - run a deployed Lighthouse audit
 - run a deployed Core Web Vitals review
 - add final `site` config in Astro
 - add sitemap and robots handling
 - add richer SEO metadata and structured data
+- verify production headers and CSP at deployment time

@@ -217,6 +217,7 @@ Completed:
 - clear the `apps/web` `react-doctor` score to `100/100` by splitting the playground feature
 - clear the shipped React package `react-doctor` score to `100/100`
 - extend web tests to cover accessible code-panel tab semantics
+- verify local React, Vue, and Preact example apps with production builds
 
 Remaining:
 
