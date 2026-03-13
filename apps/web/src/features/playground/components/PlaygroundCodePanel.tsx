@@ -49,7 +49,7 @@ export function PlaygroundCodePanel({
             Switch frameworks, copy the snippet, and keep the same command structure.
           </p>
         </div>
-        <button className="ghost-button" onClick={() => void handleCopy()} type="button">
+        <button className="ghost-button compact-button" onClick={() => void handleCopy()} type="button">
           {labels.copy}
         </button>
       </div>

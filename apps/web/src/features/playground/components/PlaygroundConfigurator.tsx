@@ -102,7 +102,7 @@ export function PlaygroundConfigurator({
   );
 
   return (
-    <section className="panel">
+    <section className="panel configurator-panel">
       <div className="panel-heading">
         <p className="eyebrow">{labels.config}</p>
         <h2>Command surface</h2>
@@ -135,7 +135,7 @@ export function PlaygroundConfigurator({
         </article>
       </div>
 
-      <div className="panel-section">
+      <div className="panel-section panel-section-accent">
         <div className="panel-section-heading">
           <span className="eyebrow">Basics</span>
           <h3>Message and behavior</h3>
@@ -147,7 +147,7 @@ export function PlaygroundConfigurator({
         />
       </div>
 
-      <div className="panel-section">
+      <div className="panel-section panel-section-accent">
         <div className="panel-section-heading">
           <span className="eyebrow">Theme</span>
           <h3>Palette and feel</h3>
@@ -159,7 +159,7 @@ export function PlaygroundConfigurator({
         />
       </div>
 
-      <div className="panel-section">
+      <div className="panel-section panel-section-accent">
         <PlaygroundSectionsPanel
           config={config}
           labels={labels}

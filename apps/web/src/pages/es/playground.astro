@@ -1,0 +1,24 @@
+---
+import PlaygroundIsland from "../../components/PlaygroundIsland";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Playground";
+const description =
+  "Playground dedicado para construir la command palette, ajustar secciones y tema, y exportar codigo real.";
+---
+
+<BaseLayout description={description} locale="es" title={title}>
+  <main class="site-shell playground-page" id="main-content" tabindex="-1">
+    <section class="playground-page-hero">
+      <div class="playground-page-copy">
+        <span class="badge">Configurador</span>
+        <h1>Construye la palette en un workspace real, no encajada dentro de una landing.</h1>
+        <p>
+          Edita estructura, tema, comandos anidados, mensajes y exports usando todo el ancho de la
+          pagina. La preview sigue viva mientras el codigo generado refleja cada cambio.
+        </p>
+      </div>
+    </section>
+    <PlaygroundIsland client:load initialLanguage="es" mode="page" />
+  </main>
+</BaseLayout>

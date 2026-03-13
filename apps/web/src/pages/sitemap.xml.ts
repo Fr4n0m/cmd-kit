@@ -5,6 +5,8 @@ import { createSiteUrl, siteOrigin } from "../config/site";
 const routes = [
   "/",
   "/es",
+  "/playground",
+  "/es/playground",
   "/docs/getting-started",
   "/es/docs/getting-started",
   "/docs/react",
