@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Icon } from "../../../components/Icon";
 import type { PlaygroundConfig } from "../config";
 import type { PlaygroundLabels } from "../ui";
 import { SectionEditor } from "./SectionEditor";
@@ -99,7 +100,8 @@ export function PlaygroundSectionsPanel({
           Define sections, commands, nested flows, and the order users move through.
         </p>
         <button className="ghost-button" onClick={onAddSection} type="button">
-          {labels.addSection}
+          <Icon className="button-icon" name="plus" />
+          <span>{labels.addSection}</span>
         </button>
       </div>
 
