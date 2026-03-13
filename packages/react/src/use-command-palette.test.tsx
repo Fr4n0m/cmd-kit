@@ -150,7 +150,9 @@ describe("useCommandPalette", () => {
     });
 
     await waitFor(() => {
-      expect(result.current.recentItems.map((item) => item.id)).toEqual(["run"]);
+      expect(result.current.recentItems.map((item) => item.id)).toEqual([
+        "run"
+      ]);
     });
 
     act(() => {

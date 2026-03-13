@@ -92,7 +92,12 @@ export function useCommandPalette({
     () =>
       createResolvedConfig({
         items: navigationStack.length ? undefined : rootItems,
-        sections: withRecentSection(activeSections, recentItems, recents, rootItems),
+        sections: withRecentSection(
+          activeSections,
+          recentItems,
+          recents,
+          rootItems
+        ),
         messages,
         theme,
         shortcut
@@ -374,7 +379,9 @@ function trackRecentItem(
   );
 }
 
-function toSections(items: CommandItem[] | undefined): CommandSection[] | undefined {
+function toSections(
+  items: CommandItem[] | undefined
+): CommandSection[] | undefined {
   if (!items?.length) {
     return undefined;
   }
@@ -388,11 +395,13 @@ function toSections(items: CommandItem[] | undefined): CommandSection[] | undefi
     groupedItems.set(title, groupItems);
   }
 
-  return Array.from(groupedItems.entries()).map(([sectionTitle, sectionItems]) => ({
-    id: sectionTitle.toLowerCase().replace(/\s+/g, "-"),
-    title: sectionTitle,
-    items: sectionItems
-  }));
+  return Array.from(groupedItems.entries()).map(
+    ([sectionTitle, sectionItems]) => ({
+      id: sectionTitle.toLowerCase().replace(/\s+/g, "-"),
+      title: sectionTitle,
+      items: sectionItems
+    })
+  );
 }
 
 function restoreFocus(element: HTMLElement | null) {
