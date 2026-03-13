@@ -4,6 +4,9 @@ import type { PlaygroundConfig } from "./config";
 
 export function buildReactSnippet(config: PlaygroundConfig): string {
   const sectionsSnippet = toSectionsSnippet(config.sections);
+  const recentsSnippet = toRecentsSnippet(config);
+  const messagesSnippet = toMessagesSnippet(config);
+  const themeSnippet = toThemeSnippet(config);
 
   return `import { CommandPalette } from "@cmd-kit/react";
 
@@ -12,27 +15,63 @@ const sections = ${sectionsSnippet};
 export function Demo() {
   return (
     <CommandPalette
-      recents={
-        ${toRecentsSnippet(config)}
-      }
+      recents={${recentsSnippet}}
       sections={sections}
       shortcut="${escapeString(config.shortcut)}"
       title="${escapeString(config.title)}"
-      messages={{
-        searchPlaceholder: "${escapeString(config.placeholder)}",
-        noResults: "${escapeString(config.noResults)}",
-        closeLabel: "${escapeString(config.closeLabel)}"
-      }}
-      theme={{
-        accentColor: "${config.accentColor}",
-        backgroundColor: "${config.backgroundColor}",
-        textColor: "${config.textColor}",
-        mutedColor: "${escapeString(config.mutedColor)}",
-        borderColor: "${config.borderColor}",
-        overlayColor: "${escapeString(config.overlayColor)}",
-        radius: "${escapeString(config.radius)}",
-        shadow: "${escapeString(config.shadow)}"
-      }}
+      messages={${messagesSnippet}}
+      theme={${themeSnippet}}
+    />
+  );
+}`;
+}
+
+export function buildVueSnippet(config: PlaygroundConfig): string {
+  const sectionsSnippet = toJsonSnippet(config.sections);
+  const recentsSnippet = toJsonSnippet(toRecentsValue(config));
+  const messagesSnippet = toJsonSnippet(toMessagesValue(config));
+  const themeSnippet = toJsonSnippet(toThemeValue(config));
+
+  return `<script setup lang="ts">
+import { CommandPalette } from "@cmd-kit/vue";
+
+const sections = ${sectionsSnippet};
+const recents = ${recentsSnippet};
+const messages = ${messagesSnippet};
+const theme = ${themeSnippet};
+</script>
+
+<template>
+  <CommandPalette
+    :messages="messages"
+    :recents="recents"
+    :sections="sections"
+    :theme="theme"
+    shortcut="${escapeString(config.shortcut)}"
+    title="${escapeString(config.title)}"
+  />
+</template>`;
+}
+
+export function buildPreactSnippet(config: PlaygroundConfig): string {
+  const sectionsSnippet = toSectionsSnippet(config.sections);
+  const recentsSnippet = toRecentsSnippet(config);
+  const messagesSnippet = toMessagesSnippet(config);
+  const themeSnippet = toThemeSnippet(config);
+
+  return `import { CommandPalette } from "@cmd-kit/preact";
+
+const sections = ${sectionsSnippet};
+
+export function Demo() {
+  return (
+    <CommandPalette
+      recents={${recentsSnippet}}
+      sections={sections}
+      shortcut="${escapeString(config.shortcut)}"
+      title="${escapeString(config.title)}"
+      messages={${messagesSnippet}}
+      theme={${themeSnippet}}
     />
   );
 }`;
@@ -68,38 +107,7 @@ const sections = ${toSectionsSnippet(config.sections)};
 }
 
 export function buildJsonSnippet(config: PlaygroundConfig): string {
-  return JSON.stringify(
-    {
-      title: config.title,
-      description: config.description,
-      shortcut: config.shortcut,
-      layout: config.layout,
-      recents: config.recentsEnabled
-        ? {
-            limit: config.recentsLimit,
-            sectionTitle: config.recentsTitle
-          }
-        : false,
-      messages: {
-        searchPlaceholder: config.placeholder,
-        noResults: config.noResults,
-        closeLabel: config.closeLabel
-      },
-      theme: {
-        accentColor: config.accentColor,
-        backgroundColor: config.backgroundColor,
-        textColor: config.textColor,
-        mutedColor: config.mutedColor,
-        borderColor: config.borderColor,
-        overlayColor: config.overlayColor,
-        radius: config.radius,
-        shadow: config.shadow
-      },
-      sections: config.sections
-    },
-    null,
-    2
-  );
+  return JSON.stringify(toPortableConfig(config), null, 2);
 }
 
 function toSectionsSnippet(sections: CommandSection[]): string {
@@ -113,12 +121,66 @@ function escapeString(value: string): string {
 }
 
 function toRecentsSnippet(config: PlaygroundConfig): string {
+  return toObjectLiteralSnippet(toRecentsValue(config));
+}
+
+function toMessagesSnippet(config: PlaygroundConfig): string {
+  return toObjectLiteralSnippet(toMessagesValue(config));
+}
+
+function toThemeSnippet(config: PlaygroundConfig): string {
+  return toObjectLiteralSnippet(toThemeValue(config));
+}
+
+function toMessagesValue(config: PlaygroundConfig) {
+  return {
+    searchPlaceholder: config.placeholder,
+    noResults: config.noResults,
+    closeLabel: config.closeLabel
+  };
+}
+
+function toThemeValue(config: PlaygroundConfig) {
+  return {
+    accentColor: config.accentColor,
+    backgroundColor: config.backgroundColor,
+    textColor: config.textColor,
+    mutedColor: config.mutedColor,
+    borderColor: config.borderColor,
+    overlayColor: config.overlayColor,
+    radius: config.radius,
+    shadow: config.shadow
+  };
+}
+
+function toRecentsValue(config: PlaygroundConfig) {
   if (!config.recentsEnabled) {
-    return "false";
+    return false;
   }
 
-  return `{
-        limit: ${config.recentsLimit},
-        sectionTitle: "${escapeString(config.recentsTitle)}"
-      }`;
+  return {
+    limit: config.recentsLimit,
+    sectionTitle: config.recentsTitle
+  };
+}
+
+function toPortableConfig(config: PlaygroundConfig) {
+  return {
+    title: config.title,
+    description: config.description,
+    shortcut: config.shortcut,
+    layout: config.layout,
+    recents: toRecentsValue(config),
+    messages: toMessagesValue(config),
+    theme: toThemeValue(config),
+    sections: config.sections
+  };
+}
+
+function toObjectLiteralSnippet(value: unknown): string {
+  return JSON.stringify(value, null, 2).replace(/"([^"]+)":/g, "$1:");
+}
+
+function toJsonSnippet(value: unknown): string {
+  return JSON.stringify(value, null, 2);
 }

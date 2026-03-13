@@ -4,8 +4,10 @@ import { defaultConfig } from "./config";
 import {
   buildCssSnippet,
   buildJsonSnippet,
+  buildPreactSnippet,
   buildReactSnippet,
-  buildTailwindSnippet
+  buildTailwindSnippet,
+  buildVueSnippet
 } from "./snippets";
 
 describe("playground snippet builders", () => {
@@ -36,6 +38,22 @@ describe("playground snippet builders", () => {
 
     expect(snippet).toContain("CommandPalette");
     expect(snippet).toContain("sections={sections}");
+  });
+
+  it("builds a Vue snippet from the same command config", () => {
+    const snippet = buildVueSnippet(defaultConfig);
+
+    expect(snippet).toContain('import { CommandPalette } from "@cmd-kit/vue";');
+    expect(snippet).toContain("const sections = [");
+    expect(snippet).toContain(':sections="sections"');
+  });
+
+  it("builds a Preact snippet from the same command config", () => {
+    const snippet = buildPreactSnippet(defaultConfig);
+
+    expect(snippet).toContain('import { CommandPalette } from "@cmd-kit/preact";');
+    expect(snippet).toContain("const sections = [");
+    expect(snippet).toContain("<CommandPalette");
   });
 
   it("builds a JSON snippet for portable configuration export", () => {
