@@ -34,6 +34,8 @@ Useful scripts:
 - `npm run test`
 - `npm run format`
 - `npm run format:check`
+- `npm run pack:verify`
+- `npm run release:check`
 
 ## Quality Checks
 
@@ -42,6 +44,7 @@ Before merging or releasing, run:
 - `npm run test`
 - `npm run typecheck`
 - `npm run build`
+- `npm run pack:verify`
 
 ## Deployment
 

@@ -13,6 +13,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "npm run lint --workspaces --if-present",
+    "pack:verify": "node -e \"require('fs').rmSync('.artifacts/packs',{ recursive: true, force: true }); require('fs').mkdirSync('.artifacts/packs',{ recursive: true });\" && npm pack --workspace @cmd-kit/core --pack-destination .artifacts/packs && npm pack --workspace @cmd-kit/react --pack-destination .artifacts/packs",
+    "release:check": "npm run test && npm run typecheck && npm run build && npm run pack:verify",
     "test": "npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },

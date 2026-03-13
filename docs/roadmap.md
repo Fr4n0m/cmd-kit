@@ -73,6 +73,7 @@ Completed:
 - define test layers and quality checks
 - add package-level README files for published packages
 - add manual formatting tooling and repository-wide formatting rules
+- add local release verification and package packing scripts
 
 Remaining:
 
@@ -186,14 +187,13 @@ Completed:
 - standardize local quality checks with `test`, `typecheck`, and `build`
 - add an automated accessibility smoke test for the React palette
 - cover shortcut toggling and nested back-navigation in React tests
+- add local package packing verification before publish
 
 Remaining:
 
 - extend accessibility checks to cover the web app and more interaction flows
 - expand React tests around additional focus, shortcuts, and nested navigation edge cases
 - add manual QA passes across desktop and mobile
-- define a release checklist for `test`, `typecheck`, and `build`
-- add publish verification before release
 - review dependency health and resolve acceptable vulnerabilities before production
 
 Production bar:

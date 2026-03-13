@@ -13,6 +13,7 @@
 - run `npm run test`
 - run `npm run typecheck`
 - run `npm run build`
+- run `npm run pack:verify`
 - manually test the React palette flows
 - manually test the Astro web app and playground
 
@@ -28,6 +29,7 @@
 - verify `package.json` fields for `name`, `version`, `license`, `repository`, `bugs`, and `homepage`
 - verify `exports`, `types`, and `files`
 - verify `publishConfig`
+- inspect the generated tarballs in `.artifacts/packs`
 - confirm the final package name is available on npm
 
 ## Publish Gate
