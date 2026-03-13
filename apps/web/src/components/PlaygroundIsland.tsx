@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from "react";
+import React, { type ReactNode, useMemo, useState } from "react";
 
 import { CommandPalette } from "@cmd-kit/react";
 

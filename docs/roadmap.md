@@ -43,7 +43,6 @@ Not started or incomplete:
 - official release/versioning workflow
 - npm publishing setup
 - final production documentation pass for installation and customization
-- accessibility audit and hardening
 - final open source maintenance workflow and metadata cleanup
 - multi-framework adapter rollout beyond React
 
@@ -173,6 +172,7 @@ Remaining:
 - add full configurator coverage for the public API
 - allow editing more advanced command behaviors from the UI beyond recent-command settings and nested command content
 - improve snippet generation quality and production readiness
+- continue hardening mobile and responsive behavior with manual QA
 
 Production bar:
 
@@ -193,12 +193,14 @@ Completed:
 - add integration-style tests for playground snippets
 - standardize local quality checks with `test`, `typecheck`, and `build`
 - add an automated accessibility smoke test for the React palette
+- add accessibility smoke coverage for the Astro web app playground
+- add skip-link, focus-visible, and reduced-motion support to the web app shell
 - cover shortcut toggling and nested back-navigation in React tests
 - add local package packing verification before publish
 
 Remaining:
 
-- extend accessibility checks to cover the web app and more interaction flows
+- extend accessibility checks to more interaction flows across the web app and React package
 - expand React tests around additional focus, shortcuts, and nested navigation edge cases
 - add manual QA passes across desktop and mobile
 - review dependency health and resolve acceptable vulnerabilities before production
