@@ -1,23 +1,23 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 
-const title = "cmd+kit | Customization";
+const title = "cmd+kit | Personalizacion";
 const description =
-  "Customize sections, theme tokens, nested navigation, and snippets in cmd+kit.";
+  "Personaliza secciones, tokens de tema, navegacion anidada y snippets en cmd+kit.";
 ---
 
-<BaseLayout description={description} locale="en" title={title}>
+<BaseLayout description={description} locale="es" title={title}>
   <main class="site-shell docs-shell" id="main-content" tabindex="-1">
     <article class="docs-panel">
-      <p class="eyebrow">Customization</p>
-      <h1>Customization Patterns</h1>
+      <p class="eyebrow">Personalizacion</p>
+      <h1>Patrones de personalizacion</h1>
       <p>
-        `cmd+kit` is designed so the same concepts appear in the package API and in the live
-        configurator. The main customization surface is built around sections, items, messages, and
-        theme tokens.
+        `cmd+kit` esta pensado para que los mismos conceptos aparezcan en la API del paquete y en
+        el configurador en vivo. La superficie principal gira en torno a secciones, items,
+        mensajes y tokens de tema.
       </p>
 
-      <h2>Sections</h2>
+      <h2>Secciones</h2>
       <pre class="code-block"><code>{`const sections = [
   {
     id: "navigation",
@@ -26,7 +26,7 @@ const description =
   }
 ];`}</code></pre>
 
-      <h2>Nested navigation</h2>
+      <h2>Navegacion anidada</h2>
       <pre class="code-block"><code>{`const sections = [
   {
     id: "actions",
@@ -47,7 +47,7 @@ const description =
   }
 ];`}</code></pre>
 
-      <h2>Theme tokens</h2>
+      <h2>Tokens de tema</h2>
       <pre class="code-block"><code>{`<CommandPalette
   sections={sections}
   theme={{
@@ -59,7 +59,7 @@ const description =
   }}
 />`}</code></pre>
 
-      <h2>CSS variables helper</h2>
+      <h2>Helper de CSS variables</h2>
       <pre class="code-block"><code>{`import { createThemeCssText } from "@cmd-kit/core";
 
 const css = createThemeCssText({
@@ -71,7 +71,7 @@ const themeBlock = \`:root {
 \${css}
 }\`;`}</code></pre>
 
-      <h2>Messages</h2>
+      <h2>Mensajes</h2>
       <pre class="code-block"><code>{`<CommandPalette
   sections={sections}
   messages={{
@@ -81,8 +81,8 @@ const themeBlock = \`:root {
 />`}</code></pre>
 
       <p>
-        The homepage playground should be treated as the fastest way to assemble these patterns and
-        export starter code.
+        El playground de la home debe tratarse como la via mas rapida para montar estos patrones y
+        exportar codigo inicial.
       </p>
     </article>
   </main>
