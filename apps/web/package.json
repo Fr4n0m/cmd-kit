@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "astro build",
+    "build": "npm --prefix ../.. run build --workspace @cmd-kit/core && npm --prefix ../.. run build --workspace @cmd-kit/react && astro build",
     "dev": "astro dev",
     "lint": "astro check",
     "test": "vitest run --passWithNoTests",
-    "typecheck": "npm run build --workspace @cmd-kit/core && npm run build --workspace @cmd-kit/react && astro check"
+    "typecheck": "npm --prefix ../.. run build --workspace @cmd-kit/core && npm --prefix ../.. run build --workspace @cmd-kit/react && astro check"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.7",
