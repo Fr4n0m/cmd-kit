@@ -43,10 +43,9 @@ Not started or incomplete:
 
 - official release/versioning workflow
 - npm publishing setup
-- production documentation for installation and customization
+- final production documentation pass for installation, customization, and deployment
 - accessibility audit and hardening
-- release checklist and publish verification
-- issue templates, package metadata hardening, and open source maintenance assets
+- final open source maintenance workflow and metadata cleanup
 
 ## Phases
 
