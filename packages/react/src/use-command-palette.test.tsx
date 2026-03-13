@@ -1,4 +1,4 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { act, fireEvent, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { useCommandPalette } from "./use-command-palette";
@@ -164,5 +164,25 @@ describe("useCommandPalette", () => {
     });
 
     expect(result.current.snapshot.groups[0]?.items[0]?.id).toBe("run");
+  });
+
+  it("ignores the global shortcut while typing in a text input", async () => {
+    const input = document.createElement("input");
+    document.body.appendChild(input);
+    input.focus();
+
+    const { result } = renderHook(() =>
+      useCommandPalette({
+        items: [{ id: "root", title: "Root" }]
+      })
+    );
+
+    await act(async () => {
+      fireEvent.keyDown(input, { ctrlKey: true, key: "k" });
+    });
+
+    expect(result.current.resolvedOpen).toBe(false);
+
+    input.remove();
   });
 });

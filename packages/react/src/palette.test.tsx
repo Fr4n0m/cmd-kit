@@ -183,6 +183,55 @@ describe("CommandPalette", () => {
     expect(results.violations).toHaveLength(0);
   });
 
+  it("traps focus inside the dialog when tabbing", async () => {
+    render(<CommandPalette defaultOpen items={items} />);
+
+    const closeButton = screen.getByRole("button", {
+      name: "Close command palette"
+    });
+    const lastOption = screen.getAllByRole("option").at(-1);
+
+    expect(lastOption).toBeDefined();
+
+    lastOption?.focus();
+    fireEvent.keyDown(lastOption as HTMLElement, { key: "Tab" });
+
+    expect(closeButton).toHaveFocus();
+
+    closeButton.focus();
+    fireEvent.keyDown(closeButton, { key: "Tab", shiftKey: true });
+
+    expect(lastOption).toHaveFocus();
+  });
+
+  it("marks the listbox as busy while async commands are loading", async () => {
+    let resolveSource:
+      | ((value: {
+          items: { id: string; title: string; section: string }[];
+        }) => void)
+      | undefined;
+
+    render(
+      <CommandPalette
+        defaultOpen
+        source={() =>
+          new Promise((resolve) => {
+            resolveSource = resolve;
+          })
+        }
+      />
+    );
+
+    expect(screen.getByRole("listbox")).toHaveAttribute("aria-busy", "true");
+
+    await act(async () => {
+      resolveSource?.({
+        items: [{ id: "remote", title: "Remote command", section: "Remote" }]
+      });
+      await Promise.resolve();
+    });
+  });
+
   it("supports class names and renderer overrides", () => {
     render(
       <CommandPalette

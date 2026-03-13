@@ -133,6 +133,7 @@ Completed:
 - add programmatic root and nested navigation helpers to the React hook
 - wire async `source` loading into the React hook and component
 - expose recent items through the React hook
+- add focus trapping and `aria-busy` semantics to the default dialog UI
 
 Remaining:
 
@@ -197,12 +198,12 @@ Completed:
 - add accessibility smoke coverage for the Astro web app playground
 - add skip-link, focus-visible, and reduced-motion support to the web app shell
 - cover shortcut toggling and nested back-navigation in React tests
+- expand React coverage for focus trapping, busy states, and typing-target shortcut guards
 - add local package packing verification before publish
 
 Remaining:
 
 - extend accessibility checks to more interaction flows across the web app and React package
-- expand React tests around additional focus, shortcuts, and nested navigation edge cases
 - add manual QA passes across desktop and mobile
 - review dependency health and resolve acceptable vulnerabilities before production
 

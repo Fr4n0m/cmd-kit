@@ -9,7 +9,8 @@ import {
   type CSSProperties,
   type KeyboardEvent,
   type ReactNode,
-  useId
+  useId,
+  useRef
 } from "react";
 
 import { useCommandPalette } from "./use-command-palette";
@@ -99,13 +100,16 @@ export function CommandPalette({
   recents
 }: CommandPaletteProps) {
   const titleId = useId();
+  const captionId = useId();
   const listboxId = useId();
   const inputId = useId();
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const {
     activeIndex,
     activeTitle,
     canGoBack,
     flatItems,
+    isLoading,
     query,
     resolvedConfig,
     resolvedOpen,
@@ -173,6 +177,34 @@ export function CommandPalette({
     }
   }
 
+  function handleDialogKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "Tab") {
+      return;
+    }
+
+    const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusableElements?.length) {
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey && document.activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+      return;
+    }
+
+    if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  }
+
   if (!resolvedOpen) {
     return null;
   }
@@ -186,6 +218,8 @@ export function CommandPalette({
         aria-labelledby={titleId}
         aria-modal="true"
         className={joinClassNames(className, classNames?.dialog)}
+        onKeyDown={handleDialogKeyDown}
+        ref={dialogRef}
         role="dialog"
         style={paletteStyle(resolvedConfig.theme)}
       >
@@ -194,7 +228,11 @@ export function CommandPalette({
             <p className={classNames?.title} id={titleId} style={titleStyle}>
               {renderers?.title ? renderers.title(renderContext) : activeTitle}
             </p>
-            <p className={classNames?.caption} style={captionStyle}>
+            <p
+              className={classNames?.caption}
+              id={captionId}
+              style={captionStyle}
+            >
               Press {prettyShortcut(shortcut)} to toggle.
             </p>
           </div>
@@ -234,6 +272,7 @@ export function CommandPalette({
               ? `${listboxId}-${flatItems[activeIndex].id}`
               : undefined
           }
+          aria-describedby={captionId}
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
@@ -249,6 +288,7 @@ export function CommandPalette({
         />
 
         <div
+          aria-busy={isLoading}
           aria-labelledby={titleId}
           className={classNames?.list}
           id={listboxId}
