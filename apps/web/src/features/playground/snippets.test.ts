@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  buildCssSnippet,
-  buildReactSnippet,
-  buildTailwindSnippet,
-  defaultConfig
-} from "./playground";
+import { defaultConfig } from "./config";
+import { buildCssSnippet, buildReactSnippet, buildTailwindSnippet } from "./snippets";
 
 describe("playground snippet builders", () => {
   it("builds a React snippet that maps the selected shortcut and sections", () => {

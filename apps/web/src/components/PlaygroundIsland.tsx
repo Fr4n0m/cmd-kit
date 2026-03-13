@@ -3,97 +3,24 @@ import { type ReactNode, useMemo, useState } from "react";
 import { CommandPalette } from "@cmd-kit/react";
 
 import {
-  buildCssSnippet,
-  buildReactSnippet,
-  buildTailwindSnippet,
   createItem,
   createSection,
   defaultConfig,
   toTheme,
-  type Language,
   type PlaygroundConfig
-} from "../playground";
-
-const ui = {
-  en: {
-    config: "Configurator",
-    preview: "Live Preview",
-    code: "Generated Code",
-    reactCode: "React",
-    cssCode: "CSS Variables",
-    tailwindCode: "Tailwind",
-    language: "Language",
-    title: "Hero title",
-    description: "Hero description",
-    placeholder: "Search placeholder",
-    noResults: "Empty state",
-    accent: "Accent color",
-    surface: "Surface color",
-    text: "Text color",
-    border: "Border color",
-    radius: "Radius",
-    shortcut: "Shortcut",
-    sections: "Sections",
-    sectionTitle: "Section title",
-    itemTitle: "Item title",
-    itemSubtitle: "Item subtitle",
-    itemIcon: "Item icon",
-    itemShortcut: "Item shortcut",
-    itemHref: "Item href",
-    itemKeywords: "Item keywords",
-    itemDisabled: "Disabled",
-    addSection: "Add section",
-    addItem: "Add item",
-    remove: "Remove",
-    layout: "Layout",
-    centered: "Centered",
-    wide: "Wide",
-    copy: "Copy",
-    launch: "Open preview"
-  },
-  es: {
-    config: "Configurador",
-    preview: "Vista previa",
-    code: "Codigo generado",
-    reactCode: "React",
-    cssCode: "Variables CSS",
-    tailwindCode: "Tailwind",
-    language: "Idioma",
-    title: "Titulo principal",
-    description: "Descripcion principal",
-    placeholder: "Placeholder de busqueda",
-    noResults: "Estado vacio",
-    accent: "Color de acento",
-    surface: "Color de fondo",
-    text: "Color del texto",
-    border: "Color del borde",
-    radius: "Radio",
-    shortcut: "Atajo",
-    sections: "Secciones",
-    sectionTitle: "Titulo de seccion",
-    itemTitle: "Titulo del item",
-    itemSubtitle: "Subtitulo del item",
-    itemIcon: "Icono del item",
-    itemShortcut: "Atajo del item",
-    itemHref: "Href del item",
-    itemKeywords: "Keywords del item",
-    itemDisabled: "Deshabilitado",
-    addSection: "Anadir seccion",
-    addItem: "Anadir item",
-    remove: "Eliminar",
-    layout: "Layout",
-    centered: "Centrado",
-    wide: "Ancho",
-    copy: "Copiar",
-    launch: "Abrir preview"
-  }
-} satisfies Record<Language, Record<string, string>>;
+} from "../features/playground/config";
+import {
+  buildCssSnippet,
+  buildReactSnippet,
+  buildTailwindSnippet
+} from "../features/playground/snippets";
+import { playgroundLabels } from "../features/playground/ui";
 
 export default function PlaygroundIsland() {
   const [config, setConfig] = useState<PlaygroundConfig>(defaultConfig);
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"react" | "css" | "tailwind">("react");
-  const labels = ui[config.language];
+  const labels = playgroundLabels[config.language];
 
   const code = useMemo(() => {
     if (activeTab === "css") {
@@ -220,7 +147,7 @@ export default function PlaygroundIsland() {
                 onChange={(event) =>
                   setConfig((current) => ({
                     ...current,
-                    language: event.target.value as Language
+                    language: event.target.value as PlaygroundConfig["language"]
                   }))
                 }
                 value={config.language}
