@@ -114,12 +114,13 @@ export function buildCssSnippet(config: PlaygroundConfig): string {
 }
 
 export function buildTailwindSnippet(config: PlaygroundConfig): string {
-  return `<div className="rounded-[${config.radius}] border bg-[${config.backgroundColor}] text-[${config.textColor}]">
-  {/* Map these values to the CommandPalette theme prop */}
+  return `import { CommandPalette } from "@cmd-kit/react";
+
+<div className="rounded-[${config.radius}] border bg-[${config.backgroundColor}] text-[${config.textColor}]">
+  <CommandPalette items={items} shortcut="${config.shortcut}" />
 </div>`;
 }
 
 function escapeString(value: string): string {
   return value.replace(/"/g, '\\"');
 }
-
