@@ -205,6 +205,7 @@ Completed:
 
 - write package-level docs for installation and usage
 - add package metadata fields for license, keywords, repository shape, and publish access baseline
+- add the repository license file
 
 Remaining:
 

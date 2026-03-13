@@ -4,6 +4,8 @@
 
 Repository name: `cmd-kit`
 
+License: `MIT`
+
 ## Project Goals
 
 - Work across frameworks with a framework-agnostic core.
