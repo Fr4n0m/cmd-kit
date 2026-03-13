@@ -54,6 +54,7 @@ Before merging or releasing, run:
 - [Product Vision](./docs/product-vision.md)
 - [Architecture](./docs/architecture.md)
 - [Roadmap](./docs/roadmap.md)
+- [Dependency Health](./docs/dependency-health.md)
 - [Release Checklist](./docs/release-checklist.md)
 - [Versioning And Release](./docs/versioning-and-release.md)
 - [Contributing](./CONTRIBUTING.md)

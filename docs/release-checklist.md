@@ -6,6 +6,7 @@
 - review [roadmap.md](./roadmap.md) for remaining production blockers
 - add the final repository, homepage, and issue tracker URLs to package metadata
 - review dependency health and decide whether any vulnerabilities are acceptable
+- review [dependency-health.md](./dependency-health.md) and refresh the audit result
 - create and commit the required Changeset entries
 
 ## Quality Gate
@@ -15,6 +16,7 @@
 - run `npm run typecheck`
 - run `npm run build`
 - run `npm run pack:verify`
+- run `npm run audit`
 - manually test the React palette flows
 - manually test the Vue palette flows
 - manually test the Astro web app and playground

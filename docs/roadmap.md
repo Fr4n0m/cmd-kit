@@ -200,12 +200,13 @@ Completed:
 - cover shortcut toggling and nested back-navigation in React tests
 - expand React coverage for focus trapping, busy states, and typing-target shortcut guards
 - add local package packing verification before publish
+- add an explicit dependency audit step to the local release workflow
 
 Remaining:
 
 - extend accessibility checks to more interaction flows across the web app and React package
 - add manual QA passes across desktop and mobile
-- review dependency health and resolve acceptable vulnerabilities before production
+- resolve or explicitly accept the remaining Astro tooling vulnerability chain before production
 
 Production bar:
 

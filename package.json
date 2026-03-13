@@ -8,6 +8,7 @@
     "apps/*"
   ],
   "scripts": {
+    "audit": "npm audit --audit-level=moderate",
     "build": "npm run build --workspaces --if-present",
     "changeset": "changeset",
     "dev:web": "npm run dev --workspace @cmd-kit/web",
@@ -15,7 +16,7 @@
     "format:check": "prettier --check .",
     "lint": "npm run lint --workspaces --if-present",
     "pack:verify": "node -e \"require('fs').rmSync('.artifacts/packs',{ recursive: true, force: true }); require('fs').mkdirSync('.artifacts/packs',{ recursive: true });\" && npm pack --workspace @cmd-kit/core --pack-destination .artifacts/packs && npm pack --workspace @cmd-kit/react --pack-destination .artifacts/packs && npm pack --workspace @cmd-kit/vue --pack-destination .artifacts/packs",
-    "release:check": "npm run test && npm run typecheck && npm run build && npm run pack:verify",
+    "release:check": "npm run test && npm run typecheck && npm run build && npm run pack:verify && npm run audit",
     "release:npm": "npm publish --workspace @cmd-kit/core && npm publish --workspace @cmd-kit/react && npm publish --workspace @cmd-kit/vue",
     "test": "npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
