@@ -31,7 +31,6 @@ Completed:
 - initial package metadata hardening for public publishing
 - initial docs pages for installation and React usage
 - explicit npm installation guidance in the web experience
-- Vercel deployment notes in the public docs
 
 In progress:
 
@@ -43,7 +42,7 @@ Not started or incomplete:
 
 - official release/versioning workflow
 - npm publishing setup
-- final production documentation pass for installation, customization, and deployment
+- final production documentation pass for installation and customization
 - accessibility audit and hardening
 - final open source maintenance workflow and metadata cleanup
 
@@ -159,7 +158,6 @@ Completed:
 - add initial docs pages beyond the homepage
 - cover the full message set and current theme token surface in the configurator
 - add explicit npm installation guidance in the web experience
-- add Vercel deployment notes to project docs
 
 Remaining:
 
@@ -247,7 +245,7 @@ Must be complete:
 - accessibility review completed
 - package metadata verified
 - npm account ready and package name confirmed
-- Vercel deployment for `apps/web` verified
+- web deployment verified
 - first release checklist written and rehearsed
 
 ## Future Backlog

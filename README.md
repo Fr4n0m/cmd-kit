@@ -46,17 +46,6 @@ Before merging or releasing, run:
 - `npm run build`
 - `npm run pack:verify`
 
-## Deployment
-
-`apps/web` is an Astro app and is suitable for static deployment on Vercel.
-
-Recommended Vercel settings:
-
-- Framework preset: `Astro`
-- Root directory: `apps/web`
-- Build command: `npm run build --workspace @cmd-kit/web`
-- Output directory: `dist`
-
 ## Documentation
 
 - [Product Vision](./docs/product-vision.md)
@@ -64,5 +53,4 @@ Recommended Vercel settings:
 - [Roadmap](./docs/roadmap.md)
 - [Release Checklist](./docs/release-checklist.md)
 - [Versioning And Release](./docs/versioning-and-release.md)
-- [Deployment Notes](./apps/web/src/pages/docs/deploy.astro)
 - [Contributing](./CONTRIBUTING.md)
