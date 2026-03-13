@@ -299,6 +299,17 @@ button {
   font-size: 0.85rem;
 }
 
+.toggle-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(226, 232, 240, 0.78);
+}
+
+.toggle-field input {
+  width: auto;
+}
+
 .tab {
   border-radius: 14px;
 }

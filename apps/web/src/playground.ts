@@ -28,7 +28,9 @@ export const defaultSections: CommandSection[] = [
         title: "Go to dashboard",
         subtitle: "Open the main application view",
         icon: "⌂",
-        shortcut: "G D"
+        shortcut: "G D",
+        href: "/dashboard",
+        keywords: ["home", "overview"]
       }
     ]
   },
@@ -41,7 +43,8 @@ export const defaultSections: CommandSection[] = [
         title: "Search everything",
         subtitle: "Jump across the whole workspace",
         icon: "⌕",
-        shortcut: "S"
+        shortcut: "S",
+        keywords: ["finder", "jump"]
       }
     ]
   },
@@ -54,7 +57,8 @@ export const defaultSections: CommandSection[] = [
         title: "Switch theme",
         subtitle: "Preview alternate visual presets",
         icon: "◐",
-        shortcut: "T"
+        shortcut: "T",
+        disabled: false
       }
     ]
   }
@@ -152,7 +156,10 @@ export function createItem() {
     title: "New item",
     subtitle: "Describe this command",
     icon: "•",
-    shortcut: ""
+    shortcut: "",
+    href: "",
+    keywords: [],
+    disabled: false
   };
 }
 

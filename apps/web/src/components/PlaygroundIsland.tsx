@@ -39,6 +39,9 @@ const ui = {
     itemSubtitle: "Item subtitle",
     itemIcon: "Item icon",
     itemShortcut: "Item shortcut",
+    itemHref: "Item href",
+    itemKeywords: "Item keywords",
+    itemDisabled: "Disabled",
     addSection: "Add section",
     addItem: "Add item",
     remove: "Remove",
@@ -72,6 +75,9 @@ const ui = {
     itemSubtitle: "Subtitulo del item",
     itemIcon: "Icono del item",
     itemShortcut: "Atajo del item",
+    itemHref: "Href del item",
+    itemKeywords: "Keywords del item",
+    itemDisabled: "Deshabilitado",
     addSection: "Anadir seccion",
     addItem: "Anadir item",
     remove: "Eliminar",
@@ -425,9 +431,46 @@ export default function PlaygroundIsland() {
                               value={item.shortcut ?? ""}
                             />
                           </Field>
+                          <Field label={labels.itemHref}>
+                            <input
+                              onChange={(event) =>
+                                updateItem(section.id, item.id, (current) => ({
+                                  ...current,
+                                  href: event.target.value
+                                }))
+                              }
+                              value={item.href ?? ""}
+                            />
+                          </Field>
+                          <Field label={labels.itemKeywords}>
+                            <input
+                              onChange={(event) =>
+                                updateItem(section.id, item.id, (current) => ({
+                                  ...current,
+                                  keywords: event.target.value
+                                    .split(",")
+                                    .map((entry) => entry.trim())
+                                    .filter(Boolean)
+                                }))
+                              }
+                              value={(item.keywords ?? []).join(", ")}
+                            />
+                          </Field>
                         </div>
                         <div className="row-between">
-                          <span className="item-meta">{item.id}</span>
+                          <label className="toggle-field">
+                            <input
+                              checked={item.disabled ?? false}
+                              onChange={(event) =>
+                                updateItem(section.id, item.id, (current) => ({
+                                  ...current,
+                                  disabled: event.target.checked
+                                }))
+                              }
+                              type="checkbox"
+                            />
+                            <span>{labels.itemDisabled}</span>
+                          </label>
                           <button
                             className="inline-button"
                             onClick={() => removeItem(section.id, item.id)}
@@ -436,6 +479,7 @@ export default function PlaygroundIsland() {
                             {labels.remove}
                           </button>
                         </div>
+                        <div className="item-meta">{item.id}</div>
                       </div>
                     ))}
                   </div>

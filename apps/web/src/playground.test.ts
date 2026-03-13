@@ -14,6 +14,7 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain('shortcut="mod+k"');
     expect(snippet).toContain("const sections = [");
     expect(snippet).toContain("<CommandPalette");
+    expect(snippet).toContain("href: '/dashboard'");
   });
 
   it("builds CSS variables for the theme tokens", () => {
