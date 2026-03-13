@@ -163,12 +163,13 @@ Completed:
 - add initial docs pages beyond the homepage
 - cover the full message set and current theme token surface in the configurator
 - add explicit npm installation guidance in the web experience
+- expose recent-command behavior controls in the configurator
 
 Remaining:
 
 - improve landing copy, hierarchy, and product storytelling
 - add full configurator coverage for the public API
-- allow editing more advanced command behaviors from the UI
+- allow editing more advanced command behaviors from the UI beyond recent-command settings
 - improve snippet generation quality and production readiness
 
 Production bar:

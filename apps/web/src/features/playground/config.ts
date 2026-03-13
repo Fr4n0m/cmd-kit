@@ -6,6 +6,9 @@ export interface PlaygroundConfig {
   language: Language;
   title: string;
   description: string;
+  recentsEnabled: boolean;
+  recentsLimit: number;
+  recentsTitle: string;
   placeholder: string;
   noResults: string;
   closeLabel: string;
@@ -83,6 +86,9 @@ export const defaultConfig: PlaygroundConfig = {
   title: "Build your command palette live",
   description:
     "Tune colors, sections, and commands while exporting the exact code your project needs.",
+  recentsEnabled: true,
+  recentsLimit: 5,
+  recentsTitle: "Recent",
   placeholder: "Search commands...",
   noResults: "No results found.",
   closeLabel: "Close command palette",

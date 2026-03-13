@@ -12,6 +12,9 @@ const sections = ${sectionsSnippet};
 export function Demo() {
   return (
     <CommandPalette
+      recents={
+        ${toRecentsSnippet(config)}
+      }
       sections={sections}
       shortcut="${escapeString(config.shortcut)}"
       title="${escapeString(config.title)}"
@@ -54,7 +57,13 @@ export function buildTailwindSnippet(config: PlaygroundConfig): string {
 const sections = ${toSectionsSnippet(config.sections)};
 
 <div className="rounded-[${config.radius}] border bg-[${config.backgroundColor}] text-[${config.textColor}]">
-  <CommandPalette sections={sections} shortcut="${config.shortcut}" />
+  <CommandPalette
+    recents={
+      ${toRecentsSnippet(config)}
+    }
+    sections={sections}
+    shortcut="${config.shortcut}"
+  />
 </div>`;
 }
 
@@ -66,4 +75,15 @@ function toSectionsSnippet(sections: CommandSection[]): string {
 
 function escapeString(value: string): string {
   return value.replace(/"/g, '\\"');
+}
+
+function toRecentsSnippet(config: PlaygroundConfig): string {
+  if (!config.recentsEnabled) {
+    return "false";
+  }
+
+  return `{
+        limit: ${config.recentsLimit},
+        sectionTitle: "${escapeString(config.recentsTitle)}"
+      }`;
 }

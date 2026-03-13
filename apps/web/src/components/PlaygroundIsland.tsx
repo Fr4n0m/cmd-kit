@@ -107,6 +107,14 @@ export default function PlaygroundIsland() {
         }}
         onOpenChange={setIsOpen}
         open={isOpen}
+        recents={
+          config.recentsEnabled
+            ? {
+                limit: config.recentsLimit,
+                sectionTitle: config.recentsTitle
+              }
+            : false
+        }
         sections={config.sections}
         shortcut={config.shortcut}
         theme={toTheme(config)}
@@ -202,6 +210,44 @@ export default function PlaygroundIsland() {
                 }
                 rows={4}
                 value={config.description}
+              />
+            </Field>
+            <Field label={labels.recents}>
+              <select
+                onChange={(event) =>
+                  setConfig((current) => ({
+                    ...current,
+                    recentsEnabled: event.target.value === "true"
+                  }))
+                }
+                value={String(config.recentsEnabled)}
+              >
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+              </select>
+            </Field>
+            <Field label={labels.recentsTitle}>
+              <input
+                onChange={(event) =>
+                  setConfig((current) => ({
+                    ...current,
+                    recentsTitle: event.target.value
+                  }))
+                }
+                value={config.recentsTitle}
+              />
+            </Field>
+            <Field label={labels.recentsLimit}>
+              <input
+                min={1}
+                onChange={(event) =>
+                  setConfig((current) => ({
+                    ...current,
+                    recentsLimit: Number(event.target.value) || 1
+                  }))
+                }
+                type="number"
+                value={config.recentsLimit}
               />
             </Field>
             <Field label={labels.placeholder}>
