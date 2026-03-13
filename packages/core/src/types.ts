@@ -17,6 +17,12 @@ export interface CommandGroup {
   items: CommandItem[];
 }
 
+export interface CommandSection {
+  id: string;
+  title: string;
+  items: CommandItem[];
+}
+
 export interface CommandMessages {
   searchPlaceholder: string;
   noResults: string;
@@ -35,9 +41,9 @@ export interface CommandTheme {
 }
 
 export interface CommandKitConfig {
-  items: CommandItem[];
+  items?: CommandItem[];
+  sections?: CommandSection[];
   messages?: Partial<CommandMessages>;
   theme?: CommandTheme;
   shortcut?: string;
 }
-

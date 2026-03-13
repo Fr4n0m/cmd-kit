@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { filterCommandItems, groupCommandItems } from "./filter";
+import { flattenSections, resolveCommandItems } from "./state";
 
 const items = [
   {
@@ -49,6 +50,47 @@ describe("groupCommandItems", () => {
         id: "workspace",
         title: "Workspace",
         items: [items[2]]
+      }
+    ]);
+  });
+});
+
+describe("section normalization", () => {
+  it("flattens declarative sections into items with inherited section labels", () => {
+    expect(
+      flattenSections([
+        {
+          id: "workspace",
+          title: "Workspace",
+          items: [{ id: "invite", title: "Invite team members" }]
+        }
+      ])
+    ).toEqual([
+      {
+        id: "invite",
+        title: "Invite team members",
+        section: "Workspace"
+      }
+    ]);
+  });
+
+  it("prefers sections when both sections and items exist in config", () => {
+    expect(
+      resolveCommandItems({
+        items,
+        sections: [
+          {
+            id: "workspace",
+            title: "Workspace",
+            items: [{ id: "invite", title: "Invite team members" }]
+          }
+        ]
+      })
+    ).toEqual([
+      {
+        id: "invite",
+        title: "Invite team members",
+        section: "Workspace"
       }
     ]);
   });

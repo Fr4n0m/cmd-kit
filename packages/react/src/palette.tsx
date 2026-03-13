@@ -3,6 +3,7 @@ import {
   createResolvedConfig,
   type CommandItem,
   type CommandMessages,
+  type CommandSection,
   type CommandTheme
 } from "@cmd-kit/core";
 import {
@@ -16,7 +17,8 @@ import {
 } from "react";
 
 export interface CommandPaletteProps {
-  items: CommandItem[];
+  items?: CommandItem[];
+  sections?: CommandSection[];
   messages?: Partial<CommandMessages>;
   theme?: CommandTheme;
   title?: string;
@@ -30,6 +32,7 @@ export interface CommandPaletteProps {
 
 export function CommandPalette({
   items,
+  sections,
   messages,
   theme,
   title = "Command menu",
@@ -50,11 +53,12 @@ export function CommandPalette({
     () =>
       createResolvedConfig({
         items,
+        sections,
         messages,
         theme,
         shortcut
       }),
-    [items, messages, shortcut, theme]
+    [items, messages, sections, shortcut, theme]
   );
   const snapshot = useMemo(
     () => createCommandSnapshot(resolvedConfig, query),
