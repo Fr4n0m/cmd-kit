@@ -20,6 +20,18 @@ export function PlaygroundCodePanel({
 }: PlaygroundCodePanelProps) {
   const panelId = useId();
   const [copyMessage, setCopyMessage] = useState("");
+  const heading =
+    activeTab === "react"
+      ? labels.reactCode
+      : activeTab === "vue"
+        ? labels.vueCode
+        : activeTab === "preact"
+          ? labels.preactCode
+          : activeTab === "css"
+            ? labels.cssCode
+            : activeTab === "tailwind"
+              ? labels.tailwindCode
+              : labels.jsonCode;
 
   async function handleCopy() {
     setCopyMessage((await onCopy()) ? `${labels.copy} ready` : "Copy failed");
@@ -30,7 +42,7 @@ export function PlaygroundCodePanel({
       <div className="panel-heading row-between">
         <div>
           <p className="eyebrow">{labels.code}</p>
-          <h2>{labels.reactCode}</h2>
+          <h2>{heading}</h2>
         </div>
         <button className="ghost-button" onClick={() => void handleCopy()} type="button">
           {labels.copy}
@@ -50,6 +62,28 @@ export function PlaygroundCodePanel({
           type="button"
         >
           {labels.reactCode}
+        </button>
+        <button
+          aria-controls={panelId}
+          aria-selected={activeTab === "vue"}
+          className={activeTab === "vue" ? "tab active" : "tab"}
+          onClick={() => onSelectTab("vue")}
+          role="tab"
+          tabIndex={activeTab === "vue" ? 0 : -1}
+          type="button"
+        >
+          {labels.vueCode}
+        </button>
+        <button
+          aria-controls={panelId}
+          aria-selected={activeTab === "preact"}
+          className={activeTab === "preact" ? "tab active" : "tab"}
+          onClick={() => onSelectTab("preact")}
+          role="tab"
+          tabIndex={activeTab === "preact" ? 0 : -1}
+          type="button"
+        >
+          {labels.preactCode}
         </button>
         <button
           aria-controls={panelId}

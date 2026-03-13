@@ -10,11 +10,13 @@ import {
 import {
   buildCssSnippet,
   buildJsonSnippet,
+  buildPreactSnippet,
   buildReactSnippet,
-  buildTailwindSnippet
+  buildTailwindSnippet,
+  buildVueSnippet
 } from "./snippets";
 
-export type SnippetTab = "react" | "css" | "tailwind" | "json";
+export type SnippetTab = "react" | "vue" | "preact" | "css" | "tailwind" | "json";
 
 export function usePlaygroundState() {
   const [config, setConfig] = useState<PlaygroundConfig>(defaultConfig);
@@ -32,6 +34,14 @@ export function usePlaygroundState() {
 
     if (activeTab === "json") {
       return buildJsonSnippet(config);
+    }
+
+    if (activeTab === "vue") {
+      return buildVueSnippet(config);
+    }
+
+    if (activeTab === "preact") {
+      return buildPreactSnippet(config);
     }
 
     return buildReactSnippet(config);

@@ -165,6 +165,7 @@ Completed:
 - connect preview to generated config
 - export React and style snippets
 - export portable JSON configuration from the playground
+- export Vue and Preact starter snippets from the playground
 - allow editing of sections and items from the configurator
 - reorganize playground code by feature
 - split the playground island into smaller feature-level components and state helpers
