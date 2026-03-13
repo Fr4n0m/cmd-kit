@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Core";
+const description =
+  "Use the cmd+kit headless core to build a command palette in vanilla browser code or your own framework adapter.";
+---
+
+<BaseLayout description={description} title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">Core</p>
+      <h1>Headless Core</h1>
+      <p>
+        `@cmd-kit/core` is the framework-agnostic center of the project. It gives you typed
+        command sections, fuzzy search, snapshot building, command execution primitives, recent
+        command tracking, and theme token helpers without forcing any rendering layer.
+      </p>
+
+      <h2>Install</h2>
+      <pre class="code-block"><code>npm install @cmd-kit/core</code></pre>
+
+      <h2>What it covers</h2>
+      <ul>
+        <li>command items and sections</li>
+        <li>fuzzy filtering through the shared search pipeline</li>
+        <li>grouped snapshots for rendering</li>
+        <li>nested command navigation modeling</li>
+        <li>execution dispatch for callbacks, links, and nested pages</li>
+        <li>recent command state primitives</li>
+        <li>theme resolution and CSS variable helpers</li>
+      </ul>
+
+      <h2>Minimal example</h2>
+      <pre class="code-block"><code>{`import {
+  createCommandSnapshot,
+  createResolvedConfig,
+  dispatchCommandExecution
+} from "@cmd-kit/core";
+
+const config = createResolvedConfig({
+  sections: [
+    {
+      id: "navigation",
+      title: "Navigation",
+      items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+    }
+  ]
+});
+
+const snapshot = createCommandSnapshot(config, "dash");
+
+await dispatchCommandExecution({
+  item: snapshot.items[0],
+  port: {
+    openHref: ({ href }) => window.location.assign(href)
+  }
+});`}</code></pre>
+
+      <h2>When to use it directly</h2>
+      <p>
+        Use the core directly when you are building your own UI, integrating into another
+        framework, or keeping the command palette implementation fully custom. If you want a ready
+        to use component, start with one of the official adapters instead.
+      </p>
+    </article>
+  </main>
+</BaseLayout>
