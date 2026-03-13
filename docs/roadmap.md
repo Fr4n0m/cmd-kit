@@ -32,6 +32,8 @@ Completed:
 - initial package metadata hardening for public publishing
 - initial docs pages for installation and React usage
 - explicit npm installation guidance in the web experience
+- initial docs page for Vue usage
+- initial docs page for Preact usage
 
 In progress:
 
@@ -46,6 +48,7 @@ Not started or incomplete:
 - final production documentation pass for installation and customization
 - final open source maintenance workflow and metadata cleanup
 - multi-framework rollout beyond React is underway but incomplete
+- public adapter coverage now includes Vue and Preact
 
 ## Phases
 
@@ -265,6 +268,7 @@ Scope:
 Completed:
 
 - start `@cmd-kit/vue` as the first non-React adapter
+- add `@cmd-kit/preact` as a second official adapter with local test, typecheck, and build coverage
 
 Planned targets:
 

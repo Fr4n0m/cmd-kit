@@ -19,6 +19,7 @@ License: `MIT`
 - `packages/core`: headless framework-agnostic engine
 - `packages/react`: official React bindings and UI primitives
 - `packages/vue`: official Vue bindings and UI primitives
+- `packages/preact`: official Preact bindings and UI primitives
 - `apps/web`: Astro landing page, docs, live React playground, and code export
 
 ## Local Development
