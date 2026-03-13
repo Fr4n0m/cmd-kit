@@ -5,11 +5,17 @@ interface Props {
   description: string;
   title: string;
   lang?: string;
+  image?: string;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-const { description, lang = "en", title } = Astro.props;
+const { description, image, lang = "en", structuredData, title } =
+  Astro.props;
 const pathname = Astro.url.pathname;
 const canonicalUrl = new URL(pathname, Astro.site ?? Astro.url).toString();
+const socialImageUrl = image
+  ? new URL(image, Astro.site ?? Astro.url).toString()
+  : undefined;
 
 function isCurrentPath(target: string) {
   if (target === "/") {
@@ -26,11 +32,28 @@ function isCurrentPath(target: string) {
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content={description} name="description" />
+    <meta content="index, follow" name="robots" />
     <meta content="#07111f" name="theme-color" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta content={title} name="twitter:title" />
+    <meta content={description} name="twitter:description" />
+    {socialImageUrl ? <meta content={socialImageUrl} name="twitter:image" /> : null}
     <meta content={title} property="og:title" />
     <meta content={description} property="og:description" />
     <meta content="website" property="og:type" />
+    <meta content={canonicalUrl} property="og:url" />
+    {socialImageUrl ? <meta content={socialImageUrl} property="og:image" /> : null}
+    <meta content="cmd+kit" property="og:site_name" />
     <link href={canonicalUrl} rel="canonical" />
+    {
+      structuredData ? (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData)}
+        />
+      ) : null
+    }
     <title>{title}</title>
   </head>
   <body>

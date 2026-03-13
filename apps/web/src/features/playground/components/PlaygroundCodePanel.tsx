@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId, useState } from "react";
 
 import type { SnippetTab } from "../playground-state";
 import type { PlaygroundLabels } from "../ui";
@@ -7,7 +7,7 @@ interface PlaygroundCodePanelProps {
   activeTab: SnippetTab;
   code: string;
   labels: PlaygroundLabels;
-  onCopy: () => void;
+  onCopy: () => Promise<boolean>;
   onSelectTab: (tab: SnippetTab) => void;
 }
 
@@ -18,6 +18,13 @@ export function PlaygroundCodePanel({
   onCopy,
   onSelectTab
 }: PlaygroundCodePanelProps) {
+  const panelId = useId();
+  const [copyMessage, setCopyMessage] = useState("");
+
+  async function handleCopy() {
+    setCopyMessage((await onCopy()) ? `${labels.copy} ready` : "Copy failed");
+  }
+
   return (
     <section className="panel code-panel">
       <div className="panel-heading row-between">
@@ -25,34 +32,49 @@ export function PlaygroundCodePanel({
           <p className="eyebrow">{labels.code}</p>
           <h2>{labels.reactCode}</h2>
         </div>
-        <button className="ghost-button" onClick={onCopy} type="button">
+        <button className="ghost-button" onClick={() => void handleCopy()} type="button">
           {labels.copy}
         </button>
       </div>
-      <div className="tab-row">
+      <p aria-live="polite" className="visually-hidden">
+        {copyMessage}
+      </p>
+      <div aria-label={labels.code} className="tab-row" role="tablist">
         <button
+          aria-controls={panelId}
+          aria-selected={activeTab === "react"}
           className={activeTab === "react" ? "tab active" : "tab"}
           onClick={() => onSelectTab("react")}
+          role="tab"
+          tabIndex={activeTab === "react" ? 0 : -1}
           type="button"
         >
           {labels.reactCode}
         </button>
         <button
+          aria-controls={panelId}
+          aria-selected={activeTab === "css"}
           className={activeTab === "css" ? "tab active" : "tab"}
           onClick={() => onSelectTab("css")}
+          role="tab"
+          tabIndex={activeTab === "css" ? 0 : -1}
           type="button"
         >
           {labels.cssCode}
         </button>
         <button
+          aria-controls={panelId}
+          aria-selected={activeTab === "tailwind"}
           className={activeTab === "tailwind" ? "tab active" : "tab"}
           onClick={() => onSelectTab("tailwind")}
+          role="tab"
+          tabIndex={activeTab === "tailwind" ? 0 : -1}
           type="button"
         >
           {labels.tailwindCode}
         </button>
       </div>
-      <pre className="code-block">
+      <pre className="code-block" id={panelId} role="tabpanel">
         <code>{code}</code>
       </pre>
     </section>
