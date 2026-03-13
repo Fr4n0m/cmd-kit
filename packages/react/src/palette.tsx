@@ -2,6 +2,7 @@ import {
   type CommandItem,
   type CommandMessages,
   type CommandSection,
+  type CommandSource,
   type CommandTheme
 } from "@cmd-kit/core";
 import {
@@ -65,6 +66,7 @@ export interface CommandPaletteRenderers {
 export interface CommandPaletteProps {
   items?: CommandItem[];
   sections?: CommandSection[];
+  source?: CommandSource;
   messages?: Partial<CommandMessages>;
   theme?: CommandTheme;
   title?: string;
@@ -76,11 +78,13 @@ export interface CommandPaletteProps {
   renderItem?: (item: CommandItem, active: boolean) => ReactNode;
   classNames?: CommandPaletteClassNames;
   renderers?: CommandPaletteRenderers;
+  recents?: boolean | { limit?: number; sectionTitle?: string };
 }
 
 export function CommandPalette({
   items,
   sections,
+  source,
   messages,
   theme,
   title = "Command menu",
@@ -91,7 +95,8 @@ export function CommandPalette({
   className,
   renderItem,
   classNames,
-  renderers
+  renderers,
+  recents
 }: CommandPaletteProps) {
   const titleId = useId();
   const listboxId = useId();
@@ -115,13 +120,15 @@ export function CommandPalette({
   } = useCommandPalette({
     items,
     sections,
+    source,
     messages,
     theme,
     title,
     shortcut,
     open,
     defaultOpen,
-    onOpenChange
+    onOpenChange,
+    recents
   });
   const renderContext: CommandPaletteRenderContext = {
     activeTitle,

@@ -2,12 +2,24 @@ import {
   createCommandSnapshot,
   createResolvedConfig,
   executeCommand,
+  loadCommandSource,
+  recordRecentCommand,
+  resolveRecentCommands,
   type CommandItem,
+  type CommandItemRecord,
   type CommandMessages,
   type CommandSection,
+  type CommandSource,
   type CommandTheme
 } from "@cmd-kit/core";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 
 interface NavigationState {
   sections: CommandSection[];
@@ -17,6 +29,7 @@ interface NavigationState {
 export interface UseCommandPaletteOptions {
   items?: CommandItem[];
   sections?: CommandSection[];
+  source?: CommandSource;
   messages?: Partial<CommandMessages>;
   theme?: CommandTheme;
   title?: string;
@@ -24,44 +37,121 @@ export interface UseCommandPaletteOptions {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  recents?: boolean | { limit?: number; sectionTitle?: string };
 }
 
 export function useCommandPalette({
   items,
   sections,
+  source,
   messages,
   theme,
   title = "Command menu",
   shortcut = "mod+k",
   open,
   defaultOpen = false,
-  onOpenChange
+  onOpenChange,
+  recents = false
 }: UseCommandPaletteOptions) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [navigationStack, setNavigationStack] = useState<NavigationState[]>([]);
+  const [loadedItems, setLoadedItems] = useState<CommandItem[] | undefined>();
+  const [loadedSections, setLoadedSections] = useState<
+    CommandSection[] | undefined
+  >();
+  const [isLoading, setIsLoading] = useState(false);
+  const [recentRecords, setRecentRecords] = useState<CommandItemRecord[]>([]);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const resolvedOpen = open ?? internalOpen;
-  const activeSections = navigationStack.at(-1)?.sections ?? sections;
+  const rootItems = loadedItems ?? items;
+  const rootSections = loadedSections ?? sections;
+  const activeSections = navigationStack.at(-1)?.sections ?? rootSections;
   const activeTitle = navigationStack.at(-1)?.title ?? title;
-  const resolvedConfig = useMemo(
+  const rootResolvedConfig = useMemo(
     () =>
       createResolvedConfig({
-        items,
-        sections: activeSections,
+        items: rootItems,
+        sections: rootSections,
         messages,
         theme,
         shortcut
       }),
-    [activeSections, items, messages, shortcut, theme]
+    [messages, rootItems, rootSections, shortcut, theme]
+  );
+  const recentItems = useMemo(() => {
+    if (!recents) {
+      return [];
+    }
+
+    return resolveRecentCommands(rootResolvedConfig.items, recentRecords);
+  }, [recentRecords, recents, rootResolvedConfig.items]);
+  const resolvedConfig = useMemo(
+    () =>
+      createResolvedConfig({
+        items: navigationStack.length ? undefined : rootItems,
+        sections: withRecentSection(activeSections, recentItems, recents),
+        messages,
+        theme,
+        shortcut
+      }),
+    [
+      activeSections,
+      messages,
+      navigationStack.length,
+      recentItems,
+      recents,
+      rootItems,
+      shortcut,
+      theme
+    ]
   );
   const snapshot = useMemo(
     () => createCommandSnapshot(resolvedConfig, query),
     [query, resolvedConfig]
   );
   const flatItems = snapshot.items.filter((item) => !item.disabled);
+
+  useEffect(() => {
+    let active = true;
+
+    async function hydrateSource() {
+      if (!source) {
+        setLoadedItems(undefined);
+        setLoadedSections(undefined);
+        return;
+      }
+
+      setIsLoading(true);
+
+      try {
+        const payload = await loadCommandSource({
+          items,
+          sections,
+          source
+        });
+
+        if (!active) {
+          return;
+        }
+
+        setLoadedItems(payload.items);
+        setLoadedSections(payload.sections);
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void hydrateSource();
+
+    return () => {
+      active = false;
+    };
+  }, [items, sections, source]);
 
   useEffect(() => {
     if (!flatItems.length) {
@@ -127,12 +217,14 @@ export function useCommandPalette({
     }
 
     if (result.type === "callback") {
+      trackRecentItem(item, recents, setRecentRecords);
       await result.callback();
       setOpenState(false);
       return;
     }
 
     if (result.type === "href") {
+      trackRecentItem(item, recents, setRecentRecords);
       window.location.assign(result.href);
       setOpenState(false);
     }
@@ -170,6 +262,27 @@ export function useCommandPalette({
     setOpenState(nextOpen);
   }
 
+  async function reloadSource() {
+    if (!source) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const payload = await loadCommandSource({
+        items,
+        sections,
+        source
+      });
+
+      setLoadedItems(payload.items);
+      setLoadedSections(payload.sections);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   function moveNext() {
     if (flatItems.length) {
       setActiveIndex((index) => (index + 1) % flatItems.length);
@@ -189,9 +302,12 @@ export function useCommandPalette({
     activeTitle,
     canGoBack: navigationStack.length > 0,
     flatItems,
+    isLoading,
     query,
+    recentItems,
     resolvedConfig,
     resolvedOpen,
+    reloadSource,
     snapshot,
     setActiveIndex,
     setOpenState,
@@ -204,6 +320,48 @@ export function useCommandPalette({
     openRoot,
     resetNavigation
   };
+}
+
+function withRecentSection(
+  sections: CommandSection[] | undefined,
+  recentItems: CommandItem[],
+  recents: UseCommandPaletteOptions["recents"]
+): CommandSection[] | undefined {
+  if (!recentItems.length || !recents || !sections) {
+    return sections;
+  }
+
+  return [
+    {
+      id: "recent",
+      title:
+        typeof recents === "object" && recents.sectionTitle
+          ? recents.sectionTitle
+          : "Recent",
+      items: recentItems
+    },
+    ...sections
+  ];
+}
+
+function trackRecentItem(
+  item: CommandItem | undefined,
+  recents: UseCommandPaletteOptions["recents"],
+  setRecentRecords: Dispatch<SetStateAction<CommandItemRecord[]>>
+) {
+  if (!item || !recents) {
+    return;
+  }
+
+  const limit = typeof recents === "object" ? recents.limit : undefined;
+
+  setRecentRecords((current) =>
+    recordRecentCommand({
+      current,
+      itemId: item.id,
+      limit
+    })
+  );
 }
 
 function restoreFocus(element: HTMLElement | null) {

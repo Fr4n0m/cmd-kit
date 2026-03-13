@@ -130,12 +130,15 @@ Completed:
 - support slot-level class names and renderer overrides
 - restore focus to the previously active element when the palette closes
 - add programmatic root and nested navigation helpers to the React hook
+- wire async `source` loading into the React hook and component
+- expose recent items through the React hook
 
 Remaining:
 
 - split the current component into clearer feature and adapter boundaries
 - improve accessibility semantics further where gaps remain
 - improve theming hooks for Tailwind and CSS variable consumers
+- surface recent-command UX more intentionally in the default UI
 
 Production bar:
 

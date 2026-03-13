@@ -13,7 +13,10 @@ export type { UseCommandPaletteOptions } from "./use-command-palette";
 export type {
   CommandGroup,
   CommandItem,
+  CommandItemRecord,
   CommandMessages,
   CommandSection,
+  CommandSource,
+  CommandSourcePayload,
   CommandTheme
 } from "@cmd-kit/core";

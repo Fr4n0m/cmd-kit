@@ -225,4 +225,17 @@ describe("CommandPalette", () => {
 
     expect(screen.getByText("Missing zzz")).toBeInTheDocument();
   });
+
+  it("renders async source items after loading", async () => {
+    render(
+      <CommandPalette
+        defaultOpen
+        source={async () => ({
+          items: [{ id: "remote", title: "Remote command", section: "Remote" }]
+        })}
+      />
+    );
+
+    expect(await screen.findByText("Remote command")).toBeInTheDocument();
+  });
 });

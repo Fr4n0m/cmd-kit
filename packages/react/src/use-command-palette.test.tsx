@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { useCommandPalette } from "./use-command-palette";
@@ -93,5 +93,42 @@ describe("useCommandPalette", () => {
 
     expect(result.current.resolvedOpen).toBe(true);
     expect(result.current.activeTitle).toBe("Command menu");
+  });
+
+  it("loads commands from an async source", async () => {
+    const source = async () => ({
+      items: [{ id: "remote", title: "Remote command" }]
+    });
+
+    const { result } = renderHook(() =>
+      useCommandPalette({
+        source
+      })
+    );
+
+    expect(result.current.isLoading).toBe(true);
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.flatItems[0]?.title).toBe("Remote command");
+  });
+
+  it("tracks recent items after executing commands", async () => {
+    const onSelect = vi.fn();
+    const { result } = renderHook(() =>
+      useCommandPalette({
+        items: [{ id: "run", title: "Run", onSelect }],
+        recents: { sectionTitle: "Recent commands" },
+        defaultOpen: true
+      })
+    );
+
+    await act(async () => {
+      await result.current.runItem(result.current.flatItems[0]);
+    });
+
+    expect(result.current.recentItems.map((item) => item.id)).toEqual(["run"]);
   });
 });
