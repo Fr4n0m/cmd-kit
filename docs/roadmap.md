@@ -35,6 +35,7 @@ Completed:
 - initial docs page for Vue usage
 - initial docs page for Preact usage
 - Astro integration guidance for island-based usage
+- local example apps for React, Vue, and Preact
 
 In progress:
 

@@ -21,6 +21,9 @@ License: `MIT`
 - `packages/vue`: official Vue bindings and UI primitives
 - `packages/preact`: official Preact bindings and UI primitives
 - `apps/web`: Astro landing page, docs, live React playground, and code export
+- `apps/example-react`: local React verification app
+- `apps/example-vue`: local Vue verification app
+- `apps/example-preact`: local Preact verification app
 
 ## Local Development
 
