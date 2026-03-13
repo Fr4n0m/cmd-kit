@@ -1,8 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "types": ["vite/client"]
+    "baseUrl": "."
   },
-  "include": ["src", "vite.config.ts"]
+  "include": [".astro/types.d.ts", "src/**/*", "astro.config.mjs"]
 }
-

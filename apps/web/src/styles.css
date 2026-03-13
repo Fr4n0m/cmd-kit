@@ -36,6 +36,12 @@ button {
   padding: 1.5rem 0 4rem;
 }
 
+.site-shell {
+  width: min(1280px, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 4rem;
+}
+
 .hero {
   display: grid;
   gap: 1.5rem;
@@ -147,12 +153,55 @@ button {
   gap: 1.25rem;
 }
 
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature-card,
+.playground-shell {
+  padding: 1.25rem;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(5, 10, 19, 0.72);
+  backdrop-filter: blur(18px);
+}
+
 .panel {
   padding: 1.25rem;
   border-radius: 28px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(5, 10, 19, 0.72);
   backdrop-filter: blur(18px);
+}
+
+.playground-shell {
+  margin-top: 1.25rem;
+}
+
+.playground-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1.25rem;
+}
+
+.playground-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 180px;
+  justify-content: end;
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
+    rgba(2, 6, 12, 0.82);
 }
 
 .panel-heading h2 {
@@ -223,7 +272,8 @@ button {
 @media (max-width: 960px) {
   .hero,
   .workspace-grid,
-  .form-grid {
+  .form-grid,
+  .feature-grid {
     grid-template-columns: 1fr;
   }
 
@@ -231,7 +281,13 @@ button {
     max-width: none;
   }
 
-  .page-shell {
+  .page-shell,
+  .site-shell {
     width: min(100vw - 1rem, 1280px);
+  }
+
+  .playground-header {
+    flex-direction: column;
+    align-items: start;
   }
 }

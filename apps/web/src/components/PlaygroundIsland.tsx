@@ -11,12 +11,10 @@ import {
   toTheme,
   type Language,
   type PlaygroundConfig
-} from "./playground";
+} from "../playground";
 
 const ui = {
   en: {
-    badge: "Open source command palette toolkit",
-    launch: "Open preview",
     config: "Configurator",
     preview: "Live Preview",
     code: "Generated Code",
@@ -37,11 +35,10 @@ const ui = {
     layout: "Layout",
     centered: "Centered",
     wide: "Wide",
-    copy: "Copy"
+    copy: "Copy",
+    launch: "Open preview"
   },
   es: {
-    badge: "Toolkit open source para command palette",
-    launch: "Abrir preview",
     config: "Configurador",
     preview: "Vista previa",
     code: "Codigo generado",
@@ -62,11 +59,12 @@ const ui = {
     layout: "Layout",
     centered: "Centrado",
     wide: "Ancho",
-    copy: "Copiar"
+    copy: "Copiar",
+    launch: "Abrir preview"
   }
 } satisfies Record<Language, Record<string, string>>;
 
-export function App() {
+export default function PlaygroundIsland() {
   const [config, setConfig] = useState<PlaygroundConfig>(defaultConfig);
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"react" | "css" | "tailwind">("react");
@@ -89,7 +87,7 @@ export function App() {
   }
 
   return (
-    <div className="page-shell">
+    <section className="playground-shell" id="playground">
       <CommandPalette
         items={baseItems}
         messages={{
@@ -103,51 +101,40 @@ export function App() {
         title="cmd+kit preview"
       />
 
-      <header className={`hero hero-${config.layout}`}>
-        <div className="hero-copy">
-          <span className="badge">{labels.badge}</span>
-          <h1>{config.title}</h1>
-          <p>{config.description}</p>
-          <div className="hero-actions">
-            <button className="primary-button" onClick={() => setIsOpen(true)} type="button">
-              {labels.launch}
-            </button>
-            <button
-              className="ghost-button"
-              onClick={() =>
-                setConfig((current) => ({
-                  ...current,
-                  language: current.language === "en" ? "es" : "en"
-                }))
-              }
-              type="button"
-            >
-              {config.language === "en" ? "ES" : "EN"}
-            </button>
-          </div>
-        </div>
-        <div className="hero-card">
+      <div className="playground-header">
+        <div>
           <p className="eyebrow">{labels.preview}</p>
-          <div
-            className="hero-card-surface"
-            style={{
-              borderColor: config.borderColor,
-              borderRadius: config.radius,
-              color: config.textColor
-            }}
-          >
-            <span className="preview-shortcut">{config.shortcut}</span>
-            <span className="preview-title">cmd+kit</span>
-            <span className="preview-subtitle">{config.placeholder}</span>
-          </div>
+          <h2>Live configurator</h2>
         </div>
-      </header>
+        <div className="hero-actions">
+          <button className="primary-button" onClick={() => setIsOpen(true)} type="button">
+            {labels.launch}
+          </button>
+          <button
+            className="ghost-button"
+            onClick={() =>
+              setConfig((current) => ({
+                ...current,
+                language: current.language === "en" ? "es" : "en"
+              }))
+            }
+            type="button"
+          >
+            {config.language === "en" ? "ES" : "EN"}
+          </button>
+        </div>
+      </div>
 
-      <main className="workspace-grid">
+      <div className="workspace-grid">
         <section className="panel">
           <div className="panel-heading">
             <p className="eyebrow">{labels.config}</p>
             <h2>cmd+kit</h2>
+          </div>
+          <div className="playground-preview-card">
+            <span className="preview-shortcut">{config.shortcut}</span>
+            <span className="preview-title">cmd+kit</span>
+            <span className="preview-subtitle">{config.placeholder}</span>
           </div>
           <div className="form-grid">
             <Field label={labels.language}>
@@ -325,8 +312,8 @@ export function App() {
             <code>{code}</code>
           </pre>
         </section>
-      </main>
-    </div>
+      </div>
+    </section>
   );
 }
 
@@ -364,4 +351,3 @@ function ColorField({
     </label>
   );
 }
-

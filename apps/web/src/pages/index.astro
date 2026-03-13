@@ -1,0 +1,59 @@
+---
+import PlaygroundIsland from "../components/PlaygroundIsland";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "cmd+kit";
+const description =
+  "Open source command palette toolkit with a framework-agnostic core, React bindings, and a live configurator.";
+---
+
+<BaseLayout description={description} title={title}>
+  <main class="site-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="badge">Open source command palette toolkit</span>
+        <h1>Build, theme, and ship your own Cmd+K experience.</h1>
+        <p>
+          `cmd+kit` is a framework-agnostic command palette with official React bindings, fuzzy
+          search, strong keyboard support, and a live playground that exports real code.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-button" href="#playground">Open configurator</a>
+          <a class="ghost-button" href="https://github.com" rel="noreferrer" target="_blank">
+            GitHub
+          </a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <p class="eyebrow">Why Astro here</p>
+        <div class="hero-card-surface">
+          <span class="preview-shortcut">Astro + React</span>
+          <span class="preview-title">Fast by default</span>
+          <span class="preview-subtitle">
+            Static landing shell, interactive islands only where the configurator needs state.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-grid">
+      <article class="feature-card">
+        <p class="eyebrow">Core</p>
+        <h2>Framework-agnostic foundation</h2>
+        <p>Shared search, grouping, theming tokens, messages, and future action orchestration.</p>
+      </article>
+      <article class="feature-card">
+        <p class="eyebrow">React</p>
+        <h2>Official integration first</h2>
+        <p>Usable today with keyboard navigation, theme props, grouped results, and render hooks.</p>
+      </article>
+      <article class="feature-card">
+        <p class="eyebrow">Playground</p>
+        <h2>Copy real code</h2>
+        <p>Configure the palette visually and export React, CSS variables, or Tailwind-oriented snippets.</p>
+      </article>
+    </section>
+
+    <PlaygroundIsland client:load />
+  </main>
+</BaseLayout>

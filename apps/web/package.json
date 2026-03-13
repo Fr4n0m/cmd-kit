@@ -4,14 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "dev": "vite",
-    "lint": "tsc -p tsconfig.json --noEmit",
+    "build": "astro build",
+    "dev": "astro dev",
+    "lint": "astro check",
     "test": "vitest run --passWithNoTests",
-    "typecheck": "npm run build --workspace @cmd-kit/core && npm run build --workspace @cmd-kit/react && tsc -p tsconfig.json --noEmit"
+    "typecheck": "npm run build --workspace @cmd-kit/core && npm run build --workspace @cmd-kit/react && astro check"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.7",
+    "@astrojs/react": "^4.4.1",
     "@cmd-kit/react": "^0.1.0",
+    "astro": "^5.5.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

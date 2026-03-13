@@ -16,7 +16,7 @@ Repository name: `cmd-kit`
 
 - `packages/core`: headless framework-agnostic engine
 - `packages/react`: official React bindings and UI primitives
-- `apps/web`: landing page, docs, live playground, and code export
+- `apps/web`: Astro landing page, docs, live React playground, and code export
 
 ## Local Development
 
@@ -37,7 +37,7 @@ Useful scripts:
 
 Recommended Vercel settings:
 
-- Framework preset: `Vite`
+- Framework preset: `Astro`
 - Root directory: `apps/web`
 - Build command: `npm run build --workspace @cmd-kit/web`
 - Output directory: `dist`

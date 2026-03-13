@@ -46,6 +46,8 @@ Product site responsible for:
 - live configurator
 - real-time preview
 - code export examples
+- Astro rendering for static marketing and docs pages
+- React islands for interactive playground features
 
 ## API Direction
 

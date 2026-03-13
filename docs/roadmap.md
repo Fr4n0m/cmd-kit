@@ -14,6 +14,7 @@
 - configure linting and formatting
 - set up shared build pipeline
 - set up testing baseline
+- define test layers and quality gates
 - add changeset or release workflow
 
 ## Phase 2: Core Engine
@@ -35,19 +36,22 @@
 
 ## Phase 4: Web App
 
-- create landing page
+- create Astro landing page
 - add English and Spanish UI
-- build live configurator
+- build React-island live configurator
 - connect preview to generated config
 - export React and style snippets
+- add web smoke tests for exported examples
 
 ## Phase 5: Quality
 
 - add unit tests for core behavior
 - add component tests for React package
+- add integration tests for playground generation
 - add accessibility checks
 - validate generated examples
 - run manual QA across desktop and mobile
+- add CI quality gates for test, typecheck, and build
 
 ## Phase 6: Open Source Readiness
 
