@@ -205,6 +205,9 @@ Completed:
 Remaining:
 
 - extend accessibility checks to more interaction flows across the web app and React package
+- add `react-doctor` review runs after significant React package changes
+- add a full web audit pass using `web-quality-audit`
+- break the web audit into explicit checks for `accessibility`, `performance`, `core-web-vitals`, `seo`, and `best-practices`
 - add manual QA passes across desktop and mobile
 - resolve or explicitly accept the remaining Astro tooling vulnerability chain before production
 
@@ -287,6 +290,9 @@ Must be complete:
 - `npm run test` passes
 - `npm run typecheck` passes
 - `npm run build` passes
+- `react-doctor` review completed for the shipped React surface
+- web audit completed with `web-quality-audit`
+- supporting web checks completed for `accessibility`, `performance`, `core-web-vitals`, `seo`, and `best-practices`
 - accessibility review completed
 - package metadata verified
 - npm account ready and package name confirmed

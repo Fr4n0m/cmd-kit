@@ -17,6 +17,9 @@
 - run `npm run build`
 - run `npm run pack:verify`
 - run `npm run audit`
+- run `npx -y react-doctor@latest . --verbose --diff`
+- run a full `web-quality-audit` review on `apps/web`
+- run focused follow-up reviews for `accessibility`, `performance`, `core-web-vitals`, `seo`, and `best-practices`
 - manually test the React palette flows
 - manually test the Vue palette flows
 - manually test the Astro web app and playground
