@@ -5,9 +5,26 @@
 - Create one feature branch per task.
 - Keep commits atomic and scoped.
 - Do not mix unrelated refactors with feature work.
+- Add a Changeset for any published package change that should affect versioning.
 - Run `npm run test`, `npm run typecheck`, and `npm run build` before opening a PR.
 - Run `npm run format:check` before opening a PR when formatting-sensitive files changed.
 - Prefer small pull-request-sized changes over large batches.
+
+## Local Setup
+
+```bash
+npm install
+npm run dev:web
+```
+
+Useful commands:
+
+- `npm run test`
+- `npm run typecheck`
+- `npm run build`
+- `npm run format`
+- `npm run changeset`
+- `npm run release:check`
 
 ## Branch Naming
 
@@ -54,3 +71,11 @@ Use focused commit messages:
 - Include a short summary of behavior changes.
 - Note any deferred work or tradeoffs explicitly.
 - Attach screenshots for `apps/web` UI changes when relevant.
+- Link the relevant issue when one exists.
+- Use the PR template checklist before requesting review.
+
+## Versioning
+
+- `@cmd-kit/core` and `@cmd-kit/react` are versioned with Changesets.
+- `apps/web` is not published to npm and should not receive Changeset entries.
+- If a change affects public API, packaging, or shipped behavior, add a Changeset in the same branch.

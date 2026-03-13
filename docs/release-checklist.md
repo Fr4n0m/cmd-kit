@@ -4,7 +4,7 @@
 
 - confirm the target package name or npm scope
 - review [roadmap.md](./roadmap.md) for remaining production blockers
-- verify repository and issue tracker URLs in package metadata
+- add the final repository, homepage, and issue tracker URLs to package metadata
 - review dependency health and decide whether any vulnerabilities are acceptable
 - create and commit the required Changeset entries
 
@@ -27,7 +27,7 @@
 
 ## Packaging Gate
 
-- verify `package.json` fields for `name`, `version`, `license`, `repository`, `bugs`, and `homepage`
+- verify `package.json` fields for `name`, `version`, `license`, `repository`, `bugs`, and `homepage` once the final public URLs exist
 - verify `exports`, `types`, and `files`
 - verify `publishConfig`
 - inspect the generated tarballs in `.artifacts/packs`

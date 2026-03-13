@@ -7,15 +7,6 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-org/cmd-kit.git",
-    "directory": "packages/react"
-  },
-  "homepage": "https://cmd-kit.vercel.app",
-  "bugs": {
-    "url": "https://github.com/your-org/cmd-kit/issues"
-  },
   "keywords": [
     "cmdk",
     "command-palette",

@@ -7,7 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@cmd-kit/web"
-  ]
+  "ignore": ["@cmd-kit/web"]
 }

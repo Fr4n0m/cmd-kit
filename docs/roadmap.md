@@ -78,7 +78,7 @@ Completed:
 
 Remaining:
 
-- replace placeholder repository and issue URLs with final public values
+- add final public repository, homepage, and issue URLs once they exist
 
 ## Phase 2: Core Engine
 
@@ -224,13 +224,16 @@ Completed:
 - add issue templates and repository hygiene assets baseline
 - define an initial manual versioning and release flow
 - prepare npm publish checklist
+- add a repository code of conduct
+- add a repository security policy
+- add a pull request template for external contributors
 
 Remaining:
 
-- add contribution workflows for external contributors
-- replace placeholder issue templates or labels with the final public workflow
+- refine contribution workflows further once the public issue triage process exists
+- replace placeholder issue labels or links with the final public workflow
 - choose final package publish name or scope when the npm account is ready
-- replace temporary metadata placeholders with final repository and issue values
+- add final repository metadata once the public URLs exist
 
 Production bar:
 

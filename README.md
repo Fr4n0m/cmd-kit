@@ -56,3 +56,5 @@ Before merging or releasing, run:
 - [Release Checklist](./docs/release-checklist.md)
 - [Versioning And Release](./docs/versioning-and-release.md)
 - [Contributing](./CONTRIBUTING.md)
+- [Code Of Conduct](./CODE_OF_CONDUCT.md)
+- [Security Policy](./SECURITY.md)
