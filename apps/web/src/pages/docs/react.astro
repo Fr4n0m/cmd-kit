@@ -45,6 +45,7 @@ export function Example() {
         <li>message overrides</li>
         <li>slot-level class names</li>
         <li>renderer overrides for title, sections, items, and empty state</li>
+        <li>breadcrumb context for nested navigation in title renderers</li>
       </ul>
 
       <h2>Customization example</h2>
@@ -66,10 +67,12 @@ export function Example() {
         item: "my-palette-item"
       }}
       renderers={{
-        title: ({ activeTitle }) => <span>Project · {activeTitle}</span>,
-        emptyState: ({ query }) => <span>No match for "{query}"</span>
-      }}
-      sections={sections}
+          title: ({ activeTitle, breadcrumbs }) => (
+            <span>{breadcrumbs.join(" / ")} · {activeTitle}</span>
+          ),
+          emptyState: ({ query }) => <span>No match for "{query}"</span>
+        }}
+        sections={sections}
     />
   );
 }`}</code></pre>

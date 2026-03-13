@@ -11,6 +11,7 @@ export type SlotName =
   | "overlay"
   | "dialog"
   | "header"
+  | "breadcrumbs"
   | "title"
   | "caption"
   | "headerActions"
@@ -28,6 +29,7 @@ export type CommandPaletteClassNames = Partial<Record<SlotName, string>>;
 
 export interface CommandPaletteRenderContext {
   activeTitle: string;
+  breadcrumbs: string[];
   canGoBack: boolean;
   close: () => void;
   goBack: () => void;

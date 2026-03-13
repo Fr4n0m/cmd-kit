@@ -7,6 +7,7 @@ import {
   buildPreactSnippet,
   buildReactSnippet,
   buildTailwindSnippet,
+  buildVanillaSnippet,
   buildVueSnippet
 } from "./snippets";
 
@@ -52,6 +53,14 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain('import { CommandPalette } from "@cmd-kit/preact";');
     expect(snippet).toContain("const sections = [");
     expect(snippet).toContain("<CommandPalette");
+  });
+
+  it("builds a vanilla snippet from the same command config", () => {
+    const snippet = buildVanillaSnippet(defaultConfig);
+
+    expect(snippet).toContain('from "@cmd-kit/core"');
+    expect(snippet).toContain("createCommandSnapshot");
+    expect(snippet).toContain("dispatchCommandExecution");
   });
 
   it("builds a JSON snippet for portable configuration export", () => {

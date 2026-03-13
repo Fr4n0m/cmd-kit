@@ -26,7 +26,9 @@ Completed:
 - initial Vue adapter with a composable and default UI component
 - nested navigation support through child sections
 - slot-level renderer overrides and class name hooks in the React adapter
+- breadcrumb context for nested navigation in the React adapter
 - playground export for React, CSS variables, and Tailwind-oriented snippets
+- playground export for framework-free core usage through a vanilla snippet
 - configurator coverage for the full message set and all current theme tokens
 - tests for core behavior, React palette behavior, and playground snippet generation
 - initial package metadata hardening for public publishing
@@ -147,6 +149,7 @@ Completed:
 - add focus trapping and `aria-busy` semantics to the default dialog UI
 - split the React palette into smaller internal modules and clear `react-doctor` to `100/100`
 - expose theme helpers in the core for CSS variable consumers
+- expose breadcrumb context to React title renderers and default nested-navigation UI
 
 Remaining:
 
@@ -173,6 +176,7 @@ Completed:
 - export React and style snippets
 - export portable JSON configuration from the playground
 - export Vue and Preact starter snippets from the playground
+- export a vanilla core starter snippet from the playground
 - allow editing of sections and items from the configurator
 - reorganize playground code by feature
 - split the playground island into smaller feature-level components and state helpers

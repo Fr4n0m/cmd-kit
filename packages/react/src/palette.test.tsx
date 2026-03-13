@@ -103,6 +103,9 @@ describe("CommandPalette", () => {
     expect(screen.getByText("Appearance")).toBeInTheDocument();
     expect(screen.getByText("Theme")).toBeInTheDocument();
     expect(screen.getByText("Back")).toBeInTheDocument();
+    expect(
+      screen.getByText("Command menu / Settings")
+    ).toBeInTheDocument();
   });
 
   it("updates active descendant while navigating with the keyboard", () => {
@@ -256,13 +259,17 @@ describe("CommandPalette", () => {
             <span>{context.active ? `Active ${item.title}` : item.title}</span>
           ),
           sectionTitle: ({ title }) => <span>{title.toUpperCase()}</span>,
-          title: ({ activeTitle }) => <span>{`Palette ${activeTitle}`}</span>
+          title: ({ activeTitle, breadcrumbs }) => (
+            <span>{`Palette ${breadcrumbs.join(" > ")} · ${activeTitle}`}</span>
+          )
         }}
       />
     );
 
     expect(screen.getByRole("dialog")).toHaveClass("custom-dialog");
-    expect(screen.getByText("Palette Command menu")).toBeInTheDocument();
+    expect(
+      screen.getByText("Palette Command menu · Command menu")
+    ).toBeInTheDocument();
     expect(screen.getByText("NAVIGATION")).toBeInTheDocument();
     expect(screen.getByText("Active Dashboard")).toBeInTheDocument();
   });

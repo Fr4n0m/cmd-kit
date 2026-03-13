@@ -2,6 +2,7 @@ import type { CommandItem, CommandTheme } from "@cmd-kit/core";
 import type { KeyboardEvent, ReactNode, RefObject } from "react";
 
 import {
+  breadcrumbsStyle,
   captionStyle,
   closeButtonStyle,
   emptyStateStyle,
@@ -28,6 +29,7 @@ import type {
 
 interface PaletteHeaderProps {
   activeTitle: string;
+  breadcrumbs: string[];
   canGoBack: boolean;
   captionId: string;
   classNames?: CommandPaletteClassNames;
@@ -43,6 +45,7 @@ interface PaletteHeaderProps {
 
 export function PaletteHeader({
   activeTitle,
+  breadcrumbs,
   canGoBack,
   captionId,
   classNames,
@@ -58,6 +61,11 @@ export function PaletteHeader({
   return (
     <div className={classNames?.header} style={headerStyle}>
       <div>
+        {breadcrumbs.length > 1 ? (
+          <p className={classNames?.breadcrumbs} style={breadcrumbsStyle}>
+            {breadcrumbs.join(" / ")}
+          </p>
+        ) : null}
         <p className={classNames?.title} id={titleId} style={titleStyle}>
           {renderers?.title ? renderers.title(renderContext) : activeTitle}
         </p>
