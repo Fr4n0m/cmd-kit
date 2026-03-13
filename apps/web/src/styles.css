@@ -19,6 +19,11 @@ body {
   color: inherit;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 button,
 input,
 textarea,
@@ -40,6 +45,36 @@ button {
   width: min(1280px, calc(100vw - 2rem));
   margin: 0 auto;
   padding: 1.5rem 0 4rem;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(18px);
+  background: rgba(7, 17, 31, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.topbar-inner {
+  width: min(1280px, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: 0.9rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-link {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.topbar-nav {
+  display: flex;
+  gap: 1rem;
+  color: rgba(226, 232, 240, 0.78);
 }
 
 .hero {
@@ -157,6 +192,10 @@ button {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.docs-callout {
   margin-bottom: 1.5rem;
 }
 
@@ -333,6 +372,35 @@ button {
   font-family: "IBM Plex Mono", "Cascadia Code", monospace;
   font-size: 0.9rem;
   line-height: 1.65;
+}
+
+.docs-shell {
+  padding-top: 2rem;
+}
+
+.docs-panel {
+  max-width: 860px;
+  padding: 1.5rem;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(5, 10, 19, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.docs-panel h1 {
+  margin-top: 0.6rem;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+}
+
+.docs-panel h2 {
+  margin-top: 2rem;
+  font-size: 1.35rem;
+}
+
+.docs-panel p,
+.docs-panel li {
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.7;
 }
 
 @media (max-width: 960px) {

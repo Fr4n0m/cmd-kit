@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Getting Started";
+const description = "Install cmd+kit, understand the workspace, and start integrating the package.";
+---
+
+<BaseLayout description={description} title={title}>
+  <main class="site-shell docs-shell">
+    <article class="docs-panel">
+      <p class="eyebrow">Docs</p>
+      <h1>Getting Started</h1>
+      <p>
+        `cmd+kit` is split into a framework-agnostic core and an official React adapter. The web
+        app in this repository is the landing page and live configurator.
+      </p>
+
+      <h2>Workspace</h2>
+      <ul>
+        <li>`packages/core`: headless engine and public core types</li>
+        <li>`packages/react`: default React UI and bindings</li>
+        <li>`apps/web`: Astro marketing site and React playground</li>
+      </ul>
+
+      <h2>Install</h2>
+      <pre class="code-block"><code>npm install @cmd-kit/react react react-dom</code></pre>
+
+      <h2>Quality checks</h2>
+      <pre class="code-block"><code>npm run test
+npm run typecheck
+npm run build</code></pre>
+
+      <h2>Next steps</h2>
+      <p>
+        Start with the React adapter if you want a ready-made command palette quickly. Use the
+        playground on the homepage to generate starter code.
+      </p>
+    </article>
+  </main>
+</BaseLayout>
+

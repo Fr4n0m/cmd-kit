@@ -26,6 +26,8 @@ Completed:
 - nested navigation support through child sections
 - playground export for React, CSS variables, and Tailwind-oriented snippets
 - tests for core behavior, React palette behavior, and playground snippet generation
+- initial package metadata hardening for public publishing
+- initial docs pages for installation and React usage
 
 In progress:
 
@@ -67,12 +69,13 @@ Completed:
 - set up shared build pipeline
 - set up testing baseline
 - define test layers and quality checks
+- add package-level README files for published packages
 
 Remaining:
 
 - add formatting tooling and decide whether it should be automated or manual
 - add release/versioning tooling such as Changesets or an equivalent manual flow
-- harden package metadata for publishing
+- replace placeholder repository and issue URLs with final public values
 
 ## Phase 2: Core Engine
 
@@ -148,11 +151,11 @@ Completed:
 - export React and style snippets
 - allow editing of sections and items from the configurator
 - reorganize playground code by feature
+- add initial docs pages beyond the homepage
 
 Remaining:
 
 - improve landing copy, hierarchy, and product storytelling
-- add docs pages beyond the homepage
 - add full configurator coverage for the public API
 - allow editing more advanced command behaviors from the UI
 - improve snippet generation quality and production readiness
@@ -195,18 +198,22 @@ Production bar:
 
 ## Phase 6: Open Source Readiness
 
-Status: `not started`
+Status: `in progress`
+
+Completed:
+
+- write package-level docs for installation and usage
+- add package metadata fields for license, keywords, repository shape, and publish access baseline
 
 Remaining:
 
-- write package-level docs for installation and usage
 - document customization patterns with real examples
 - add contribution workflows for external contributors
 - add issue templates and repository hygiene assets
 - define versioning and release flow
 - prepare npm publish checklist
 - choose final package publish name or scope when the npm account is ready
-- verify `package.json` fields for repository, license, keywords, exports, and publishing behavior
+- replace temporary metadata placeholders with final repository and issue values
 
 Production bar:
 
