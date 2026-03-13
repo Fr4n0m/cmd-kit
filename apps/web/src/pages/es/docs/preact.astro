@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Preact";
+const description =
+  "Usa la command palette de Preact con la misma API del core para secciones, tema y atajos.";
+---
+
+<BaseLayout description={description} locale="es" title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">Preact</p>
+      <h1>Integracion con Preact</h1>
+      <p>
+        `@cmd-kit/preact` replica la API orientada a React pero apuntando a `preact` mediante
+        `preact/compat`. Sirve cuando quieres la misma superficie de command palette con un runtime
+        mas ligero.
+      </p>
+
+      <h2>Ejemplo basico</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/preact";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export function Example() {
+  return (
+    <CommandPalette
+      sections={sections}
+      shortcut="mod+k"
+      title="Project commands"
+    />
+  );
+}`}</code></pre>
+
+      <h2>Capacidades actuales</h2>
+      <ul>
+        <li>resultados agrupados</li>
+        <li>navegacion por teclado</li>
+        <li>navegacion anidada con child sections</li>
+        <li>tokens de tema por props</li>
+        <li>sobrescritura de mensajes</li>
+        <li>class names por slot</li>
+      </ul>
+
+      <h2>Estado</h2>
+      <p>
+        El adaptador se valida localmente con build, typecheck y tests. La API publica se mantiene
+        alineada con `@cmd-kit/react` para que la superficie multi-framework siga siendo predecible.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

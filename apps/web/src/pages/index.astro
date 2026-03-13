@@ -1,5 +1,6 @@
 ---
 import PlaygroundIsland from "../components/PlaygroundIsland";
+import { localizedPath } from "../i18n/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const title = "cmd+kit";
@@ -18,9 +19,16 @@ const structuredData = {
     priceCurrency: "USD"
   }
 };
+const docsHref = localizedPath("en", "/docs/getting-started");
+const customizationHref = localizedPath("en", "/docs/customization");
 ---
 
-<BaseLayout description={description} structuredData={structuredData} title={title}>
+<BaseLayout
+  description={description}
+  locale="en"
+  structuredData={structuredData}
+  title={title}
+>
   <main class="site-shell" id="main-content" tabindex="-1">
     <section class="hero">
       <div class="hero-copy">
@@ -34,7 +42,7 @@ const structuredData = {
         </p>
         <div class="hero-actions">
           <a class="primary-button" href="#playground">Open the configurator</a>
-          <a class="ghost-button" href="/docs/getting-started">Start with docs</a>
+          <a class="ghost-button" href={docsHref}>Start with docs</a>
         </div>
         <div class="hero-proof">
           <div class="proof-card">
@@ -132,12 +140,12 @@ const structuredData = {
           the core, customization patterns, and release preparation.
         </p>
         <div class="hero-actions">
-          <a class="primary-button" href="/docs/getting-started">Getting started</a>
-          <a class="ghost-button" href="/docs/customization">Customization</a>
+          <a class="primary-button" href={docsHref}>Getting started</a>
+          <a class="ghost-button" href={customizationHref}>Customization</a>
         </div>
       </article>
     </section>
 
-    <PlaygroundIsland client:load />
+    <PlaygroundIsland client:load initialLanguage="en" />
   </main>
 </BaseLayout>

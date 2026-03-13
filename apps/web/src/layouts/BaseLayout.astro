@@ -1,33 +1,50 @@
 ---
 import "../styles.css";
+import {
+  defaultLocale,
+  layoutCopy,
+  localizedPath,
+  swapLocalePath,
+  type Locale
+} from "../i18n/site";
 
 interface Props {
   description: string;
   title: string;
-  lang?: string;
+  locale?: Locale;
   image?: string;
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-const { description, image, lang = "en", structuredData, title } =
+const { description, image, locale = defaultLocale, structuredData, title } =
   Astro.props;
 const pathname = Astro.url.pathname;
 const canonicalUrl = new URL(pathname, Astro.site ?? Astro.url).toString();
 const socialImageUrl = image
   ? new URL(image, Astro.site ?? Astro.url).toString()
   : undefined;
+const englishUrl = new URL(localizedPath("en", pathname === "/es" ? "/" : pathname.startsWith("/es/") ? pathname.slice(3) : pathname), Astro.site ?? Astro.url).toString();
+const spanishUrl = new URL(swapLocalePath(pathname, "es"), Astro.site ?? Astro.url).toString();
+const copy = layoutCopy[locale];
+const docsHref = localizedPath(locale, "/docs/getting-started");
+const coreHref = localizedPath(locale, "/docs/core");
+const reactHref = localizedPath(locale, "/docs/react");
+const homeHref = localizedPath(locale, "/");
+const playgroundHref = `${homeHref === "/" ? "" : homeHref}#playground`;
+const localeSwitchHref = swapLocalePath(pathname, locale === "en" ? "es" : "en");
 
 function isCurrentPath(target: string) {
   if (target === "/") {
-    return pathname === "/";
+    return pathname === localizedPath(locale, "/");
   }
 
-  return pathname === target || pathname.startsWith(`${target}/`);
+  const localizedTarget = localizedPath(locale, target);
+  return pathname === localizedTarget || pathname.startsWith(`${localizedTarget}/`);
 }
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -45,6 +62,9 @@ function isCurrentPath(target: string) {
     {socialImageUrl ? <meta content={socialImageUrl} property="og:image" /> : null}
     <meta content="cmd+kit" property="og:site_name" />
     <link href={canonicalUrl} rel="canonical" />
+    <link href={englishUrl} hreflang="en" rel="alternate" />
+    <link href={spanishUrl} hreflang="es" rel="alternate" />
+    <link href={englishUrl} hreflang="x-default" rel="alternate" />
     {
       structuredData ? (
         <script
@@ -58,40 +78,41 @@ function isCurrentPath(target: string) {
   </head>
   <body>
     <div class="page-aura" aria-hidden="true"></div>
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <a class="skip-link" href="#main-content">{copy.skipToContent}</a>
     <header class="topbar">
       <div class="topbar-inner">
         <a
           aria-current={isCurrentPath("/") ? "page" : undefined}
           class="brand-link"
-          href="/"
+          href={homeHref}
         >
           <span class="brand-mark">K</span>
           <span class="brand-copy">
             <strong>cmd+kit</strong>
-            <span>command palette system</span>
+            <span>{copy.productLabel}</span>
           </span>
         </a>
         <nav aria-label="Primary" class="topbar-nav">
           <a
             aria-current={isCurrentPath("/docs/getting-started") ? "page" : undefined}
-            href="/docs/getting-started"
+            href={docsHref}
           >
-            Docs
+            {copy.docs}
           </a>
           <a
             aria-current={isCurrentPath("/docs/core") ? "page" : undefined}
-            href="/docs/core"
+            href={coreHref}
           >
-            Core
+            {copy.core}
           </a>
-          <a aria-current={isCurrentPath("/") ? "page" : undefined} href="/#playground">
-            Playground
+          <a aria-current={isCurrentPath("/") ? "page" : undefined} href={playgroundHref}>
+            {copy.playground}
           </a>
         </nav>
         <div class="topbar-actions">
-          <a class="nav-button" href="/docs/react">React</a>
-          <a class="nav-button nav-button-strong" href="#playground">Launch</a>
+          <a class="nav-button" href={reactHref}>{copy.react}</a>
+          <a class="nav-button" href={localeSwitchHref}>{copy.switchLanguage}</a>
+          <a class="nav-button nav-button-strong" href={playgroundHref}>{copy.launch}</a>
         </div>
       </div>
     </header>

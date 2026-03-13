@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | React";
+const description =
+  "Usa la command palette de React y configura secciones, tema y comportamiento.";
+---
+
+<BaseLayout description={description} locale="es" title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">React</p>
+      <h1>Integracion con React</h1>
+      <p>
+        El punto de entrada publico actual para React es `CommandPalette`. Acepta `items` o
+        `sections`, mensajes personalizables, tokens de tema y un atajo de teclado.
+      </p>
+
+      <h2>Ejemplo basico</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/react";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export function Example() {
+  return (
+    <CommandPalette
+      sections={sections}
+      shortcut="mod+k"
+      title="Project commands"
+    />
+  );
+}`}</code></pre>
+
+      <h2>Capacidades actuales</h2>
+      <ul>
+        <li>resultados agrupados</li>
+        <li>navegacion por teclado</li>
+        <li>navegacion anidada con child sections</li>
+        <li>tokens de tema por props</li>
+        <li>sobrescritura de mensajes</li>
+        <li>class names por slot</li>
+        <li>renderers custom para titulo, secciones, items y estado vacio</li>
+        <li>contexto de breadcrumbs para renderers de titulo en navegacion anidada</li>
+      </ul>
+
+      <h2>Ejemplo de personalizacion</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/react";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export function Example() {
+  return (
+    <CommandPalette
+      classNames={{
+        dialog: "my-palette",
+        item: "my-palette-item"
+      }}
+      renderers={{
+        title: ({ activeTitle, breadcrumbs }) => (
+          <span>{breadcrumbs.join(" / ")} · {activeTitle}</span>
+        ),
+        emptyState: ({ query }) => <span>No match for "{query}"</span>
+      }}
+      sections={sections}
+    />
+  );
+}`}</code></pre>
+
+      <h2>Estado</h2>
+      <p>
+        La API ya es usable, pero sigue evolucionando. Segun avance la roadmap, esta documentacion
+        se ampliara con patrones de personalizacion, accesibilidad y ejemplos de produccion.
+      </p>
+    </article>
+  </main>
+</BaseLayout>
