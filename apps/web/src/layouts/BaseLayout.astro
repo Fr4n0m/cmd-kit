@@ -30,7 +30,7 @@ const docsHref = localizedPath(locale, "/docs/getting-started");
 const coreHref = localizedPath(locale, "/docs/core");
 const reactHref = localizedPath(locale, "/docs/react");
 const homeHref = localizedPath(locale, "/");
-const playgroundHref = `${homeHref === "/" ? "" : homeHref}#playground`;
+const playgroundHref = localizedPath(locale, "/playground");
 const localeSwitchHref = swapLocalePath(pathname, locale === "en" ? "es" : "en");
 
 function isCurrentPath(target: string) {
@@ -105,14 +105,19 @@ function isCurrentPath(target: string) {
           >
             {copy.core}
           </a>
-          <a aria-current={isCurrentPath("/") ? "page" : undefined} href={playgroundHref}>
+          <a
+            aria-current={isCurrentPath("/playground") ? "page" : undefined}
+            href={playgroundHref}
+          >
             {copy.playground}
           </a>
         </nav>
         <div class="topbar-actions">
           <a class="nav-button" href={reactHref}>{copy.react}</a>
           <a class="nav-button" href={localeSwitchHref}>{copy.switchLanguage}</a>
-          <a class="nav-button nav-button-strong" href={playgroundHref}>{copy.launch}</a>
+          <a class="nav-button nav-button-strong" href={playgroundHref}>
+            {copy.launchPlayground}
+          </a>
         </div>
       </div>
     </header>

@@ -8,6 +8,7 @@ export interface LayoutCopy {
   core: string;
   docs: string;
   launch: string;
+  launchPlayground: string;
   playground: string;
   productLabel: string;
   react: string;
@@ -20,6 +21,7 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     core: "Core",
     docs: "Docs",
     launch: "Launch",
+    launchPlayground: "Open playground",
     playground: "Playground",
     productLabel: "command palette system",
     react: "React",
@@ -30,6 +32,7 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     core: "Core",
     docs: "Docs",
     launch: "Abrir",
+    launchPlayground: "Abrir playground",
     playground: "Playground",
     productLabel: "sistema de command palette",
     react: "React",

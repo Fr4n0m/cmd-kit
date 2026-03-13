@@ -175,6 +175,7 @@ Completed:
 - create Astro landing page
 - add site-wide bilingual routing and header language switching
 - redesign the landing and playground visual system with a clearer editorial hierarchy
+- move the configurator to a dedicated playground page with full-width editing
 - build React-island live configurator
 - connect preview to generated config
 - export React and style snippets

@@ -12,10 +12,12 @@ import type { Language } from "../features/playground/config";
 
 interface PlaygroundIslandProps {
   initialLanguage?: Language;
+  mode?: "embedded" | "page";
 }
 
 export default function PlaygroundIsland({
-  initialLanguage = "en"
+  initialLanguage = "en",
+  mode = "embedded"
 }: PlaygroundIslandProps) {
   const {
     activeTab,
@@ -45,7 +47,10 @@ export default function PlaygroundIsland({
   const labels = playgroundLabels[config.language];
 
   return (
-    <section className="playground-shell" id="playground">
+    <section
+      className={mode === "page" ? "playground-shell playground-shell-page" : "playground-shell"}
+      id="playground"
+    >
       <CommandPalette
         messages={{
           closeLabel: config.closeLabel,

@@ -121,16 +121,18 @@ export function NestedSectionEditor({
 }: NestedSectionEditorProps) {
   return (
     <div className="nested-card">
-      <div className="row-between">
+      <div className="editor-topbar">
         <Field label={labels.nestedSectionTitle}>
           <input
             onChange={(event) => onUpdateSectionTitle(event.target.value)}
             value={childSection.title}
           />
         </Field>
-        <button className="inline-button" onClick={onRemove} type="button">
-          {labels.remove}
-        </button>
+        <div className="editor-actions">
+          <button className="inline-button" onClick={onRemove} type="button">
+            {labels.remove}
+          </button>
+        </div>
       </div>
       <div className="section-items">
         {childSection.items.map((nestedItem) => (
@@ -140,8 +142,8 @@ export function NestedSectionEditor({
               labels={labels}
               onUpdate={(updater) => onUpdateNestedItem(nestedItem.id, updater)}
             />
-            <div className="row-between">
-              <div className="stack-inline">
+            <div className="item-footer">
+              <div className="editor-actions">
                 <button
                   className="inline-button"
                   onClick={() => onMoveNestedItem(nestedItem.id, "up")}
@@ -254,14 +256,14 @@ export function SectionEditor({
 }: SectionEditorProps) {
   return (
     <div className="section-card">
-      <div className="row-between">
+      <div className="editor-topbar">
         <Field label={labels.sectionTitle}>
           <input
             onChange={(event) => onUpdateTitle(event.target.value)}
             value={section.title}
           />
         </Field>
-        <div className="stack-inline">
+        <div className="editor-actions">
           <button className="inline-button" onClick={onMoveUp} type="button">
             {labels.moveUp}
           </button>
@@ -281,8 +283,8 @@ export function SectionEditor({
               labels={labels}
               onUpdate={(updater) => onUpdateItem(item.id, updater)}
             />
-            <div className="row-between">
-              <div className="stack-inline">
+            <div className="item-footer">
+              <div className="editor-actions">
                 <button
                   className="inline-button"
                   onClick={() => onMoveItem(item.id, "up")}

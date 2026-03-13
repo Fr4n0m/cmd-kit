@@ -1,5 +1,4 @@
 ---
-import PlaygroundIsland from "../components/PlaygroundIsland";
 import { localizedPath } from "../i18n/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -21,6 +20,7 @@ const structuredData = {
 };
 const docsHref = localizedPath("en", "/docs/getting-started");
 const customizationHref = localizedPath("en", "/docs/customization");
+const playgroundHref = localizedPath("en", "/playground");
 ---
 
 <BaseLayout
@@ -41,7 +41,7 @@ const customizationHref = localizedPath("en", "/docs/customization");
           static mock snippets.
         </p>
         <div class="hero-actions">
-          <a class="primary-button" href="#playground">Open the configurator</a>
+          <a class="primary-button" href={playgroundHref}>Open the playground</a>
           <a class="ghost-button" href={docsHref}>Start with docs</a>
         </div>
         <div class="hero-proof">
@@ -144,8 +144,17 @@ const customizationHref = localizedPath("en", "/docs/customization");
           <a class="ghost-button" href={customizationHref}>Customization</a>
         </div>
       </article>
+      <article class="launch-card playground-callout">
+        <p class="eyebrow">Playground</p>
+        <h2>A dedicated workspace for shaping the full command surface</h2>
+        <p>
+          The configurator now lives on its own page so the editor, preview, and generated code can
+          use the full screen and keep the hierarchy clean.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-button" href={playgroundHref}>Open playground</a>
+        </div>
+      </article>
     </section>
-
-    <PlaygroundIsland client:load initialLanguage="en" />
   </main>
 </BaseLayout>
