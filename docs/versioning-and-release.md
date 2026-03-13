@@ -6,12 +6,15 @@ Versioning now uses Changesets.
 
 Release flow:
 
-1. run `npm run changeset`
-2. commit the generated file under `.changeset/`
-3. run `npm run version:packages`
-4. run `npm run release:check`
-5. publish to npm with `npm run release:npm`
-6. create a Git tag for the release
+1. branch from `develop`
+2. run `npm run changeset`
+3. commit the generated file under `.changeset/` in the same feature branch
+4. merge the branch back into `develop`
+5. run `npm run version:packages` when preparing the release branch from `develop`
+6. run `npm run release:check`
+7. merge `develop` into `main`
+8. publish to npm with `npm run release:npm`
+9. create a Git tag for the release
 
 ## Release Units
 

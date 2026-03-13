@@ -88,5 +88,7 @@ Use focused commit messages:
 ## Versioning
 
 - `@cmd-kit/core` and `@cmd-kit/react` are versioned with Changesets.
+- Changeset files should be authored from feature branches that were created from `develop`.
+- Changesets are diffed against `develop`, not `main`, so release prep stays aligned with the integration branch.
 - `apps/web` is not published to npm and should not receive Changeset entries.
 - If a change affects public API, packaging, or shipped behavior, add a Changeset in the same branch.
