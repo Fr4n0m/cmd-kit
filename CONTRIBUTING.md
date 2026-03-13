@@ -2,13 +2,17 @@
 
 ## Workflow
 
-- Create one feature branch per task.
+- Keep `main` as the stable release branch.
+- Use `develop` as the integration branch for ongoing work.
+- Create one secondary branch per task from `develop`.
 - Keep commits atomic and scoped.
 - Do not mix unrelated refactors with feature work.
 - Add a Changeset for any published package change that should affect versioning.
 - Run `npm run test`, `npm run typecheck`, and `npm run build` before opening a PR.
 - Run `npm run format:check` before opening a PR when formatting-sensitive files changed.
 - Prefer small pull-request-sized changes over large batches.
+- Merge task branches back into `develop`.
+- Merge `develop` into `main` only when the release bar is satisfied.
 
 ## Local Setup
 
@@ -38,6 +42,13 @@ Examples:
 - `feat/core-search-model`
 - `feat/react-palette-ui`
 - `fix/web-playground-copy`
+
+## Branch Flow
+
+1. branch from `develop`
+2. complete one scoped unit of work
+3. merge back into `develop`
+4. promote `develop` into `main` for releases only
 
 ## Commit Style
 

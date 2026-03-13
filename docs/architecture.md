@@ -181,9 +181,12 @@ The generated output must map directly to the published package API.
 
 Development should follow a professional workflow:
 
-- feature branches per task
+- `main` for stable releases
+- `develop` for integration
+- feature branches per task created from `develop`
 - atomic commits
 - small pull-request-sized units of work
+- merges back into `develop` before release promotion
 - no mixing docs, architecture, and unrelated implementation in one commit when avoidable
 
 ## Refactoring Direction
