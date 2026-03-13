@@ -37,6 +37,7 @@ Completed:
 - initial docs page for Vue usage
 - initial docs page for Preact usage
 - Astro integration guidance for island-based usage
+- dedicated docs page for the headless core
 - local example apps for React, Vue, and Preact
 - local Astro example app for island-based verification
 - local vanilla browser example app for framework-free core verification
@@ -149,6 +150,7 @@ Completed:
 - add focus trapping and `aria-busy` semantics to the default dialog UI
 - split the React palette into smaller internal modules and clear `react-doctor` to `100/100`
 - expose theme helpers in the core for CSS variable consumers
+- document the headless core with minimal direct-usage examples
 - expose breadcrumb context to React title renderers and default nested-navigation UI
 
 Remaining:
@@ -252,6 +254,7 @@ Status: `in progress`
 Completed:
 
 - write package-level docs for installation and usage
+- add explicit docs coverage for the headless core path
 - add package metadata fields for license, keywords, repository shape, and publish access baseline
 - add the repository license file
 - document customization patterns with real examples

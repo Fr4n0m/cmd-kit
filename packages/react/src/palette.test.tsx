@@ -304,4 +304,39 @@ describe("CommandPalette", () => {
 
     expect(await screen.findByText("Remote command")).toBeInTheDocument();
   });
+
+  it("surfaces a recent section after running a command", async () => {
+    const onSelect = vi.fn();
+
+    render(
+      <CommandPalette
+        defaultOpen
+        items={[
+          {
+            id: "run",
+            title: "Run action",
+            section: "Actions",
+            onSelect
+          }
+        ]}
+        recents={{ limit: 3, sectionTitle: "Recent commands" }}
+      />
+    );
+
+    await act(async () => {
+      fireEvent.keyDown(screen.getByPlaceholderText("Search commands..."), {
+        key: "Enter"
+      });
+      await new Promise((resolve) => window.setTimeout(resolve, 0));
+    });
+
+    await act(async () => {
+      fireEvent.keyDown(window, { ctrlKey: true, key: "k" });
+      await new Promise((resolve) => window.setTimeout(resolve, 0));
+    });
+
+    expect(screen.getByText("Recent commands")).toBeInTheDocument();
+    expect(screen.getAllByText("Run action").length).toBeGreaterThan(0);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+  });
 });
