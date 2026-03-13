@@ -11,5 +11,7 @@ This package provides the headless model used by the React adapter and future fr
 - snapshot building
 - command execution results
 - nested navigation modeling
+- async source loading primitives
+- recent command state primitives
 
 Use `@cmd-kit/react` if you want a ready-to-use UI.

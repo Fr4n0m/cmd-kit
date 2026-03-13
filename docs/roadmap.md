@@ -95,12 +95,14 @@ Completed:
 - add command execution result modeling
 - support nested navigation at the model level
 - isolate search behind a port and adapter boundary
+- add async command source loading primitives
+- add recent-command state primitives
 
 Remaining:
 
 - formalize command execution ports for navigation, callbacks, and future async actions
-- add support for async or remote command sources
-- add support for recents and history
+- extend async and remote source support beyond the current loader primitive
+- expand recents into a fuller history model
 - add support for richer item metadata where justified by the public API
 - define extension points for future framework adapters
 - improve state modeling for stacked pages, breadcrumbs, and richer navigation flows

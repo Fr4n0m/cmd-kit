@@ -12,6 +12,11 @@ export interface CommandItem {
   onSelect?: () => void | Promise<void>;
 }
 
+export interface CommandItemRecord {
+  itemId: string;
+  timestamp: number;
+}
+
 export interface CommandGroup {
   id: string;
   title: string;
@@ -41,9 +46,19 @@ export interface CommandTheme {
   shadow?: string;
 }
 
+export interface CommandSourcePayload {
+  items?: CommandItem[];
+  sections?: CommandSection[];
+}
+
+export type CommandSource =
+  | CommandSourcePayload
+  | (() => CommandSourcePayload | Promise<CommandSourcePayload>);
+
 export interface CommandKitConfig {
   items?: CommandItem[];
   sections?: CommandSection[];
+  source?: CommandSource;
   messages?: Partial<CommandMessages>;
   theme?: CommandTheme;
   shortcut?: string;
