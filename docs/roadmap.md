@@ -38,6 +38,8 @@ Completed:
 - local example apps for React, Vue, and Preact
 - local Astro example app for island-based verification
 - local vanilla browser example app for framework-free core verification
+- full local verification currently passes for `test`, `typecheck`, `build`, and `pack:verify`
+- `react-doctor` is currently `100/100` for both the shipped React package and the Astro web app
 
 In progress:
 
@@ -52,6 +54,8 @@ Not started or incomplete:
 - final open source maintenance workflow and metadata cleanup
 - multi-framework rollout beyond React is underway but incomplete
 - public adapter coverage now includes Vue and Preact
+- deployed web audit and manual QA are still pending
+- the Astro tooling vulnerability chain reported by `npm audit` is still unresolved
 
 ## Phases
 
@@ -220,6 +224,7 @@ Completed:
 - clear the shipped React package `react-doctor` score to `100/100`
 - extend web tests to cover accessible code-panel tab semantics
 - verify local React, Vue, and Preact example apps with production builds
+- verify local Astro and vanilla browser example apps with production builds
 
 Remaining:
 
