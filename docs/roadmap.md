@@ -24,6 +24,7 @@ Completed:
 - hexagonal direction in `packages/core` with domain, application, ports, and adapters
 - React command palette baseline with keyboard navigation and default UI
 - nested navigation support through child sections
+- slot-level renderer overrides and class name hooks in the React adapter
 - playground export for React, CSS variables, and Tailwind-oriented snippets
 - tests for core behavior, React palette behavior, and playground snippet generation
 - initial package metadata hardening for public publishing
@@ -122,11 +123,11 @@ Completed:
 - expose a React-first API for `items`, `sections`, `messages`, and `theme`
 - add baseline component tests
 - expose a lower-level `useCommandPalette` hook for advanced consumers
+- support slot-level class names and renderer overrides
 
 Remaining:
 
 - split the current component into clearer feature and adapter boundaries
-- support slot or render override patterns more systematically
 - improve focus management and accessibility semantics
 - improve theming hooks for Tailwind and CSS variable consumers
 - add controlled programmatic navigation APIs if needed by real usage

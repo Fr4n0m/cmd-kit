@@ -43,7 +43,36 @@ export function Example() {
         <li>nested navigation through child sections</li>
         <li>theme tokens through props</li>
         <li>message overrides</li>
+        <li>slot-level class names</li>
+        <li>renderer overrides for title, sections, items, and empty state</li>
       </ul>
+
+      <h2>Customization example</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/react";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export function Example() {
+  return (
+    <CommandPalette
+      classNames={{
+        dialog: "my-palette",
+        item: "my-palette-item"
+      }}
+      renderers={{
+        title: ({ activeTitle }) => <span>Project · {activeTitle}</span>,
+        emptyState: ({ query }) => <span>No match for "{query}"</span>
+      }}
+      sections={sections}
+    />
+  );
+}`}</code></pre>
 
       <h2>Status</h2>
       <p>

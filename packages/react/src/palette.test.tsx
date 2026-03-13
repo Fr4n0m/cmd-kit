@@ -116,4 +116,47 @@ describe("CommandPalette", () => {
 
     expect(results.violations).toHaveLength(0);
   });
+
+  it("supports class names and renderer overrides", () => {
+    render(
+      <CommandPalette
+        classNames={{
+          dialog: "custom-dialog",
+          emptyState: "custom-empty"
+        }}
+        defaultOpen
+        items={items}
+        renderers={{
+          item: (item, context) => (
+            <span>{context.active ? `Active ${item.title}` : item.title}</span>
+          ),
+          sectionTitle: ({ title }) => <span>{title.toUpperCase()}</span>,
+          title: ({ activeTitle }) => <span>{`Palette ${activeTitle}`}</span>
+        }}
+      />
+    );
+
+    expect(screen.getByRole("dialog")).toHaveClass("custom-dialog");
+    expect(screen.getByText("Palette Command menu")).toBeInTheDocument();
+    expect(screen.getByText("NAVIGATION")).toBeInTheDocument();
+    expect(screen.getByText("Active Dashboard")).toBeInTheDocument();
+  });
+
+  it("supports a custom empty state renderer", () => {
+    render(
+      <CommandPalette
+        defaultOpen
+        items={items}
+        renderers={{
+          emptyState: ({ query }) => <span>{`Missing ${query}`}</span>
+        }}
+      />
+    );
+
+    fireEvent.change(screen.getByPlaceholderText("Search commands..."), {
+      target: { value: "zzz" }
+    });
+
+    expect(screen.getByText("Missing zzz")).toBeInTheDocument();
+  });
 });

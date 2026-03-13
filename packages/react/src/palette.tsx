@@ -1,7 +1,66 @@
-import { type CommandItem, type CommandMessages, type CommandSection, type CommandTheme } from "@cmd-kit/core";
-import { type CSSProperties, type KeyboardEvent, type ReactNode, useId } from "react";
+import {
+  type CommandItem,
+  type CommandMessages,
+  type CommandSection,
+  type CommandTheme
+} from "@cmd-kit/core";
+import {
+  type CSSProperties,
+  type KeyboardEvent,
+  type ReactNode,
+  useId
+} from "react";
 
 import { useCommandPalette } from "./use-command-palette";
+
+type SlotName =
+  | "overlay"
+  | "dialog"
+  | "header"
+  | "title"
+  | "caption"
+  | "headerActions"
+  | "closeButton"
+  | "backButton"
+  | "input"
+  | "list"
+  | "section"
+  | "sectionTitle"
+  | "sectionItems"
+  | "item"
+  | "emptyState";
+
+export type CommandPaletteClassNames = Partial<Record<SlotName, string>>;
+
+export interface CommandPaletteRenderContext {
+  activeTitle: string;
+  canGoBack: boolean;
+  close: () => void;
+  goBack: () => void;
+  shortcut: string;
+}
+
+export interface CommandPaletteItemRenderContext {
+  active: boolean;
+}
+
+export interface CommandPaletteSectionRenderContext {
+  title: string;
+}
+
+export interface CommandPaletteEmptyStateRenderContext {
+  query: string;
+}
+
+export interface CommandPaletteRenderers {
+  emptyState?: (context: CommandPaletteEmptyStateRenderContext) => ReactNode;
+  item?: (
+    item: CommandItem,
+    context: CommandPaletteItemRenderContext
+  ) => ReactNode;
+  sectionTitle?: (context: CommandPaletteSectionRenderContext) => ReactNode;
+  title?: (context: CommandPaletteRenderContext) => ReactNode;
+}
 
 export interface CommandPaletteProps {
   items?: CommandItem[];
@@ -15,6 +74,8 @@ export interface CommandPaletteProps {
   onOpenChange?: (open: boolean) => void;
   className?: string;
   renderItem?: (item: CommandItem, active: boolean) => ReactNode;
+  classNames?: CommandPaletteClassNames;
+  renderers?: CommandPaletteRenderers;
 }
 
 export function CommandPalette({
@@ -28,7 +89,9 @@ export function CommandPalette({
   defaultOpen = false,
   onOpenChange,
   className,
-  renderItem
+  renderItem,
+  classNames,
+  renderers
 }: CommandPaletteProps) {
   const titleId = useId();
   const listboxId = useId();
@@ -60,6 +123,13 @@ export function CommandPalette({
     defaultOpen,
     onOpenChange
   });
+  const renderContext: CommandPaletteRenderContext = {
+    activeTitle,
+    canGoBack,
+    close: () => setOpenState(false),
+    goBack,
+    shortcut
+  };
 
   function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Escape") {
@@ -101,26 +171,33 @@ export function CommandPalette({
   }
 
   return (
-    <div style={overlayStyle(resolvedConfig.theme.overlayColor)}>
+    <div
+      className={classNames?.overlay}
+      style={overlayStyle(resolvedConfig.theme.overlayColor)}
+    >
       <div
         aria-labelledby={titleId}
         aria-modal="true"
-        className={className}
+        className={joinClassNames(className, classNames?.dialog)}
         role="dialog"
         style={paletteStyle(resolvedConfig.theme)}
       >
-        <div style={headerStyle}>
+        <div className={classNames?.header} style={headerStyle}>
           <div>
-            <p id={titleId} style={titleStyle}>
-              {activeTitle}
+            <p className={classNames?.title} id={titleId} style={titleStyle}>
+              {renderers?.title ? renderers.title(renderContext) : activeTitle}
             </p>
-            <p style={captionStyle}>
+            <p className={classNames?.caption} style={captionStyle}>
               Press {prettyShortcut(shortcut)} to toggle.
             </p>
           </div>
-          <div style={headerActionsStyle}>
+          <div className={classNames?.headerActions} style={headerActionsStyle}>
             {canGoBack ? (
               <button
+                className={joinClassNames(
+                  classNames?.closeButton,
+                  classNames?.backButton
+                )}
                 onClick={goBack}
                 style={closeButtonStyle(resolvedConfig.theme)}
                 type="button"
@@ -130,6 +207,7 @@ export function CommandPalette({
             ) : null}
             <button
               aria-label={resolvedConfig.messages.closeLabel}
+              className={classNames?.closeButton}
               onClick={() => setOpenState(false)}
               style={closeButtonStyle(resolvedConfig.theme)}
               type="button"
@@ -153,6 +231,7 @@ export function CommandPalette({
           autoComplete="off"
           autoCorrect="off"
           autoFocus
+          className={classNames?.input}
           id={inputId}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={handleInputKeyDown}
@@ -164,6 +243,7 @@ export function CommandPalette({
 
         <div
           aria-labelledby={titleId}
+          className={classNames?.list}
           id={listboxId}
           role="listbox"
           style={listStyle}
@@ -172,17 +252,24 @@ export function CommandPalette({
             snapshot.groups.map((group) => (
               <div
                 aria-labelledby={`${listboxId}-${group.id}-label`}
+                className={classNames?.section}
                 key={group.id}
                 role="group"
                 style={sectionStyle}
               >
                 <p
+                  className={classNames?.sectionTitle}
                   id={`${listboxId}-${group.id}-label`}
                   style={sectionTitleStyle(resolvedConfig.theme)}
                 >
-                  {group.title}
+                  {renderers?.sectionTitle
+                    ? renderers.sectionTitle({ title: group.title })
+                    : group.title}
                 </p>
-                <div style={sectionItemsStyle}>
+                <div
+                  className={classNames?.sectionItems}
+                  style={sectionItemsStyle}
+                >
                   {group.items.map((item) => {
                     const itemIndex = flatItems.findIndex(
                       (entry) => entry.id === item.id
@@ -192,6 +279,7 @@ export function CommandPalette({
                     return (
                       <button
                         aria-selected={isActive}
+                        className={classNames?.item}
                         disabled={item.disabled}
                         id={`${listboxId}-${item.id}`}
                         key={item.id}
@@ -211,6 +299,8 @@ export function CommandPalette({
                       >
                         {renderItem ? (
                           renderItem(item, isActive)
+                        ) : renderers?.item ? (
+                          renderers.item(item, { active: isActive })
                         ) : (
                           <DefaultItem item={item} isActive={isActive} />
                         )}
@@ -221,8 +311,13 @@ export function CommandPalette({
               </div>
             ))
           ) : (
-            <div style={emptyStateStyle(resolvedConfig.theme)}>
-              {resolvedConfig.messages.noResults}
+            <div
+              className={classNames?.emptyState}
+              style={emptyStateStyle(resolvedConfig.theme)}
+            >
+              {renderers?.emptyState
+                ? renderers.emptyState({ query })
+                : resolvedConfig.messages.noResults}
             </div>
           )}
         </div>
@@ -260,6 +355,13 @@ function DefaultItem({
 }
 
 function prettyShortcut(shortcut: string): string {
+  if (typeof navigator === "undefined") {
+    return shortcut
+      .split("+")
+      .map((token) => token.charAt(0).toUpperCase() + token.slice(1))
+      .join(" + ");
+  }
+
   return shortcut
     .split("+")
     .map((token) => {
@@ -270,6 +372,13 @@ function prettyShortcut(shortcut: string): string {
       return token.charAt(0).toUpperCase() + token.slice(1);
     })
     .join(" + ");
+}
+
+function joinClassNames(
+  ...values: Array<string | undefined>
+): string | undefined {
+  const nextValue = values.filter(Boolean).join(" ");
+  return nextValue || undefined;
 }
 
 function paletteStyle(theme: Required<CommandTheme>): CSSProperties {

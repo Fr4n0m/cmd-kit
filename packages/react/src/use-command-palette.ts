@@ -143,7 +143,9 @@ export function useCommandPalette({
 
   function movePrevious() {
     if (flatItems.length) {
-      setActiveIndex((index) => (index - 1 + flatItems.length) % flatItems.length);
+      setActiveIndex(
+        (index) => (index - 1 + flatItems.length) % flatItems.length
+      );
     }
   }
 

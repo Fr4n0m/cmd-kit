@@ -11,5 +11,7 @@ This package provides the default React command palette UI on top of `@cmd-kit/c
 - keyboard navigation
 - nested navigation
 - theming through props
+- slot-level class names
+- renderer overrides for title, sections, items, and empty state
 
 Use this package when you want a working command palette quickly and still need room for customization.
