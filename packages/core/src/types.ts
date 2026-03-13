@@ -1,4 +1,7 @@
 export type {
+  CommandExecutionContext,
+  CommandExecutionPort,
+  CommandExecutionResult,
   CommandGroup,
   CommandItem,
   CommandItemRecord,

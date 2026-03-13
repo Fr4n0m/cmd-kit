@@ -74,3 +74,26 @@ export type CommandExecutionResult =
   | { type: "navigate"; sections: CommandSection[]; title: string }
   | { type: "href"; href: string }
   | { type: "callback"; callback: NonNullable<CommandItem["onSelect"]> };
+
+export interface CommandExecutionContext {
+  item: CommandItem;
+}
+
+export interface CommandExecutionPort {
+  navigate?: (
+    input: CommandExecutionContext & {
+      sections: CommandSection[];
+      title: string;
+    }
+  ) => void | Promise<void>;
+  openHref?: (
+    input: CommandExecutionContext & {
+      href: string;
+    }
+  ) => void | Promise<void>;
+  runCallback?: (
+    input: CommandExecutionContext & {
+      callback: NonNullable<CommandItem["onSelect"]>;
+    }
+  ) => void | Promise<void>;
+}

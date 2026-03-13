@@ -93,6 +93,7 @@ Completed:
 - add localization message primitives
 - support declarative sections
 - add command execution result modeling
+- formalize command execution through an explicit execution port
 - support nested navigation at the model level
 - isolate search behind a port and adapter boundary
 - add async command source loading primitives
@@ -100,7 +101,6 @@ Completed:
 
 Remaining:
 
-- formalize command execution ports for navigation, callbacks, and future async actions
 - extend async and remote source support beyond the current loader primitive
 - expand recents into a fuller history model
 - add support for richer item metadata where justified by the public API

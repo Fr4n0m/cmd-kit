@@ -1,7 +1,7 @@
 import {
   createCommandSnapshot,
   createResolvedConfig,
-  executeCommand,
+  dispatchCommandExecution,
   loadCommandSource,
   recordRecentCommand,
   resolveRecentCommands,
@@ -206,33 +206,32 @@ export function useCommandPalette({
   }
 
   async function runItem(item: CommandItem | undefined) {
-    const result = executeCommand(item);
-
-    if (result.type === "navigate") {
-      setNavigationStack((current) => [
-        ...current,
-        {
-          title: result.title,
-          sections: result.sections
+    await dispatchCommandExecution({
+      item,
+      port: {
+        navigate: ({ sections, title }) => {
+          setNavigationStack((current) => [
+            ...current,
+            {
+              title,
+              sections
+            }
+          ]);
+          setQuery("");
+          setActiveIndex(0);
+        },
+        runCallback: async ({ callback }) => {
+          trackRecentItem(item, recents, setRecentRecords);
+          await callback();
+          setOpenState(false);
+        },
+        openHref: ({ href }) => {
+          trackRecentItem(item, recents, setRecentRecords);
+          window.location.assign(href);
+          setOpenState(false);
         }
-      ]);
-      setQuery("");
-      setActiveIndex(0);
-      return;
-    }
-
-    if (result.type === "callback") {
-      trackRecentItem(item, recents, setRecentRecords);
-      await result.callback();
-      setOpenState(false);
-      return;
-    }
-
-    if (result.type === "href") {
-      trackRecentItem(item, recents, setRecentRecords);
-      window.location.assign(result.href);
-      setOpenState(false);
-    }
+      }
+    });
   }
 
   function goBack() {
