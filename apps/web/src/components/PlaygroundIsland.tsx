@@ -101,6 +101,7 @@ export default function PlaygroundIsland() {
     <section className="playground-shell" id="playground">
       <CommandPalette
         messages={{
+          closeLabel: config.closeLabel,
           noResults: config.noResults,
           searchPlaceholder: config.placeholder
         }}
@@ -225,6 +226,17 @@ export default function PlaygroundIsland() {
                 value={config.noResults}
               />
             </Field>
+            <Field label={labels.closeLabel}>
+              <input
+                onChange={(event) =>
+                  setConfig((current) => ({
+                    ...current,
+                    closeLabel: event.target.value
+                  }))
+                }
+                value={config.closeLabel}
+              />
+            </Field>
             <ColorField
               label={labels.accent}
               onChange={(value) =>
@@ -256,6 +268,16 @@ export default function PlaygroundIsland() {
               value={config.textColor}
             />
             <ColorField
+              label={labels.muted}
+              onChange={(value) =>
+                setConfig((current) => ({
+                  ...current,
+                  mutedColor: value
+                }))
+              }
+              value={config.mutedColor}
+            />
+            <ColorField
               label={labels.border}
               onChange={(value) =>
                 setConfig((current) => ({
@@ -264,6 +286,16 @@ export default function PlaygroundIsland() {
                 }))
               }
               value={config.borderColor}
+            />
+            <ColorField
+              label={labels.overlay}
+              onChange={(value) =>
+                setConfig((current) => ({
+                  ...current,
+                  overlayColor: value
+                }))
+              }
+              value={config.overlayColor}
             />
             <Field label={labels.radius}>
               <input
@@ -274,6 +306,17 @@ export default function PlaygroundIsland() {
                   }))
                 }
                 value={config.radius}
+              />
+            </Field>
+            <Field label={labels.shadow}>
+              <input
+                onChange={(event) =>
+                  setConfig((current) => ({
+                    ...current,
+                    shadow: event.target.value
+                  }))
+                }
+                value={config.shadow}
               />
             </Field>
             <Field label={labels.shortcut}>

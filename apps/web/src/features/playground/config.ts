@@ -8,11 +8,15 @@ export interface PlaygroundConfig {
   description: string;
   placeholder: string;
   noResults: string;
+  closeLabel: string;
   accentColor: string;
   backgroundColor: string;
   textColor: string;
+  mutedColor: string;
   borderColor: string;
+  overlayColor: string;
   radius: string;
+  shadow: string;
   shortcut: string;
   layout: "centered" | "wide";
   sections: CommandSection[];
@@ -81,11 +85,15 @@ export const defaultConfig: PlaygroundConfig = {
     "Tune colors, sections, and commands while exporting the exact code your project needs.",
   placeholder: "Search commands...",
   noResults: "No results found.",
+  closeLabel: "Close command palette",
   accentColor: "#ff6b35",
   backgroundColor: "#101828",
   textColor: "#f8fafc",
+  mutedColor: "rgba(226, 232, 240, 0.72)",
   borderColor: "#334155",
+  overlayColor: "rgba(10, 15, 28, 0.72)",
   radius: "26px",
+  shadow: "0 32px 120px rgba(0, 0, 0, 0.35)",
   shortcut: "mod+k",
   layout: "centered",
   sections: defaultSections
@@ -96,10 +104,11 @@ export function toTheme(config: PlaygroundConfig): CommandTheme {
     accentColor: config.accentColor,
     backgroundColor: config.backgroundColor,
     textColor: config.textColor,
+    mutedColor: config.mutedColor,
     borderColor: config.borderColor,
+    overlayColor: config.overlayColor,
     radius: config.radius,
-    mutedColor: "rgba(226, 232, 240, 0.72)",
-    overlayColor: "rgba(10, 15, 28, 0.72)"
+    shadow: config.shadow
   };
 }
 

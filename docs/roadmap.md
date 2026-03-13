@@ -26,6 +26,7 @@ Completed:
 - nested navigation support through child sections
 - slot-level renderer overrides and class name hooks in the React adapter
 - playground export for React, CSS variables, and Tailwind-oriented snippets
+- configurator coverage for the full message set and all current theme tokens
 - tests for core behavior, React palette behavior, and playground snippet generation
 - initial package metadata hardening for public publishing
 - initial docs pages for installation and React usage
@@ -153,6 +154,7 @@ Completed:
 - allow editing of sections and items from the configurator
 - reorganize playground code by feature
 - add initial docs pages beyond the homepage
+- cover the full message set and current theme token surface in the configurator
 
 Remaining:
 

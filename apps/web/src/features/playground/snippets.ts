@@ -17,14 +17,18 @@ export function Demo() {
       title="${escapeString(config.title)}"
       messages={{
         searchPlaceholder: "${escapeString(config.placeholder)}",
-        noResults: "${escapeString(config.noResults)}"
+        noResults: "${escapeString(config.noResults)}",
+        closeLabel: "${escapeString(config.closeLabel)}"
       }}
       theme={{
         accentColor: "${config.accentColor}",
         backgroundColor: "${config.backgroundColor}",
         textColor: "${config.textColor}",
+        mutedColor: "${escapeString(config.mutedColor)}",
         borderColor: "${config.borderColor}",
-        radius: "${config.radius}"
+        overlayColor: "${escapeString(config.overlayColor)}",
+        radius: "${escapeString(config.radius)}",
+        shadow: "${escapeString(config.shadow)}"
       }}
     />
   );
@@ -36,8 +40,11 @@ export function buildCssSnippet(config: PlaygroundConfig): string {
   --cmdkit-accent: ${config.accentColor};
   --cmdkit-surface: ${config.backgroundColor};
   --cmdkit-text: ${config.textColor};
+  --cmdkit-muted: ${config.mutedColor};
   --cmdkit-border: ${config.borderColor};
+  --cmdkit-overlay: ${config.overlayColor};
   --cmdkit-radius: ${config.radius};
+  --cmdkit-shadow: ${config.shadow};
 }`;
 }
 
