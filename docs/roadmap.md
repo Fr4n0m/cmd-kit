@@ -121,11 +121,11 @@ Completed:
 - support nested navigation in the palette UI
 - expose a React-first API for `items`, `sections`, `messages`, and `theme`
 - add baseline component tests
+- expose a lower-level `useCommandPalette` hook for advanced consumers
 
 Remaining:
 
 - split the current component into clearer feature and adapter boundaries
-- expose lower-level primitives or hooks for advanced customization
 - support slot or render override patterns more systematically
 - improve focus management and accessibility semantics
 - improve theming hooks for Tailwind and CSS variable consumers

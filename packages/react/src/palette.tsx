@@ -1,26 +1,7 @@
-import {
-  createCommandSnapshot,
-  createResolvedConfig,
-  executeCommand,
-  type CommandItem,
-  type CommandMessages,
-  type CommandSection,
-  type CommandTheme
-} from "@cmd-kit/core";
-import {
-  type CSSProperties,
-  type KeyboardEvent,
-  type ReactNode,
-  useEffect,
-  useId,
-  useMemo,
-  useState
-} from "react";
+import { type CommandItem, type CommandMessages, type CommandSection, type CommandTheme } from "@cmd-kit/core";
+import { type CSSProperties, type KeyboardEvent, type ReactNode, useId } from "react";
 
-interface NavigationState {
-  sections: CommandSection[];
-  title: string;
-}
+import { useCommandPalette } from "./use-command-palette";
 
 export interface CommandPaletteProps {
   items?: CommandItem[];
@@ -49,136 +30,63 @@ export function CommandPalette({
   className,
   renderItem
 }: CommandPaletteProps) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const [query, setQuery] = useState("");
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [navigationStack, setNavigationStack] = useState<NavigationState[]>([]);
   const titleId = useId();
-  const inputId = useId();
   const listboxId = useId();
-
-  const resolvedOpen = open ?? internalOpen;
-  const activeSections = navigationStack.at(-1)?.sections ?? sections;
-  const activeTitle = navigationStack.at(-1)?.title ?? title;
-  const resolvedConfig = useMemo(
-    () =>
-      createResolvedConfig({
-        items,
-        sections: activeSections,
-        messages,
-        theme,
-        shortcut
-      }),
-    [activeSections, items, messages, shortcut, theme]
-  );
-  const snapshot = useMemo(
-    () => createCommandSnapshot(resolvedConfig, query),
-    [query, resolvedConfig]
-  );
-  const flatItems = snapshot.items.filter((item) => !item.disabled);
-
-  useEffect(() => {
-    if (!flatItems.length) {
-      setActiveIndex(0);
-      return;
-    }
-
-    if (activeIndex >= flatItems.length) {
-      setActiveIndex(0);
-    }
-  }, [activeIndex, flatItems]);
-
-  useEffect(() => {
-    function handleKeyDown(event: globalThis.KeyboardEvent) {
-      if (!matchesShortcut(event, shortcut) || isTypingTarget(event.target)) {
-        return;
-      }
-
-      event.preventDefault();
-      setOpenState(!resolvedOpen);
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [resolvedOpen, shortcut]);
-
-  function setOpenState(nextOpen: boolean) {
-    if (open === undefined) {
-      setInternalOpen(nextOpen);
-    }
-
-    if (!nextOpen) {
-      setQuery("");
-      setActiveIndex(0);
-      setNavigationStack([]);
-    }
-
-    onOpenChange?.(nextOpen);
-  }
-
-  async function runItem(item: CommandItem | undefined) {
-    const result = executeCommand(item);
-
-    if (result.type === "navigate") {
-      setNavigationStack((current) => [
-        ...current,
-        {
-          title: result.title,
-          sections: result.sections
-        }
-      ]);
-      setQuery("");
-      setActiveIndex(0);
-      return;
-    }
-
-    if (result.type === "callback") {
-      await result.callback();
-      setOpenState(false);
-      return;
-    }
-
-    if (result.type === "href") {
-      window.location.assign(result.href);
-      setOpenState(false);
-    }
-  }
+  const inputId = useId();
+  const {
+    activeIndex,
+    activeTitle,
+    canGoBack,
+    flatItems,
+    query,
+    resolvedConfig,
+    resolvedOpen,
+    runItem,
+    setActiveIndex,
+    setOpenState,
+    setQuery,
+    snapshot,
+    goBack,
+    moveNext,
+    movePrevious
+  } = useCommandPalette({
+    items,
+    sections,
+    messages,
+    theme,
+    title,
+    shortcut,
+    open,
+    defaultOpen,
+    onOpenChange
+  });
 
   function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Escape") {
       event.preventDefault();
-      if (navigationStack.length) {
-        setNavigationStack((current) => current.slice(0, -1));
-        setQuery("");
-        setActiveIndex(0);
+      if (canGoBack) {
+        goBack();
       } else {
         setOpenState(false);
       }
       return;
     }
 
-    if (event.key === "Backspace" && !query && navigationStack.length) {
+    if (event.key === "Backspace" && !query && canGoBack) {
       event.preventDefault();
-      setNavigationStack((current) => current.slice(0, -1));
-      setActiveIndex(0);
+      goBack();
       return;
     }
 
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      if (flatItems.length) {
-        setActiveIndex((index) => (index + 1) % flatItems.length);
-      }
+      moveNext();
       return;
     }
 
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      if (flatItems.length) {
-        setActiveIndex(
-          (index) => (index - 1 + flatItems.length) % flatItems.length
-        );
-      }
+      movePrevious();
       return;
     }
 
@@ -211,13 +119,9 @@ export function CommandPalette({
             </p>
           </div>
           <div style={headerActionsStyle}>
-            {navigationStack.length ? (
+            {canGoBack ? (
               <button
-                onClick={() => {
-                  setNavigationStack((current) => current.slice(0, -1));
-                  setQuery("");
-                  setActiveIndex(0);
-                }}
+                onClick={goBack}
                 style={closeButtonStyle(resolvedConfig.theme)}
                 type="button"
               >
@@ -355,35 +259,6 @@ function DefaultItem({
   );
 }
 
-function matchesShortcut(
-  event: globalThis.KeyboardEvent,
-  shortcut: string
-): boolean {
-  const tokens = shortcut
-    .toLowerCase()
-    .split("+")
-    .map((token) => token.trim());
-  const key = tokens.at(-1);
-
-  if (!key || event.key.toLowerCase() !== key) {
-    return false;
-  }
-
-  const expectsMod = tokens.includes("mod");
-  const expectsCtrl = tokens.includes("ctrl");
-  const expectsShift = tokens.includes("shift");
-  const expectsAlt = tokens.includes("alt");
-  const isMac = navigator.userAgent.includes("Mac");
-  const modPressed = isMac ? event.metaKey : event.ctrlKey;
-
-  return (
-    (!expectsMod || modPressed) &&
-    (!expectsCtrl || event.ctrlKey) &&
-    (!expectsShift || event.shiftKey) &&
-    (!expectsAlt || event.altKey)
-  );
-}
-
 function prettyShortcut(shortcut: string): string {
   return shortcut
     .split("+")
@@ -395,20 +270,6 @@ function prettyShortcut(shortcut: string): string {
       return token.charAt(0).toUpperCase() + token.slice(1);
     })
     .join(" + ");
-}
-
-function isTypingTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) {
-    return false;
-  }
-
-  const tagName = target.tagName.toLowerCase();
-  return (
-    tagName === "input" ||
-    tagName === "textarea" ||
-    target.isContentEditable ||
-    target.getAttribute("role") === "textbox"
-  );
 }
 
 function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
