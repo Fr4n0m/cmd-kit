@@ -55,4 +55,6 @@ Recommended Vercel settings:
 - [Product Vision](./docs/product-vision.md)
 - [Architecture](./docs/architecture.md)
 - [Roadmap](./docs/roadmap.md)
+- [Release Checklist](./docs/release-checklist.md)
+- [Versioning And Release](./docs/versioning-and-release.md)
 - [Contributing](./CONTRIBUTING.md)
