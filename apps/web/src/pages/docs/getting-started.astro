@@ -1,11 +1,17 @@
 ---
+import { localizedPath } from "../../i18n/site";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const title = "cmd+kit | Getting Started";
 const description = "Install cmd+kit, understand the workspace, and start integrating the package.";
+const reactHref = localizedPath("en", "/docs/react");
+const vueHref = localizedPath("en", "/docs/vue");
+const preactHref = localizedPath("en", "/docs/preact");
+const astroHref = localizedPath("en", "/docs/astro");
+const coreHref = localizedPath("en", "/docs/core");
 ---
 
-<BaseLayout description={description} title={title}>
+<BaseLayout description={description} locale="en" title={title}>
   <main class="site-shell docs-shell" id="main-content" tabindex="-1">
     <article class="docs-panel">
       <p class="eyebrow">Docs</p>
@@ -40,11 +46,11 @@ npm install @cmd-kit/preact preact</code></pre>
 
       <h2>Pick your entry point</h2>
       <ul>
-        <li><a href="/docs/react">React</a>: best-supported adapter today</li>
-        <li><a href="/docs/vue">Vue</a>: slot-based adapter using the same core model</li>
-        <li><a href="/docs/preact">Preact</a>: lean runtime with an API close to React</li>
-        <li><a href="/docs/astro">Astro</a>: recommended composition pattern for static docs and islands</li>
-        <li><a href="/docs/core">Core</a>: framework-free path for custom UI adapters and vanilla browser usage</li>
+        <li><a href={reactHref}>React</a>: best-supported adapter today</li>
+        <li><a href={vueHref}>Vue</a>: slot-based adapter using the same core model</li>
+        <li><a href={preactHref}>Preact</a>: lean runtime with an API close to React</li>
+        <li><a href={astroHref}>Astro</a>: recommended composition pattern for static docs and islands</li>
+        <li><a href={coreHref}>Core</a>: framework-free path for custom UI adapters and vanilla browser usage</li>
       </ul>
 
       <h2>Quality checks</h2>

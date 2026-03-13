@@ -5,7 +5,8 @@ import {
   createItem,
   createSection,
   defaultConfig,
-  type PlaygroundConfig
+  type PlaygroundConfig,
+  type Language
 } from "./config";
 import {
   buildCssSnippet,
@@ -26,8 +27,11 @@ export type SnippetTab =
   | "tailwind"
   | "json";
 
-export function usePlaygroundState() {
-  const [config, setConfig] = useState<PlaygroundConfig>(defaultConfig);
+export function usePlaygroundState(initialLanguage: Language = "en") {
+  const [config, setConfig] = useState<PlaygroundConfig>({
+    ...defaultConfig,
+    language: initialLanguage
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<SnippetTab>("react");
 

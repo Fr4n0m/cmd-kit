@@ -1,0 +1,70 @@
+---
+import { localizedPath } from "../../../i18n/site";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Primeros pasos";
+const description =
+  "Instala cmd+kit, entiende el workspace y empieza a integrar el paquete.";
+const reactHref = localizedPath("es", "/docs/react");
+const vueHref = localizedPath("es", "/docs/vue");
+const preactHref = localizedPath("es", "/docs/preact");
+const astroHref = localizedPath("es", "/docs/astro");
+const coreHref = localizedPath("es", "/docs/core");
+---
+
+<BaseLayout description={description} locale="es" title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">Docs</p>
+      <h1>Primeros pasos</h1>
+      <p>
+        `cmd+kit` se divide entre un core agnostico al framework y adaptadores por framework.
+        React es hoy el adaptador publico mas maduro, con Vue y Preact ya disponibles en paralelo.
+        La app web de este repositorio es la landing y el configurador en vivo.
+      </p>
+
+      <h2>Workspace</h2>
+      <ul>
+        <li>`packages/core`: motor headless y tipos publicos del core</li>
+        <li>`packages/react`: UI y bindings oficiales para React</li>
+        <li>`packages/vue`: UI por defecto y composable para Vue</li>
+        <li>`packages/preact`: bindings para Preact alineados con la API de React</li>
+        <li>`apps/example-vanilla`: verificacion en navegador sin framework</li>
+        <li>`apps/web`: sitio Astro y playground en React</li>
+      </ul>
+
+      <h2>Instalar por adaptador</h2>
+      <pre class="code-block"><code>npm install @cmd-kit/react react react-dom
+npm install @cmd-kit/vue vue
+npm install @cmd-kit/preact preact</code></pre>
+
+      <h2>Core headless</h2>
+      <p>
+        Si quieres renderizar tu propia UI en navegador o en otro framework, empieza por
+        `@cmd-kit/core` y construye sobre el snapshot y las primitivas de ejecucion.
+      </p>
+      <pre class="code-block"><code>npm install @cmd-kit/core</code></pre>
+
+      <h2>Elige tu punto de entrada</h2>
+      <ul>
+        <li><a href={reactHref}>React</a>: el adaptador mejor soportado hoy</li>
+        <li><a href={vueHref}>Vue</a>: adaptador basado en slots sobre el mismo modelo del core</li>
+        <li><a href={preactHref}>Preact</a>: runtime ligero con una API cercana a React</li>
+        <li><a href={astroHref}>Astro</a>: patron recomendado para docs estaticas e islas</li>
+        <li><a href={coreHref}>Core</a>: camino sin framework para UIs custom y uso vanilla</li>
+      </ul>
+
+      <h2>Checks de calidad</h2>
+      <pre class="code-block"><code>npm run test
+npm run typecheck
+npm run build</code></pre>
+
+      <h2>Siguientes pasos</h2>
+      <p>
+        Empieza por React si quieres el camino mas maduro hoy. Usa Vue o Preact si quieres el
+        mismo comportamiento del core en otro runtime. El playground de la home exporta snippets
+        de React, Vue, Preact, vanilla browser, CSS variables, Tailwind y JSON.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

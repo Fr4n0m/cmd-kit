@@ -8,8 +8,15 @@ import { PlaygroundConfigurator } from "../features/playground/components/Playgr
 import { PlaygroundHeader } from "../features/playground/components/PlaygroundHeader";
 import { usePlaygroundState } from "../features/playground/playground-state";
 import { playgroundLabels } from "../features/playground/ui";
+import type { Language } from "../features/playground/config";
 
-export default function PlaygroundIsland() {
+interface PlaygroundIslandProps {
+  initialLanguage?: Language;
+}
+
+export default function PlaygroundIsland({
+  initialLanguage = "en"
+}: PlaygroundIslandProps) {
   const {
     activeTab,
     addItemToNestedSection,
@@ -34,7 +41,7 @@ export default function PlaygroundIsland() {
     updateNestedItem,
     updateNestedSection,
     updateSection
-  } = usePlaygroundState();
+  } = usePlaygroundState(initialLanguage);
   const labels = playgroundLabels[config.language];
 
   return (
@@ -63,14 +70,7 @@ export default function PlaygroundIsland() {
 
       <PlaygroundHeader
         labels={labels}
-        language={config.language}
         onLaunch={() => setIsOpen(true)}
-        onToggleLanguage={() =>
-          setConfig((current) => ({
-            ...current,
-            language: current.language === "en" ? "es" : "en"
-          }))
-        }
       />
 
       <div className="workspace-grid">

@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Core";
+const description =
+  "Usa el core headless de cmd+kit para construir una command palette en vanilla o en tu propio adaptador.";
+---
+
+<BaseLayout description={description} locale="es" title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">Core</p>
+      <h1>Core headless</h1>
+      <p>
+        `@cmd-kit/core` es el centro agnostico al framework del proyecto. Te da secciones tipadas,
+        fuzzy search, snapshot building, primitivas de ejecucion, seguimiento de recientes y
+        helpers de tema sin imponer ninguna capa de render.
+      </p>
+
+      <h2>Instalacion</h2>
+      <pre class="code-block"><code>npm install @cmd-kit/core</code></pre>
+
+      <h2>Que cubre</h2>
+      <ul>
+        <li>items y secciones de comandos</li>
+        <li>filtrado fuzzy mediante el pipeline de busqueda compartido</li>
+        <li>snapshots agrupados para renderizado</li>
+        <li>modelado de navegacion anidada</li>
+        <li>despacho de ejecucion para callbacks, links y paginas anidadas</li>
+        <li>primitivas de estado para recientes</li>
+        <li>resolucion de tema y helpers de CSS variables</li>
+      </ul>
+
+      <h2>Ejemplo minimo</h2>
+      <pre class="code-block"><code>{`import {
+  createCommandSnapshot,
+  createResolvedConfig,
+  dispatchCommandExecution
+} from "@cmd-kit/core";
+
+const config = createResolvedConfig({
+  sections: [
+    {
+      id: "navigation",
+      title: "Navigation",
+      items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+    }
+  ]
+});
+
+const snapshot = createCommandSnapshot(config, "dash");
+
+await dispatchCommandExecution({
+  item: snapshot.items[0],
+  port: {
+    openHref: ({ href }) => window.location.assign(href)
+  }
+});`}</code></pre>
+
+      <h2>Cuando usarlo directamente</h2>
+      <p>
+        Usa el core directamente cuando quieras construir tu propia UI, integrarte en otro
+        framework o mantener la implementacion totalmente custom. Si quieres un componente listo
+        para usar, empieza por uno de los adaptadores oficiales.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

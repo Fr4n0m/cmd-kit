@@ -4,12 +4,21 @@ import { createSiteUrl, siteOrigin } from "../config/site";
 
 const routes = [
   "/",
+  "/es",
   "/docs/getting-started",
+  "/es/docs/getting-started",
   "/docs/react",
+  "/es/docs/react",
   "/docs/vue",
+  "/es/docs/vue",
   "/docs/preact",
+  "/es/docs/preact",
   "/docs/astro",
-  "/docs/customization"
+  "/es/docs/astro",
+  "/docs/core",
+  "/es/docs/core",
+  "/docs/customization",
+  "/es/docs/customization"
 ];
 
 export const GET: APIRoute = () => {

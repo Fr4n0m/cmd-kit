@@ -173,7 +173,7 @@ Status: `in progress`
 Completed:
 
 - create Astro landing page
-- add bilingual UI baseline
+- add site-wide bilingual routing and header language switching
 - redesign the landing and playground visual system with a clearer editorial hierarchy
 - build React-island live configurator
 - connect preview to generated config

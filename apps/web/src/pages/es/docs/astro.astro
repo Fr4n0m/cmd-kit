@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Astro";
+const description =
+  "Usa cmd+kit en Astro combinando un shell estatico con una isla de React, Vue o Preact.";
+---
+
+<BaseLayout description={description} locale="es" title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">Astro</p>
+      <h1>Integracion con Astro</h1>
+      <p>
+        Astro es el shell recomendado para docs y marketing porque mantiene rapida la parte
+        estatica y solo hidrata `cmd+kit` donde la interfaz necesita interactividad real.
+      </p>
+
+      <h2>Enfoque recomendado</h2>
+      <ul>
+        <li>renderiza landing y docs como paginas estaticas de Astro</li>
+        <li>usa `@cmd-kit/react`, `@cmd-kit/vue` o `@cmd-kit/preact` dentro de una isla de Astro</li>
+        <li>hidrata la palette solo en rutas o componentes interactivos</li>
+      </ul>
+
+      <h2>Ejemplo con React</h2>
+      <pre class="code-block"><code>{`---
+import PlaygroundPalette from "../components/PlaygroundPalette.tsx";
+---
+
+<PlaygroundPalette client:load />`}</code></pre>
+
+      <h2>Por que encaja con el proyecto</h2>
+      <p>
+        `cmd+kit` separa el core headless de sus adaptadores de UI. Eso hace de Astro un shell de
+        entrega, no un framework que haya que atacar con un motor de render especifico.
+      </p>
+
+      <h2>Estado</h2>
+      <p>
+        La guia de Astro ya esta documentada y esta misma web la usa. Un paquete especifico para
+        Astro no hace falta todavia porque el patron de islas ya cubre el caso real.
+      </p>
+    </article>
+  </main>
+</BaseLayout>
