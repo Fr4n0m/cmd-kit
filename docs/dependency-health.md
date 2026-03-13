@@ -7,6 +7,7 @@ Last reviewed: March 13, 2026
 - `npm audit` reports `5` moderate vulnerabilities
 - no high or critical vulnerabilities are currently reported
 - the findings come from the Astro checking toolchain used by `apps/web`, not from the published runtime packages
+- the same audit run still passes `test`, `typecheck`, `build`, and `pack:verify` for the repo
 
 Affected chain:
 
@@ -15,12 +16,13 @@ Affected chain:
 - `volar-service-yaml`
 - `yaml-language-server`
 - `lodash`
+- `npm audit fix --force` would currently downgrade `@astrojs/check` to `0.9.2`, so it is not a safe automatic fix path
 
 ## Why This Is Still Open
 
 - the current `npm audit fix` recommendation is a semver-major change path through `@astrojs/check`
 - the vulnerable tree is development-only tooling for Astro diagnostics
-- `@cmd-kit/core`, `@cmd-kit/react`, and `@cmd-kit/vue` do not ship these dependencies in their npm tarballs
+- `@cmd-kit/core`, `@cmd-kit/react`, `@cmd-kit/vue`, and `@cmd-kit/preact` do not ship these dependencies in their npm tarballs
 
 ## Release Impact
 
