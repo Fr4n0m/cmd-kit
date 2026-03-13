@@ -37,6 +37,7 @@ Completed:
 - Astro integration guidance for island-based usage
 - local example apps for React, Vue, and Preact
 - local Astro example app for island-based verification
+- local vanilla browser example app for framework-free core verification
 
 In progress:
 
@@ -279,6 +280,7 @@ Completed:
 
 - start `@cmd-kit/vue` as the first non-React adapter
 - add `@cmd-kit/preact` as a second official adapter with local test, typecheck, and build coverage
+- verify framework-free browser usage with a local vanilla example app built directly on `@cmd-kit/core`
 
 Planned targets:
 

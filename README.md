@@ -25,6 +25,7 @@ License: `MIT`
 - `apps/example-vue`: local Vue verification app
 - `apps/example-preact`: local Preact verification app
 - `apps/example-astro`: local Astro island verification app
+- `apps/example-vanilla`: local framework-free browser verification app
 
 ## Local Development
 
