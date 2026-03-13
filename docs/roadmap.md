@@ -206,20 +206,17 @@ Completed:
 - write package-level docs for installation and usage
 - add package metadata fields for license, keywords, repository shape, and publish access baseline
 - add the repository license file
+- document customization patterns with real examples
+- add issue templates and repository hygiene assets baseline
+- define an initial manual versioning and release flow
+- prepare npm publish checklist
 
 Remaining:
 
-- document customization patterns with real examples
 - add contribution workflows for external contributors
 - replace placeholder issue templates or labels with the final public workflow
 - choose final package publish name or scope when the npm account is ready
 - replace temporary metadata placeholders with final repository and issue values
-
-Completed:
-
-- add issue templates and repository hygiene assets baseline
-- define an initial manual versioning and release flow
-- prepare npm publish checklist
 
 Production bar:
 

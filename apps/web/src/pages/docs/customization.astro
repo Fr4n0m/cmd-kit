@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Customization";
+const description =
+  "Customize sections, theme tokens, nested navigation, and snippets in cmd+kit.";
+---
+
+<BaseLayout description={description} title={title}>
+  <main class="site-shell docs-shell">
+    <article class="docs-panel">
+      <p class="eyebrow">Customization</p>
+      <h1>Customization Patterns</h1>
+      <p>
+        `cmd+kit` is designed so the same concepts appear in the package API and in the live
+        configurator. The main customization surface is built around sections, items, messages, and
+        theme tokens.
+      </p>
+
+      <h2>Sections</h2>
+      <pre class="code-block"><code>{`const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
+  }
+];`}</code></pre>
+
+      <h2>Nested navigation</h2>
+      <pre class="code-block"><code>{`const sections = [
+  {
+    id: "actions",
+    title: "Actions",
+    items: [
+      {
+        id: "search",
+        title: "Search",
+        children: [
+          {
+            id: "scopes",
+            title: "Scopes",
+            items: [{ id: "docs", title: "Documentation" }]
+          }
+        ]
+      }
+    ]
+  }
+];`}</code></pre>
+
+      <h2>Theme tokens</h2>
+      <pre class="code-block"><code>{`<CommandPalette
+  sections={sections}
+  theme={{
+    accentColor: "#ff6b35",
+    backgroundColor: "#101828",
+    textColor: "#f8fafc",
+    borderColor: "#334155",
+    radius: "26px"
+  }}
+/>`}</code></pre>
+
+      <h2>Messages</h2>
+      <pre class="code-block"><code>{`<CommandPalette
+  sections={sections}
+  messages={{
+    searchPlaceholder: "Search commands...",
+    noResults: "No results found."
+  }}
+/>`}</code></pre>
+
+      <p>
+        The homepage playground should be treated as the fastest way to assemble these patterns and
+        export starter code.
+      </p>
+    </article>
+  </main>
+</BaseLayout>
