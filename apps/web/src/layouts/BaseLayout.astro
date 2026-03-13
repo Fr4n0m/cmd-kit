@@ -57,6 +57,7 @@ function isCurrentPath(target: string) {
     <title>{title}</title>
   </head>
   <body>
+    <div class="page-aura" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="topbar">
       <div class="topbar-inner">
@@ -65,7 +66,11 @@ function isCurrentPath(target: string) {
           class="brand-link"
           href="/"
         >
-          cmd+kit
+          <span class="brand-mark">K</span>
+          <span class="brand-copy">
+            <strong>cmd+kit</strong>
+            <span>command palette system</span>
+          </span>
         </a>
         <nav aria-label="Primary" class="topbar-nav">
           <a
@@ -74,10 +79,20 @@ function isCurrentPath(target: string) {
           >
             Docs
           </a>
+          <a
+            aria-current={isCurrentPath("/docs/core") ? "page" : undefined}
+            href="/docs/core"
+          >
+            Core
+          </a>
           <a aria-current={isCurrentPath("/") ? "page" : undefined} href="/#playground">
             Playground
           </a>
         </nav>
+        <div class="topbar-actions">
+          <a class="nav-button" href="/docs/react">React</a>
+          <a class="nav-button nav-button-strong" href="#playground">Launch</a>
+        </div>
       </div>
     </header>
     <slot />

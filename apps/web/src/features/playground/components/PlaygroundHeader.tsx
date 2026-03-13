@@ -18,11 +18,18 @@ export function PlaygroundHeader({
 }: PlaygroundHeaderProps) {
   return (
     <div className="playground-header">
-      <div>
+      <div className="playground-header-copy">
         <p className="eyebrow">{labels.preview}</p>
-        <h2>Live configurator</h2>
+        <h2>Shape the palette, then take the code with you.</h2>
+        <p>
+          Edit content, theme, sections, nested commands, and exports in one place.
+        </p>
+        <div className="playground-header-badges">
+          <span className="playground-badge">React first</span>
+          <span className="playground-badge">Vue / Preact / Vanilla exports</span>
+        </div>
       </div>
-      <div className="hero-actions">
+      <div className="playground-header-actions">
         <button className="primary-button" onClick={onLaunch} type="button">
           {labels.launch}
         </button>
