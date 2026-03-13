@@ -75,6 +75,48 @@ export function Demo() {
     />
   );
 }`;
+} 
+
+export function buildVanillaSnippet(config: PlaygroundConfig): string {
+  return `import {
+  createCommandSnapshot,
+  createResolvedConfig,
+  dispatchCommandExecution
+} from "@cmd-kit/core";
+
+const sections = ${toJsonSnippet(config.sections)};
+const config = createResolvedConfig({
+  messages: ${toJsonSnippet(toMessagesValue(config))},
+  recents: ${toJsonSnippet(toRecentsValue(config))},
+  sections,
+  shortcut: "${escapeString(config.shortcut)}",
+  theme: ${toJsonSnippet(toThemeValue(config))}
+});
+
+let query = "";
+let activeIndex = 0;
+
+function render() {
+  const snapshot = createCommandSnapshot(config, query);
+  const activeItem = snapshot.items[activeIndex];
+
+  console.log(snapshot.groups, activeItem);
+}
+
+async function runActiveItem() {
+  const snapshot = createCommandSnapshot(config, query);
+
+  await dispatchCommandExecution({
+    item: snapshot.items[activeIndex],
+    port: {
+      navigate: ({ sections, title }) => console.log("navigate", title, sections),
+      openHref: ({ href }) => window.location.assign(href),
+      runCallback: async ({ callback }) => callback()
+    }
+  });
+}
+
+render();`;
 }
 
 export function buildCssSnippet(config: PlaygroundConfig): string {

@@ -13,10 +13,18 @@ import {
   buildPreactSnippet,
   buildReactSnippet,
   buildTailwindSnippet,
+  buildVanillaSnippet,
   buildVueSnippet
 } from "./snippets";
 
-export type SnippetTab = "react" | "vue" | "preact" | "css" | "tailwind" | "json";
+export type SnippetTab =
+  | "react"
+  | "vue"
+  | "preact"
+  | "vanilla"
+  | "css"
+  | "tailwind"
+  | "json";
 
 export function usePlaygroundState() {
   const [config, setConfig] = useState<PlaygroundConfig>(defaultConfig);
@@ -42,6 +50,10 @@ export function usePlaygroundState() {
 
     if (activeTab === "preact") {
       return buildPreactSnippet(config);
+    }
+
+    if (activeTab === "vanilla") {
+      return buildVanillaSnippet(config);
     }
 
     return buildReactSnippet(config);

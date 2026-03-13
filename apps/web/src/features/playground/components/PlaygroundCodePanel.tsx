@@ -27,6 +27,8 @@ export function PlaygroundCodePanel({
         ? labels.vueCode
         : activeTab === "preact"
           ? labels.preactCode
+          : activeTab === "vanilla"
+            ? labels.vanillaCode
           : activeTab === "css"
             ? labels.cssCode
             : activeTab === "tailwind"
@@ -84,6 +86,17 @@ export function PlaygroundCodePanel({
           type="button"
         >
           {labels.preactCode}
+        </button>
+        <button
+          aria-controls={panelId}
+          aria-selected={activeTab === "vanilla"}
+          className={activeTab === "vanilla" ? "tab active" : "tab"}
+          onClick={() => onSelectTab("vanilla")}
+          role="tab"
+          tabIndex={activeTab === "vanilla" ? 0 : -1}
+          type="button"
+        >
+          {labels.vanillaCode}
         </button>
         <button
           aria-controls={panelId}
