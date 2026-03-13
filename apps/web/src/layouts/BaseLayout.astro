@@ -1,5 +1,6 @@
 ---
 import "../styles.css";
+import { Icon } from "../components/Icon";
 import {
   defaultLocale,
   layoutCopy,
@@ -113,10 +114,17 @@ function isCurrentPath(target: string) {
           </a>
         </nav>
         <div class="topbar-actions">
-          <a class="nav-button" href={reactHref}>{copy.react}</a>
-          <a class="nav-button" href={localeSwitchHref}>{copy.switchLanguage}</a>
+          <a class="nav-button" href={reactHref}>
+            <Icon className="button-icon" name="react" />
+            <span>{copy.react}</span>
+          </a>
+          <a class="nav-button" href={localeSwitchHref}>
+            <Icon className="button-icon" name="globe" />
+            <span>{copy.switchLanguage}</span>
+          </a>
           <a class="nav-button nav-button-strong" href={playgroundHref}>
-            {copy.launchPlayground}
+            <Icon className="button-icon" name="play" />
+            <span>{copy.launchPlayground}</span>
           </a>
         </div>
       </div>

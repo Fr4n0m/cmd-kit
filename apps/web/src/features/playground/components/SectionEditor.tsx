@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Icon } from "../../../components/Icon";
 import type { CommandItem, CommandSection } from "@cmd-kit/react";
 
 import type { PlaygroundConfig } from "../config";
@@ -130,7 +131,8 @@ export function NestedSectionEditor({
         </Field>
         <div className="editor-actions">
           <button className="inline-button" onClick={onRemove} type="button">
-            {labels.remove}
+            <Icon className="button-icon" name="trash" />
+            <span>{labels.remove}</span>
           </button>
         </div>
       </div>
@@ -149,14 +151,16 @@ export function NestedSectionEditor({
                   onClick={() => onMoveNestedItem(nestedItem.id, "up")}
                   type="button"
                 >
-                  {labels.moveUp}
+                  <Icon className="button-icon" name="triangle-up" />
+                  <span>{labels.moveUp}</span>
                 </button>
                 <button
                   className="inline-button"
                   onClick={() => onMoveNestedItem(nestedItem.id, "down")}
                   type="button"
                 >
-                  {labels.moveDown}
+                  <Icon className="button-icon" name="triangle-down" />
+                  <span>{labels.moveDown}</span>
                 </button>
               </div>
               <label className="toggle-field">
@@ -177,7 +181,8 @@ export function NestedSectionEditor({
                 onClick={() => onRemoveNestedItem(nestedItem.id)}
                 type="button"
               >
-                {labels.remove}
+                <Icon className="button-icon" name="trash" />
+                <span>{labels.remove}</span>
               </button>
             </div>
           </div>
@@ -188,7 +193,8 @@ export function NestedSectionEditor({
         onClick={onAddNestedItem}
         type="button"
       >
-        {labels.addNestedItem}
+        <Icon className="button-icon" name="plus" />
+        <span>{labels.addNestedItem}</span>
       </button>
     </div>
   );
@@ -265,13 +271,16 @@ export function SectionEditor({
         </Field>
         <div className="editor-actions">
           <button className="inline-button" onClick={onMoveUp} type="button">
-            {labels.moveUp}
+            <Icon className="button-icon" name="triangle-up" />
+            <span>{labels.moveUp}</span>
           </button>
           <button className="inline-button" onClick={onMoveDown} type="button">
-            {labels.moveDown}
+            <Icon className="button-icon" name="triangle-down" />
+            <span>{labels.moveDown}</span>
           </button>
           <button className="inline-button" onClick={onRemove} type="button">
-            {labels.remove}
+            <Icon className="button-icon" name="trash" />
+            <span>{labels.remove}</span>
           </button>
         </div>
       </div>
@@ -290,14 +299,16 @@ export function SectionEditor({
                   onClick={() => onMoveItem(item.id, "up")}
                   type="button"
                 >
-                  {labels.moveUp}
+                  <Icon className="button-icon" name="triangle-up" />
+                  <span>{labels.moveUp}</span>
                 </button>
                 <button
                   className="inline-button"
                   onClick={() => onMoveItem(item.id, "down")}
                   type="button"
                 >
-                  {labels.moveDown}
+                  <Icon className="button-icon" name="triangle-down" />
+                  <span>{labels.moveDown}</span>
                 </button>
               </div>
               <label className="toggle-field">
@@ -318,7 +329,8 @@ export function SectionEditor({
                 onClick={() => onRemoveItem(item.id)}
                 type="button"
               >
-                {labels.remove}
+                <Icon className="button-icon" name="trash" />
+                <span>{labels.remove}</span>
               </button>
             </div>
             <div className="nested-builder">
@@ -329,7 +341,8 @@ export function SectionEditor({
                   onClick={() => onAddNestedSection(item.id)}
                   type="button"
                 >
-                  {labels.addNestedSection}
+                  <Icon className="button-icon" name="plus" />
+                  <span>{labels.addNestedSection}</span>
                 </button>
               </div>
               {(item.children ?? []).map((childSection) => (
@@ -379,7 +392,8 @@ export function SectionEditor({
         onClick={onAddItem}
         type="button"
       >
-        {labels.addItem}
+        <Icon className="button-icon" name="plus" />
+        <span>{labels.addItem}</span>
       </button>
     </div>
   );

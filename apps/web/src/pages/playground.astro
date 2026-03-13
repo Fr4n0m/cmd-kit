@@ -1,4 +1,5 @@
 ---
+import { Icon } from "../components/Icon";
 import PlaygroundIsland from "../components/PlaygroundIsland";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -18,6 +19,13 @@ const description =
           page available. The preview stays interactive while the generated code tracks every
           change.
         </p>
+        <div class="tech-strip" aria-label="Playground stack">
+          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="astro" /> Astro</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="code" /> CSS / Tailwind</span>
+        </div>
       </div>
     </section>
     <PlaygroundIsland client:load initialLanguage="en" mode="page" />
