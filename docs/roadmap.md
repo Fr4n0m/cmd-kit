@@ -7,7 +7,7 @@ Current status: `active development`
 Project goal:
 
 - ship `cmd+kit` as an open source npm package
-- provide a framework-agnostic core with official React support
+- provide a framework-agnostic core with official React support first and a clear path to Vue, Svelte, Solid, Preact, Astro integrations, and vanilla browser usage
 - publish a fast Astro landing page with a live configurator
 - reach a production-ready quality bar for accessibility, documentation, packaging, and release workflow
 
@@ -45,6 +45,7 @@ Not started or incomplete:
 - final production documentation pass for installation and customization
 - accessibility audit and hardening
 - final open source maintenance workflow and metadata cleanup
+- multi-framework adapter rollout beyond React
 
 ## Phases
 
@@ -104,7 +105,7 @@ Remaining:
 - extend async and remote source support beyond the current loader primitive
 - expand recents into a fuller history model
 - add support for richer item metadata where justified by the public API
-- define extension points for future framework adapters
+- define and verify extension points for future framework adapters
 - improve state modeling for stacked pages, breadcrumbs, and richer navigation flows
 
 Production bar:
@@ -234,6 +235,31 @@ Production bar:
 - clear contribution path for maintainers and contributors
 - release process documented end to end
 
+## Phase 7: Multi-Framework Expansion
+
+Status: `planned after React-first release`
+
+Scope:
+
+- keep `packages/core` stable enough to support multiple adapters without duplication
+- add at least one non-React adapter after the first public release
+- document usage patterns for framework consumers beyond React
+
+Planned targets:
+
+- Vue
+- Svelte
+- Solid
+- Preact
+- Astro-facing integration guidance
+- vanilla browser usage where the headless core alone is not sufficient
+
+Production bar:
+
+- no React assumptions leaking into the core API
+- adapter boundaries proven by at least one non-React package
+- public docs explain which frameworks are officially supported and at what maturity level
+
 ## Production Checklist
 
 This is the minimum bar before the first public npm release.
@@ -258,7 +284,6 @@ Must be complete:
 
 These are intentionally not part of the current production-critical path.
 
-- framework adapters beyond React
 - async providers with caching strategies
 - history and recents
 - analytics hooks

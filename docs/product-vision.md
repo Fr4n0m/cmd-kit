@@ -4,7 +4,7 @@
 
 `cmd+kit` is a customizable command palette toolkit for web applications.
 
-It is designed as a framework-agnostic core with official React support, plus a public landing page where developers can visually configure the palette and export code.
+It is designed as a framework-agnostic core with official React support first, followed by adapter support for other frontend ecosystems such as Vue, Svelte, Solid, Preact, Astro integrations, and vanilla browser usage.
 
 ## Product Pillars
 
@@ -19,6 +19,7 @@ It is designed as a framework-agnostic core with official React support, plus a 
 Developers should be able to:
 
 - install a package and get a working command palette quickly
+- use the toolkit in the framework they already ship
 - customize it through props or config in code
 - opt into a visual builder on the landing page
 - copy generated code and styles
@@ -60,7 +61,7 @@ The first version should include:
 
 These are good candidates for later phases unless they fall out naturally from the architecture:
 
-- framework adapters beyond React
+- framework adapters beyond React, including Vue, Svelte, Solid, Preact, Astro-facing integrations, and vanilla browser wrappers
 - async remote providers with caching strategies
 - command history and recents
 - nested pages or stacked command views
@@ -73,4 +74,5 @@ These are good candidates for later phases unless they fall out naturally from t
 - The API must stay small enough to learn quickly.
 - The default experience must feel polished without locking users into one visual style.
 - The headless core cannot depend on React.
+- The core must stay compatible with adapter packages for multiple frameworks rather than drifting toward React-only assumptions.
 - Landing page customization must map cleanly to code generation, not to a separate incompatible model.

@@ -6,6 +6,9 @@ This project should start as a monorepo:
 
 - `packages/core`
 - `packages/react`
+- `packages/vue` when the Vue adapter starts
+- `packages/svelte` when the Svelte adapter starts
+- `packages/solid` when the Solid adapter starts
 - `apps/web`
 
 ## Architectural Style
@@ -48,6 +51,8 @@ Example direction for `packages/react`:
 - `src/features/palette/components`
 - `src/features/palette/hooks`
 - `src/features/palette/adapters`
+
+Equivalent adapter packages should follow the same boundary rules for Vue, Svelte, Solid, Preact, Astro-facing wrappers, or vanilla browser adapters when they are introduced.
 
 Example direction for `apps/web`:
 
@@ -93,6 +98,19 @@ Official React integration responsible for:
 
 `packages/react` is an adapter package. It should consume the core through explicit APIs and keep React-specific state, rendering, and accessibility wiring outside the core domain.
 
+### Future Adapter Packages
+
+Future framework packages should mirror the same role as `packages/react`:
+
+- `packages/vue`
+- `packages/svelte`
+- `packages/solid`
+- `packages/preact`
+- thin Astro-facing wrappers where useful
+- a browser-first or vanilla adapter if the core alone is not ergonomic enough
+
+These packages must stay thin. Framework-specific rendering, reactivity, and lifecycle code belong in the adapter, while search, execution, navigation state, and command modeling stay in `packages/core`.
+
 ### `apps/web`
 
 Product site responsible for:
@@ -114,6 +132,7 @@ The architecture should support both:
 
 - headless usage for advanced consumers
 - default UI usage for fast adoption
+- multiple framework adapters built over the same core without forking business logic
 
 The React package should likely expose:
 
