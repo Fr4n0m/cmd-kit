@@ -55,6 +55,7 @@ Before merging or releasing, run:
 - [Architecture](./docs/architecture.md)
 - [Roadmap](./docs/roadmap.md)
 - [Dependency Health](./docs/dependency-health.md)
+- [Web Quality Audit](./docs/web-quality-audit.md)
 - [Release Checklist](./docs/release-checklist.md)
 - [Versioning And Release](./docs/versioning-and-release.md)
 - [Contributing](./CONTRIBUTING.md)

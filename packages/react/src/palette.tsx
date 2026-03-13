@@ -9,6 +9,7 @@ import {
   type CSSProperties,
   type KeyboardEvent,
   type ReactNode,
+  useEffect,
   useId,
   useRef
 } from "react";
@@ -104,6 +105,7 @@ export function CommandPalette({
   const listboxId = useId();
   const inputId = useId();
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const {
     activeIndex,
     activeTitle,
@@ -141,6 +143,16 @@ export function CommandPalette({
     goBack,
     shortcut
   };
+
+  useEffect(() => {
+    if (!resolvedOpen) {
+      return;
+    }
+
+    window.setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  }, [resolvedOpen]);
 
   function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Escape") {
@@ -276,12 +288,12 @@ export function CommandPalette({
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
-          autoFocus
           className={classNames?.input}
           id={inputId}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={handleInputKeyDown}
           placeholder={resolvedConfig.messages.searchPlaceholder}
+          ref={inputRef}
           role="combobox"
           style={inputStyle(resolvedConfig.theme)}
           value={query}

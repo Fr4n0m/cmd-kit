@@ -4,27 +4,56 @@ import "../styles.css";
 interface Props {
   description: string;
   title: string;
+  lang?: string;
 }
 
-const { description, title } = Astro.props;
+const { description, lang = "en", title } = Astro.props;
+const pathname = Astro.url.pathname;
+const canonicalUrl = new URL(pathname, Astro.site ?? Astro.url).toString();
+
+function isCurrentPath(target: string) {
+  if (target === "/") {
+    return pathname === "/";
+  }
+
+  return pathname === target || pathname.startsWith(`${target}/`);
+}
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content={description} name="description" />
+    <meta content="#07111f" name="theme-color" />
+    <meta content={title} property="og:title" />
+    <meta content={description} property="og:description" />
+    <meta content="website" property="og:type" />
+    <link href={canonicalUrl} rel="canonical" />
     <title>{title}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="topbar">
       <div class="topbar-inner">
-        <a class="brand-link" href="/">cmd+kit</a>
+        <a
+          aria-current={isCurrentPath("/") ? "page" : undefined}
+          class="brand-link"
+          href="/"
+        >
+          cmd+kit
+        </a>
         <nav aria-label="Primary" class="topbar-nav">
-          <a href="/docs/getting-started">Docs</a>
-          <a href="/#playground">Playground</a>
+          <a
+            aria-current={isCurrentPath("/docs/getting-started") ? "page" : undefined}
+            href="/docs/getting-started"
+          >
+            Docs
+          </a>
+          <a aria-current={isCurrentPath("/") ? "page" : undefined} href="/#playground">
+            Playground
+          </a>
         </nav>
       </div>
     </header>

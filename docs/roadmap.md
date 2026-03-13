@@ -202,12 +202,14 @@ Completed:
 - expand React coverage for focus trapping, busy states, and typing-target shortcut guards
 - add local package packing verification before publish
 - add an explicit dependency audit step to the local release workflow
+- run a baseline `react-doctor` scan and reduce it to component-size warnings only
+- add a code-first baseline `web-quality-audit` document for `apps/web`
 
 Remaining:
 
 - extend accessibility checks to more interaction flows across the web app and React package
-- add `react-doctor` review runs after significant React package changes
-- add a full web audit pass using `web-quality-audit`
+- split `CommandPalette` and `PlaygroundIsland` into smaller units so `react-doctor` is clean
+- add a deployed full web audit pass using `web-quality-audit`
 - break the web audit into explicit checks for `accessibility`, `performance`, `core-web-vitals`, `seo`, and `best-practices`
 - add manual QA passes across desktop and mobile
 - resolve or explicitly accept the remaining Astro tooling vulnerability chain before production

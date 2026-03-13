@@ -1,4 +1,10 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor
+} from "@testing-library/react";
 import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
 
@@ -122,10 +128,14 @@ describe("CommandPalette", () => {
 
     await act(async () => {
       fireEvent.keyDown(window, { ctrlKey: true, key: "k" });
+      await new Promise((resolve) => window.setTimeout(resolve, 0));
     });
 
     const input = screen.getByRole("combobox");
-    expect(input).toHaveFocus();
+
+    await waitFor(() => {
+      expect(input).toHaveFocus();
+    });
 
     await act(async () => {
       fireEvent.keyDown(input, { key: "Escape" });
