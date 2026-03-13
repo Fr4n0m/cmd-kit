@@ -54,6 +54,8 @@ export function CommandPalette({
   const [activeIndex, setActiveIndex] = useState(0);
   const [navigationStack, setNavigationStack] = useState<NavigationState[]>([]);
   const titleId = useId();
+  const inputId = useId();
+  const listboxId = useId();
 
   const resolvedOpen = open ?? internalOpen;
   const activeSections = navigationStack.at(-1)?.sections ?? sections;
@@ -230,19 +232,31 @@ export function CommandPalette({
         </div>
 
         <input
+          aria-autocomplete="list"
+          aria-controls={listboxId}
+          aria-expanded={resolvedOpen}
+          aria-label={resolvedConfig.messages.searchPlaceholder}
+          aria-activedescendant={flatItems[activeIndex] ? `${listboxId}-${flatItems[activeIndex].id}` : undefined}
+          autoCapitalize="off"
+          autoComplete="off"
+          autoCorrect="off"
           autoFocus
+          id={inputId}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={handleInputKeyDown}
           placeholder={resolvedConfig.messages.searchPlaceholder}
+          role="combobox"
           style={inputStyle(resolvedConfig.theme)}
           value={query}
         />
 
-        <div role="listbox" style={listStyle}>
+        <div aria-labelledby={titleId} id={listboxId} role="listbox" style={listStyle}>
           {snapshot.groups.length ? (
             snapshot.groups.map((group) => (
-              <section key={group.id} style={sectionStyle}>
-                <p style={sectionTitleStyle(resolvedConfig.theme)}>{group.title}</p>
+              <section aria-labelledby={`${listboxId}-${group.id}-label`} key={group.id} style={sectionStyle}>
+                <p id={`${listboxId}-${group.id}-label`} style={sectionTitleStyle(resolvedConfig.theme)}>
+                  {group.title}
+                </p>
                 <div style={sectionItemsStyle}>
                   {group.items.map((item) => {
                     const itemIndex = flatItems.findIndex((entry) => entry.id === item.id);
@@ -252,6 +266,7 @@ export function CommandPalette({
                       <button
                         aria-selected={isActive}
                         disabled={item.disabled}
+                        id={`${listboxId}-${item.id}`}
                         key={item.id}
                         onClick={() => void runItem(item)}
                         onMouseEnter={() => {

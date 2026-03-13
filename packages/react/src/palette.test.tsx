@@ -23,6 +23,8 @@ describe("CommandPalette", () => {
     render(<CommandPalette defaultOpen items={items} />);
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
     expect(screen.getByText("Navigation")).toBeInTheDocument();
     expect(screen.getByText("Dashboard")).toBeInTheDocument();
   });
@@ -94,5 +96,15 @@ describe("CommandPalette", () => {
     expect(screen.getByText("Appearance")).toBeInTheDocument();
     expect(screen.getByText("Theme")).toBeInTheDocument();
     expect(screen.getByText("Back")).toBeInTheDocument();
+  });
+
+  it("updates active descendant while navigating with the keyboard", () => {
+    render(<CommandPalette defaultOpen items={items} />);
+
+    const input = screen.getByRole("combobox");
+
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+
+    expect(input.getAttribute("aria-activedescendant")).toContain("settings");
   });
 });
