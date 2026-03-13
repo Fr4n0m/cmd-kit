@@ -92,7 +92,7 @@ export function useCommandPalette({
     () =>
       createResolvedConfig({
         items: navigationStack.length ? undefined : rootItems,
-        sections: withRecentSection(activeSections, recentItems, recents),
+        sections: withRecentSection(activeSections, recentItems, recents, rootItems),
         messages,
         theme,
         shortcut
@@ -325,10 +325,17 @@ export function useCommandPalette({
 function withRecentSection(
   sections: CommandSection[] | undefined,
   recentItems: CommandItem[],
-  recents: UseCommandPaletteOptions["recents"]
+  recents: UseCommandPaletteOptions["recents"],
+  items?: CommandItem[]
 ): CommandSection[] | undefined {
-  if (!recentItems.length || !recents || !sections) {
-    return sections;
+  if (!recentItems.length || !recents) {
+    return sections ?? toSections(items);
+  }
+
+  const baseSections = sections ?? toSections(items);
+
+  if (!baseSections?.length) {
+    return undefined;
   }
 
   return [
@@ -338,9 +345,12 @@ function withRecentSection(
         typeof recents === "object" && recents.sectionTitle
           ? recents.sectionTitle
           : "Recent",
-      items: recentItems
+      items: recentItems.map((item) => ({
+        ...item,
+        section: undefined
+      }))
     },
-    ...sections
+    ...baseSections
   ];
 }
 
@@ -362,6 +372,27 @@ function trackRecentItem(
       limit
     })
   );
+}
+
+function toSections(items: CommandItem[] | undefined): CommandSection[] | undefined {
+  if (!items?.length) {
+    return undefined;
+  }
+
+  const groupedItems = new Map<string, CommandItem[]>();
+
+  for (const item of items) {
+    const title = item.section ?? "Commands";
+    const groupItems = groupedItems.get(title) ?? [];
+    groupItems.push(item);
+    groupedItems.set(title, groupItems);
+  }
+
+  return Array.from(groupedItems.entries()).map(([sectionTitle, sectionItems]) => ({
+    id: sectionTitle.toLowerCase().replace(/\s+/g, "-"),
+    title: sectionTitle,
+    items: sectionItems
+  }));
 }
 
 function restoreFocus(element: HTMLElement | null) {

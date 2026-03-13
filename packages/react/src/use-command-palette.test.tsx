@@ -131,4 +131,36 @@ describe("useCommandPalette", () => {
 
     expect(result.current.recentItems.map((item) => item.id)).toEqual(["run"]);
   });
+
+  it("surfaces recent items even when the root config uses flat items", async () => {
+    const onSelect = vi.fn();
+    const { result } = renderHook(() =>
+      useCommandPalette({
+        items: [
+          { id: "run", title: "Run", onSelect, section: "Actions" },
+          { id: "open", title: "Open", section: "Navigation" }
+        ],
+        recents: true,
+        defaultOpen: true
+      })
+    );
+
+    await act(async () => {
+      await result.current.runItem(result.current.flatItems[0]);
+    });
+
+    await waitFor(() => {
+      expect(result.current.recentItems.map((item) => item.id)).toEqual(["run"]);
+    });
+
+    act(() => {
+      result.current.openRoot(true);
+    });
+
+    await waitFor(() => {
+      expect(result.current.snapshot.groups[0]?.title).toBe("Recent");
+    });
+
+    expect(result.current.snapshot.groups[0]?.items[0]?.id).toBe("run");
+  });
 });
