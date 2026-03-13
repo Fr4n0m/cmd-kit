@@ -78,16 +78,13 @@ export function Demo() {
 }
 
 export function buildCssSnippet(config: PlaygroundConfig): string {
-  return `:root {
-  --cmdkit-accent: ${config.accentColor};
-  --cmdkit-surface: ${config.backgroundColor};
-  --cmdkit-text: ${config.textColor};
-  --cmdkit-muted: ${config.mutedColor};
-  --cmdkit-border: ${config.borderColor};
-  --cmdkit-overlay: ${config.overlayColor};
-  --cmdkit-radius: ${config.radius};
-  --cmdkit-shadow: ${config.shadow};
-}`;
+  return `import { createThemeCssText } from "@cmd-kit/core";
+
+const css = createThemeCssText(${toThemeSnippet(config)});
+
+const themeBlock = \`:root {
+\${css}
+}\`;`;
 }
 
 export function buildTailwindSnippet(config: PlaygroundConfig): string {

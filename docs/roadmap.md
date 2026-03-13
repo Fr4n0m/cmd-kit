@@ -139,11 +139,11 @@ Completed:
 - expose recent items through the React hook
 - add focus trapping and `aria-busy` semantics to the default dialog UI
 - split the React palette into smaller internal modules and clear `react-doctor` to `100/100`
+- expose theme helpers in the core for CSS variable consumers
 
 Remaining:
 
 - improve accessibility semantics further where gaps remain
-- improve theming hooks for Tailwind and CSS variable consumers
 - surface recent-command UX more intentionally in the default UI
 
 Production bar:
