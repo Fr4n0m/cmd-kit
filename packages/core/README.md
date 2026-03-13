@@ -13,4 +13,3 @@ This package provides the headless model used by the React adapter and future fr
 - nested navigation modeling
 
 Use `@cmd-kit/react` if you want a ready-to-use UI.
-

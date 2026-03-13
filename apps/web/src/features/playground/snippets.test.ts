@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import { defaultConfig } from "./config";
-import { buildCssSnippet, buildReactSnippet, buildTailwindSnippet } from "./snippets";
+import {
+  buildCssSnippet,
+  buildReactSnippet,
+  buildTailwindSnippet
+} from "./snippets";
 
 describe("playground snippet builders", () => {
   it("builds a React snippet that maps the selected shortcut and sections", () => {
@@ -14,7 +18,9 @@ describe("playground snippet builders", () => {
   });
 
   it("builds CSS variables for the theme tokens", () => {
-    expect(buildCssSnippet(defaultConfig)).toContain("--cmdkit-accent: #ff6b35;");
+    expect(buildCssSnippet(defaultConfig)).toContain(
+      "--cmdkit-accent: #ff6b35;"
+    );
   });
 
   it("builds a Tailwind-oriented wrapper snippet", () => {

@@ -22,4 +22,3 @@ Adopt Changesets or an equivalent workflow when the package surface becomes more
 - `@cmd-kit/react`
 
 `apps/web` is not a published package. It should track the public release but not be versioned as an npm artifact.
-

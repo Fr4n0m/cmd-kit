@@ -3,7 +3,10 @@ import { filterCommandItems } from "./filter-command-items";
 import { resolveCommandItems } from "./resolve-command-items";
 import { resolveMessages } from "../../domain/commands/messages";
 import { resolveTheme } from "../../domain/commands/theme";
-import type { CommandKitConfig, CommandSnapshot } from "../../domain/commands/types";
+import type {
+  CommandKitConfig,
+  CommandSnapshot
+} from "../../domain/commands/types";
 
 export function createCommandSnapshot(
   config: CommandKitConfig,
@@ -26,4 +29,3 @@ export function createResolvedConfig(config: CommandKitConfig) {
     shortcut: config.shortcut ?? "mod+k"
   };
 }
-

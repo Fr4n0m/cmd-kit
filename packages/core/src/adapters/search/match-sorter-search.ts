@@ -24,4 +24,3 @@ export class MatchSorterSearchAdapter implements SearchPort {
 }
 
 export const defaultSearchAdapter = new MatchSorterSearchAdapter();
-

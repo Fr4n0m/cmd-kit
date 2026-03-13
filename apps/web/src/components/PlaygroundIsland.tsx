@@ -19,7 +19,9 @@ import { playgroundLabels } from "../features/playground/ui";
 export default function PlaygroundIsland() {
   const [config, setConfig] = useState<PlaygroundConfig>(defaultConfig);
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"react" | "css" | "tailwind">("react");
+  const [activeTab, setActiveTab] = useState<"react" | "css" | "tailwind">(
+    "react"
+  );
   const labels = playgroundLabels[config.language];
 
   const code = useMemo(() => {
@@ -40,7 +42,9 @@ export default function PlaygroundIsland() {
 
   function updateSection(
     sectionId: string,
-    updater: (section: PlaygroundConfig["sections"][number]) => PlaygroundConfig["sections"][number]
+    updater: (
+      section: PlaygroundConfig["sections"][number]
+    ) => PlaygroundConfig["sections"][number]
   ) {
     setConfig((current) => ({
       ...current,
@@ -80,7 +84,9 @@ export default function PlaygroundIsland() {
   ) {
     updateSection(sectionId, (section) => ({
       ...section,
-      items: section.items.map((item) => (item.id === itemId ? updater(item) : item))
+      items: section.items.map((item) =>
+        item.id === itemId ? updater(item) : item
+      )
     }));
   }
 
@@ -112,7 +118,11 @@ export default function PlaygroundIsland() {
           <h2>Live configurator</h2>
         </div>
         <div className="hero-actions">
-          <button className="primary-button" onClick={() => setIsOpen(true)} type="button">
+          <button
+            className="primary-button"
+            onClick={() => setIsOpen(true)}
+            type="button"
+          >
             {labels.launch}
           </button>
           <button
@@ -283,7 +293,11 @@ export default function PlaygroundIsland() {
               <div>
                 <p className="eyebrow">{labels.sections}</p>
               </div>
-              <button className="ghost-button" onClick={addSectionToConfig} type="button">
+              <button
+                className="ghost-button"
+                onClick={addSectionToConfig}
+                type="button"
+              >
                 {labels.addSection}
               </button>
             </div>
@@ -429,7 +443,11 @@ export default function PlaygroundIsland() {
               <p className="eyebrow">{labels.code}</p>
               <h2>{labels.reactCode}</h2>
             </div>
-            <button className="ghost-button" onClick={() => void copyCode()} type="button">
+            <button
+              className="ghost-button"
+              onClick={() => void copyCode()}
+              type="button"
+            >
               {labels.copy}
             </button>
           </div>
@@ -465,13 +483,7 @@ export default function PlaygroundIsland() {
   );
 }
 
-function Field({
-  children,
-  label
-}: {
-  children: ReactNode;
-  label: string;
-}) {
+function Field({ children, label }: { children: ReactNode; label: string }) {
   return (
     <label className="field">
       <span>{label}</span>
@@ -493,8 +505,15 @@ function ColorField({
     <label className="field">
       <span>{label}</span>
       <div className="color-field">
-        <input onChange={(event) => onChange(event.target.value)} type="color" value={value} />
-        <input onChange={(event) => onChange(event.target.value)} value={value} />
+        <input
+          onChange={(event) => onChange(event.target.value)}
+          type="color"
+          value={value}
+        />
+        <input
+          onChange={(event) => onChange(event.target.value)}
+          value={value}
+        />
       </div>
     </label>
   );

@@ -70,10 +70,10 @@ Completed:
 - set up testing baseline
 - define test layers and quality checks
 - add package-level README files for published packages
+- add manual formatting tooling and repository-wide formatting rules
 
 Remaining:
 
-- add formatting tooling and decide whether it should be automated or manual
 - add release/versioning tooling such as Changesets or an equivalent manual flow
 - replace placeholder repository and issue URLs with final public values
 

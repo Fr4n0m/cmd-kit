@@ -6,6 +6,7 @@
 - Keep commits atomic and scoped.
 - Do not mix unrelated refactors with feature work.
 - Run `npm run test`, `npm run typecheck`, and `npm run build` before opening a PR.
+- Run `npm run format:check` before opening a PR when formatting-sensitive files changed.
 - Prefer small pull-request-sized changes over large batches.
 
 ## Branch Naming

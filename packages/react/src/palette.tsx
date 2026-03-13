@@ -175,7 +175,9 @@ export function CommandPalette({
     if (event.key === "ArrowUp") {
       event.preventDefault();
       if (flatItems.length) {
-        setActiveIndex((index) => (index - 1 + flatItems.length) % flatItems.length);
+        setActiveIndex(
+          (index) => (index - 1 + flatItems.length) % flatItems.length
+        );
       }
       return;
     }
@@ -204,7 +206,9 @@ export function CommandPalette({
             <p id={titleId} style={titleStyle}>
               {activeTitle}
             </p>
-            <p style={captionStyle}>Press {prettyShortcut(shortcut)} to toggle.</p>
+            <p style={captionStyle}>
+              Press {prettyShortcut(shortcut)} to toggle.
+            </p>
           </div>
           <div style={headerActionsStyle}>
             {navigationStack.length ? (
@@ -236,7 +240,11 @@ export function CommandPalette({
           aria-controls={listboxId}
           aria-expanded={resolvedOpen}
           aria-label={resolvedConfig.messages.searchPlaceholder}
-          aria-activedescendant={flatItems[activeIndex] ? `${listboxId}-${flatItems[activeIndex].id}` : undefined}
+          aria-activedescendant={
+            flatItems[activeIndex]
+              ? `${listboxId}-${flatItems[activeIndex].id}`
+              : undefined
+          }
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
@@ -250,16 +258,30 @@ export function CommandPalette({
           value={query}
         />
 
-        <div aria-labelledby={titleId} id={listboxId} role="listbox" style={listStyle}>
+        <div
+          aria-labelledby={titleId}
+          id={listboxId}
+          role="listbox"
+          style={listStyle}
+        >
           {snapshot.groups.length ? (
             snapshot.groups.map((group) => (
-              <section aria-labelledby={`${listboxId}-${group.id}-label`} key={group.id} style={sectionStyle}>
-                <p id={`${listboxId}-${group.id}-label`} style={sectionTitleStyle(resolvedConfig.theme)}>
+              <section
+                aria-labelledby={`${listboxId}-${group.id}-label`}
+                key={group.id}
+                style={sectionStyle}
+              >
+                <p
+                  id={`${listboxId}-${group.id}-label`}
+                  style={sectionTitleStyle(resolvedConfig.theme)}
+                >
                   {group.title}
                 </p>
                 <div style={sectionItemsStyle}>
                   {group.items.map((item) => {
-                    const itemIndex = flatItems.findIndex((entry) => entry.id === item.id);
+                    const itemIndex = flatItems.findIndex(
+                      (entry) => entry.id === item.id
+                    );
                     const isActive = itemIndex === activeIndex;
 
                     return (
@@ -275,10 +297,18 @@ export function CommandPalette({
                           }
                         }}
                         role="option"
-                        style={itemStyle(resolvedConfig.theme, isActive, item.disabled)}
+                        style={itemStyle(
+                          resolvedConfig.theme,
+                          isActive,
+                          item.disabled
+                        )}
                         type="button"
                       >
-                        {renderItem ? renderItem(item, isActive) : <DefaultItem item={item} isActive={isActive} />}
+                        {renderItem ? (
+                          renderItem(item, isActive)
+                        ) : (
+                          <DefaultItem item={item} isActive={isActive} />
+                        )}
                       </button>
                     );
                   })}
@@ -309,17 +339,29 @@ function DefaultItem({
         <span style={iconStyle(isActive)}>{item.icon ?? "⌘"}</span>
         <div>
           <span style={itemTitleStyle}>{item.title}</span>
-          {item.subtitle ? <span style={itemSubtitleStyle}>{item.subtitle}</span> : null}
+          {item.subtitle ? (
+            <span style={itemSubtitleStyle}>{item.subtitle}</span>
+          ) : null}
         </div>
       </div>
-      {item.shortcut ? <span style={shortcutStyle}>{item.shortcut}</span> : null}
-      {!item.shortcut && item.children?.length ? <span style={shortcutStyle}>Enter</span> : null}
+      {item.shortcut ? (
+        <span style={shortcutStyle}>{item.shortcut}</span>
+      ) : null}
+      {!item.shortcut && item.children?.length ? (
+        <span style={shortcutStyle}>Enter</span>
+      ) : null}
     </>
   );
 }
 
-function matchesShortcut(event: globalThis.KeyboardEvent, shortcut: string): boolean {
-  const tokens = shortcut.toLowerCase().split("+").map((token) => token.trim());
+function matchesShortcut(
+  event: globalThis.KeyboardEvent,
+  shortcut: string
+): boolean {
+  const tokens = shortcut
+    .toLowerCase()
+    .split("+")
+    .map((token) => token.trim());
   const key = tokens.at(-1);
 
   if (!key || event.key.toLowerCase() !== key) {
@@ -518,7 +560,9 @@ function iconStyle(active: boolean): CSSProperties {
     borderRadius: "12px",
     display: "grid",
     placeItems: "center",
-    background: active ? "rgba(59, 130, 246, 0.25)" : "rgba(148, 163, 184, 0.12)"
+    background: active
+      ? "rgba(59, 130, 246, 0.25)"
+      : "rgba(148, 163, 184, 0.12)"
   };
 }
 

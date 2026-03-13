@@ -17,4 +17,3 @@ export function resolveTheme(theme?: CommandTheme): Required<CommandTheme> {
     ...theme
   };
 }
-

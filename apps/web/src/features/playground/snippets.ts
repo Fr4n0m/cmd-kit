@@ -60,4 +60,3 @@ function toSectionsSnippet(sections: CommandSection[]): string {
 function escapeString(value: string): string {
   return value.replace(/"/g, '\\"');
 }
-

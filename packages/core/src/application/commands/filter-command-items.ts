@@ -9,4 +9,3 @@ export function filterCommandItems(
 ): CommandItem[] {
   return search.filter(items, query);
 }
-

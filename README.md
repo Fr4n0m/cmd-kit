@@ -30,6 +30,8 @@ Useful scripts:
 - `npm run build`
 - `npm run typecheck`
 - `npm run test`
+- `npm run format`
+- `npm run format:check`
 
 ## Quality Checks
 

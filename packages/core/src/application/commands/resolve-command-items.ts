@@ -1,4 +1,8 @@
-import type { CommandItem, CommandKitConfig, CommandSection } from "../../domain/commands/types";
+import type {
+  CommandItem,
+  CommandKitConfig,
+  CommandSection
+} from "../../domain/commands/types";
 
 export function resolveCommandItems(config: CommandKitConfig): CommandItem[] {
   if (config.sections?.length) {
@@ -16,4 +20,3 @@ export function flattenSections(sections: CommandSection[]): CommandItem[] {
     }))
   );
 }
-

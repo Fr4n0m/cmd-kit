@@ -74,4 +74,3 @@ export const playgroundLabels = {
     launch: "Abrir preview"
   }
 } satisfies Record<Language, Record<string, string>>;
-

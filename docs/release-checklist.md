@@ -43,4 +43,3 @@
 - tag the release in Git
 - update changelog or release notes
 - verify the Vercel site is still aligned with the released package version
-

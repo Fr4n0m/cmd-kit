@@ -1,6 +1,11 @@
-import type { CommandExecutionResult, CommandItem } from "../../domain/commands/types";
+import type {
+  CommandExecutionResult,
+  CommandItem
+} from "../../domain/commands/types";
 
-export function executeCommand(item: CommandItem | undefined): CommandExecutionResult {
+export function executeCommand(
+  item: CommandItem | undefined
+): CommandExecutionResult {
   if (!item || item.disabled) {
     return { type: "noop" };
   }

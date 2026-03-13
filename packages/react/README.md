@@ -13,4 +13,3 @@ This package provides the default React command palette UI on top of `@cmd-kit/c
 - theming through props
 
 Use this package when you want a working command palette quickly and still need room for customization.
-
