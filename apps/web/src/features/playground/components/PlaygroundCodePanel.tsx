@@ -1,5 +1,6 @@
 import React, { useId, useState } from "react";
 
+import { Icon } from "../../../components/Icon";
 import type { SnippetTab } from "../playground-state";
 import type { PlaygroundLabels } from "../ui";
 
@@ -50,7 +51,8 @@ export function PlaygroundCodePanel({
           </p>
         </div>
         <button className="ghost-button compact-button" onClick={() => void handleCopy()} type="button">
-          {labels.copy}
+          <Icon className="button-icon" name="copy" />
+          <span>{labels.copy}</span>
         </button>
       </div>
       <p aria-live="polite" className="visually-hidden">
@@ -66,7 +68,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "react" ? 0 : -1}
           type="button"
         >
-          {labels.reactCode}
+          <Icon className="tech-icon" name="react" />
+          <span>{labels.reactCode}</span>
         </button>
         <button
           aria-controls={panelId}
@@ -77,7 +80,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "vue" ? 0 : -1}
           type="button"
         >
-          {labels.vueCode}
+          <Icon className="tech-icon" name="vue" />
+          <span>{labels.vueCode}</span>
         </button>
         <button
           aria-controls={panelId}
@@ -88,7 +92,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "preact" ? 0 : -1}
           type="button"
         >
-          {labels.preactCode}
+          <Icon className="tech-icon" name="preact" />
+          <span>{labels.preactCode}</span>
         </button>
         <button
           aria-controls={panelId}
@@ -99,7 +104,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "vanilla" ? 0 : -1}
           type="button"
         >
-          {labels.vanillaCode}
+          <Icon className="tech-icon" name="vanilla" />
+          <span>{labels.vanillaCode}</span>
         </button>
         <button
           aria-controls={panelId}
@@ -110,7 +116,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "css" ? 0 : -1}
           type="button"
         >
-          {labels.cssCode}
+          <Icon className="tech-icon" name="code" />
+          <span>{labels.cssCode}</span>
         </button>
         <button
           aria-controls={panelId}
@@ -121,7 +128,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "tailwind" ? 0 : -1}
           type="button"
         >
-          {labels.tailwindCode}
+          <Icon className="tech-icon" name="spark" />
+          <span>{labels.tailwindCode}</span>
         </button>
         <button
           aria-controls={panelId}
@@ -132,7 +140,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "json" ? 0 : -1}
           type="button"
         >
-          {labels.jsonCode}
+          <Icon className="tech-icon" name="code" />
+          <span>{labels.jsonCode}</span>
         </button>
       </div>
       <div className="code-panel-meta">

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Icon } from "../../../components/Icon";
 import type { PlaygroundConfig } from "../config";
 import type { PlaygroundLabels } from "../ui";
 import { PlaygroundBasicsForm } from "./PlaygroundBasicsForm";
@@ -122,15 +123,15 @@ export function PlaygroundConfigurator({
 
       <div className="playground-summary-grid">
         <article className="summary-tile">
-          <span>Sections</span>
+          <span><Icon className="summary-icon" name="core" /> Sections</span>
           <strong>{config.sections.length}</strong>
         </article>
         <article className="summary-tile">
-          <span>Commands</span>
+          <span><Icon className="summary-icon" name="spark" /> Commands</span>
           <strong>{commandCount}</strong>
         </article>
         <article className="summary-tile">
-          <span>Recents</span>
+          <span><Icon className="summary-icon" name="play" /> Recents</span>
           <strong>{config.recentsEnabled ? "On" : "Off"}</strong>
         </article>
       </div>

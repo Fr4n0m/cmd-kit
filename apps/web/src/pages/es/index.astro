@@ -1,4 +1,5 @@
 ---
+import { Icon } from "../../components/Icon";
 import { localizedPath } from "../../i18n/site";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
@@ -41,15 +42,23 @@ const playgroundHref = localizedPath("es", "/playground");
           snippets decorativos.
         </p>
         <div class="hero-actions">
-          <a class="primary-button" href={playgroundHref}>Abrir playground</a>
-          <a class="ghost-button" href={docsHref}>Ir a la documentacion</a>
+          <a class="primary-button" href={playgroundHref}>
+            <Icon className="button-icon" name="play" />
+            <span>Abrir playground</span>
+          </a>
+          <a class="ghost-button" href={docsHref}>
+            <Icon className="button-icon" name="code" />
+            <span>Ir a la documentacion</span>
+          </a>
         </div>
         <div class="hero-proof">
           <div class="proof-card">
+            <Icon className="proof-icon" name="core" />
             <span>Core</span>
             <strong>Busqueda, agrupacion, ejecucion y recientes sin acoplarse a la UI</strong>
           </div>
           <div class="proof-card">
+            <Icon className="proof-icon" name="react" />
             <span>Adaptadores</span>
             <strong>React, Vue, Preact, Astro islands y uso vanilla en navegador</strong>
           </div>
@@ -151,8 +160,18 @@ const playgroundHref = localizedPath("es", "/playground");
           El configurador vive ahora en su propia pagina para que el editor, la preview y el codigo
           generado aprovechen todo el ancho y mantengan una jerarquia limpia.
         </p>
+        <div class="tech-strip" aria-label="Tecnologias soportadas">
+          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="astro" /> Astro</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="vanilla" /> Vanilla</span>
+        </div>
         <div class="hero-actions">
-          <a class="primary-button" href={playgroundHref}>Abrir playground</a>
+          <a class="primary-button" href={playgroundHref}>
+            <Icon className="button-icon" name="arrow-right" />
+            <span>Abrir playground</span>
+          </a>
         </div>
       </article>
     </section>
