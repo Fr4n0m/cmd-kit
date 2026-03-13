@@ -125,11 +125,12 @@ Completed:
 - add baseline component tests
 - expose a lower-level `useCommandPalette` hook for advanced consumers
 - support slot-level class names and renderer overrides
+- restore focus to the previously active element when the palette closes
 
 Remaining:
 
 - split the current component into clearer feature and adapter boundaries
-- improve focus management and accessibility semantics
+- improve accessibility semantics further where gaps remain
 - improve theming hooks for Tailwind and CSS variable consumers
 - add controlled programmatic navigation APIs if needed by real usage
 
@@ -184,11 +185,12 @@ Completed:
 - add integration-style tests for playground snippets
 - standardize local quality checks with `test`, `typecheck`, and `build`
 - add an automated accessibility smoke test for the React palette
+- cover shortcut toggling and nested back-navigation in React tests
 
 Remaining:
 
 - extend accessibility checks to cover the web app and more interaction flows
-- expand React tests around focus, shortcuts, and nested navigation edge cases
+- expand React tests around additional focus, shortcuts, and nested navigation edge cases
 - add manual QA passes across desktop and mobile
 - define a release checklist for `test`, `typecheck`, and `build`
 - add publish verification before release

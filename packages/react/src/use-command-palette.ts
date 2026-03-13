@@ -7,7 +7,7 @@ import {
   type CommandSection,
   type CommandTheme
 } from "@cmd-kit/core";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface NavigationState {
   sections: CommandSection[];
@@ -41,6 +41,7 @@ export function useCommandPalette({
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [navigationStack, setNavigationStack] = useState<NavigationState[]>([]);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const resolvedOpen = open ?? internalOpen;
   const activeSections = navigationStack.at(-1)?.sections ?? sections;
@@ -88,6 +89,13 @@ export function useCommandPalette({
   }, [resolvedOpen, shortcut]);
 
   function setOpenState(nextOpen: boolean) {
+    if (nextOpen && !resolvedOpen) {
+      previousFocusRef.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+    }
+
     if (open === undefined) {
       setInternalOpen(nextOpen);
     }
@@ -96,6 +104,7 @@ export function useCommandPalette({
       setQuery("");
       setActiveIndex(0);
       setNavigationStack([]);
+      restoreFocus(previousFocusRef.current);
     }
 
     onOpenChange?.(nextOpen);
@@ -166,6 +175,16 @@ export function useCommandPalette({
     moveNext,
     movePrevious
   };
+}
+
+function restoreFocus(element: HTMLElement | null) {
+  if (!element) {
+    return;
+  }
+
+  window.setTimeout(() => {
+    element.focus();
+  }, 0);
 }
 
 export function matchesShortcut(

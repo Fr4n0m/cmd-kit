@@ -109,6 +109,72 @@ describe("CommandPalette", () => {
     expect(input.getAttribute("aria-activedescendant")).toContain("settings");
   });
 
+  it("opens from the global shortcut and restores focus when closing", async () => {
+    render(
+      <>
+        <button type="button">Trigger</button>
+        <CommandPalette items={items} />
+      </>
+    );
+
+    const trigger = screen.getByRole("button", { name: "Trigger" });
+    trigger.focus();
+
+    await act(async () => {
+      fireEvent.keyDown(window, { ctrlKey: true, key: "k" });
+    });
+
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveFocus();
+
+    await act(async () => {
+      fireEvent.keyDown(input, { key: "Escape" });
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => window.setTimeout(resolve, 0));
+    });
+
+    expect(trigger).toHaveFocus();
+  });
+
+  it("goes back from nested navigation on backspace when the query is empty", async () => {
+    render(
+      <CommandPalette
+        defaultOpen
+        items={[
+          {
+            id: "settings",
+            title: "Settings",
+            section: "General",
+            children: [
+              {
+                id: "appearance",
+                title: "Appearance",
+                items: [{ id: "theme", title: "Theme" }]
+              }
+            ]
+          }
+        ]}
+      />
+    );
+
+    const input = screen.getByRole("combobox");
+
+    await act(async () => {
+      fireEvent.keyDown(input, { key: "Enter" });
+    });
+
+    expect(screen.getByText("Appearance")).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.keyDown(input, { key: "Backspace" });
+    });
+
+    expect(screen.queryByText("Appearance")).not.toBeInTheDocument();
+    expect(screen.getByText("Settings")).toBeInTheDocument();
+  });
+
   it("has no obvious accessibility violations in the default open state", async () => {
     const { container } = render(<CommandPalette defaultOpen items={items} />);
 
