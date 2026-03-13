@@ -23,6 +23,7 @@
 - review and refresh [web-quality-audit.md](./web-quality-audit.md)
 - manually test the React palette flows
 - manually test the Vue palette flows
+- manually test the Preact palette flows
 - manually test the Astro web app and playground
 
 ## Documentation Gate

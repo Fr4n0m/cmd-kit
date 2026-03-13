@@ -34,6 +34,7 @@ Completed:
 - explicit npm installation guidance in the web experience
 - initial docs page for Vue usage
 - initial docs page for Preact usage
+- Astro integration guidance for island-based usage
 
 In progress:
 
@@ -43,7 +44,6 @@ In progress:
 
 Not started or incomplete:
 
-- official release/versioning workflow
 - npm publishing setup
 - final production documentation pass for installation and customization
 - final open source maintenance workflow and metadata cleanup
@@ -241,6 +241,7 @@ Completed:
 - document customization patterns with real examples
 - add issue templates and repository hygiene assets baseline
 - define an initial manual versioning and release flow
+- document release units for all current published packages
 - prepare npm publish checklist
 - add a repository code of conduct
 - add a repository security policy

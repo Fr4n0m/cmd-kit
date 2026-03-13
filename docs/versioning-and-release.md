@@ -18,5 +18,6 @@ Release flow:
 - `@cmd-kit/core`
 - `@cmd-kit/react`
 - `@cmd-kit/vue`
+- `@cmd-kit/preact`
 
 `apps/web` is not a published package. It should track the public release but not be versioned as an npm artifact.
