@@ -64,4 +64,5 @@ Recommended Vercel settings:
 - [Roadmap](./docs/roadmap.md)
 - [Release Checklist](./docs/release-checklist.md)
 - [Versioning And Release](./docs/versioning-and-release.md)
+- [Deployment Notes](./apps/web/src/pages/docs/deploy.astro)
 - [Contributing](./CONTRIBUTING.md)

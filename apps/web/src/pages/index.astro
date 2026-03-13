@@ -67,6 +67,27 @@ const description =
       </div>
     </section>
 
+    <section class="install-grid">
+      <article class="panel">
+        <p class="eyebrow">Install</p>
+        <h2>npm packages</h2>
+        <p>Start with the React adapter today, then drop down to the core package when needed.</p>
+        <pre class="inline-code-block"><code>{`npm install @cmd-kit/react`}</code></pre>
+        <pre class="inline-code-block"><code>{`npm install @cmd-kit/core`}</code></pre>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">Deploy</p>
+        <h2>Vercel-ready Astro app</h2>
+        <p>
+          The landing runs as a static Astro site with React islands. Set the root directory to
+          `apps/web`, use the Astro preset, and ship the generated `dist` output.
+        </p>
+        <div class="hero-actions">
+          <a class="ghost-button" href="/docs/deploy">Deployment notes</a>
+        </div>
+      </article>
+    </section>
+
     <PlaygroundIsland client:load />
   </main>
 </BaseLayout>

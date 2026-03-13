@@ -207,6 +207,13 @@ button {
   margin-bottom: 1.5rem;
 }
 
+.install-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .feature-card,
 .playground-shell {
   padding: 1.25rem;
@@ -382,6 +389,15 @@ button {
   line-height: 1.65;
 }
 
+.inline-code-block {
+  margin: 1rem 0 0;
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
+  background: #02060c;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: auto;
+}
+
 .docs-shell {
   padding-top: 2rem;
 }
@@ -416,6 +432,7 @@ button {
   .workspace-grid,
   .form-grid,
   .feature-grid,
+  .install-grid,
   .item-grid {
     grid-template-columns: 1fr;
   }

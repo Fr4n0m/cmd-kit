@@ -30,6 +30,8 @@ Completed:
 - tests for core behavior, React palette behavior, and playground snippet generation
 - initial package metadata hardening for public publishing
 - initial docs pages for installation and React usage
+- explicit npm installation guidance in the web experience
+- Vercel deployment notes in the public docs
 
 In progress:
 
@@ -157,6 +159,8 @@ Completed:
 - reorganize playground code by feature
 - add initial docs pages beyond the homepage
 - cover the full message set and current theme token surface in the configurator
+- add explicit npm installation guidance in the web experience
+- add Vercel deployment notes to project docs
 
 Remaining:
 
@@ -164,8 +168,6 @@ Remaining:
 - add full configurator coverage for the public API
 - allow editing more advanced command behaviors from the UI
 - improve snippet generation quality and production readiness
-- add explicit npm installation guidance in the web experience
-- add Vercel deployment notes to project docs where relevant
 
 Production bar:
 
