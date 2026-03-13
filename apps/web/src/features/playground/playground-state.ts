@@ -9,11 +9,12 @@ import {
 } from "./config";
 import {
   buildCssSnippet,
+  buildJsonSnippet,
   buildReactSnippet,
   buildTailwindSnippet
 } from "./snippets";
 
-export type SnippetTab = "react" | "css" | "tailwind";
+export type SnippetTab = "react" | "css" | "tailwind" | "json";
 
 export function usePlaygroundState() {
   const [config, setConfig] = useState<PlaygroundConfig>(defaultConfig);
@@ -27,6 +28,10 @@ export function usePlaygroundState() {
 
     if (activeTab === "tailwind") {
       return buildTailwindSnippet(config);
+    }
+
+    if (activeTab === "json") {
+      return buildJsonSnippet(config);
     }
 
     return buildReactSnippet(config);

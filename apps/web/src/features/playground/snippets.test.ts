@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { defaultConfig } from "./config";
 import {
   buildCssSnippet,
+  buildJsonSnippet,
   buildReactSnippet,
   buildTailwindSnippet
 } from "./snippets";
@@ -35,5 +36,13 @@ describe("playground snippet builders", () => {
 
     expect(snippet).toContain("CommandPalette");
     expect(snippet).toContain("sections={sections}");
+  });
+
+  it("builds a JSON snippet for portable configuration export", () => {
+    const snippet = buildJsonSnippet(defaultConfig);
+
+    expect(snippet).toContain('"shortcut": "mod+k"');
+    expect(snippet).toContain('"sections": [');
+    expect(snippet).toContain('"sectionTitle": "Recent"');
   });
 });

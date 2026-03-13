@@ -67,6 +67,41 @@ const sections = ${toSectionsSnippet(config.sections)};
 </div>`;
 }
 
+export function buildJsonSnippet(config: PlaygroundConfig): string {
+  return JSON.stringify(
+    {
+      title: config.title,
+      description: config.description,
+      shortcut: config.shortcut,
+      layout: config.layout,
+      recents: config.recentsEnabled
+        ? {
+            limit: config.recentsLimit,
+            sectionTitle: config.recentsTitle
+          }
+        : false,
+      messages: {
+        searchPlaceholder: config.placeholder,
+        noResults: config.noResults,
+        closeLabel: config.closeLabel
+      },
+      theme: {
+        accentColor: config.accentColor,
+        backgroundColor: config.backgroundColor,
+        textColor: config.textColor,
+        mutedColor: config.mutedColor,
+        borderColor: config.borderColor,
+        overlayColor: config.overlayColor,
+        radius: config.radius,
+        shadow: config.shadow
+      },
+      sections: config.sections
+    },
+    null,
+    2
+  );
+}
+
 function toSectionsSnippet(sections: CommandSection[]): string {
   return JSON.stringify(sections, null, 2)
     .replace(/"([^"]+)":/g, "$1:")

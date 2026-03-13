@@ -73,6 +73,17 @@ export function PlaygroundCodePanel({
         >
           {labels.tailwindCode}
         </button>
+        <button
+          aria-controls={panelId}
+          aria-selected={activeTab === "json"}
+          className={activeTab === "json" ? "tab active" : "tab"}
+          onClick={() => onSelectTab("json")}
+          role="tab"
+          tabIndex={activeTab === "json" ? 0 : -1}
+          type="button"
+        >
+          {labels.jsonCode}
+        </button>
       </div>
       <pre className="code-block" id={panelId} role="tabpanel">
         <code>{code}</code>
