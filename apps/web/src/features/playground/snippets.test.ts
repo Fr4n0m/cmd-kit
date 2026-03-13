@@ -17,6 +17,7 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain("href: '/dashboard'");
     expect(snippet).toContain('closeLabel: "Close command palette"');
     expect(snippet).toContain("limit: 5");
+    expect(snippet).toContain("children:");
   });
 
   it("builds CSS variables for the theme tokens", () => {

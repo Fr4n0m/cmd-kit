@@ -308,7 +308,8 @@ button {
 
 .section-builder,
 .section-list,
-.section-items {
+.section-items,
+.nested-builder {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -319,7 +320,8 @@ button {
 }
 
 .section-card,
-.item-card {
+.item-card,
+.nested-card {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
@@ -331,6 +333,11 @@ button {
 
 .item-card {
   padding: 0.9rem;
+}
+
+.nested-card {
+  padding: 0.9rem;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .item-grid {

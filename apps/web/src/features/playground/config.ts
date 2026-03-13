@@ -126,6 +126,14 @@ export function createSection(): CommandSection {
   };
 }
 
+export function createChildSection(): CommandSection {
+  return {
+    id: createId("child-section"),
+    title: "Nested section",
+    items: [createItem()]
+  };
+}
+
 export function createItem() {
   return {
     id: createId("item"),

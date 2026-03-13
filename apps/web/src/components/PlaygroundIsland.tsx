@@ -3,6 +3,7 @@ import { type ReactNode, useMemo, useState } from "react";
 import { CommandPalette } from "@cmd-kit/react";
 
 import {
+  createChildSection,
   createItem,
   createSection,
   defaultConfig,
@@ -94,6 +95,94 @@ export default function PlaygroundIsland() {
     updateSection(sectionId, (section) => ({
       ...section,
       items: section.items.filter((item) => item.id !== itemId)
+    }));
+  }
+
+  function addNestedSection(sectionId: string, itemId: string) {
+    updateItem(sectionId, itemId, (item) => ({
+      ...item,
+      children: [...(item.children ?? []), createChildSection()]
+    }));
+  }
+
+  function updateNestedSection(
+    sectionId: string,
+    itemId: string,
+    childSectionId: string,
+    updater: (
+      section: NonNullable<
+        PlaygroundConfig["sections"][number]["items"][number]["children"]
+      >[number]
+    ) => NonNullable<
+      PlaygroundConfig["sections"][number]["items"][number]["children"]
+    >[number]
+  ) {
+    updateItem(sectionId, itemId, (item) => ({
+      ...item,
+      children: (item.children ?? []).map((childSection) =>
+        childSection.id === childSectionId
+          ? updater(childSection)
+          : childSection
+      )
+    }));
+  }
+
+  function removeNestedSection(
+    sectionId: string,
+    itemId: string,
+    childSectionId: string
+  ) {
+    updateItem(sectionId, itemId, (item) => ({
+      ...item,
+      children: (item.children ?? []).filter(
+        (childSection) => childSection.id !== childSectionId
+      )
+    }));
+  }
+
+  function addItemToNestedSection(
+    sectionId: string,
+    itemId: string,
+    childSectionId: string
+  ) {
+    updateNestedSection(sectionId, itemId, childSectionId, (childSection) => ({
+      ...childSection,
+      items: [...childSection.items, createItem()]
+    }));
+  }
+
+  function updateNestedItem(
+    sectionId: string,
+    itemId: string,
+    childSectionId: string,
+    nestedItemId: string,
+    updater: (
+      item: NonNullable<
+        PlaygroundConfig["sections"][number]["items"][number]["children"]
+      >[number]["items"][number]
+    ) => NonNullable<
+      PlaygroundConfig["sections"][number]["items"][number]["children"]
+    >[number]["items"][number]
+  ) {
+    updateNestedSection(sectionId, itemId, childSectionId, (childSection) => ({
+      ...childSection,
+      items: childSection.items.map((nestedItem) =>
+        nestedItem.id === nestedItemId ? updater(nestedItem) : nestedItem
+      )
+    }));
+  }
+
+  function removeNestedItem(
+    sectionId: string,
+    itemId: string,
+    childSectionId: string,
+    nestedItemId: string
+  ) {
+    updateNestedSection(sectionId, itemId, childSectionId, (childSection) => ({
+      ...childSection,
+      items: childSection.items.filter(
+        (nestedItem) => nestedItem.id !== nestedItemId
+      )
     }));
   }
 
@@ -508,6 +597,221 @@ export default function PlaygroundIsland() {
                           >
                             {labels.remove}
                           </button>
+                        </div>
+                        <div className="nested-builder">
+                          <div className="row-between">
+                            <span className="item-meta">{labels.nested}</span>
+                            <button
+                              className="inline-button"
+                              onClick={() =>
+                                addNestedSection(section.id, item.id)
+                              }
+                              type="button"
+                            >
+                              {labels.addNestedSection}
+                            </button>
+                          </div>
+                          {(item.children ?? []).map((childSection) => (
+                            <div className="nested-card" key={childSection.id}>
+                              <div className="row-between">
+                                <Field label={labels.nestedSectionTitle}>
+                                  <input
+                                    onChange={(event) =>
+                                      updateNestedSection(
+                                        section.id,
+                                        item.id,
+                                        childSection.id,
+                                        (current) => ({
+                                          ...current,
+                                          title: event.target.value
+                                        })
+                                      )
+                                    }
+                                    value={childSection.title}
+                                  />
+                                </Field>
+                                <button
+                                  className="inline-button"
+                                  onClick={() =>
+                                    removeNestedSection(
+                                      section.id,
+                                      item.id,
+                                      childSection.id
+                                    )
+                                  }
+                                  type="button"
+                                >
+                                  {labels.remove}
+                                </button>
+                              </div>
+                              <div className="section-items">
+                                {childSection.items.map((nestedItem) => (
+                                  <div
+                                    className="item-card"
+                                    key={nestedItem.id}
+                                  >
+                                    <div className="item-grid">
+                                      <Field label={labels.itemTitle}>
+                                        <input
+                                          onChange={(event) =>
+                                            updateNestedItem(
+                                              section.id,
+                                              item.id,
+                                              childSection.id,
+                                              nestedItem.id,
+                                              (current) => ({
+                                                ...current,
+                                                title: event.target.value
+                                              })
+                                            )
+                                          }
+                                          value={nestedItem.title}
+                                        />
+                                      </Field>
+                                      <Field label={labels.itemIcon}>
+                                        <input
+                                          onChange={(event) =>
+                                            updateNestedItem(
+                                              section.id,
+                                              item.id,
+                                              childSection.id,
+                                              nestedItem.id,
+                                              (current) => ({
+                                                ...current,
+                                                icon: event.target.value
+                                              })
+                                            )
+                                          }
+                                          value={nestedItem.icon ?? ""}
+                                        />
+                                      </Field>
+                                      <Field label={labels.itemSubtitle}>
+                                        <input
+                                          onChange={(event) =>
+                                            updateNestedItem(
+                                              section.id,
+                                              item.id,
+                                              childSection.id,
+                                              nestedItem.id,
+                                              (current) => ({
+                                                ...current,
+                                                subtitle: event.target.value
+                                              })
+                                            )
+                                          }
+                                          value={nestedItem.subtitle ?? ""}
+                                        />
+                                      </Field>
+                                      <Field label={labels.itemShortcut}>
+                                        <input
+                                          onChange={(event) =>
+                                            updateNestedItem(
+                                              section.id,
+                                              item.id,
+                                              childSection.id,
+                                              nestedItem.id,
+                                              (current) => ({
+                                                ...current,
+                                                shortcut: event.target.value
+                                              })
+                                            )
+                                          }
+                                          value={nestedItem.shortcut ?? ""}
+                                        />
+                                      </Field>
+                                      <Field label={labels.itemHref}>
+                                        <input
+                                          onChange={(event) =>
+                                            updateNestedItem(
+                                              section.id,
+                                              item.id,
+                                              childSection.id,
+                                              nestedItem.id,
+                                              (current) => ({
+                                                ...current,
+                                                href: event.target.value
+                                              })
+                                            )
+                                          }
+                                          value={nestedItem.href ?? ""}
+                                        />
+                                      </Field>
+                                      <Field label={labels.itemKeywords}>
+                                        <input
+                                          onChange={(event) =>
+                                            updateNestedItem(
+                                              section.id,
+                                              item.id,
+                                              childSection.id,
+                                              nestedItem.id,
+                                              (current) => ({
+                                                ...current,
+                                                keywords: event.target.value
+                                                  .split(",")
+                                                  .map((entry) => entry.trim())
+                                                  .filter(Boolean)
+                                              })
+                                            )
+                                          }
+                                          value={(
+                                            nestedItem.keywords ?? []
+                                          ).join(", ")}
+                                        />
+                                      </Field>
+                                    </div>
+                                    <div className="row-between">
+                                      <label className="toggle-field">
+                                        <input
+                                          checked={nestedItem.disabled ?? false}
+                                          onChange={(event) =>
+                                            updateNestedItem(
+                                              section.id,
+                                              item.id,
+                                              childSection.id,
+                                              nestedItem.id,
+                                              (current) => ({
+                                                ...current,
+                                                disabled: event.target.checked
+                                              })
+                                            )
+                                          }
+                                          type="checkbox"
+                                        />
+                                        <span>{labels.itemDisabled}</span>
+                                      </label>
+                                      <button
+                                        className="inline-button"
+                                        onClick={() =>
+                                          removeNestedItem(
+                                            section.id,
+                                            item.id,
+                                            childSection.id,
+                                            nestedItem.id
+                                          )
+                                        }
+                                        type="button"
+                                      >
+                                        {labels.remove}
+                                      </button>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                              <button
+                                className="ghost-button full-width"
+                                onClick={() =>
+                                  addItemToNestedSection(
+                                    section.id,
+                                    item.id,
+                                    childSection.id
+                                  )
+                                }
+                                type="button"
+                              >
+                                {labels.addNestedItem}
+                              </button>
+                            </div>
+                          ))}
                         </div>
                         <div className="item-meta">{item.id}</div>
                       </div>
