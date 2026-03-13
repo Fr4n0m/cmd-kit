@@ -96,50 +96,90 @@ export function PlaygroundConfigurator({
   onUpdateNestedSectionTitle,
   onUpdateSection
 }: PlaygroundConfiguratorProps) {
+  const commandCount = config.sections.reduce(
+    (total, section) => total + section.items.length,
+    0
+  );
+
   return (
     <section className="panel">
       <div className="panel-heading">
         <p className="eyebrow">{labels.config}</p>
-        <h2>cmd+kit</h2>
+        <h2>Command surface</h2>
+        <p className="panel-copy">
+          Tune the visible product layer first, then export the code that matches it.
+        </p>
       </div>
 
       <div className="playground-preview-card">
-        <span className="preview-shortcut">{config.shortcut}</span>
+        <div className="preview-meta-row">
+          <span className="preview-shortcut">{config.shortcut}</span>
+          <span className="preview-layout">{config.layout}</span>
+        </div>
         <span className="preview-title">{config.title}</span>
         <span className="preview-subtitle">{config.placeholder}</span>
       </div>
 
-      <PlaygroundBasicsForm
-        config={config}
-        labels={labels}
-        onUpdateConfig={onUpdateConfig}
-      />
+      <div className="playground-summary-grid">
+        <article className="summary-tile">
+          <span>Sections</span>
+          <strong>{config.sections.length}</strong>
+        </article>
+        <article className="summary-tile">
+          <span>Commands</span>
+          <strong>{commandCount}</strong>
+        </article>
+        <article className="summary-tile">
+          <span>Recents</span>
+          <strong>{config.recentsEnabled ? "On" : "Off"}</strong>
+        </article>
+      </div>
 
-      <PlaygroundThemeForm
-        config={config}
-        labels={labels}
-        onUpdateConfig={onUpdateConfig}
-      />
+      <div className="panel-section">
+        <div className="panel-section-heading">
+          <span className="eyebrow">Basics</span>
+          <h3>Message and behavior</h3>
+        </div>
+        <PlaygroundBasicsForm
+          config={config}
+          labels={labels}
+          onUpdateConfig={onUpdateConfig}
+        />
+      </div>
 
-      <PlaygroundSectionsPanel
-        config={config}
-        labels={labels}
-        onAddItemToNestedSection={onAddItemToNestedSection}
-        onAddItemToSection={onAddItemToSection}
-        onAddNestedSection={onAddNestedSection}
-        onAddSection={onAddSection}
-        onMoveItem={onMoveItem}
-        onMoveNestedItem={onMoveNestedItem}
-        onMoveSection={onMoveSection}
-        onRemoveItem={onRemoveItem}
-        onRemoveNestedItem={onRemoveNestedItem}
-        onRemoveNestedSection={onRemoveNestedSection}
-        onRemoveSection={onRemoveSection}
-        onUpdateItem={onUpdateItem}
-        onUpdateNestedItem={onUpdateNestedItem}
-        onUpdateNestedSectionTitle={onUpdateNestedSectionTitle}
-        onUpdateSection={onUpdateSection}
-      />
+      <div className="panel-section">
+        <div className="panel-section-heading">
+          <span className="eyebrow">Theme</span>
+          <h3>Palette and feel</h3>
+        </div>
+        <PlaygroundThemeForm
+          config={config}
+          labels={labels}
+          onUpdateConfig={onUpdateConfig}
+        />
+      </div>
+
+      <div className="panel-section">
+        <PlaygroundSectionsPanel
+          config={config}
+          labels={labels}
+          onAddItemToNestedSection={onAddItemToNestedSection}
+          onAddItemToSection={onAddItemToSection}
+          onAddNestedSection={onAddNestedSection}
+          onAddSection={onAddSection}
+          onMoveItem={onMoveItem}
+          onMoveNestedItem={onMoveNestedItem}
+          onMoveSection={onMoveSection}
+          onRemoveItem={onRemoveItem}
+          onRemoveNestedItem={onRemoveNestedItem}
+          onRemoveNestedSection={onRemoveNestedSection}
+          onRemoveSection={onRemoveSection}
+          onUpdateItem={onUpdateItem}
+          onUpdateNestedItem={onUpdateNestedItem}
+          onUpdateNestedSectionTitle={onUpdateNestedSectionTitle}
+          onUpdateSection={onUpdateSection}
+        />
+      </div>
     </section>
   );
 }
