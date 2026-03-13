@@ -31,9 +31,9 @@ Useful scripts:
 - `npm run typecheck`
 - `npm run test`
 
-## Quality Gates
+## Quality Checks
 
-GitHub Actions runs these checks on pushes and pull requests:
+Before merging or releasing, run:
 
 - `npm run test`
 - `npm run typecheck`
@@ -41,7 +41,7 @@ GitHub Actions runs these checks on pushes and pull requests:
 
 ## Deployment
 
-`apps/web` is a Vite app and is suitable for static deployment on Vercel.
+`apps/web` is an Astro app and is suitable for static deployment on Vercel.
 
 Recommended Vercel settings:
 
