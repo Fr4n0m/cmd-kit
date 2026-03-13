@@ -20,6 +20,9 @@ export default function PlaygroundIsland() {
     config,
     copyCode,
     isOpen,
+    moveItem,
+    moveNestedItem,
+    moveSection,
     removeItem,
     removeNestedItem,
     removeNestedSection,
@@ -78,6 +81,9 @@ export default function PlaygroundIsland() {
           onAddItemToSection={addItemToSection}
           onAddNestedSection={addNestedSection}
           onAddSection={addSectionToConfig}
+          onMoveItem={moveItem}
+          onMoveNestedItem={moveNestedItem}
+          onMoveSection={moveSection}
           onRemoveItem={removeItem}
           onRemoveNestedItem={removeNestedItem}
           onRemoveNestedSection={removeNestedSection}

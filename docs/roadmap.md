@@ -176,6 +176,7 @@ Completed:
 - allow editing nested command sections and nested items from the configurator
 - add semantic tab/tabpanel behavior and live copy feedback to the playground code panel
 - add baseline SEO metadata and structured data to the Astro shell
+- allow reordering sections and items directly from the configurator
 
 Remaining:
 

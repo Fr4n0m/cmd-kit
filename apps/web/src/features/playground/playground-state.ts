@@ -84,10 +84,28 @@ export function usePlaygroundState() {
     }));
   }
 
+  function moveSection(sectionId: string, direction: "up" | "down") {
+    setConfig((current) => ({
+      ...current,
+      sections: moveById(current.sections, sectionId, direction)
+    }));
+  }
+
   function addItemToSection(sectionId: string) {
     updateSection(sectionId, (section) => ({
       ...section,
       items: [...section.items, createItem()]
+    }));
+  }
+
+  function moveItem(
+    sectionId: string,
+    itemId: string,
+    direction: "up" | "down"
+  ) {
+    updateSection(sectionId, (section) => ({
+      ...section,
+      items: moveById(section.items, itemId, direction)
     }));
   }
 
@@ -166,6 +184,19 @@ export function usePlaygroundState() {
     }));
   }
 
+  function moveNestedItem(
+    sectionId: string,
+    itemId: string,
+    childSectionId: string,
+    nestedItemId: string,
+    direction: "up" | "down"
+  ) {
+    updateNestedSection(sectionId, itemId, childSectionId, (childSection) => ({
+      ...childSection,
+      items: moveById(childSection.items, nestedItemId, direction)
+    }));
+  }
+
   function updateNestedItem(
     sectionId: string,
     itemId: string,
@@ -211,6 +242,9 @@ export function usePlaygroundState() {
     config,
     copyCode,
     isOpen,
+    moveItem,
+    moveNestedItem,
+    moveSection,
     removeItem,
     removeNestedItem,
     removeNestedSection,
@@ -223,4 +257,27 @@ export function usePlaygroundState() {
     updateNestedSection,
     updateSection
   };
+}
+
+function moveById<T extends { id: string }>(
+  collection: T[],
+  id: string,
+  direction: "up" | "down"
+): T[] {
+  const index = collection.findIndex((entry) => entry.id === id);
+
+  if (index < 0) {
+    return collection;
+  }
+
+  const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+  if (targetIndex < 0 || targetIndex >= collection.length) {
+    return collection;
+  }
+
+  const next = [...collection];
+  const [item] = next.splice(index, 1);
+  next.splice(targetIndex, 0, item);
+  return next;
 }

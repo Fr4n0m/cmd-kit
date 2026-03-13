@@ -16,6 +16,19 @@ interface PlaygroundConfiguratorProps {
   onAddItemToSection: (sectionId: string) => void;
   onAddNestedSection: (sectionId: string, itemId: string) => void;
   onAddSection: () => void;
+  onMoveItem: (
+    sectionId: string,
+    itemId: string,
+    direction: "up" | "down"
+  ) => void;
+  onMoveNestedItem: (
+    sectionId: string,
+    itemId: string,
+    childSectionId: string,
+    nestedItemId: string,
+    direction: "up" | "down"
+  ) => void;
+  onMoveSection: (sectionId: string, direction: "up" | "down") => void;
   onRemoveItem: (sectionId: string, itemId: string) => void;
   onRemoveNestedItem: (
     sectionId: string,
@@ -69,6 +82,9 @@ export function PlaygroundConfigurator({
   onAddItemToSection,
   onAddNestedSection,
   onAddSection,
+  onMoveItem,
+  onMoveNestedItem,
+  onMoveSection,
   onRemoveItem,
   onRemoveNestedItem,
   onRemoveNestedSection,
@@ -347,6 +363,25 @@ export function PlaygroundConfigurator({
             onAddNestedSection={(itemId) =>
               onAddNestedSection(section.id, itemId)
             }
+            onMoveDown={() => onMoveSection(section.id, "down")}
+            onMoveItem={(itemId, direction) =>
+              onMoveItem(section.id, itemId, direction)
+            }
+            onMoveNestedItem={(
+              itemId,
+              childSectionId,
+              nestedItemId,
+              direction
+            ) =>
+              onMoveNestedItem(
+                section.id,
+                itemId,
+                childSectionId,
+                nestedItemId,
+                direction
+              )
+            }
+            onMoveUp={() => onMoveSection(section.id, "up")}
             onRemove={() => onRemoveSection(section.id)}
             onRemoveItem={(itemId) => onRemoveItem(section.id, itemId)}
             onRemoveNestedItem={(itemId, childSectionId, nestedItemId) =>
