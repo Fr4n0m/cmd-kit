@@ -24,6 +24,7 @@ License: `MIT`
 - `apps/example-react`: local React verification app
 - `apps/example-vue`: local Vue verification app
 - `apps/example-preact`: local Preact verification app
+- `apps/example-astro`: local Astro island verification app
 
 ## Local Development
 

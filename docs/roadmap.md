@@ -36,6 +36,7 @@ Completed:
 - initial docs page for Preact usage
 - Astro integration guidance for island-based usage
 - local example apps for React, Vue, and Preact
+- local Astro example app for island-based verification
 
 In progress:
 
