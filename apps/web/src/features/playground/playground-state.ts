@@ -33,7 +33,12 @@ export function usePlaygroundState() {
   }, [activeTab, config]);
 
   async function copyCode() {
-    await navigator.clipboard.writeText(code);
+    try {
+      await navigator.clipboard.writeText(code);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   function updateSection(

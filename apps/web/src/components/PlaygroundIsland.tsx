@@ -108,7 +108,7 @@ export default function PlaygroundIsland() {
           activeTab={activeTab}
           code={code}
           labels={labels}
-          onCopy={() => void copyCode()}
+          onCopy={copyCode}
           onSelectTab={setActiveTab}
         />
       </div>

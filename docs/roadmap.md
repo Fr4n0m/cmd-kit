@@ -172,6 +172,8 @@ Completed:
 - add explicit npm installation guidance in the web experience
 - expose recent-command behavior controls in the configurator
 - allow editing nested command sections and nested items from the configurator
+- add semantic tab/tabpanel behavior and live copy feedback to the playground code panel
+- add baseline SEO metadata and structured data to the Astro shell
 
 Remaining:
 
@@ -210,6 +212,7 @@ Completed:
 - add a code-first baseline `web-quality-audit` document for `apps/web`
 - clear the `apps/web` `react-doctor` score to `100/100` by splitting the playground feature
 - clear the shipped React package `react-doctor` score to `100/100`
+- extend web tests to cover accessible code-panel tab semantics
 
 Remaining:
 

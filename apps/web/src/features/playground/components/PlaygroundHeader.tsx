@@ -27,6 +27,11 @@ export function PlaygroundHeader({
           {labels.launch}
         </button>
         <button
+          aria-label={
+            language === "en"
+              ? "Switch playground language to Spanish"
+              : "Cambiar el idioma del configurador a ingles"
+          }
           className="ghost-button"
           onClick={onToggleLanguage}
           type="button"
