@@ -24,69 +24,117 @@ const structuredData = {
   <main class="site-shell" id="main-content" tabindex="-1">
     <section class="hero">
       <div class="hero-copy">
-        <span class="badge">Open source command palette toolkit</span>
-        <h1>Build, theme, and ship your own Cmd+K experience.</h1>
+        <span class="badge">Open source command palette system</span>
+        <p class="hero-kicker">Headless core. Official adapters. Copyable UI.</p>
+        <h1>Design a command palette that looks like your product, not a plugin.</h1>
         <p>
-          `cmd+kit` is a framework-agnostic command palette with official React bindings, fuzzy
-          search, strong keyboard support, and a live playground that exports real code.
+          `cmd+kit` gives you a framework-agnostic command engine, official adapters, nested
+          navigation, recent commands, and a live configurator that exports real code instead of
+          static mock snippets.
         </p>
         <div class="hero-actions">
-          <a class="primary-button" href="#playground">Open configurator</a>
-          <a class="ghost-button" href="/docs/getting-started">Read docs</a>
+          <a class="primary-button" href="#playground">Open the configurator</a>
+          <a class="ghost-button" href="/docs/getting-started">Start with docs</a>
+        </div>
+        <div class="hero-proof">
+          <div class="proof-card">
+            <span>Core</span>
+            <strong>Framework-agnostic search, grouping, execution, recents</strong>
+          </div>
+          <div class="proof-card">
+            <span>Adapters</span>
+            <strong>React, Vue, Preact, Astro islands and vanilla browser</strong>
+          </div>
         </div>
       </div>
-      <div class="hero-card">
-        <p class="eyebrow">Why Astro here</p>
-        <div class="hero-card-surface">
-          <span class="preview-shortcut">Astro + React</span>
-          <span class="preview-title">Fast by default</span>
-          <span class="preview-subtitle">
-            Static landing shell, interactive islands only where the configurator needs state.
-          </span>
+      <div class="hero-stage">
+        <div class="hero-stage-card">
+          <div class="stage-toolbar">
+            <span class="stage-pill">Cmd / Ctrl + K</span>
+            <span class="stage-pill stage-pill-muted">React first</span>
+          </div>
+          <div class="stage-command">
+            <div class="stage-command-top">
+              <span class="stage-command-title">Project commands</span>
+              <span class="stage-command-meta">mod+k</span>
+            </div>
+            <div class="stage-search">Search commands, pages, and actions...</div>
+            <div class="stage-section">
+              <span class="stage-section-label">Recent</span>
+              <div class="stage-item stage-item-active">
+                <div>
+                  <strong>Open dashboard</strong>
+                  <span>Jump into the workspace overview</span>
+                </div>
+                <em>G D</em>
+              </div>
+              <div class="stage-item">
+                <div>
+                  <strong>Search docs</strong>
+                  <span>Nested section with scoped commands</span>
+                </div>
+                <em>Enter</em>
+              </div>
+            </div>
+          </div>
+          <div class="stage-note">
+            Astro for the shell. Interactive islands only where the product actually needs state.
+          </div>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric-card">
+            <span>Surface</span>
+            <strong>Headless + styled</strong>
+          </div>
+          <div class="metric-card">
+            <span>Output</span>
+            <strong>React, Vue, Preact, CSS, Tailwind, JSON</strong>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="feature-grid">
-      <article class="feature-card">
-        <p class="eyebrow">Core</p>
-        <h2>Framework-agnostic foundation</h2>
-        <p>Shared search, grouping, theming tokens, messages, and future action orchestration.</p>
-      </article>
-      <article class="feature-card">
-        <p class="eyebrow">React</p>
-        <h2>Official integration first</h2>
-        <p>Usable today with keyboard navigation, theme props, grouped results, and render hooks.</p>
-      </article>
-      <article class="feature-card">
-        <p class="eyebrow">Playground</p>
-        <h2>Copy real code</h2>
-        <p>Configure the palette visually and export React, CSS variables, or Tailwind-oriented snippets.</p>
-      </article>
-    </section>
-
-    <section class="docs-callout">
-      <div class="panel">
-        <p class="eyebrow">Docs</p>
-        <h2>Install, configure, and ship it</h2>
+    <section class="overview-grid">
+      <article class="overview-card overview-card-large">
+        <p class="eyebrow">Why it exists</p>
+        <h2>Most command palettes are either beautiful but rigid, or flexible but forgettable.</h2>
         <p>
-          The docs are now part of the product surface. They will track installation, React usage,
-          and production release requirements as the public API stabilizes.
+          `cmd+kit` is designed so the engine stays portable while the product surface stays
+          opinionated enough to ship quickly. You can keep the UI, replace it, or generate a new
+          one from the configurator.
+        </p>
+      </article>
+      <article class="overview-card">
+        <p class="eyebrow">Search</p>
+        <h2>Fuzzy by default</h2>
+        <p>Fast matching, grouped sections, nested pages, and recents without leaking framework code into the core.</p>
+      </article>
+      <article class="overview-card">
+        <p class="eyebrow">React</p>
+        <h2>Customizable surface</h2>
+        <p>Use the default UI, override renderers, or treat the hook as a lower-level integration boundary.</p>
+      </article>
+    </section>
+
+    <section class="launch-band">
+      <article class="launch-card install-panel">
+        <p class="eyebrow">Install</p>
+        <h2>npm packages</h2>
+        <p>Start with the adapter that gets you shipping fast, then drop into the core when you need full control.</p>
+        <pre class="inline-code-block"><code>{`npm install @cmd-kit/react`}</code></pre>
+        <pre class="inline-code-block"><code>{`npm install @cmd-kit/core`}</code></pre>
+      </article>
+      <article class="launch-card">
+        <p class="eyebrow">Docs</p>
+        <h2>Installation, customization, release flow</h2>
+        <p>
+          The docs are part of the product surface, not an afterthought. They cover the adapters,
+          the core, customization patterns, and release preparation.
         </p>
         <div class="hero-actions">
           <a class="primary-button" href="/docs/getting-started">Getting started</a>
           <a class="ghost-button" href="/docs/customization">Customization</a>
         </div>
-      </div>
-    </section>
-
-    <section class="install-grid">
-      <article class="panel install-panel">
-        <p class="eyebrow">Install</p>
-        <h2>npm packages</h2>
-        <p>Start with the React adapter today, then drop down to the core package when needed.</p>
-        <pre class="inline-code-block"><code>{`npm install @cmd-kit/react`}</code></pre>
-        <pre class="inline-code-block"><code>{`npm install @cmd-kit/core`}</code></pre>
       </article>
     </section>
 

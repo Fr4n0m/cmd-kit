@@ -45,6 +45,9 @@ export function PlaygroundCodePanel({
         <div>
           <p className="eyebrow">{labels.code}</p>
           <h2>{heading}</h2>
+          <p className="panel-copy">
+            Switch frameworks, copy the snippet, and keep the same command structure.
+          </p>
         </div>
         <button className="ghost-button" onClick={() => void handleCopy()} type="button">
           {labels.copy}
@@ -131,6 +134,11 @@ export function PlaygroundCodePanel({
         >
           {labels.jsonCode}
         </button>
+      </div>
+      <div className="code-panel-meta">
+        <span className="code-chip">Export</span>
+        <strong>{heading}</strong>
+        <span>Live output from the current configurator state</span>
       </div>
       <pre className="code-block" id={panelId} role="tabpanel">
         <code>{code}</code>
