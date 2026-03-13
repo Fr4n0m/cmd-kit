@@ -163,6 +163,7 @@ Completed:
 - export React and style snippets
 - allow editing of sections and items from the configurator
 - reorganize playground code by feature
+- split the playground island into smaller feature-level components and state helpers
 - add initial docs pages beyond the homepage
 - cover the full message set and current theme token surface in the configurator
 - add explicit npm installation guidance in the web experience
@@ -204,11 +205,12 @@ Completed:
 - add an explicit dependency audit step to the local release workflow
 - run a baseline `react-doctor` scan and reduce it to component-size warnings only
 - add a code-first baseline `web-quality-audit` document for `apps/web`
+- clear the `apps/web` `react-doctor` score to `100/100` by splitting the playground feature
 
 Remaining:
 
 - extend accessibility checks to more interaction flows across the web app and React package
-- split `CommandPalette` and `PlaygroundIsland` into smaller units so `react-doctor` is clean
+- split `CommandPalette` into smaller units so `react-doctor` is clean across the shipped React surface
 - add a deployed full web audit pass using `web-quality-audit`
 - break the web audit into explicit checks for `accessibility`, `performance`, `core-web-vitals`, `seo`, and `best-practices`
 - add manual QA passes across desktop and mobile

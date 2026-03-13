@@ -1,5 +1,7 @@
 import type { Language } from "./config";
 
+export type PlaygroundLabels = (typeof playgroundLabels)[Language];
+
 export const playgroundLabels = {
   en: {
     config: "Configurator",
