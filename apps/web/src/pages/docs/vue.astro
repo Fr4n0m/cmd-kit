@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "cmd+kit | Vue";
+const description = "Use the Vue command palette and configure sections, theming, and behavior.";
+---
+
+<BaseLayout description={description} title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel">
+      <p class="eyebrow">Vue</p>
+      <h1>Vue Integration</h1>
+      <p>
+        The Vue package ships a `useCommandPalette` composable and a default `CommandPalette`
+        component. It mirrors the same core command model as the React adapter while fitting Vue's
+        props, emits, and slots.
+      </p>
+
+      <h2>Install</h2>
+      <pre class="code-block"><code>npm install @cmd-kit/vue vue</code></pre>
+
+      <h2>Basic example</h2>
+      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/vue";
+import { defineComponent } from "vue";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
+export default defineComponent({
+  components: { CommandPalette },
+  setup() {
+    return { sections };
+  }
+});`}</code></pre>
+
+      <h2>Current capabilities</h2>
+      <ul>
+        <li>grouped results</li>
+        <li>keyboard navigation</li>
+        <li>nested navigation through child sections</li>
+        <li>theme tokens through props</li>
+        <li>message overrides</li>
+        <li>slot-based customization</li>
+        <li>async sources and recent item tracking</li>
+      </ul>
+
+      <h2>Status</h2>
+      <p>
+        Vue support is newer than the React adapter and will continue to harden as the
+        multi-framework roadmap advances.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

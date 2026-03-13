@@ -14,9 +14,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "npm run lint --workspaces --if-present",
-    "pack:verify": "node -e \"require('fs').rmSync('.artifacts/packs',{ recursive: true, force: true }); require('fs').mkdirSync('.artifacts/packs',{ recursive: true });\" && npm pack --workspace @cmd-kit/core --pack-destination .artifacts/packs && npm pack --workspace @cmd-kit/react --pack-destination .artifacts/packs",
+    "pack:verify": "node -e \"require('fs').rmSync('.artifacts/packs',{ recursive: true, force: true }); require('fs').mkdirSync('.artifacts/packs',{ recursive: true });\" && npm pack --workspace @cmd-kit/core --pack-destination .artifacts/packs && npm pack --workspace @cmd-kit/react --pack-destination .artifacts/packs && npm pack --workspace @cmd-kit/vue --pack-destination .artifacts/packs",
     "release:check": "npm run test && npm run typecheck && npm run build && npm run pack:verify",
-    "release:npm": "npm publish --workspace @cmd-kit/core && npm publish --workspace @cmd-kit/react",
+    "release:npm": "npm publish --workspace @cmd-kit/core && npm publish --workspace @cmd-kit/react && npm publish --workspace @cmd-kit/vue",
     "test": "npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "version:packages": "changeset version"
@@ -39,6 +39,8 @@
     "tsup": "^8.3.5",
     "typescript": "^5.8.2",
     "vite": "^6.2.0",
-    "vitest": "^3.0.0"
+    "vitest": "^3.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "vue": "^3.5.13"
   }
 }

@@ -16,6 +16,7 @@
 - run `npm run build`
 - run `npm run pack:verify`
 - manually test the React palette flows
+- manually test the Vue palette flows
 - manually test the Astro web app and playground
 
 ## Documentation Gate

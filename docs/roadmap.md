@@ -7,7 +7,7 @@ Current status: `active development`
 Project goal:
 
 - ship `cmd+kit` as an open source npm package
-- provide a framework-agnostic core with official React support first and a clear path to Vue, Svelte, Solid, Preact, Astro integrations, and vanilla browser usage
+- provide a framework-agnostic core with official React support first and active expansion into Vue, Svelte, Solid, Preact, Astro integrations, and vanilla browser usage
 - publish a fast Astro landing page with a live configurator
 - reach a production-ready quality bar for accessibility, documentation, packaging, and release workflow
 
@@ -23,6 +23,7 @@ Completed:
 - declarative sections support in the core API
 - hexagonal direction in `packages/core` with domain, application, ports, and adapters
 - React command palette baseline with keyboard navigation and default UI
+- initial Vue adapter with a composable and default UI component
 - nested navigation support through child sections
 - slot-level renderer overrides and class name hooks in the React adapter
 - playground export for React, CSS variables, and Tailwind-oriented snippets
@@ -44,7 +45,7 @@ Not started or incomplete:
 - npm publishing setup
 - final production documentation pass for installation and customization
 - final open source maintenance workflow and metadata cleanup
-- multi-framework adapter rollout beyond React
+- multi-framework rollout beyond React is underway but incomplete
 
 ## Phases
 
@@ -243,13 +244,17 @@ Production bar:
 
 ## Phase 7: Multi-Framework Expansion
 
-Status: `planned after React-first release`
+Status: `started`
 
 Scope:
 
 - keep `packages/core` stable enough to support multiple adapters without duplication
 - add at least one non-React adapter after the first public release
 - document usage patterns for framework consumers beyond React
+
+Completed:
+
+- start `@cmd-kit/vue` as the first non-React adapter
 
 Planned targets:
 

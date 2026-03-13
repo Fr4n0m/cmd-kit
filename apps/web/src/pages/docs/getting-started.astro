@@ -11,7 +11,8 @@ const description = "Install cmd+kit, understand the workspace, and start integr
       <p class="eyebrow">Docs</p>
       <h1>Getting Started</h1>
       <p>
-        `cmd+kit` is split into a framework-agnostic core and an official React adapter. The web
+        `cmd+kit` is split into a framework-agnostic core and framework adapters. React is the
+        most mature public adapter today, and Vue support is now available in parallel. The web
         app in this repository is the landing page and live configurator.
       </p>
 
@@ -19,11 +20,13 @@ const description = "Install cmd+kit, understand the workspace, and start integr
       <ul>
         <li>`packages/core`: headless engine and public core types</li>
         <li>`packages/react`: default React UI and bindings</li>
+        <li>`packages/vue`: default Vue UI and composable bindings</li>
         <li>`apps/web`: Astro marketing site and React playground</li>
       </ul>
 
       <h2>Install</h2>
-      <pre class="code-block"><code>npm install @cmd-kit/react react react-dom</code></pre>
+      <pre class="code-block"><code>npm install @cmd-kit/react react react-dom
+npm install @cmd-kit/vue vue</code></pre>
 
       <h2>Quality checks</h2>
       <pre class="code-block"><code>npm run test
@@ -32,10 +35,10 @@ npm run build</code></pre>
 
       <h2>Next steps</h2>
       <p>
-        Start with the React adapter if you want a ready-made command palette quickly. Use the
-        playground on the homepage to generate starter code.
+        Start with the React adapter if you want the most mature path today. Use the Vue adapter
+        when you want the same core behavior with Vue composition patterns. The homepage
+        playground currently exports React starter code first.
       </p>
     </article>
   </main>
 </BaseLayout>
-
