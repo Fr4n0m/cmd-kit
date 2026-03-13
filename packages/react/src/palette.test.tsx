@@ -63,4 +63,36 @@ describe("CommandPalette", () => {
 
     expect(onSelect).toHaveBeenCalledTimes(1);
   });
+
+  it("navigates into child sections when an item exposes nested commands", async () => {
+    render(
+      <CommandPalette
+        defaultOpen
+        items={[
+          {
+            id: "settings",
+            title: "Settings",
+            section: "General",
+            children: [
+              {
+                id: "appearance",
+                title: "Appearance",
+                items: [{ id: "theme", title: "Theme" }]
+              }
+            ]
+          }
+        ]}
+      />
+    );
+
+    await act(async () => {
+      fireEvent.keyDown(screen.getByPlaceholderText("Search commands..."), {
+        key: "Enter"
+      });
+    });
+
+    expect(screen.getByText("Appearance")).toBeInTheDocument();
+    expect(screen.getByText("Theme")).toBeInTheDocument();
+    expect(screen.getByText("Back")).toBeInTheDocument();
+  });
 });

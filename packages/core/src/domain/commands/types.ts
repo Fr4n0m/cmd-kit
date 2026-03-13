@@ -8,6 +8,7 @@ export interface CommandItem {
   shortcut?: string;
   href?: string;
   disabled?: boolean;
+  children?: CommandSection[];
   onSelect?: () => void | Promise<void>;
 }
 
@@ -53,3 +54,8 @@ export interface CommandSnapshot {
   groups: CommandGroup[];
 }
 
+export type CommandExecutionResult =
+  | { type: "noop" }
+  | { type: "navigate"; sections: CommandSection[]; title: string }
+  | { type: "href"; href: string }
+  | { type: "callback"; callback: NonNullable<CommandItem["onSelect"]> };

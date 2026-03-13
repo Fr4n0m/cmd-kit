@@ -1,6 +1,7 @@
 import {
   createCommandSnapshot,
   createResolvedConfig,
+  executeCommand,
   type CommandItem,
   type CommandMessages,
   type CommandSection,
@@ -15,6 +16,11 @@ import {
   useMemo,
   useState
 } from "react";
+
+interface NavigationState {
+  sections: CommandSection[];
+  title: string;
+}
 
 export interface CommandPaletteProps {
   items?: CommandItem[];
@@ -46,19 +52,22 @@ export function CommandPalette({
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [navigationStack, setNavigationStack] = useState<NavigationState[]>([]);
   const titleId = useId();
 
   const resolvedOpen = open ?? internalOpen;
+  const activeSections = navigationStack.at(-1)?.sections ?? sections;
+  const activeTitle = navigationStack.at(-1)?.title ?? title;
   const resolvedConfig = useMemo(
     () =>
       createResolvedConfig({
         items,
-        sections,
+        sections: activeSections,
         messages,
         theme,
         shortcut
       }),
-    [items, messages, sections, shortcut, theme]
+    [activeSections, items, messages, shortcut, theme]
   );
   const snapshot = useMemo(
     () => createCommandSnapshot(resolvedConfig, query),
@@ -99,29 +108,57 @@ export function CommandPalette({
     if (!nextOpen) {
       setQuery("");
       setActiveIndex(0);
+      setNavigationStack([]);
     }
 
     onOpenChange?.(nextOpen);
   }
 
   async function runItem(item: CommandItem | undefined) {
-    if (!item || item.disabled) {
+    const result = executeCommand(item);
+
+    if (result.type === "navigate") {
+      setNavigationStack((current) => [
+        ...current,
+        {
+          title: result.title,
+          sections: result.sections
+        }
+      ]);
+      setQuery("");
+      setActiveIndex(0);
       return;
     }
 
-    if (item.onSelect) {
-      await item.onSelect();
-    } else if (item.href) {
-      window.location.assign(item.href);
+    if (result.type === "callback") {
+      await result.callback();
+      setOpenState(false);
+      return;
     }
 
-    setOpenState(false);
+    if (result.type === "href") {
+      window.location.assign(result.href);
+      setOpenState(false);
+    }
   }
 
   function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Escape") {
       event.preventDefault();
-      setOpenState(false);
+      if (navigationStack.length) {
+        setNavigationStack((current) => current.slice(0, -1));
+        setQuery("");
+        setActiveIndex(0);
+      } else {
+        setOpenState(false);
+      }
+      return;
+    }
+
+    if (event.key === "Backspace" && !query && navigationStack.length) {
+      event.preventDefault();
+      setNavigationStack((current) => current.slice(0, -1));
+      setActiveIndex(0);
       return;
     }
 
@@ -163,18 +200,33 @@ export function CommandPalette({
         <div style={headerStyle}>
           <div>
             <p id={titleId} style={titleStyle}>
-              {title}
+              {activeTitle}
             </p>
             <p style={captionStyle}>Press {prettyShortcut(shortcut)} to toggle.</p>
           </div>
-          <button
-            aria-label={resolvedConfig.messages.closeLabel}
-            onClick={() => setOpenState(false)}
-            style={closeButtonStyle(resolvedConfig.theme)}
-            type="button"
-          >
-            Esc
-          </button>
+          <div style={headerActionsStyle}>
+            {navigationStack.length ? (
+              <button
+                onClick={() => {
+                  setNavigationStack((current) => current.slice(0, -1));
+                  setQuery("");
+                  setActiveIndex(0);
+                }}
+                style={closeButtonStyle(resolvedConfig.theme)}
+                type="button"
+              >
+                Back
+              </button>
+            ) : null}
+            <button
+              aria-label={resolvedConfig.messages.closeLabel}
+              onClick={() => setOpenState(false)}
+              style={closeButtonStyle(resolvedConfig.theme)}
+              type="button"
+            >
+              Esc
+            </button>
+          </div>
         </div>
 
         <input
@@ -246,6 +298,7 @@ function DefaultItem({
         </div>
       </div>
       {item.shortcut ? <span style={shortcutStyle}>{item.shortcut}</span> : null}
+      {!item.shortcut && item.children?.length ? <span style={shortcutStyle}>Enter</span> : null}
     </>
   );
 }
@@ -379,6 +432,11 @@ const headerStyle: CSSProperties = {
   justifyContent: "space-between",
   gap: "1rem",
   alignItems: "start"
+};
+
+const headerActionsStyle: CSSProperties = {
+  display: "flex",
+  gap: "0.5rem"
 };
 
 const titleStyle: CSSProperties = {

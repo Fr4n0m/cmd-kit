@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { filterCommandItems, groupCommandItems } from "./filter";
+import { executeCommand } from "./application/commands/execute-command";
 import { flattenSections, resolveCommandItems } from "./state";
 
 const items = [
@@ -93,5 +94,33 @@ describe("section normalization", () => {
         section: "Workspace"
       }
     ]);
+  });
+});
+
+describe("executeCommand", () => {
+  it("returns a nested navigation result when an item has child sections", () => {
+    expect(
+      executeCommand({
+        id: "settings",
+        title: "Settings",
+        children: [
+          {
+            id: "appearance",
+            title: "Appearance",
+            items: [{ id: "theme", title: "Theme" }]
+          }
+        ]
+      })
+    ).toEqual({
+      type: "navigate",
+      title: "Settings",
+      sections: [
+        {
+          id: "appearance",
+          title: "Appearance",
+          items: [{ id: "theme", title: "Theme" }]
+        }
+      ]
+    });
   });
 });
