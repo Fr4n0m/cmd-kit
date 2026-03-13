@@ -6,6 +6,7 @@
 - review [roadmap.md](./roadmap.md) for remaining production blockers
 - verify repository and issue tracker URLs in package metadata
 - review dependency health and decide whether any vulnerabilities are acceptable
+- create and commit the required Changeset entries
 
 ## Quality Gate
 
@@ -35,8 +36,7 @@
 ## Publish Gate
 
 - login with the final npm account
-- publish `@cmd-kit/core`
-- publish `@cmd-kit/react`
+- run `npm run release:npm`
 - install the published packages in a clean sample app
 - verify the docs site points to the final npm install command
 

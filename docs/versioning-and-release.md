@@ -2,19 +2,16 @@
 
 ## Current Approach
 
-Versioning is currently manual.
+Versioning now uses Changesets.
 
-Until an automated release tool is introduced, each release should follow:
+Release flow:
 
-1. update the package versions that need to be released
-2. run `npm run release:check`
-3. verify the release checklist
-4. publish to npm
-5. create a Git tag for the release
-
-## Recommended Future Improvement
-
-Adopt Changesets or an equivalent workflow when the package surface becomes more stable and multiple releases are expected.
+1. run `npm run changeset`
+2. commit the generated file under `.changeset/`
+3. run `npm run version:packages`
+4. run `npm run release:check`
+5. publish to npm with `npm run release:npm`
+6. create a Git tag for the release
 
 ## Release Units
 

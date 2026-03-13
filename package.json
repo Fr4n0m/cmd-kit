@@ -9,28 +9,32 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
+    "changeset": "changeset",
     "dev:web": "npm run dev --workspace @cmd-kit/web",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "npm run lint --workspaces --if-present",
     "pack:verify": "node -e \"require('fs').rmSync('.artifacts/packs',{ recursive: true, force: true }); require('fs').mkdirSync('.artifacts/packs',{ recursive: true });\" && npm pack --workspace @cmd-kit/core --pack-destination .artifacts/packs && npm pack --workspace @cmd-kit/react --pack-destination .artifacts/packs",
     "release:check": "npm run test && npm run typecheck && npm run build && npm run pack:verify",
+    "release:npm": "npm publish --workspace @cmd-kit/core && npm publish --workspace @cmd-kit/react",
     "test": "npm run test --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "version:packages": "changeset version"
   },
   "engines": {
     "node": ">=22.0.0",
     "npm": ">=11.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.30.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/jest-axe": "^3.5.9",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "jsdom": "^26.0.0",
     "jest-axe": "^10.0.0",
+    "jsdom": "^26.0.0",
     "prettier": "^3.5.3",
     "tsup": "^8.3.5",
     "typescript": "^5.8.2",

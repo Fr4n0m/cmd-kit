@@ -30,12 +30,14 @@ npm run dev:web
 Useful scripts:
 
 - `npm run build`
+- `npm run changeset`
 - `npm run typecheck`
 - `npm run test`
 - `npm run format`
 - `npm run format:check`
 - `npm run pack:verify`
 - `npm run release:check`
+- `npm run version:packages`
 
 ## Quality Checks
 
