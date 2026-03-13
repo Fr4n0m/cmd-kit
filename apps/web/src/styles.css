@@ -171,6 +171,12 @@ button {
   gap: 0.75rem;
 }
 
+.stack-inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .primary-button,
 .ghost-button,
 .tab {

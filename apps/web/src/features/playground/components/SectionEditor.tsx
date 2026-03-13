@@ -11,6 +11,10 @@ interface NestedSectionEditorProps {
   itemId: string;
   labels: PlaygroundLabels;
   onAddNestedItem: () => void;
+  onMoveNestedItem: (
+    nestedItemId: string,
+    direction: "up" | "down"
+  ) => void;
   onRemove: () => void;
   onRemoveNestedItem: (nestedItemId: string) => void;
   onUpdateNestedItem: (
@@ -109,6 +113,7 @@ export function NestedSectionEditor({
   childSection,
   labels,
   onAddNestedItem,
+  onMoveNestedItem,
   onRemove,
   onRemoveNestedItem,
   onUpdateNestedItem,
@@ -136,6 +141,22 @@ export function NestedSectionEditor({
               onUpdate={(updater) => onUpdateNestedItem(nestedItem.id, updater)}
             />
             <div className="row-between">
+              <div className="stack-inline">
+                <button
+                  className="inline-button"
+                  onClick={() => onMoveNestedItem(nestedItem.id, "up")}
+                  type="button"
+                >
+                  {labels.moveUp}
+                </button>
+                <button
+                  className="inline-button"
+                  onClick={() => onMoveNestedItem(nestedItem.id, "down")}
+                  type="button"
+                >
+                  {labels.moveDown}
+                </button>
+              </div>
               <label className="toggle-field">
                 <input
                   checked={nestedItem.disabled ?? false}
@@ -174,6 +195,15 @@ export function NestedSectionEditor({
 interface SectionEditorProps {
   labels: PlaygroundLabels;
   onAddItem: () => void;
+  onMoveDown: () => void;
+  onMoveItem: (itemId: string, direction: "up" | "down") => void;
+  onMoveNestedItem: (
+    itemId: string,
+    childSectionId: string,
+    nestedItemId: string,
+    direction: "up" | "down"
+  ) => void;
+  onMoveUp: () => void;
   onAddNestedSection: (itemId: string) => void;
   onAddNestedItem: (itemId: string, childSectionId: string) => void;
   onRemove: () => void;
@@ -206,6 +236,10 @@ interface SectionEditorProps {
 export function SectionEditor({
   labels,
   onAddItem,
+  onMoveDown,
+  onMoveItem,
+  onMoveNestedItem,
+  onMoveUp,
   onAddNestedItem,
   onAddNestedSection,
   onRemove,
@@ -227,9 +261,17 @@ export function SectionEditor({
             value={section.title}
           />
         </Field>
-        <button className="inline-button" onClick={onRemove} type="button">
-          {labels.remove}
-        </button>
+        <div className="stack-inline">
+          <button className="inline-button" onClick={onMoveUp} type="button">
+            {labels.moveUp}
+          </button>
+          <button className="inline-button" onClick={onMoveDown} type="button">
+            {labels.moveDown}
+          </button>
+          <button className="inline-button" onClick={onRemove} type="button">
+            {labels.remove}
+          </button>
+        </div>
       </div>
       <div className="section-items">
         {section.items.map((item) => (
@@ -240,6 +282,22 @@ export function SectionEditor({
               onUpdate={(updater) => onUpdateItem(item.id, updater)}
             />
             <div className="row-between">
+              <div className="stack-inline">
+                <button
+                  className="inline-button"
+                  onClick={() => onMoveItem(item.id, "up")}
+                  type="button"
+                >
+                  {labels.moveUp}
+                </button>
+                <button
+                  className="inline-button"
+                  onClick={() => onMoveItem(item.id, "down")}
+                  type="button"
+                >
+                  {labels.moveDown}
+                </button>
+              </div>
               <label className="toggle-field">
                 <input
                   checked={item.disabled ?? false}
@@ -280,6 +338,14 @@ export function SectionEditor({
                   labels={labels}
                   onAddNestedItem={() =>
                     onAddNestedItem(item.id, childSection.id)
+                  }
+                  onMoveNestedItem={(nestedItemId, direction) =>
+                    onMoveNestedItem(
+                      item.id,
+                      childSection.id,
+                      nestedItemId,
+                      direction
+                    )
                   }
                   onRemove={() =>
                     onRemoveNestedSection(item.id, childSection.id)
