@@ -22,6 +22,7 @@ const description = "Install cmd+kit, understand the workspace, and start integr
         <li>`packages/react`: default React UI and bindings</li>
         <li>`packages/vue`: default Vue UI and composable bindings</li>
         <li>`packages/preact`: Preact bindings aligned with the React-facing API</li>
+        <li>`apps/example-vanilla`: framework-free verification of the core in the browser</li>
         <li>`apps/web`: Astro marketing site and React playground</li>
       </ul>
 
@@ -30,12 +31,20 @@ const description = "Install cmd+kit, understand the workspace, and start integr
 npm install @cmd-kit/vue vue
 npm install @cmd-kit/preact preact</code></pre>
 
+      <h2>Headless core</h2>
+      <p>
+        If you want to render your own UI in plain browser code or another framework adapter, start
+        from `@cmd-kit/core` and build on top of the snapshot and execution primitives.
+      </p>
+      <pre class="code-block"><code>npm install @cmd-kit/core</code></pre>
+
       <h2>Pick your entry point</h2>
       <ul>
         <li><a href="/docs/react">React</a>: best-supported adapter today</li>
         <li><a href="/docs/vue">Vue</a>: slot-based adapter using the same core model</li>
         <li><a href="/docs/preact">Preact</a>: lean runtime with an API close to React</li>
         <li><a href="/docs/astro">Astro</a>: recommended composition pattern for static docs and islands</li>
+        <li>`@cmd-kit/core`: framework-free path for custom UI adapters and vanilla browser usage</li>
       </ul>
 
       <h2>Quality checks</h2>
