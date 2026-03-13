@@ -184,6 +184,7 @@ Completed:
 - add semantic tab/tabpanel behavior and live copy feedback to the playground code panel
 - add baseline SEO metadata and structured data to the Astro shell
 - allow reordering sections and items directly from the configurator
+- prepare `robots.txt`, `sitemap.xml`, and `site` wiring for the final public domain
 
 Remaining:
 

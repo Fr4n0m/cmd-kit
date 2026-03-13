@@ -38,12 +38,12 @@ What is already in place:
 - `apps/web/astro.config.mjs`
   No final `site` URL is configured yet.
   Impact: canonical behavior can only be provisional and sitemap generation should wait for the public domain.
-  Action: set the final site URL once the public domain is fixed.
+  Action: set `PUBLIC_SITE_URL` once the public domain is fixed so the prepared `site`, `robots.txt`, and `sitemap.xml` routes resolve to the real origin.
 
 - `apps/web`
-  No final sitemap or robots handling is defined yet.
-  Impact: SEO is not at a production bar yet.
-  Action: add sitemap and robots once the final public URL is known.
+  `robots.txt` and `sitemap.xml` are now wired, but they still need the final public origin to become production-ready.
+  Impact: the implementation is present, but release SEO is still blocked on the real site URL.
+  Action: set the final site URL once the public deployment target exists.
 
 - `apps/web`
   No deployed Lighthouse or Core Web Vitals measurements have been captured yet.
