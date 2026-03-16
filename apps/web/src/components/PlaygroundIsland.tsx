@@ -45,6 +45,21 @@ export default function PlaygroundIsland({
     updateSection
   } = usePlaygroundState(initialLanguage);
   const labels = playgroundLabels[config.language];
+  const asyncSource = React.useMemo(
+    () =>
+      config.sourceMode === "async"
+        ? async () => {
+            await new Promise((resolve) =>
+              window.setTimeout(resolve, config.sourceDelayMs)
+            );
+
+            return {
+              sections: config.sections
+            };
+          }
+        : undefined,
+    [config.sections, config.sourceDelayMs, config.sourceMode]
+  );
 
   return (
     <section
@@ -52,6 +67,8 @@ export default function PlaygroundIsland({
       id="playground"
     >
       <CommandPalette
+        defaultOpen={config.defaultOpen}
+        source={asyncSource}
         messages={{
           closeLabel: config.closeLabel,
           noResults: config.noResults,
@@ -67,7 +84,7 @@ export default function PlaygroundIsland({
               }
             : false
         }
-        sections={config.sections}
+        sections={config.sourceMode === "static" ? config.sections : undefined}
         shortcut={config.shortcut}
         theme={toTheme(config)}
         title={config.title}

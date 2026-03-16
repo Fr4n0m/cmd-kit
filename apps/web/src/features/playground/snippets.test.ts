@@ -24,6 +24,21 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain("children:");
   });
 
+  it("builds async source and defaultOpen into React snippets when enabled", () => {
+    const snippet = buildReactSnippet({
+      ...defaultConfig,
+      defaultOpen: true,
+      sourceDelayMs: 900,
+      sourceMode: "async"
+    });
+
+    expect(snippet).toContain("const source = async () => {");
+    expect(snippet).toContain("setTimeout(resolve, 900)");
+    expect(snippet).toContain("source={source}");
+    expect(snippet).toContain("defaultOpen");
+    expect(snippet).not.toContain("sections={sections}");
+  });
+
   it("builds CSS variables for the theme tokens", () => {
     const snippet = buildCssSnippet(defaultConfig);
 
@@ -37,6 +52,19 @@ describe("playground snippet builders", () => {
 
     expect(snippet).toContain("CommandPalette");
     expect(snippet).toContain("sections={sections}");
+  });
+
+  it("builds a Vue snippet with async source bindings when selected", () => {
+    const snippet = buildVueSnippet({
+      ...defaultConfig,
+      defaultOpen: true,
+      sourceMode: "async"
+    });
+
+    expect(snippet).toContain('const source = async () => {');
+    expect(snippet).toContain(':source="source"');
+    expect(snippet).toContain(':default-open="true"');
+    expect(snippet).not.toContain(':sections="sections"');
   });
 
   it("builds a Vue snippet from the same command config", () => {
@@ -64,10 +92,18 @@ describe("playground snippet builders", () => {
   });
 
   it("builds a JSON snippet for portable configuration export", () => {
-    const snippet = buildJsonSnippet(defaultConfig);
+    const snippet = buildJsonSnippet({
+      ...defaultConfig,
+      defaultOpen: true,
+      sourceDelayMs: 320,
+      sourceMode: "async"
+    });
 
     expect(snippet).toContain('"shortcut": "mod+k"');
     expect(snippet).toContain('"sections": [');
     expect(snippet).toContain('"sectionTitle": "Recent"');
+    expect(snippet).toContain('"defaultOpen": true');
+    expect(snippet).toContain('"sourceMode": "async"');
+    expect(snippet).toContain('"sourceDelayMs": 320');
   });
 });

@@ -15,6 +15,9 @@ export const playgroundLabels = {
     tailwindCode: "Tailwind",
     jsonCode: "JSON",
     language: "Language",
+    defaultOpen: "Open on load",
+    sourceMode: "Data mode",
+    sourceDelay: "Async delay",
     title: "Palette title",
     description: "Preview description",
     recents: "Recent items",
@@ -53,6 +56,8 @@ export const playgroundLabels = {
     layout: "Layout",
     centered: "Centered",
     wide: "Wide",
+    staticMode: "Static",
+    asyncMode: "Async source",
     copy: "Copy",
     launch: "Open preview"
   },
@@ -68,6 +73,9 @@ export const playgroundLabels = {
     tailwindCode: "Tailwind",
     jsonCode: "JSON",
     language: "Idioma",
+    defaultOpen: "Abrir al cargar",
+    sourceMode: "Modo de datos",
+    sourceDelay: "Delay async",
     title: "Titulo del palette",
     description: "Descripcion de preview",
     recents: "Items recientes",
@@ -106,6 +114,8 @@ export const playgroundLabels = {
     layout: "Layout",
     centered: "Centrado",
     wide: "Ancho",
+    staticMode: "Estatico",
+    asyncMode: "Source async",
     copy: "Copiar",
     launch: "Abrir preview"
   }
