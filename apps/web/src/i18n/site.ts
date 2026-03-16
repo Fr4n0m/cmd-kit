@@ -13,6 +13,9 @@ export interface LayoutCopy {
   productLabel: string;
   react: string;
   skipToContent: string;
+  themeDark: string;
+  themeLight: string;
+  toggleTheme: string;
   switchLanguage: string;
 }
 
@@ -26,6 +29,9 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     productLabel: "command palette system",
     react: "React",
     skipToContent: "Skip to main content",
+    themeDark: "Dark",
+    themeLight: "Light",
+    toggleTheme: "Toggle theme",
     switchLanguage: "ES"
   },
   es: {
@@ -37,6 +43,9 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     productLabel: "sistema de command palette",
     react: "React",
     skipToContent: "Saltar al contenido principal",
+    themeDark: "Oscuro",
+    themeLight: "Claro",
+    toggleTheme: "Cambiar tema",
     switchLanguage: "EN"
   }
 };
