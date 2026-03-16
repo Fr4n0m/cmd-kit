@@ -25,6 +25,29 @@
   font-family: "Sora", "Segoe UI", sans-serif;
 }
 
+html[data-theme="light"] {
+  color-scheme: light;
+  --page-bg: #f3f7fb;
+  --page-paper: rgba(255, 255, 255, 0.96);
+  --page-panel: rgba(255, 255, 255, 0.92);
+  --ink: #0e1720;
+  --ink-muted: rgba(49, 68, 84, 0.78);
+  --line: rgba(83, 112, 136, 0.16);
+  --accent: #0fa6d8;
+  --accent-strong: #0878a8;
+  --accent-soft: rgba(15, 166, 216, 0.12);
+  --forest: #129a74;
+  --playground-bg: #edf5fa;
+  --playground-surface: #ffffff;
+  --playground-border: rgba(83, 112, 136, 0.14);
+  --playground-ink: #13202c;
+  --playground-muted: rgba(69, 91, 108, 0.74);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(15, 166, 216, 0.08), transparent 22%),
+    radial-gradient(circle at 85% 12%, rgba(18, 154, 116, 0.08), transparent 18%),
+    linear-gradient(180deg, #f7fbff 0%, #eef5fa 42%, #f4f8fc 100%);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -60,6 +83,10 @@ a {
 :focus-visible {
   outline: 3px solid rgba(82, 199, 255, 0.55);
   outline-offset: 3px;
+}
+
+html[data-theme="light"] :focus-visible {
+  outline-color: rgba(15, 166, 216, 0.42);
 }
 
 button,
@@ -101,6 +128,12 @@ button {
     radial-gradient(circle at 86% 20%, rgba(138, 242, 188, 0.08), transparent 18%);
 }
 
+html[data-theme="light"] .page-aura {
+  background:
+    radial-gradient(circle at 10% 18%, rgba(15, 166, 216, 0.08), transparent 18%),
+    radial-gradient(circle at 86% 20%, rgba(18, 154, 116, 0.06), transparent 18%);
+}
+
 .topbar-inner {
   width: min(1380px, calc(100vw - 2.5rem));
   margin: 0 auto;
@@ -118,6 +151,15 @@ button {
   box-shadow:
     0 18px 44px rgba(0, 0, 0, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="light"] .topbar-inner {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 251, 254, 0.95)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 18px 44px rgba(40, 64, 81, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .skip-link {
@@ -199,6 +241,11 @@ button {
   background: rgba(255, 255, 255, 0.018);
 }
 
+html[data-theme="light"] .topbar-nav {
+  border-color: rgba(83, 112, 136, 0.08);
+  background: rgba(15, 166, 216, 0.03);
+}
+
 .topbar-nav a,
 .nav-button {
   display: inline-flex;
@@ -220,10 +267,20 @@ button {
   color: #f2fbff;
 }
 
+html[data-theme="light"] .topbar-nav a:hover,
+html[data-theme="light"] .nav-button:hover {
+  background: rgba(15, 166, 216, 0.08);
+  color: #0e1720;
+}
+
 .topbar-nav a[aria-current="page"] {
   background: rgba(53, 215, 255, 0.1);
   color: #f5fbff;
   box-shadow: inset 0 0 0 1px rgba(53, 215, 255, 0.1);
+}
+
+html[data-theme="light"] .topbar-nav a[aria-current="page"] {
+  color: #0e1720;
 }
 
 .topbar-actions {
@@ -237,11 +294,44 @@ button {
   background: rgba(255, 255, 255, 0.02);
 }
 
+html[data-theme="light"] .nav-button {
+  background: rgba(255, 255, 255, 0.88);
+}
+
 .nav-button-strong {
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   color: #031118;
   border-color: rgba(53, 215, 255, 0.36);
   box-shadow: 0 12px 28px rgba(15, 166, 216, 0.22);
+}
+
+.theme-toggle {
+  min-width: 108px;
+  justify-content: center;
+}
+
+.theme-toggle-label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.theme-icon-sun,
+.theme-label-light,
+.theme-icon-moon,
+.theme-label-dark {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-icon-sun,
+html[data-theme="dark"] .theme-label-light,
+:root:not([data-theme]) .theme-icon-sun,
+:root:not([data-theme]) .theme-label-light {
+  display: inline-flex;
+}
+
+html[data-theme="light"] .theme-icon-moon,
+html[data-theme="light"] .theme-label-dark {
+  display: inline-flex;
 }
 
 .hero {
@@ -276,6 +366,10 @@ button {
   letter-spacing: 0.14em;
   color: #9adfff;
   font-family: "IBM Plex Mono", monospace;
+}
+
+html[data-theme="light"] .hero-kicker {
+  color: #0878a8;
 }
 
 .badge,
@@ -323,6 +417,15 @@ button {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.02),
     0 18px 36px rgba(0, 0, 0, 0.18);
+}
+
+html[data-theme="light"] .proof-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), transparent),
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 18px 36px rgba(40, 64, 81, 0.08);
 }
 
 .proof-card span {
@@ -424,6 +527,10 @@ button {
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.28);
 }
 
+html[data-theme="light"] .hero-stage-card {
+  box-shadow: 0 24px 48px rgba(40, 64, 81, 0.08);
+}
+
 .stage-toolbar,
 .hero-metrics {
   display: flex;
@@ -485,6 +592,11 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+html[data-theme="light"] .stage-search {
+  background: rgba(15, 166, 216, 0.05);
+  border-color: rgba(83, 112, 136, 0.12);
+}
+
 .stage-section {
   display: grid;
   gap: 0.75rem;
@@ -503,6 +615,10 @@ button {
   padding: 0.78rem 0.86rem;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-theme="light"] .stage-item {
+  background: rgba(15, 166, 216, 0.04);
 }
 
 .stage-item-active {
@@ -535,6 +651,11 @@ button {
   background: rgba(8, 13, 17, 0.92);
 }
 
+html[data-theme="light"] .metric-card {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 16px 32px rgba(40, 64, 81, 0.06);
+}
+
 .metric-card span {
   display: block;
   margin-bottom: 0.45rem;
@@ -552,6 +673,12 @@ button {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
     rgba(5, 9, 13, 0.96);
+}
+
+html[data-theme="light"] .hero-terminal {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent),
+    rgba(255, 255, 255, 0.92);
 }
 
 .hero-terminal-bar {
@@ -578,6 +705,10 @@ button {
   line-height: 1.75;
 }
 
+html[data-theme="light"] .hero-terminal code {
+  color: #143040;
+}
+
 .workspace-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(430px, 0.85fr);
@@ -600,6 +731,11 @@ button {
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
     var(--page-panel);
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+}
+
+html[data-theme="light"] .overview-card,
+html[data-theme="light"] .launch-card {
+  box-shadow: 0 18px 36px rgba(40, 64, 81, 0.07);
 }
 
 .overview-card h2,
@@ -642,6 +778,13 @@ button {
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.22);
 }
 
+html[data-theme="light"] .panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), transparent),
+    var(--playground-surface);
+  box-shadow: 0 20px 42px rgba(40, 64, 81, 0.08);
+}
+
 .playground-shell {
   margin-top: 2rem;
   padding: 1rem;
@@ -651,6 +794,14 @@ button {
     radial-gradient(circle at top right, rgba(53, 215, 255, 0.12), transparent 18%),
     linear-gradient(180deg, rgba(9, 17, 22, 0.98), rgba(11, 19, 24, 0.98));
   box-shadow: 0 34px 90px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="light"] .playground-shell {
+  border-color: rgba(83, 112, 136, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(15, 166, 216, 0.08), transparent 18%),
+    linear-gradient(180deg, rgba(244, 249, 253, 0.98), rgba(239, 245, 250, 0.98));
+  box-shadow: 0 28px 70px rgba(40, 64, 81, 0.08);
 }
 
 .playground-shell-page {
@@ -682,6 +833,13 @@ button {
     radial-gradient(circle at top right, rgba(53, 215, 255, 0.08), transparent 28%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
     rgba(8, 13, 17, 0.94);
+}
+
+html[data-theme="light"] .playground-page-copy {
+  background:
+    radial-gradient(circle at top right, rgba(15, 166, 216, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent),
+    rgba(255, 255, 255, 0.92);
 }
 
 .playground-page-copy h1 {
@@ -725,6 +883,10 @@ button {
   font-family: "IBM Plex Mono", monospace;
 }
 
+html[data-theme="light"] .tech-chip {
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .playground-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -733,6 +895,10 @@ button {
   margin-bottom: 1.35rem;
   padding: 0.3rem 0 1.1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="light"] .playground-header {
+  border-bottom-color: rgba(83, 112, 136, 0.12);
 }
 
 .playground-header-copy h2,
@@ -779,6 +945,11 @@ button {
   font-family: "IBM Plex Mono", monospace;
 }
 
+html[data-theme="light"] .playground-badge {
+  background: rgba(15, 166, 216, 0.04);
+  border-color: rgba(83, 112, 136, 0.12);
+}
+
 .panel-heading {
   display: grid;
   gap: 0.4rem;
@@ -805,6 +976,14 @@ button {
     radial-gradient(circle at top right, rgba(53, 215, 255, 0.18), transparent 35%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
     rgba(9, 15, 13, 0.9);
+}
+
+html[data-theme="light"] .playground-preview-card {
+  border-color: rgba(83, 112, 136, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(15, 166, 216, 0.1), transparent 35%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), transparent),
+    rgba(245, 250, 253, 0.96);
 }
 
 .preview-meta-row {
@@ -858,6 +1037,11 @@ button {
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.07);
   background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="light"] .summary-tile {
+  background: rgba(15, 166, 216, 0.03);
+  border-color: rgba(83, 112, 136, 0.12);
 }
 
 .summary-tile span {
@@ -939,6 +1123,15 @@ button {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
+html[data-theme="light"] .field input,
+html[data-theme="light"] .field textarea,
+html[data-theme="light"] .field select {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(246, 249, 252, 0.9)),
+    rgba(255, 255, 255, 0.88);
+  border-color: rgba(83, 112, 136, 0.14);
+}
+
 .field textarea {
   min-height: 106px;
   resize: vertical;
@@ -976,6 +1169,15 @@ button {
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02)),
     rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="light"] .section-card,
+html[data-theme="light"] .item-card,
+html[data-theme="light"] .nested-card {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(246, 249, 252, 0.92)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(83, 112, 136, 0.12);
 }
 
 .section-card {
@@ -1059,6 +1261,11 @@ button {
   min-height: 40px;
 }
 
+html[data-theme="light"] .toggle-field {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(83, 112, 136, 0.12);
+}
+
 .toggle-field input {
   width: auto;
 }
@@ -1097,6 +1304,10 @@ button {
   color: var(--playground-ink);
 }
 
+html[data-theme="light"] .tab {
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .code-panel-meta {
   display: flex;
   align-items: center;
@@ -1108,6 +1319,11 @@ button {
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: var(--playground-muted);
+}
+
+html[data-theme="light"] .code-panel-meta {
+  background: rgba(255, 255, 255, 0.84);
+  border-color: rgba(83, 112, 136, 0.12);
 }
 
 .code-chip {
@@ -1132,11 +1348,20 @@ button {
   min-height: 640px;
 }
 
+html[data-theme="light"] .code-block {
+  background: #f4f8fb;
+  border-color: rgba(83, 112, 136, 0.12);
+}
+
 .code-block code {
   font-family: "IBM Plex Mono", "Cascadia Code", monospace;
   font-size: 0.84rem;
   line-height: 1.65;
   color: #dff4ff;
+}
+
+html[data-theme="light"] .code-block code {
+  color: #143040;
 }
 
 .inline-code-block {
@@ -1147,6 +1372,12 @@ button {
   border: 1px solid rgba(121, 145, 160, 0.16);
   overflow: auto;
   color: #f4fbff;
+}
+
+html[data-theme="light"] .inline-code-block {
+  background: #f4f8fb;
+  border-color: rgba(83, 112, 136, 0.12);
+  color: #143040;
 }
 
 .docs-shell {
@@ -1163,6 +1394,14 @@ button {
     linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
     rgba(10, 17, 22, 0.94);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+}
+
+html[data-theme="light"] .docs-panel {
+  background:
+    radial-gradient(circle at top right, rgba(15, 166, 216, 0.05), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent),
+    rgba(255, 255, 255, 0.94);
+  box-shadow: 0 24px 48px rgba(40, 64, 81, 0.08);
 }
 
 .docs-panel h1 {

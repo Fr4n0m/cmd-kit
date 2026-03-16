@@ -13,7 +13,9 @@ interface IconProps {
     | "plus"
     | "preact"
     | "react"
+    | "moon"
     | "spark"
+    | "sun"
     | "trash"
     | "triangle-down"
     | "triangle-up"
@@ -118,10 +120,30 @@ export function Icon({ className, name, title }: IconProps) {
           <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
         </svg>
       );
+    case "moon":
+      return (
+        <svg {...sharedProps}>
+          <path d="M18 14.5A6.5 6.5 0 0 1 9.5 6a7.5 7.5 0 1 0 8.5 8.5Z" />
+        </svg>
+      );
     case "spark":
       return (
         <svg {...sharedProps}>
           <path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z" />
+        </svg>
+      );
+    case "sun":
+      return (
+        <svg {...sharedProps}>
+          <circle cx="12" cy="12" r="3.5" />
+          <path d="M12 2.5v2.2" />
+          <path d="M12 19.3v2.2" />
+          <path d="m5.3 5.3 1.6 1.6" />
+          <path d="m17.1 17.1 1.6 1.6" />
+          <path d="M2.5 12h2.2" />
+          <path d="M19.3 12h2.2" />
+          <path d="m5.3 18.7 1.6-1.6" />
+          <path d="m17.1 6.9 1.6-1.6" />
         </svg>
       );
     case "trash":
