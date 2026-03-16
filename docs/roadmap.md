@@ -173,6 +173,7 @@ Completed:
 
 - create Astro landing page
 - add site-wide bilingual routing and header language switching
+- add site-wide light and dark theme support with persisted user preference
 - redesign the landing and playground visual system with a clearer editorial hierarchy
 - shift the public web visual direction toward developer tooling instead of generic marketing UI
 - move the configurator to a dedicated playground page with full-width editing
