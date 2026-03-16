@@ -1,4 +1,6 @@
 ---
+import Icon from "./Icon.astro";
+import { getInstallSelectorCopy } from "../i18n/docs";
 import { localizedPath, type Locale } from "../i18n/site";
 
 interface Props {
@@ -8,30 +10,7 @@ interface Props {
 const { locale } = Astro.props;
 const rootId = `install-selector-${locale}`;
 
-const copy =
-  locale === "es"
-    ? {
-        installerLabel: "Gestor de paquetes",
-        packageHint: "Ver documentación del adaptador",
-        techLabel: "Tecnología",
-        technologies: {
-          core: "Core",
-          preact: "Preact",
-          react: "React",
-          vue: "Vue"
-        }
-      }
-    : {
-        installerLabel: "Package manager",
-        packageHint: "Open adapter documentation",
-        techLabel: "Technology",
-        technologies: {
-          core: "Core",
-          preact: "Preact",
-          react: "React",
-          vue: "Vue"
-        }
-      };
+const copy = getInstallSelectorCopy(locale);
 
 const adapters = [
   {
@@ -78,51 +57,69 @@ const adapters = [
 
 const defaultAdapter = adapters[0];
 const defaultManager = "npm";
-const installSelectorScript = `(function(){const root=document.getElementById(${JSON.stringify(rootId)});if(!root)return;const adapterButtons=[...root.querySelectorAll('[data-install-adapter]')];const managerButtons=[...root.querySelectorAll('[data-install-manager]')];const code=root.querySelector('[data-install-code]');const link=root.querySelector('[data-install-link]');const packageData=${JSON.stringify(adapters)};let state={adapter:${JSON.stringify(defaultAdapter.id)},manager:${JSON.stringify(defaultManager)}};const sync=()=>{adapterButtons.forEach((button)=>{const active=button.getAttribute('data-install-adapter')===state.adapter;button.setAttribute('aria-pressed',String(active));button.classList.toggle('is-active',active);});managerButtons.forEach((button)=>{const active=button.getAttribute('data-install-manager')===state.manager;button.setAttribute('aria-pressed',String(active));button.classList.toggle('is-active',active);});const selected=packageData.find((entry)=>entry.id===state.adapter);if(!selected||!code||!link)return;code.textContent=selected.packages[state.manager];link.setAttribute('href',selected.href);};root.addEventListener('click',(event)=>{const target=event.target instanceof Element?event.target:null;if(!target)return;const adapterButton=target.closest('[data-install-adapter]');if(adapterButton){state.adapter=adapterButton.getAttribute('data-install-adapter')||state.adapter;sync();return;}const managerButton=target.closest('[data-install-manager]');if(managerButton){state.manager=managerButton.getAttribute('data-install-manager')||state.manager;sync();}});sync();})();`;
+const installSelectorScript = `(function(){const root=document.getElementById(${JSON.stringify(rootId)});if(!root)return;const code=root.querySelector('[data-install-code]');const link=root.querySelector('[data-install-link]');const adapterLabel=root.querySelector('[data-install-adapter-label]');const managerLabel=root.querySelector('[data-install-manager-label]');const packageData=${JSON.stringify(adapters)};let state={adapter:${JSON.stringify(defaultAdapter.id)},manager:${JSON.stringify(defaultManager)},open:null};const buttons={adapter:root.querySelector('[data-install-toggle="adapter"]'),manager:root.querySelector('[data-install-toggle="manager"]')};const menus={adapter:root.querySelector('[data-install-menu="adapter"]'),manager:root.querySelector('[data-install-menu="manager"]')};const sync=()=>{const selected=packageData.find((entry)=>entry.id===state.adapter);if(!selected||!code||!link||!adapterLabel||!managerLabel)return;code.textContent=selected.packages[state.manager];link.setAttribute('href',selected.href);adapterLabel.textContent=${JSON.stringify(copy.technologies)}[state.adapter];managerLabel.textContent=state.manager;['adapter','manager'].forEach((key)=>{const open=state.open===key;const button=buttons[key];const menu=menus[key];if(button instanceof HTMLElement){button.setAttribute('aria-expanded',String(open));button.classList.toggle('is-open',open);}if(menu instanceof HTMLElement){menu.hidden=!open;}root.querySelectorAll('[data-install-option-group="'+key+'"]').forEach((item)=>{const value=item.getAttribute('data-install-option-value');const current=key==='adapter'?state.adapter:state.manager;item.setAttribute('aria-current',String(value===current));});});};const close=()=>{state.open=null;sync();};root.addEventListener('click',(event)=>{const target=event.target instanceof Element?event.target:null;if(!target)return;const toggle=target.closest('[data-install-toggle]');if(toggle){const key=toggle.getAttribute('data-install-toggle');state.open=state.open===key?null:key;sync();return;}const option=target.closest('[data-install-option-group]');if(option){const key=option.getAttribute('data-install-option-group');const value=option.getAttribute('data-install-option-value');if(key==='adapter'&&(value==='react'||value==='vue'||value==='preact'||value==='core')){state.adapter=value;}if(key==='manager'&&(value==='npm'||value==='pnpm'||value==='yarn'||value==='bun')){state.manager=value;}state.open=null;sync();return;}if(!target.closest('.install-selector-dropdown')){close();}});document.addEventListener('keydown',(event)=>{if(event.key==='Escape'){close();}});sync();})();`;
 ---
 
 <section class="install-selector" id={rootId}>
-  <div class="install-selector-group">
-    <p class="install-selector-label">{copy.techLabel}</p>
-    <div class="install-selector-row">
-      {
-        adapters.map((adapter) => (
-          <button
-            aria-pressed={adapter.id === defaultAdapter.id ? "true" : "false"}
-            class:list={[
-              "install-selector-button",
-              "install-selector-button-tech",
-              adapter.id === defaultAdapter.id && "is-active"
-            ]}
-            data-install-adapter={adapter.id}
-            type="button"
-          >
-            {copy.technologies[adapter.id]}
-          </button>
-        ))
-      }
+  <div class="install-selector-controls">
+    <div class="install-selector-group">
+      <div class="install-selector-field install-selector-dropdown">
+        <span class="install-selector-label">{copy.techLabel}</span>
+        <button
+          aria-expanded="false"
+          class="nav-button nav-button-utility dropdown-trigger install-selector-trigger"
+          data-install-toggle="adapter"
+          type="button"
+        >
+          <span data-install-adapter-label>{copy.technologies[defaultAdapter.id]}</span>
+          <Icon className="button-icon locale-caret" name="triangle-down" />
+        </button>
+        <div class="dropdown-menu install-selector-menu" data-install-menu="adapter" hidden>
+          {
+            adapters.map((adapter) => (
+              <button
+                aria-current={adapter.id === defaultAdapter.id ? "true" : "false"}
+                class="dropdown-item install-selector-item"
+                data-install-option-group="adapter"
+                data-install-option-value={adapter.id}
+                type="button"
+              >
+                {copy.technologies[adapter.id]}
+              </button>
+            ))
+          }
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="install-selector-group">
-    <p class="install-selector-label">{copy.installerLabel}</p>
-    <div class="install-selector-row">
-      {
-        ["npm", "pnpm", "yarn", "bun"].map((manager) => (
-          <button
-            aria-pressed={manager === defaultManager ? "true" : "false"}
-            class:list={[
-              "install-selector-button",
-              "install-selector-button-manager",
-              manager === defaultManager && "is-active"
-            ]}
-            data-install-manager={manager}
-            type="button"
-          >
-            {manager}
-          </button>
-        ))
-      }
+    <div class="install-selector-group">
+      <div class="install-selector-field install-selector-dropdown">
+        <span class="install-selector-label">{copy.installerLabel}</span>
+        <button
+          aria-expanded="false"
+          class="nav-button nav-button-utility dropdown-trigger install-selector-trigger"
+          data-install-toggle="manager"
+          type="button"
+        >
+          <span data-install-manager-label>{defaultManager}</span>
+          <Icon className="button-icon locale-caret" name="triangle-down" />
+        </button>
+        <div class="dropdown-menu install-selector-menu" data-install-menu="manager" hidden>
+        {
+          ["npm", "pnpm", "yarn", "bun"].map((manager) => (
+            <button
+              aria-current={manager === defaultManager ? "true" : "false"}
+              class="dropdown-item install-selector-item"
+              data-install-option-group="manager"
+              data-install-option-value={manager}
+              type="button"
+            >
+              {manager}
+            </button>
+          ))
+        }
+        </div>
+      </div>
     </div>
   </div>
 
@@ -133,7 +130,7 @@ const installSelectorScript = `(function(){const root=document.getElementById(${
         <span></span>
         <span></span>
       </div>
-      <span class="docs-code-label">bash</span>
+      <span class="docs-code-label">{copy.codeLabel}</span>
     </div>
     <pre class="install-code-pre"><code data-install-code>{defaultAdapter.packages.npm}</code></pre>
   </div>

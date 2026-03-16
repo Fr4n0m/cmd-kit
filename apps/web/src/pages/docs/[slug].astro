@@ -1,0 +1,19 @@
+---
+import DocsPageContent from "../../components/DocsPageContent.astro";
+import { getDocHeadings, getDocPage, getDocSlugs, type DocSlug } from "../../i18n/docs";
+import DocsLayout from "../../layouts/DocsLayout.astro";
+
+export function getStaticPaths() {
+  return getDocSlugs().map((slug) => ({
+    params: { slug }
+  }));
+}
+
+const slug = Astro.params.slug as DocSlug;
+const page = getDocPage("en", slug);
+const headings = getDocHeadings("en", slug);
+---
+
+<DocsLayout description={page.description} headings={headings} locale="en" title={page.title}>
+  <DocsPageContent locale="en" page={page} />
+</DocsLayout>

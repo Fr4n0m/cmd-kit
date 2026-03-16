@@ -1,33 +1,54 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import { getDocsNavigation, localizedPath, type Locale } from "../i18n/site";
+import {
+  getDocsNavigation,
+  type DocsSectionItem
+} from "../i18n/docs";
+import { layoutCopy, localizedPath, type Locale } from "../i18n/site";
 
 interface Props {
   description: string;
+  headings?: DocsSectionItem[];
   title: string;
   locale: Locale;
 }
 
-const { description, locale, title } = Astro.props;
+const { description, headings = [], locale, title } = Astro.props;
 const pathname = Astro.url.pathname;
 const navigation = getDocsNavigation(locale);
+const copy = layoutCopy[locale];
 ---
 
-<BaseLayout description={description} locale={locale} title={title}>
+<BaseLayout description={description} docsHeadings={headings} locale={locale} title={title}>
   <main class="site-shell docs-shell" id="main-content" tabindex="-1">
     <aside class="docs-sidebar">
       <div class="docs-sidebar-card">
-        <p class="docs-sidebar-eyebrow">Docs</p>
-        <nav aria-label="Documentation navigation" class="docs-nav">
+        <p class="docs-sidebar-eyebrow">{copy.docs}</p>
+        <nav aria-label={copy.docsNavigationLabel} class="docs-nav">
           {
             navigation.map((item) => {
               const href = localizedPath(locale, item.href);
               const current = pathname === href;
 
               return (
-                <a aria-current={current ? "page" : undefined} href={href}>
-                  {item.label}
-                </a>
+                <>
+                  <a aria-current={current ? "page" : undefined} href={href}>
+                    {item.label}
+                  </a>
+                  {
+                    current && headings.length ? (
+                      <div class="docs-subnav">
+                        {
+                          headings.map((heading) => (
+                            <a class="docs-subnav-link" href={`#${heading.id}`}>
+                              {heading.label}
+                            </a>
+                          ))
+                        }
+                      </div>
+                    ) : null
+                  }
+                </>
               );
             })
           }
