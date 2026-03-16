@@ -1,59 +1,65 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Vue";
-const description = "Use the Vue command palette and configure sections, theming, and behavior.";
+const title = "Cmd+kit | Vue";
+const description =
+  "Install the Vue package for Cmd+kit and configure sections, messages, theming, and recent commands.";
 ---
 
-<BaseLayout description={description} locale="en" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="en" title={title}>
       <p class="eyebrow">Vue</p>
       <h1>Vue Integration</h1>
       <p>
-        The Vue package ships a `useCommandPalette` composable and a default `CommandPalette`
-        component. It mirrors the same core command model as the React adapter while fitting Vue's
-        props, emits, and slots.
+        `@cmd-kit/vue` provides a `CommandPalette` component plus a Vue composable for cases where
+        you want to orchestrate state more directly. The data model stays aligned with the rest of
+        the package family.
       </p>
 
       <h2>Install</h2>
-      <pre class="code-block"><code>npm install @cmd-kit/vue vue</code></pre>
+      <DocsCodeBlock code={`npm install @cmd-kit/vue vue
+pnpm add @cmd-kit/vue vue
+yarn add @cmd-kit/vue vue
+bun add @cmd-kit/vue vue`} label="bash" lang="bash" />
 
-      <h2>Basic example</h2>
-      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/vue";
-import { defineComponent } from "vue";
+      <h2>Basic usage</h2>
+      <DocsCodeBlock code={`<script setup lang="ts">
+import { CommandPalette } from "@cmd-kit/vue";
 
 const sections = [
   {
     id: "navigation",
     title: "Navigation",
-    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
   }
 ];
+</script>
 
-export default defineComponent({
-  components: { CommandPalette },
-  setup() {
-    return { sections };
-  }
-});`}</code></pre>
+<template>
+  <CommandPalette
+    :recents="{ sectionTitle: 'Recent commands' }"
+    :sections="sections"
+    title="Project commands"
+  />
+</template>`} label="vue" lang="vue" />
 
-      <h2>Current capabilities</h2>
+      <h2>What you can configure</h2>
       <ul>
-        <li>grouped results</li>
-        <li>keyboard navigation</li>
-        <li>nested navigation through child sections</li>
-        <li>theme tokens through props</li>
-        <li>message overrides</li>
-        <li>slot-based customization</li>
-        <li>async sources and recent item tracking</li>
+        <li>`sections`, `items`, and `source`</li>
+        <li>`messages` for localized or product-specific copy</li>
+        <li>`theme` for palette color and surface tokens</li>
+        <li>`classNames` for slot-level styling hooks</li>
+        <li>`recents` for automatic recent command tracking</li>
       </ul>
 
-      <h2>Status</h2>
-      <p>
-        Vue support is newer than the React adapter and will continue to harden as the
-        multi-framework roadmap advances.
-      </p>
-    </article>
-  </main>
-</BaseLayout>
+      <h2>Messages example</h2>
+      <DocsCodeBlock code={`<CommandPalette
+  :messages="{
+    searchPlaceholder: 'Search docs, pages, or actions',
+    noResults: 'No matching command found.',
+    closeLabel: 'Close command palette'
+  }"
+  :sections="sections"
+  title="Project commands"
+/>`} label="vue" lang="vue" />
+</DocsLayout>

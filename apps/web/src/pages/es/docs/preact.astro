@@ -1,58 +1,55 @@
 ---
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Preact";
+const title = "Cmd+kit | Preact";
 const description =
-  "Usa la command palette de Preact con la misma API del core para secciones, tema y atajos.";
+  "Instala el paquete de Preact para Cmd+kit y configura una command palette con la misma API base.";
 ---
 
-<BaseLayout description={description} locale="es" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="es" title={title}>
       <p class="eyebrow">Preact</p>
-      <h1>Integracion con Preact</h1>
+      <h1>Integración con Preact</h1>
       <p>
-        `@cmd-kit/preact` replica la API orientada a React pero apuntando a `preact` mediante
-        `preact/compat`. Sirve cuando quieres la misma superficie de command palette con un runtime
-        mas ligero.
+        `@cmd-kit/preact` replica la API pública de React para usar la misma surface de command
+        palette sobre Preact.
       </p>
 
-      <h2>Ejemplo basico</h2>
-      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/preact";
+      <h2>Instalación</h2>
+      <DocsCodeBlock code={`npm install @cmd-kit/preact preact
+pnpm add @cmd-kit/preact preact
+yarn add @cmd-kit/preact preact
+bun add @cmd-kit/preact preact`} label="bash" lang="bash" />
+
+      <h2>Uso básico</h2>
+      <DocsCodeBlock code={`import { CommandPalette } from "@cmd-kit/preact";
 
 const sections = [
   {
     id: "navigation",
     title: "Navigation",
-    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
   }
 ];
 
 export function Example() {
   return (
     <CommandPalette
+      recents={{ sectionTitle: "Comandos recientes" }}
       sections={sections}
       shortcut="mod+k"
-      title="Project commands"
+      title="Comandos del proyecto"
     />
   );
-}`}</code></pre>
+}`} label="tsx" lang="tsx" />
 
-      <h2>Capacidades actuales</h2>
+      <h2>Superficie de configuración</h2>
       <ul>
-        <li>resultados agrupados</li>
-        <li>navegacion por teclado</li>
-        <li>navegacion anidada con child sections</li>
-        <li>tokens de tema por props</li>
-        <li>sobrescritura de mensajes</li>
-        <li>class names por slot</li>
+        <li>`sections`, `items` y `source`</li>
+        <li>`messages` para copy específico del producto</li>
+        <li>`theme` para tokens visuales</li>
+        <li>`classNames` para estilos por slot</li>
+        <li>`renderers` para overrides de renderizado</li>
+        <li>`recents` para comandos recientes</li>
       </ul>
-
-      <h2>Estado</h2>
-      <p>
-        El adaptador se valida localmente con build, typecheck y tests. La API publica se mantiene
-        alineada con `@cmd-kit/react` para que la superficie multi-framework siga siendo predecible.
-      </p>
-    </article>
-  </main>
-</BaseLayout>
+</DocsLayout>

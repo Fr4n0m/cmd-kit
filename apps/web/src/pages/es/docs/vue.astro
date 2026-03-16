@@ -1,60 +1,53 @@
 ---
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Vue";
+const title = "Cmd+kit | Vue";
 const description =
-  "Usa la command palette para Vue y configura secciones, tema y comportamiento.";
+  "Instala el paquete de Vue para Cmd+kit y configura secciones, mensajes, tema y comandos recientes.";
 ---
 
-<BaseLayout description={description} locale="es" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="es" title={title}>
       <p class="eyebrow">Vue</p>
-      <h1>Integracion con Vue</h1>
+      <h1>Integración con Vue</h1>
       <p>
-        El paquete de Vue publica un composable `useCommandPalette` y un componente
-        `CommandPalette` por defecto. Comparte el mismo modelo de comandos del core que React,
-        pero encaja con props, emits y slots de Vue.
+        `@cmd-kit/vue` ofrece un componente `CommandPalette` y una API composable para los casos
+        donde quieres controlar más directamente el estado de la palette.
       </p>
 
-      <h2>Instalacion</h2>
-      <pre class="code-block"><code>npm install @cmd-kit/vue vue</code></pre>
+      <h2>Instalación</h2>
+      <DocsCodeBlock code={`npm install @cmd-kit/vue vue
+pnpm add @cmd-kit/vue vue
+yarn add @cmd-kit/vue vue
+bun add @cmd-kit/vue vue`} label="bash" lang="bash" />
 
-      <h2>Ejemplo basico</h2>
-      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/vue";
-import { defineComponent } from "vue";
+      <h2>Uso básico</h2>
+      <DocsCodeBlock code={`<script setup lang="ts">
+import { CommandPalette } from "@cmd-kit/vue";
 
 const sections = [
   {
     id: "navigation",
     title: "Navigation",
-    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
   }
 ];
+</script>
 
-export default defineComponent({
-  components: { CommandPalette },
-  setup() {
-    return { sections };
-  }
-});`}</code></pre>
+<template>
+  <CommandPalette
+    :recents="{ sectionTitle: 'Comandos recientes' }"
+    :sections="sections"
+    title="Comandos del proyecto"
+  />
+</template>`} label="vue" lang="vue" />
 
-      <h2>Capacidades actuales</h2>
+      <h2>Qué puedes configurar</h2>
       <ul>
-        <li>resultados agrupados</li>
-        <li>navegacion por teclado</li>
-        <li>navegacion anidada con child sections</li>
-        <li>tokens de tema por props</li>
-        <li>sobrescritura de mensajes</li>
-        <li>personalizacion basada en slots</li>
-        <li>sources async y seguimiento de recientes</li>
+        <li>`sections`, `items` y `source`</li>
+        <li>`messages` para copy localizado o específico del producto</li>
+        <li>`theme` para colores y tokens visuales</li>
+        <li>`classNames` para estilos por slot</li>
+        <li>`recents` para registrar comandos recientes</li>
       </ul>
-
-      <h2>Estado</h2>
-      <p>
-        El soporte de Vue es mas nuevo que el de React y seguira endureciendose a medida que avance
-        la expansion multi-framework.
-      </p>
-    </article>
-  </main>
-</BaseLayout>
+</DocsLayout>

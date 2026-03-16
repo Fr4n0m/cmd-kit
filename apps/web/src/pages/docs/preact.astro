@@ -1,59 +1,68 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Preact";
+const title = "Cmd+kit | Preact";
 const description =
-  "Use the Preact command palette with the same core API for sections, theming, and shortcuts.";
+  "Install the Preact package for Cmd+kit and configure a command palette with the same core API.";
 ---
 
-<BaseLayout description={description} locale="en" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="en" title={title}>
       <p class="eyebrow">Preact</p>
       <h1>Preact Integration</h1>
       <p>
-        `@cmd-kit/preact` mirrors the React-facing API while targeting `preact` through
-        `preact/compat`. Use it when you want the same command palette surface in a leaner
-        component runtime.
+        `@cmd-kit/preact` mirrors the React-facing API while targeting Preact. It is the right
+        option if you want the packaged command palette surface with a lighter runtime footprint.
       </p>
 
-      <h2>Basic example</h2>
-      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/preact";
+      <h2>Install</h2>
+      <DocsCodeBlock code={`npm install @cmd-kit/preact preact
+pnpm add @cmd-kit/preact preact
+yarn add @cmd-kit/preact preact
+bun add @cmd-kit/preact preact`} label="bash" lang="bash" />
+
+      <h2>Basic usage</h2>
+      <DocsCodeBlock code={`import { CommandPalette } from "@cmd-kit/preact";
 
 const sections = [
   {
     id: "navigation",
     title: "Navigation",
-    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
   }
 ];
 
 export function Example() {
   return (
     <CommandPalette
+      recents={{ sectionTitle: "Recent commands" }}
       sections={sections}
       shortcut="mod+k"
       title="Project commands"
     />
   );
-}`}</code></pre>
+}`} label="tsx" lang="tsx" />
 
-      <h2>Current capabilities</h2>
+      <h2>Configuration surface</h2>
       <ul>
-        <li>grouped results</li>
-        <li>keyboard navigation</li>
-        <li>nested navigation through child sections</li>
-        <li>theme tokens through props</li>
-        <li>message overrides</li>
-        <li>slot-level class names</li>
+        <li>`sections`, `items`, and `source` for static or async command data</li>
+        <li>`messages` for copy overrides</li>
+        <li>`theme` for visual tokens</li>
+        <li>`classNames` for slot-level styling</li>
+        <li>`renderers` for title, item, section title, and empty state overrides</li>
+        <li>`recents` for automatic recent command tracking</li>
       </ul>
 
-      <h2>Status</h2>
-      <p>
-        The adapter is validated locally with build, typecheck, and component tests. The public
-        API is intentionally aligned with `@cmd-kit/react` so the multi-framework surface stays
-        predictable.
-      </p>
-    </article>
-  </main>
-</BaseLayout>
+      <h2>Theme example</h2>
+      <DocsCodeBlock code={`<CommandPalette
+  sections={sections}
+  theme={{
+    accentColor: "#12b5e5",
+    backgroundColor: "#0f1720",
+    textColor: "#f5fbff",
+    borderColor: "#264152",
+    radius: "22px"
+  }}
+  title="Project commands"
+/>`} label="tsx" lang="tsx" />
+</DocsLayout>

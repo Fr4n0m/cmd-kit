@@ -1,19 +1,18 @@
 ---
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Astro";
+const title = "Cmd+kit | Astro";
 const description =
-  "Usa cmd+kit en Astro combinando un shell estatico con una isla de React, Vue o Preact.";
+  "Usa Cmd+kit en Astro combinando un shell estatico con una isla de React, Vue o Preact.";
 ---
 
-<BaseLayout description={description} locale="es" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="es" title={title}>
       <p class="eyebrow">Astro</p>
       <h1>Integracion con Astro</h1>
       <p>
         Astro es el shell recomendado para docs y marketing porque mantiene rapida la parte
-        estatica y solo hidrata `cmd+kit` donde la interfaz necesita interactividad real.
+        estatica y solo hidrata `Cmd+kit` donde la interfaz necesita interactividad real.
       </p>
 
       <h2>Enfoque recomendado</h2>
@@ -24,15 +23,15 @@ const description =
       </ul>
 
       <h2>Ejemplo con React</h2>
-      <pre class="code-block"><code>{`---
+      <DocsCodeBlock code={`---
 import PlaygroundPalette from "../components/PlaygroundPalette.tsx";
 ---
 
-<PlaygroundPalette client:load />`}</code></pre>
+<PlaygroundPalette client:load />`} label="astro" lang="astro" />
 
       <h2>Por que encaja con el proyecto</h2>
       <p>
-        `cmd+kit` separa el core headless de sus adaptadores de UI. Eso hace de Astro un shell de
+        `Cmd+kit` separa el core headless de sus adaptadores de UI. Eso hace de Astro un shell de
         entrega, no un framework que haya que atacar con un motor de render especifico.
       </p>
 
@@ -41,6 +40,4 @@ import PlaygroundPalette from "../components/PlaygroundPalette.tsx";
         La guia de Astro ya esta documentada y esta misma web la usa. Un paquete especifico para
         Astro no hace falta todavia porque el patron de islas ya cubre el caso real.
       </p>
-    </article>
-  </main>
-</BaseLayout>
+</DocsLayout>

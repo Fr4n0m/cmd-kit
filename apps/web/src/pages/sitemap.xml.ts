@@ -7,6 +7,10 @@ const routes = [
   "/es",
   "/playground",
   "/es/playground",
+  "/legal/privacy",
+  "/legal/terms",
+  "/es/legal/privacy",
+  "/es/legal/terms",
   "/docs/getting-started",
   "/es/docs/getting-started",
   "/docs/react",
@@ -19,6 +23,8 @@ const routes = [
   "/es/docs/astro",
   "/docs/core",
   "/es/docs/core",
+  "/docs/playground",
+  "/es/docs/playground",
   "/docs/customization",
   "/es/docs/customization"
 ];

@@ -1,8 +1,11 @@
 ---
 import "../styles.css";
+import BrandLockup from "../components/BrandLockup.astro";
 import { Icon } from "../components/Icon";
+import SiteFooter from "../components/SiteFooter.astro";
 import {
   defaultLocale,
+  getDocsNavigation,
   layoutCopy,
   localizedPath,
   swapLocalePath,
@@ -28,13 +31,16 @@ const englishUrl = new URL(localizedPath("en", pathname === "/es" ? "/" : pathna
 const spanishUrl = new URL(swapLocalePath(pathname, "es"), Astro.site ?? Astro.url).toString();
 const copy = layoutCopy[locale];
 const docsHref = localizedPath(locale, "/docs/getting-started");
-const coreHref = localizedPath(locale, "/docs/core");
-const reactHref = localizedPath(locale, "/docs/react");
 const homeHref = localizedPath(locale, "/");
 const playgroundHref = localizedPath(locale, "/playground");
 const localeSwitchHref = swapLocalePath(pathname, locale === "en" ? "es" : "en");
+const currentLanguageLabel = locale === "en" ? "EN" : "ES";
+const isDocsPage = pathname.startsWith("/docs") || pathname.startsWith("/es/docs");
+const docsNavigation = isDocsPage ? getDocsNavigation(locale) : [];
 const themeScript = `(function(){const storageKey='cmd-kit-theme';const root=document.documentElement;const meta=document.querySelector('meta[name="theme-color"]');const getSystem=()=>window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';const apply=(theme)=>{root.dataset.theme=theme;root.style.colorScheme=theme; if(meta){meta.setAttribute('content', theme==='light' ? '#f3f7fb' : '#07111f');}};const stored=localStorage.getItem(storageKey);apply(stored==='light'||stored==='dark'?stored:getSystem());window.__cmdKitTheme={apply,getSystem,storageKey};})();`;
 const themeToggleScript = `(function(){const root=document.documentElement;const api=window.__cmdKitTheme;const sync=()=>{const theme=root.dataset.theme==='light'?'light':'dark';document.querySelectorAll('[data-theme-toggle]').forEach((button)=>{button.setAttribute('aria-pressed', String(theme==='light')); button.setAttribute('data-theme-current', theme);});};const toggle=()=>{const next=root.dataset.theme==='light'?'dark':'light'; api.apply(next); localStorage.setItem(api.storageKey,next); sync();}; document.addEventListener('click',(event)=>{const button=event.target instanceof Element ? event.target.closest('[data-theme-toggle]') : null; if(button){toggle();}}); const media=window.matchMedia('(prefers-color-scheme: light)'); if (media && typeof media.addEventListener === 'function') {media.addEventListener('change',()=>{if(!localStorage.getItem(api.storageKey)){api.apply(api.getSystem()); sync();}});} sync();})();`;
+const menuScript = `(function(){const root=document.documentElement;const sync=()=>{document.querySelectorAll('[data-menu-toggle]').forEach((button)=>{const expanded=root.dataset.menuOpen==='true';button.setAttribute('aria-expanded', String(expanded));});};const close=()=>{root.dataset.menuOpen='false';sync();};const toggle=()=>{root.dataset.menuOpen=root.dataset.menuOpen==='true'?'false':'true';sync();};document.addEventListener('click',(event)=>{const target=event.target instanceof Element?event.target:null;if(!target)return;const toggleButton=target.closest('[data-menu-toggle]');if(toggleButton){toggle();return;}if(window.innerWidth>640)return;if(target.closest('.topbar-menu a')){close();return;}if(!target.closest('.topbar-inner')){close();}});document.addEventListener('keydown',(event)=>{if(event.key==='Escape'){close();}});window.addEventListener('resize',()=>{if(window.innerWidth>640){close();}});if(!root.dataset.menuOpen){root.dataset.menuOpen='false';}sync();})();`;
+const localeMenuScript = `(function(){const root=document.documentElement;const sync=()=>{document.querySelectorAll('[data-locale-toggle]').forEach((button)=>{button.setAttribute('aria-expanded', String(root.dataset.localeMenuOpen==='true'));});};const close=()=>{root.dataset.localeMenuOpen='false';sync();};const toggle=()=>{root.dataset.localeMenuOpen=root.dataset.localeMenuOpen==='true'?'false':'true';sync();};document.addEventListener('click',(event)=>{const target=event.target instanceof Element?event.target:null;if(!target)return;const toggleButton=target.closest('[data-locale-toggle]');if(toggleButton){toggle();return;}if(!target.closest('.locale-switcher')){close();}});document.addEventListener('keydown',(event)=>{if(event.key==='Escape'){close();}});window.addEventListener('resize',()=>{if(window.innerWidth<=640){close();}});if(!root.dataset.localeMenuOpen){root.dataset.localeMenuOpen='false';}sync();})();`;
 
 function isCurrentPath(target: string) {
   if (target === "/") {
@@ -63,7 +69,7 @@ function isCurrentPath(target: string) {
     <meta content="website" property="og:type" />
     <meta content={canonicalUrl} property="og:url" />
     {socialImageUrl ? <meta content={socialImageUrl} property="og:image" /> : null}
-    <meta content="cmd+kit" property="og:site_name" />
+    <meta content="Cmd+kit" property="og:site_name" />
     <link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
     <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
     <link href="/favicon.ico" rel="shortcut icon" />
@@ -91,75 +97,102 @@ function isCurrentPath(target: string) {
     <a class="skip-link" href="#main-content">{copy.skipToContent}</a>
     <header class="topbar">
       <div class="topbar-inner">
-        <a
-          aria-current={isCurrentPath("/") ? "page" : undefined}
-          class="brand-link"
-          href={homeHref}
-        >
-          <span class="brand-mark">
-            <img
-              alt="cmd+kit"
-              class="brand-logo"
-              height="44"
-              src="/brand/cmd-kit-logo-light.png"
-              width="44"
-            />
-          </span>
-          <span class="brand-copy">
-            <strong>cmd+kit</strong>
-            <span>{copy.productLabel}</span>
-          </span>
-        </a>
-        <nav aria-label="Primary" class="topbar-nav">
-          <a
-            aria-current={isCurrentPath("/docs/getting-started") ? "page" : undefined}
-            href={docsHref}
-          >
-            {copy.docs}
-          </a>
-          <a
-            aria-current={isCurrentPath("/docs/core") ? "page" : undefined}
-            href={coreHref}
-          >
-            {copy.core}
-          </a>
-          <a
-            aria-current={isCurrentPath("/playground") ? "page" : undefined}
-            href={playgroundHref}
-          >
-            {copy.playground}
-          </a>
-        </nav>
-        <div class="topbar-actions">
-          <a class="nav-button" href={reactHref}>
-            <Icon className="button-icon" name="react" />
-            <span>{copy.react}</span>
-          </a>
-          <button
-            aria-label={copy.toggleTheme}
-            class="nav-button theme-toggle"
-            data-theme-toggle
-            type="button"
-          >
-            <Icon className="button-icon theme-icon theme-icon-sun" name="sun" />
-            <Icon className="button-icon theme-icon theme-icon-moon" name="moon" />
-            <span class="theme-toggle-label">
-              <span class="theme-label-light">{copy.themeLight}</span>
-              <span class="theme-label-dark">{copy.themeDark}</span>
-            </span>
-          </button>
-          <a class="nav-button" href={localeSwitchHref}>
-            <Icon className="button-icon" name="globe" />
-            <span>{copy.switchLanguage}</span>
-          </a>
-          <a class="nav-button nav-button-strong" href={playgroundHref}>
+        <div class="topbar-primary">
+          <BrandLockup current={isCurrentPath("/")} href={homeHref} />
+          <div class="topbar-mobile-actions">
+            <button
+              aria-controls="site-menu"
+              aria-expanded="false"
+              aria-label="Open menu"
+              class="nav-button nav-button-utility menu-toggle"
+              data-menu-toggle
+              type="button"
+            >
+              <Icon className="button-icon menu-icon menu-icon-open" name="menu" />
+              <Icon className="button-icon menu-icon menu-icon-close" name="x" />
+            </button>
+          </div>
+        </div>
+        <div class="topbar-menu" id="site-menu">
+          <a class="nav-button nav-button-strong launch-button" href={playgroundHref}>
             <Icon className="button-icon" name="play" />
             <span>{copy.launchPlayground}</span>
           </a>
+          <nav aria-label="Primary" class="topbar-nav">
+            <a
+              aria-current={isCurrentPath("/docs/getting-started") ? "page" : undefined}
+              href={docsHref}
+            >
+              {copy.docs}
+            </a>
+          </nav>
+          {
+            isDocsPage ? (
+              <nav aria-label="Documentation" class="mobile-docs-nav">
+                <p class="mobile-docs-nav-label">{copy.docs}</p>
+                {
+                  docsNavigation.map((item) => (
+                    <a
+                      aria-current={isCurrentPath(item.href) ? "page" : undefined}
+                      href={localizedPath(locale, item.href)}
+                    >
+                      {item.label}
+                    </a>
+                  ))
+                }
+              </nav>
+            ) : null
+          }
+          <div class="topbar-actions">
+            <div class="topbar-utilities">
+              <button
+                aria-label={copy.toggleTheme}
+                class="nav-button nav-button-utility theme-toggle"
+                data-theme-toggle
+                type="button"
+              >
+              <Icon className="button-icon theme-icon theme-icon-sun" name="sun" />
+              <Icon className="button-icon theme-icon theme-icon-moon" name="moon" />
+              <span class="theme-toggle-label">
+                <span class="theme-label-light">{copy.themeLight}</span>
+                <span class="theme-label-dark">{copy.themeDark}</span>
+              </span>
+            </button>
+              <div class="locale-switcher">
+                <button
+                  aria-controls="locale-menu"
+                  aria-expanded="false"
+                  aria-label={copy.selectLanguage}
+                  class="nav-button nav-button-utility locale-toggle locale-toggle-desktop"
+                  data-locale-toggle
+                  type="button"
+                >
+                  <Icon className="button-icon" name="globe" />
+                  <span class="locale-toggle-label">{currentLanguageLabel}</span>
+                  <Icon className="button-icon locale-caret" name="triangle-down" />
+                </button>
+                <div class="locale-menu" id="locale-menu">
+                  <a aria-current={locale === "en" ? "true" : undefined} href={englishUrl}>English</a>
+                  <a aria-current={locale === "es" ? "true" : undefined} href={spanishUrl}>Español</a>
+                </div>
+                <a
+                  aria-label={copy.switchLanguage}
+                  class="nav-button nav-button-utility locale-toggle locale-toggle-mobile"
+                  href={localeSwitchHref}
+                >
+                <Icon className="button-icon" name="globe" />
+                <span class="locale-toggle-label">{copy.switchLanguage}</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>
     <slot />
+    <SiteFooter locale={locale} />
     <script is:inline set:html={themeToggleScript} />
+    <script is:inline set:html={menuScript} />
+    <script is:inline set:html={localeMenuScript} />
   </body>
 </html>

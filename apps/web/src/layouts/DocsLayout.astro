@@ -1,0 +1,41 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { getDocsNavigation, localizedPath, type Locale } from "../i18n/site";
+
+interface Props {
+  description: string;
+  title: string;
+  locale: Locale;
+}
+
+const { description, locale, title } = Astro.props;
+const pathname = Astro.url.pathname;
+const navigation = getDocsNavigation(locale);
+---
+
+<BaseLayout description={description} locale={locale} title={title}>
+  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
+    <aside class="docs-sidebar">
+      <div class="docs-sidebar-card">
+        <p class="docs-sidebar-eyebrow">Docs</p>
+        <nav aria-label="Documentation navigation" class="docs-nav">
+          {
+            navigation.map((item) => {
+              const href = localizedPath(locale, item.href);
+              const current = pathname === href;
+
+              return (
+                <a aria-current={current ? "page" : undefined} href={href}>
+                  {item.label}
+                </a>
+              );
+            })
+          }
+        </nav>
+      </div>
+    </aside>
+    <article class="docs-panel">
+      <slot />
+    </article>
+  </main>
+</BaseLayout>

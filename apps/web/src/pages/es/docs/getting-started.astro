@@ -1,70 +1,90 @@
 ---
 import { localizedPath } from "../../../i18n/site";
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Primeros pasos";
+const title = "Cmd+kit | Primeros pasos";
 const description =
-  "Instala cmd+kit, entiende el workspace y empieza a integrar el paquete.";
+  "Instala Cmd+kit desde npm, elige el adaptador adecuado y empieza a configurar tu command palette.";
 const reactHref = localizedPath("es", "/docs/react");
 const vueHref = localizedPath("es", "/docs/vue");
 const preactHref = localizedPath("es", "/docs/preact");
-const astroHref = localizedPath("es", "/docs/astro");
+const customizationHref = localizedPath("es", "/docs/customization");
 const coreHref = localizedPath("es", "/docs/core");
+const playgroundDocsHref = localizedPath("es", "/docs/playground");
 ---
 
-<BaseLayout description={description} locale="es" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="es" title={title}>
       <p class="eyebrow">Docs</p>
       <h1>Primeros pasos</h1>
       <p>
-        `cmd+kit` se divide entre un core agnostico al framework y adaptadores por framework.
-        React es hoy el adaptador publico mas maduro, con Vue y Preact ya disponibles en paralelo.
-        La app web de este repositorio es la landing y el configurador en vivo.
+        `Cmd+kit` es un sistema de command palette distribuido como paquetes npm. Elige el
+        adaptador que encaje con tu stack, instálalo con tu gestor de paquetes y configura la
+        palette mediante secciones tipadas, mensajes, tokens de tema y fuentes de datos asíncronas
+        si las necesitas.
       </p>
 
-      <h2>Workspace</h2>
+      <h2>Paquetes</h2>
       <ul>
-        <li>`packages/core`: motor headless y tipos publicos del core</li>
-        <li>`packages/react`: UI y bindings oficiales para React</li>
-        <li>`packages/vue`: UI por defecto y composable para Vue</li>
-        <li>`packages/preact`: bindings para Preact alineados con la API de React</li>
-        <li>`apps/example-vanilla`: verificacion en navegador sin framework</li>
-        <li>`apps/web`: sitio Astro y playground en React</li>
+        <li>`@cmd-kit/react`: componente oficial y hook para React</li>
+        <li>`@cmd-kit/vue`: componente y API composable para Vue</li>
+        <li>`@cmd-kit/preact`: adaptador para Preact alineado con la API de React</li>
+        <li>`@cmd-kit/core`: primitivas headless para UIs propias e integraciones custom</li>
       </ul>
 
-      <h2>Instalar por adaptador</h2>
-      <pre class="code-block"><code>npm install @cmd-kit/react react react-dom
-npm install @cmd-kit/vue vue
-npm install @cmd-kit/preact preact</code></pre>
+      <h2>Instalación</h2>
+      <DocsCodeBlock code={`npm install @cmd-kit/react react react-dom
+pnpm add @cmd-kit/react react react-dom
+yarn add @cmd-kit/react react react-dom
+bun add @cmd-kit/react react react-dom`} label="bash" lang="bash" />
 
-      <h2>Core headless</h2>
+      <p>Cambia `@cmd-kit/react` por `@cmd-kit/vue`, `@cmd-kit/preact` o `@cmd-kit/core` según tu caso.</p>
+
+      <h2>Modelo de comandos</h2>
       <p>
-        Si quieres renderizar tu propia UI en navegador o en otro framework, empieza por
-        `@cmd-kit/core` y construye sobre el snapshot y las primitivas de ejecucion.
+        Todos los adaptadores comparten la misma estructura: las secciones contienen items, y los
+        items pueden abrir enlaces, ejecutar callbacks o navegar a secciones anidadas.
       </p>
-      <pre class="code-block"><code>npm install @cmd-kit/core</code></pre>
+      <DocsCodeBlock code={`const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "home", title: "Home", href: "/" },
+      { id: "settings", title: "Settings", shortcut: "G S" }
+    ]
+  },
+  {
+    id: "search",
+    title: "Search",
+    items: [
+      {
+        id: "docs",
+        title: "Documentation",
+        children: [
+          {
+            id: "guides",
+            title: "Guides",
+            items: [{ id: "api", title: "API reference" }]
+          }
+        ]
+      }
+    ]
+  }
+];`} label="ts" lang="ts" />
 
-      <h2>Elige tu punto de entrada</h2>
+      <h2>Elige tu adaptador</h2>
       <ul>
-        <li><a href={reactHref}>React</a>: el adaptador mejor soportado hoy</li>
-        <li><a href={vueHref}>Vue</a>: adaptador basado en slots sobre el mismo modelo del core</li>
-        <li><a href={preactHref}>Preact</a>: runtime ligero con una API cercana a React</li>
-        <li><a href={astroHref}>Astro</a>: patron recomendado para docs estaticas e islas</li>
-        <li><a href={coreHref}>Core</a>: camino sin framework para UIs custom y uso vanilla</li>
+        <li><a href={reactHref}>React</a>: la opción más completa si quieres la integración empaquetada más madura</li>
+        <li><a href={vueHref}>Vue</a>: mismo modelo de comandos con una superficie propia de Vue</li>
+        <li><a href={preactHref}>Preact</a>: runtime más ligero con una API cercana a React</li>
+        <li><a href={coreHref}>Core</a>: camino headless para tu propia capa de render</li>
+        <li><a href={playgroundDocsHref}>Playground</a>: guía del configurador en vivo y de su flujo de exportación</li>
       </ul>
 
-      <h2>Checks de calidad</h2>
-      <pre class="code-block"><code>npm run test
-npm run typecheck
-npm run build</code></pre>
-
-      <h2>Siguientes pasos</h2>
+      <h2>Personalización</h2>
       <p>
-        Empieza por React si quieres el camino mas maduro hoy. Usa Vue o Preact si quieres el
-        mismo comportamiento del core en otro runtime. El playground de la home exporta snippets
-        de React, Vue, Preact, vanilla browser, CSS variables, Tailwind y JSON.
+        Cuando la integración base funcione, pasa a <a href={customizationHref}>Personalización</a>
+        para ajustar estilos, mensajes, renderizado y fuentes asíncronas de forma profesional.
       </p>
-    </article>
-  </main>
-</BaseLayout>
+</DocsLayout>

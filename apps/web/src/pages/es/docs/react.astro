@@ -1,88 +1,96 @@
 ---
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | React";
+const title = "Cmd+kit | React";
 const description =
-  "Usa la command palette de React y configura secciones, tema y comportamiento.";
+  "Instala el paquete de React para Cmd+kit y configura secciones, tema, mensajes y overrides de render.";
 ---
 
-<BaseLayout description={description} locale="es" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="es" title={title}>
       <p class="eyebrow">React</p>
-      <h1>Integracion con React</h1>
+      <h1>Integración con React</h1>
       <p>
-        El punto de entrada publico actual para React es `CommandPalette`. Acepta `items` o
-        `sections`, mensajes personalizables, tokens de tema y un atajo de teclado.
+        `@cmd-kit/react` incluye el componente `CommandPalette` y el hook `useCommandPalette` para
+        integraciones más personalizadas. Empieza por el componente empaquetado y baja al hook si
+        necesitas una shell propia.
       </p>
 
-      <h2>Ejemplo basico</h2>
-      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/react";
+      <h2>Instalación</h2>
+      <DocsCodeBlock code={`npm install @cmd-kit/react react react-dom
+pnpm add @cmd-kit/react react react-dom
+yarn add @cmd-kit/react react react-dom
+bun add @cmd-kit/react react react-dom`} label="bash" lang="bash" />
+
+      <h2>Uso básico</h2>
+      <DocsCodeBlock code={`import { CommandPalette } from "@cmd-kit/react";
 
 const sections = [
   {
     id: "navigation",
     title: "Navigation",
-    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" },
+      { id: "settings", title: "Settings", shortcut: "G S" }
+    ]
   }
 ];
 
 export function Example() {
   return (
     <CommandPalette
+      recents={{ sectionTitle: "Comandos recientes" }}
       sections={sections}
       shortcut="mod+k"
-      title="Project commands"
+      title="Comandos del proyecto"
     />
   );
-}`}</code></pre>
+}`} label="tsx" lang="tsx" />
 
-      <h2>Capacidades actuales</h2>
+      <h2>Props principales</h2>
       <ul>
-        <li>resultados agrupados</li>
-        <li>navegacion por teclado</li>
-        <li>navegacion anidada con child sections</li>
-        <li>tokens de tema por props</li>
-        <li>sobrescritura de mensajes</li>
-        <li>class names por slot</li>
-        <li>renderers custom para titulo, secciones, items y estado vacio</li>
-        <li>contexto de breadcrumbs para renderers de titulo en navegacion anidada</li>
+        <li>`sections` o `items`: datos estáticos de comandos</li>
+        <li>`source`: carga comandos desde una fuente asíncrona o calculada</li>
+        <li>`messages`: personaliza placeholder, estado vacío y etiqueta de cierre</li>
+        <li>`theme`: define colores, borde, radio y sombra</li>
+        <li>`recents`: añade una sección automática de comandos recientes</li>
+        <li>`classNames`: aplica clases a slots internos</li>
+        <li>`renderers`: personaliza título, títulos de sección, items y estado vacío</li>
+        <li>`open`, `defaultOpen`, `onOpenChange`: control de apertura desde el estado de tu app</li>
       </ul>
 
-      <h2>Ejemplo de personalizacion</h2>
-      <pre class="code-block"><code>{`import { CommandPalette } from "@cmd-kit/react";
-
-const sections = [
-  {
-    id: "navigation",
-    title: "Navigation",
-    items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
-  }
-];
+      <h2>Ejemplo de personalización</h2>
+      <DocsCodeBlock code={`import { CommandPalette } from "@cmd-kit/react";
 
 export function Example() {
   return (
     <CommandPalette
       classNames={{
-        dialog: "my-palette",
-        item: "my-palette-item"
+        dialog: "palette-shell",
+        item: "palette-item",
+        emptyState: "palette-empty"
+      }}
+      messages={{
+        searchPlaceholder: "Busca acciones, páginas o docs",
+        noResults: "No hay comandos para esta búsqueda.",
+        closeLabel: "Cerrar command palette"
       }}
       renderers={{
         title: ({ activeTitle, breadcrumbs }) => (
-          <span>{breadcrumbs.join(" / ")} · {activeTitle}</span>
+          <span>{breadcrumbs.join(" / ") || activeTitle}</span>
         ),
-        emptyState: ({ query }) => <span>No match for "{query}"</span>
+        emptyState: ({ query }) => <span>Sin resultados para "{query}"</span>
       }}
       sections={sections}
+      theme={{
+        accentColor: "#12b5e5",
+        backgroundColor: "#0f1720",
+        textColor: "#f5fbff",
+        borderColor: "#264152",
+        radius: "22px"
+      }}
+      title="Comandos del workspace"
     />
   );
-}`}</code></pre>
-
-      <h2>Estado</h2>
-      <p>
-        La API ya es usable, pero sigue evolucionando. Segun avance la roadmap, esta documentacion
-        se ampliara con patrones de personalizacion, accesibilidad y ejemplos de produccion.
-      </p>
-    </article>
-  </main>
-</BaseLayout>
+}`} label="tsx" lang="tsx" />
+</DocsLayout>

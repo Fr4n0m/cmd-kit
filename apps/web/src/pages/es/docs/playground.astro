@@ -1,0 +1,66 @@
+---
+import DocsLayout from "../../../layouts/DocsLayout.astro";
+
+const title = "Cmd+kit | Documentación del playground";
+const description =
+  "Aprende a usar el playground de Cmd+kit para configurar comandos, validar el comportamiento y exportar código base para producción.";
+---
+
+<DocsLayout description={description} locale="es" title={title}>
+      <p class="eyebrow">Playground</p>
+      <h1>Guía del playground</h1>
+      <p>
+        El playground es la forma más rápida de definir una integración con `Cmd+kit` antes de
+        llevarla a tu código. Te permite configurar la estructura de comandos, validar el flujo en
+        una preview viva y exportar código base para los adaptadores soportados.
+      </p>
+
+      <h2>Para qué sirve</h2>
+      <ul>
+        <li>prototipar la estructura de la command palette sin editar ficheros de código al principio</li>
+        <li>probar navegación anidada, búsqueda y agrupación en tiempo real</li>
+        <li>ajustar tokens de tema y copy antes de integrar el paquete</li>
+        <li>exportar snippets base para React, Vue, Preact, navegador vanilla, CSS, Tailwind y JSON</li>
+      </ul>
+
+      <h2>Áreas principales</h2>
+      <ul>
+        <li><strong>Basics</strong>: título, atajo, modo de source y ajustes generales</li>
+        <li><strong>Sections</strong>: creación de grupos de comandos y edición de cada item</li>
+        <li><strong>Nested commands</strong>: secciones hijas para modelar navegación en profundidad</li>
+        <li><strong>Messages</strong>: personalización del placeholder y del estado vacío</li>
+        <li><strong>Theme</strong>: ajuste de colores, borde, texto, radio y sombra</li>
+        <li><strong>Preview</strong>: validación en vivo de interacción y teclado</li>
+        <li><strong>Code</strong>: exportación de la configuración al formato que necesites</li>
+      </ul>
+
+      <h2>Cómo trabajar con él</h2>
+      <ol>
+        <li>Define primero las secciones raíz y los comandos de cada una.</li>
+        <li>Añade atajos, enlaces, subtítulos y keywords cuando aporten claridad.</li>
+        <li>Crea secciones anidadas para los flujos que necesiten un segundo nivel.</li>
+        <li>Ajusta mensajes y tokens de tema hasta que la preview encaje con tu producto.</li>
+        <li>Cambia el target de exportación y lleva el código generado a tu aplicación.</li>
+      </ol>
+
+      <h2>Modos de source</h2>
+      <p>
+        El playground soporta configuración estática y configuración orientada a carga asíncrona.
+        Usa el modo estático para modelar secciones inline. Usa el modo async cuando tu integración
+        final vaya a cargar comandos desde una API o desde otra fuente dinámica.
+      </p>
+
+      <h2>Exports</h2>
+      <p>
+        El código generado está pensado como punto de partida práctico, no como plantilla cerrada.
+        Lo normal es exportarlo, integrarlo en tu proyecto y seguir refinándolo según tu naming,
+        estilos y comportamiento real.
+      </p>
+
+      <h2>Buena práctica</h2>
+      <p>
+        Usa el playground para cerrar estructura y configuración rápidamente, y después apóyate en
+        la documentación de los paquetes para la integración final. El playground acelera diseño y
+        onboarding; la documentación sigue siendo la fuente de verdad para la API.
+      </p>
+</DocsLayout>

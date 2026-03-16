@@ -1,0 +1,49 @@
+---
+import BrandLockup from "./BrandLockup.astro";
+import { layoutCopy, localizedPath, type Locale } from "../i18n/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = layoutCopy[locale];
+const privacyHref = localizedPath(locale, "/legal/privacy");
+const termsHref = localizedPath(locale, "/legal/terms");
+---
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-brand">
+      <BrandLockup href={localizedPath(locale, "/")} />
+      <p class="site-footer-copy">{copy.footerDescription}</p>
+    </div>
+    <nav aria-label="Footer" class="site-footer-links">
+      <div class="site-footer-group">
+        <p>{copy.footerLegal}</p>
+        <a href={privacyHref}>{copy.footerPrivacy}</a>
+        <a href={termsHref}>{copy.footerTerms}</a>
+      </div>
+      <div class="site-footer-group">
+        <p>{copy.footerCommunity}</p>
+        <a
+          href="https://github.com/Fr4n0m/cmd-kit"
+          rel="noreferrer"
+          target="_blank"
+        >
+          {copy.footerGithub}
+        </a>
+        <a
+          href="https://buymeacoffee.com/fran11799"
+          rel="noreferrer"
+          target="_blank"
+        >
+          {copy.footerCoffee}
+        </a>
+        <a href="https://codebyfran.es" rel="noreferrer" target="_blank">
+          {copy.footerStudio}
+        </a>
+      </div>
+    </nav>
+  </div>
+</footer>

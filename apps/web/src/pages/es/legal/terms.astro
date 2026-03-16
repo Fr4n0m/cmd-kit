@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const title = "Cmd+kit | Términos";
+const description = "Información legal del sitio web de Cmd+kit.";
+---
+
+<BaseLayout description={description} locale="es" title={title}>
+  <main class="site-shell legal-shell" id="main-content" tabindex="-1">
+    <article class="docs-panel legal-panel">
+      <p class="eyebrow">Legal</p>
+      <h1>Términos</h1>
+      <p>
+        `Cmd+kit` se presenta aquí como un proyecto open source. Las condiciones de uso,
+        redistribución y contribución del código deben regirse por la licencia del repositorio y
+        por sus guías de contribución cuando estén publicadas en la raíz del proyecto.
+      </p>
+      <p>
+        El contenido de esta web se ofrece con fines de documentación y presentación del producto.
+        Debes validar el paquete en tu propio entorno antes de adoptarlo en producción.
+      </p>
+      <p>
+        Los servicios externos enlazados desde esta web se operan de forma independiente y pueden
+        aplicar sus propios términos de uso.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

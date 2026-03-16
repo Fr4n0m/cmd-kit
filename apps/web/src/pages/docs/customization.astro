@@ -1,89 +1,123 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Customization";
+const title = "Cmd+kit | Customization";
 const description =
-  "Customize sections, theme tokens, nested navigation, and snippets in cmd+kit.";
+  "Customize command structure, theme tokens, copy, renderers, and async sources in Cmd+kit.";
+const playgroundDocsHref = "/docs/playground";
 ---
 
-<BaseLayout description={description} locale="en" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="en" title={title}>
       <p class="eyebrow">Customization</p>
-      <h1>Customization Patterns</h1>
+      <h1>Customization</h1>
       <p>
-        `cmd+kit` is designed so the same concepts appear in the package API and in the live
-        configurator. The main customization surface is built around sections, items, messages, and
-        theme tokens.
+        `Cmd+kit` is configured in code. The main customization surface is the command structure
+        itself, followed by messages, theme tokens, render overrides, and optional async sources.
+      </p>
+      <p>
+        If you want a guided UI for exploring these settings before coding them, see the
+        <a href={playgroundDocsHref}> playground documentation</a>.
       </p>
 
-      <h2>Sections</h2>
-      <pre class="code-block"><code>{`const sections = [
+      <h2>Define sections and items</h2>
+      <DocsCodeBlock code={`const sections = [
   {
     id: "navigation",
     title: "Navigation",
-    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
-  }
-];`}</code></pre>
-
-      <h2>Nested navigation</h2>
-      <pre class="code-block"><code>{`const sections = [
-  {
-    id: "actions",
-    title: "Actions",
     items: [
       {
-        id: "search",
-        title: "Search",
+        id: "dashboard",
+        title: "Dashboard",
+        subtitle: "Open the main workspace",
+        href: "/dashboard",
+        keywords: ["home", "workspace"]
+      }
+    ]
+  }
+];`} label="ts" lang="ts" />
+
+      <h2>Nested navigation</h2>
+      <DocsCodeBlock code={`const sections = [
+  {
+    id: "search",
+    title: "Search",
+    items: [
+      {
+        id: "docs",
+        title: "Documentation",
         children: [
           {
-            id: "scopes",
-            title: "Scopes",
-            items: [{ id: "docs", title: "Documentation" }]
+            id: "guides",
+            title: "Guides",
+            items: [{ id: "api", title: "API reference" }]
           }
         ]
       }
     ]
   }
-];`}</code></pre>
+];`} label="ts" lang="ts" />
 
       <h2>Theme tokens</h2>
-      <pre class="code-block"><code>{`<CommandPalette
+      <DocsCodeBlock code={`<CommandPalette
   sections={sections}
   theme={{
-    accentColor: "#ff6b35",
-    backgroundColor: "#101828",
-    textColor: "#f8fafc",
-    borderColor: "#334155",
-    radius: "26px"
+    accentColor: "#12b5e5",
+    backgroundColor: "#0f1720",
+    textColor: "#f5fbff",
+    mutedColor: "#9fb4c4",
+    borderColor: "#264152",
+    overlayColor: "rgba(4, 9, 13, 0.64)",
+    radius: "22px",
+    shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
   }}
-/>`}</code></pre>
+/>`} label="tsx" lang="tsx" />
 
-      <h2>CSS variables helper</h2>
-      <pre class="code-block"><code>{`import { createThemeCssText } from "@cmd-kit/core";
+      <h2>Messages</h2>
+      <DocsCodeBlock code={`<CommandPalette
+  sections={sections}
+  messages={{
+    searchPlaceholder: "Search commands",
+    noResults: "No results match your query.",
+    closeLabel: "Close palette"
+  }}
+/>`} label="tsx" lang="tsx" />
+
+      <h2>Render and style overrides</h2>
+      <DocsCodeBlock code={`<CommandPalette
+  classNames={{
+    dialog: "palette-shell",
+    item: "palette-item",
+    emptyState: "palette-empty"
+  }}
+  renderers={{
+    title: ({ activeTitle, breadcrumbs }) => (
+      <span>{breadcrumbs.join(" / ") || activeTitle}</span>
+    ),
+    emptyState: ({ query }) => <span>No result for "{query}"</span>
+  }}
+  sections={sections}
+/>`} label="tsx" lang="tsx" />
+
+      <h2>Async source</h2>
+      <DocsCodeBlock code={`<CommandPalette
+  source={async () => {
+    const response = await fetch("/api/commands");
+    return response.json();
+  }}
+  title="Workspace commands"
+/>`} label="tsx" lang="tsx" />
+
+      <h2>Generate CSS variables</h2>
+      <DocsCodeBlock code={`import { createThemeCssText } from "@cmd-kit/core";
 
 const css = createThemeCssText({
-  accentColor: "#ff6b35",
-  backgroundColor: "#101828"
+  accentColor: "#12b5e5",
+  backgroundColor: "#0f1720",
+  textColor: "#f5fbff"
 });
 
 const themeBlock = \`:root {
 \${css}
-}\`;`}</code></pre>
-
-      <h2>Messages</h2>
-      <pre class="code-block"><code>{`<CommandPalette
-  sections={sections}
-  messages={{
-    searchPlaceholder: "Search commands...",
-    noResults: "No results found."
-  }}
-/>`}</code></pre>
-
-      <p>
-        The homepage playground should be treated as the fastest way to assemble these patterns and
-        export starter code.
-      </p>
-    </article>
-  </main>
-</BaseLayout>
+}\`;`} label="ts" lang="ts" />
+</DocsLayout>

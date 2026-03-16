@@ -1,14 +1,13 @@
 ---
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DocsCodeBlock from "../../../components/DocsCodeBlock.astro";
+import DocsLayout from "../../../layouts/DocsLayout.astro";
 
-const title = "cmd+kit | Core";
+const title = "Cmd+kit | Core";
 const description =
-  "Usa el core headless de cmd+kit para construir una command palette en vanilla o en tu propio adaptador.";
+  "Usa el core headless de Cmd+kit para construir una command palette en vanilla o en tu propio adaptador.";
 ---
 
-<BaseLayout description={description} locale="es" title={title}>
-  <main class="site-shell docs-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel">
+<DocsLayout description={description} locale="es" title={title}>
       <p class="eyebrow">Core</p>
       <h1>Core headless</h1>
       <p>
@@ -18,7 +17,7 @@ const description =
       </p>
 
       <h2>Instalacion</h2>
-      <pre class="code-block"><code>npm install @cmd-kit/core</code></pre>
+      <DocsCodeBlock code={`npm install @cmd-kit/core`} label="bash" lang="bash" />
 
       <h2>Que cubre</h2>
       <ul>
@@ -32,7 +31,7 @@ const description =
       </ul>
 
       <h2>Ejemplo minimo</h2>
-      <pre class="code-block"><code>{`import {
+      <DocsCodeBlock code={`import {
   createCommandSnapshot,
   createResolvedConfig,
   dispatchCommandExecution
@@ -55,7 +54,7 @@ await dispatchCommandExecution({
   port: {
     openHref: ({ href }) => window.location.assign(href)
   }
-});`}</code></pre>
+});`} label="ts" lang="ts" />
 
       <h2>Cuando usarlo directamente</h2>
       <p>
@@ -63,6 +62,4 @@ await dispatchCommandExecution({
         framework o mantener la implementacion totalmente custom. Si quieres un componente listo
         para usar, empieza por uno de los adaptadores oficiales.
       </p>
-    </article>
-  </main>
-</BaseLayout>
+</DocsLayout>
