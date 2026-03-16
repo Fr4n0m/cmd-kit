@@ -1,6 +1,7 @@
 ---
 import { localizedPath } from "../../i18n/site";
 import DocsCodeBlock from "../../components/DocsCodeBlock.astro";
+import InstallCommandSelector from "../../components/InstallCommandSelector.astro";
 import DocsLayout from "../../layouts/DocsLayout.astro";
 
 const title = "Cmd+kit | Getting Started";
@@ -32,12 +33,7 @@ const playgroundDocsHref = localizedPath("en", "/docs/playground");
       </ul>
 
       <h2>Install</h2>
-      <DocsCodeBlock code={`npm install @cmd-kit/react react react-dom
-pnpm add @cmd-kit/react react react-dom
-yarn add @cmd-kit/react react react-dom
-bun add @cmd-kit/react react react-dom`} label="bash" lang="bash" />
-
-      <p>Swap `@cmd-kit/react` for `@cmd-kit/vue`, `@cmd-kit/preact`, or `@cmd-kit/core` as needed.</p>
+      <InstallCommandSelector locale="en" />
 
       <h2>Command model</h2>
       <p>

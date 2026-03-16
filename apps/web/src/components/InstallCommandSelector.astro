@@ -1,0 +1,146 @@
+---
+import { localizedPath, type Locale } from "../i18n/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const rootId = `install-selector-${locale}`;
+
+const copy =
+  locale === "es"
+    ? {
+        installerLabel: "Gestor de paquetes",
+        packageHint: "Ver documentación del adaptador",
+        techLabel: "Tecnología",
+        technologies: {
+          core: "Core",
+          preact: "Preact",
+          react: "React",
+          vue: "Vue"
+        }
+      }
+    : {
+        installerLabel: "Package manager",
+        packageHint: "Open adapter documentation",
+        techLabel: "Technology",
+        technologies: {
+          core: "Core",
+          preact: "Preact",
+          react: "React",
+          vue: "Vue"
+        }
+      };
+
+const adapters = [
+  {
+    id: "react",
+    href: localizedPath(locale, "/docs/react"),
+    packages: {
+      bun: "bun add @cmd-kit/react react react-dom",
+      npm: "npm install @cmd-kit/react react react-dom",
+      pnpm: "pnpm add @cmd-kit/react react react-dom",
+      yarn: "yarn add @cmd-kit/react react react-dom"
+    }
+  },
+  {
+    id: "vue",
+    href: localizedPath(locale, "/docs/vue"),
+    packages: {
+      bun: "bun add @cmd-kit/vue vue",
+      npm: "npm install @cmd-kit/vue vue",
+      pnpm: "pnpm add @cmd-kit/vue vue",
+      yarn: "yarn add @cmd-kit/vue vue"
+    }
+  },
+  {
+    id: "preact",
+    href: localizedPath(locale, "/docs/preact"),
+    packages: {
+      bun: "bun add @cmd-kit/preact preact",
+      npm: "npm install @cmd-kit/preact preact",
+      pnpm: "pnpm add @cmd-kit/preact preact",
+      yarn: "yarn add @cmd-kit/preact preact"
+    }
+  },
+  {
+    id: "core",
+    href: localizedPath(locale, "/docs/core"),
+    packages: {
+      bun: "bun add @cmd-kit/core",
+      npm: "npm install @cmd-kit/core",
+      pnpm: "pnpm add @cmd-kit/core",
+      yarn: "yarn add @cmd-kit/core"
+    }
+  }
+] as const;
+
+const defaultAdapter = adapters[0];
+const defaultManager = "npm";
+const installSelectorScript = `(function(){const root=document.getElementById(${JSON.stringify(rootId)});if(!root)return;const adapterButtons=[...root.querySelectorAll('[data-install-adapter]')];const managerButtons=[...root.querySelectorAll('[data-install-manager]')];const code=root.querySelector('[data-install-code]');const link=root.querySelector('[data-install-link]');const packageData=${JSON.stringify(adapters)};let state={adapter:${JSON.stringify(defaultAdapter.id)},manager:${JSON.stringify(defaultManager)}};const sync=()=>{adapterButtons.forEach((button)=>{const active=button.getAttribute('data-install-adapter')===state.adapter;button.setAttribute('aria-pressed',String(active));button.classList.toggle('is-active',active);});managerButtons.forEach((button)=>{const active=button.getAttribute('data-install-manager')===state.manager;button.setAttribute('aria-pressed',String(active));button.classList.toggle('is-active',active);});const selected=packageData.find((entry)=>entry.id===state.adapter);if(!selected||!code||!link)return;code.textContent=selected.packages[state.manager];link.setAttribute('href',selected.href);};root.addEventListener('click',(event)=>{const target=event.target instanceof Element?event.target:null;if(!target)return;const adapterButton=target.closest('[data-install-adapter]');if(adapterButton){state.adapter=adapterButton.getAttribute('data-install-adapter')||state.adapter;sync();return;}const managerButton=target.closest('[data-install-manager]');if(managerButton){state.manager=managerButton.getAttribute('data-install-manager')||state.manager;sync();}});sync();})();`;
+---
+
+<section class="install-selector" id={rootId}>
+  <div class="install-selector-group">
+    <p class="install-selector-label">{copy.techLabel}</p>
+    <div class="install-selector-row">
+      {
+        adapters.map((adapter) => (
+          <button
+            aria-pressed={adapter.id === defaultAdapter.id ? "true" : "false"}
+            class:list={[
+              "install-selector-button",
+              "install-selector-button-tech",
+              adapter.id === defaultAdapter.id && "is-active"
+            ]}
+            data-install-adapter={adapter.id}
+            type="button"
+          >
+            {copy.technologies[adapter.id]}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="install-selector-group">
+    <p class="install-selector-label">{copy.installerLabel}</p>
+    <div class="install-selector-row">
+      {
+        ["npm", "pnpm", "yarn", "bun"].map((manager) => (
+          <button
+            aria-pressed={manager === defaultManager ? "true" : "false"}
+            class:list={[
+              "install-selector-button",
+              "install-selector-button-manager",
+              manager === defaultManager && "is-active"
+            ]}
+            data-install-manager={manager}
+            type="button"
+          >
+            {manager}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="code-block docs-code-block install-code-block">
+    <div class="docs-code-toolbar" aria-hidden="true">
+      <div class="docs-code-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span class="docs-code-label">bash</span>
+    </div>
+    <pre class="install-code-pre"><code data-install-code>{defaultAdapter.packages.npm}</code></pre>
+  </div>
+
+  <a class="install-selector-link" data-install-link href={defaultAdapter.href}>
+    {copy.packageHint}
+  </a>
+</section>
+
+<script is:inline set:html={installSelectorScript} />
