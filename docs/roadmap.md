@@ -190,6 +190,7 @@ Completed:
 - cover the full message set and current theme token surface in the configurator
 - add explicit npm installation guidance in the web experience
 - expose recent-command behavior controls in the configurator
+- expose async data mode, load delay, and default-open behavior controls in the configurator
 - allow editing nested command sections and nested items from the configurator
 - add semantic tab/tabpanel behavior and live copy feedback to the playground code panel
 - add baseline SEO metadata and structured data to the Astro shell
@@ -200,7 +201,6 @@ Remaining:
 
 - improve landing copy, hierarchy, and product storytelling
 - add full configurator coverage for the public API
-- allow editing more advanced command behaviors from the UI beyond recent-command settings and nested command content
 - improve snippet generation quality and production readiness
 - continue hardening mobile and responsive behavior with manual QA
 
