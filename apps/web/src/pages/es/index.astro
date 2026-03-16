@@ -33,13 +33,13 @@ const playgroundHref = localizedPath("es", "/playground");
   <main class="site-shell" id="main-content" tabindex="-1">
     <section class="hero">
       <div class="hero-copy">
-        <span class="badge">Sistema open source de command palette</span>
-        <p class="hero-kicker">Core headless. Adaptadores oficiales. UI exportable.</p>
-        <h1>Diseña una command palette que parezca parte de tu producto, no un plugin pegado.</h1>
+        <span class="badge">Toolkit open source de command palette</span>
+        <p class="hero-kicker">Motor headless. Adaptadores oficiales. UI orientada a produccion.</p>
+        <h1>Lanza una command palette que se sienta nativa en tu producto y predecible en codigo.</h1>
         <p>
           `cmd+kit` te da un motor de comandos agnostico al framework, adaptadores oficiales,
-          navegacion anidada, recientes y un configurador en vivo que exporta codigo real en vez de
-          snippets decorativos.
+          navegacion anidada, recientes y un playground que exporta codigo real en vez de snippets
+          decorativos.
         </p>
         <div class="hero-actions">
           <a class="primary-button" href={playgroundHref}>
@@ -114,11 +114,10 @@ const playgroundHref = localizedPath("es", "/playground");
     <section class="overview-grid">
       <article class="overview-card overview-card-large">
         <p class="eyebrow">Por que existe</p>
-        <h2>La mayoria de command palettes son bonitas pero rigidas, o flexibles pero olvidables.</h2>
+        <h2>La mayoria de command palettes te obligan a elegir entre velocidad de entrega y control de la superficie.</h2>
         <p>
-          `cmd+kit` esta planteado para que el motor sea portable y la superficie del producto siga
-          siendo lo bastante opinionada como para lanzar rapido. Puedes quedarte con la UI, cambiarla
-          o generar otra desde el configurador.
+          `cmd+kit` mantiene el motor portable y tipado mientras deja a los equipos lanzar una UI
+          por defecto util o sustituirla sin pelearse con las tripas del sistema.
         </p>
       </article>
       <article class="overview-card">
@@ -128,8 +127,8 @@ const playgroundHref = localizedPath("es", "/playground");
       </article>
       <article class="overview-card">
         <p class="eyebrow">React</p>
-        <h2>Superficie personalizable</h2>
-        <p>Usa la UI por defecto, sobreescribe renderers o trata el hook como una frontera de integracion de nivel inferior.</p>
+        <h2>Superficie componible</h2>
+        <p>Usa la UI por defecto, sobreescribe renderers o trata el hook como la frontera de integracion de tu propia capa de comandos.</p>
       </article>
     </section>
 

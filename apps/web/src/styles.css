@@ -1,28 +1,28 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
 :root {
-  color-scheme: light;
-  --page-bg: #f5efe4;
-  --page-paper: rgba(255, 251, 245, 0.88);
-  --page-panel: rgba(255, 250, 242, 0.92);
-  --ink: #1d231d;
-  --ink-muted: rgba(29, 35, 29, 0.68);
-  --line: rgba(29, 35, 29, 0.14);
-  --accent: #cf5f31;
-  --accent-strong: #b1481c;
-  --accent-soft: rgba(207, 95, 49, 0.12);
-  --forest: #30564a;
-  --playground-bg: #15211d;
-  --playground-surface: #1e2c27;
-  --playground-border: rgba(255, 255, 255, 0.09);
-  --playground-ink: #f7f2eb;
-  --playground-muted: rgba(247, 242, 235, 0.68);
+  color-scheme: dark;
+  --page-bg: #0a1014;
+  --page-paper: rgba(15, 22, 28, 0.94);
+  --page-panel: rgba(13, 20, 26, 0.94);
+  --ink: #e7f1f6;
+  --ink-muted: rgba(190, 210, 221, 0.72);
+  --line: rgba(121, 145, 160, 0.18);
+  --accent: #52c7ff;
+  --accent-strong: #2499d6;
+  --accent-soft: rgba(82, 199, 255, 0.12);
+  --forest: #7ce7c3;
+  --playground-bg: #0b141a;
+  --playground-surface: #0f191f;
+  --playground-border: rgba(130, 163, 182, 0.14);
+  --playground-ink: #f4fbff;
+  --playground-muted: rgba(188, 212, 224, 0.7);
   background:
-    radial-gradient(circle at top left, rgba(207, 95, 49, 0.16), transparent 28%),
-    radial-gradient(circle at 85% 8%, rgba(48, 86, 74, 0.14), transparent 24%),
-    linear-gradient(180deg, #f6f0e5 0%, #f1eadb 100%);
+    radial-gradient(circle at top left, rgba(82, 199, 255, 0.14), transparent 24%),
+    radial-gradient(circle at 82% 12%, rgba(124, 231, 195, 0.1), transparent 20%),
+    linear-gradient(180deg, #091116 0%, #0b1318 48%, #081015 100%);
   color: var(--ink);
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
 }
 
 * {
@@ -42,10 +42,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(29, 35, 29, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(29, 35, 29, 0.025) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 75%);
+    linear-gradient(rgba(132, 157, 171, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(132, 157, 171, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.34), transparent 86%);
 }
 
 a {
@@ -58,7 +58,7 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(207, 95, 49, 0.55);
+  outline: 3px solid rgba(82, 199, 255, 0.55);
   outline-offset: 3px;
 }
 
@@ -80,7 +80,7 @@ button {
 }
 
 .site-shell {
-  width: min(1320px, calc(100vw - 2rem));
+  width: min(1360px, calc(100vw - 2rem));
   margin: 0 auto;
   padding: 2rem 0 5rem;
 }
@@ -97,23 +97,23 @@ button {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 12% 18%, rgba(207, 95, 49, 0.14), transparent 18%),
-    radial-gradient(circle at 88% 22%, rgba(48, 86, 74, 0.12), transparent 20%);
+    radial-gradient(circle at 12% 18%, rgba(82, 199, 255, 0.16), transparent 18%),
+    radial-gradient(circle at 88% 22%, rgba(124, 231, 195, 0.12), transparent 20%);
 }
 
 .topbar-inner {
-  width: min(1320px, calc(100vw - 2rem));
+  width: min(1360px, calc(100vw - 2rem));
   margin: 0 auto;
-  padding: 0.85rem 1rem;
+  padding: 0.8rem 1rem;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 1rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 251, 245, 0.78);
+  border-radius: 20px;
+  background: rgba(8, 14, 19, 0.82);
   backdrop-filter: blur(18px);
-  box-shadow: 0 12px 40px rgba(92, 74, 44, 0.08);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
 }
 
 .skip-link {
@@ -123,8 +123,8 @@ button {
   z-index: 100;
   border-radius: 999px;
   padding: 0.7rem 1rem;
-  background: var(--ink);
-  color: #fffaf2;
+  background: var(--accent);
+  color: #041118;
 }
 
 .visually-hidden {
@@ -152,13 +152,17 @@ button {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 999px;
-  background: var(--ink);
-  color: #f7f0e6;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 1.15rem;
+  width: 2.45rem;
+  height: 2.45rem;
+  border-radius: 14px;
+  border: 1px solid rgba(82, 199, 255, 0.24);
+  background:
+    linear-gradient(135deg, rgba(82, 199, 255, 0.16), rgba(124, 231, 195, 0.08)),
+    rgba(13, 22, 28, 0.9);
+  color: var(--ink);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .brand-copy {
@@ -169,12 +173,15 @@ button {
 
 .brand-copy strong {
   font-size: 0.95rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .brand-copy span {
   font-size: 0.76rem;
   color: var(--ink-muted);
+  font-family: "IBM Plex Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .topbar-nav {
@@ -188,8 +195,8 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.7rem 0.95rem;
-  border-radius: 999px;
+  padding: 0.68rem 0.92rem;
+  border-radius: 14px;
   color: var(--ink-muted);
   transition:
     background-color 160ms ease,
@@ -199,13 +206,13 @@ button {
 
 .topbar-nav a:hover,
 .nav-button:hover {
-  background: rgba(29, 35, 29, 0.05);
-  color: var(--ink);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f2fbff;
 }
 
 .topbar-nav a[aria-current="page"] {
-  background: rgba(29, 35, 29, 0.08);
-  color: var(--ink);
+  background: rgba(82, 199, 255, 0.1);
+  color: #f2fbff;
 }
 
 .topbar-actions {
@@ -215,30 +222,31 @@ button {
 
 .nav-button {
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .nav-button-strong {
-  background: var(--ink);
-  color: #fff9ef;
-  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #031118;
+  border-color: rgba(82, 199, 255, 0.36);
 }
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
   gap: 2rem;
   align-items: center;
-  padding: 3.5rem 0 3rem;
+  padding: 3.2rem 0 3rem;
 }
 
 .hero-copy h1 {
-  margin: 0.8rem 0 0;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: clamp(3.9rem, 8vw, 7rem);
-  line-height: 0.9;
-  max-width: 10ch;
-  letter-spacing: -0.04em;
+  margin: 0.9rem 0 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(3.4rem, 7vw, 6rem);
+  font-weight: 700;
+  line-height: 0.92;
+  max-width: 11ch;
+  letter-spacing: -0.05em;
 }
 
 .hero-copy p {
@@ -250,10 +258,11 @@ button {
 
 .hero-kicker {
   margin: 1rem 0 0;
-  font-size: 0.92rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--forest);
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .badge,
@@ -262,12 +271,13 @@ button {
   width: fit-content;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  border: 1px solid rgba(29, 35, 29, 0.12);
-  background: rgba(255, 251, 245, 0.74);
-  letter-spacing: 0.08em;
+  border: 1px solid rgba(82, 199, 255, 0.18);
+  background: rgba(82, 199, 255, 0.08);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  color: var(--ink-muted);
+  font-size: 0.72rem;
+  color: rgba(195, 224, 238, 0.82);
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .hero-actions,
@@ -293,7 +303,10 @@ button {
   padding: 1rem 1.1rem;
   border-radius: 24px;
   border: 1px solid var(--line);
-  background: rgba(255, 251, 245, 0.72);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    rgba(10, 17, 22, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .proof-card span {
@@ -302,7 +315,8 @@ button {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--forest);
+  color: var(--accent);
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .proof-card strong {
@@ -328,9 +342,9 @@ button {
 .ghost-button,
 .tab {
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 14px;
   padding: 0.72rem 1rem;
-  background: rgba(255, 251, 245, 0.68);
+  background: rgba(255, 255, 255, 0.02);
   color: var(--ink);
   transition:
     background-color 160ms ease,
@@ -341,8 +355,8 @@ button {
 
 .primary-button {
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-  border-color: transparent;
-  color: #fff7f0;
+  border-color: rgba(82, 199, 255, 0.3);
+  color: #031118;
   font-weight: 700;
 }
 
@@ -377,13 +391,13 @@ button {
   flex-direction: column;
   gap: 1rem;
   padding: 1.3rem;
-  border-radius: 34px;
-  border: 1px solid rgba(29, 35, 29, 0.12);
+  border-radius: 28px;
+  border: 1px solid var(--line);
   background:
-    linear-gradient(180deg, rgba(255, 251, 245, 0.5), rgba(255, 251, 245, 0)),
-    linear-gradient(135deg, rgba(207, 95, 49, 0.08), rgba(48, 86, 74, 0.06)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    linear-gradient(135deg, rgba(82, 199, 255, 0.06), rgba(124, 231, 195, 0.04)),
     var(--page-paper);
-  box-shadow: 0 32px 80px rgba(85, 65, 35, 0.12);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.26);
 }
 
 .stage-toolbar,
@@ -397,13 +411,15 @@ button {
   align-items: center;
   padding: 0.45rem 0.75rem;
   border-radius: 999px;
-  background: rgba(29, 35, 29, 0.08);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--ink);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--line);
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .stage-pill-muted {
-  background: rgba(48, 86, 74, 0.1);
+  background: rgba(124, 231, 195, 0.08);
   color: var(--forest);
 }
 
@@ -488,16 +504,17 @@ button {
   padding: 1rem;
   border-radius: 24px;
   border: 1px solid var(--line);
-  background: rgba(255, 251, 245, 0.78);
+  background: rgba(10, 18, 23, 0.92);
 }
 
 .metric-card span {
   display: block;
   margin-bottom: 0.45rem;
-  color: var(--forest);
+  color: var(--accent);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .workspace-grid {
@@ -516,19 +533,19 @@ button {
 .overview-card,
 .launch-card {
   padding: 1.35rem;
-  border-radius: 30px;
+  border-radius: 26px;
   border: 1px solid var(--line);
   background: var(--page-panel);
-  box-shadow: 0 20px 50px rgba(92, 74, 44, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
 }
 
 .overview-card h2,
 .launch-card h2 {
   margin: 0.6rem 0 0.5rem;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 2rem;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.82rem;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
 }
 
 .overview-card p,
@@ -554,23 +571,23 @@ button {
 
 .panel {
   padding: 1rem;
-  border-radius: 30px;
+  border-radius: 24px;
   border: 1px solid var(--playground-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
     var(--playground-surface);
   color: var(--playground-ink);
-  box-shadow: 0 24px 64px rgba(9, 14, 12, 0.22);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
 }
 
 .playground-shell {
   margin-top: 2rem;
   padding: 1.15rem;
-  border-radius: 42px;
+  border-radius: 28px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
-    radial-gradient(circle at top right, rgba(207, 95, 49, 0.16), transparent 18%),
-    linear-gradient(180deg, rgba(21, 33, 29, 0.98), rgba(27, 42, 37, 0.96));
-  box-shadow: 0 40px 110px rgba(20, 28, 25, 0.28);
+    radial-gradient(circle at top right, rgba(82, 199, 255, 0.12), transparent 18%),
+    linear-gradient(180deg, rgba(9, 17, 22, 0.98), rgba(11, 19, 24, 0.98));
+  box-shadow: 0 40px 110px rgba(0, 0, 0, 0.3);
 }
 
 .playground-shell-page {
@@ -598,8 +615,9 @@ button {
 
 .playground-page-copy h1 {
   margin: 0.7rem 0 0;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: clamp(3rem, 5vw, 4.8rem);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2.8rem, 4.6vw, 4.6rem);
+  font-weight: 700;
   line-height: 0.95;
   letter-spacing: -0.04em;
 }
@@ -624,9 +642,10 @@ button {
   padding: 0.52rem 0.78rem;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: rgba(255, 251, 245, 0.72);
+  background: rgba(255, 255, 255, 0.025);
   color: var(--ink-muted);
-  font-size: 0.84rem;
+  font-size: 0.82rem;
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .playground-header {
@@ -642,10 +661,10 @@ button {
 .playground-header-copy h2,
 .panel-heading h2 {
   margin: 0.55rem 0 0;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 2.15rem;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2rem;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
 }
 
 .playground-header-copy p {
@@ -674,12 +693,13 @@ button {
   gap: 0.45rem;
   padding: 0.45rem 0.75rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--playground-muted);
-  font-size: 0.76rem;
-  letter-spacing: 0.06em;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .panel-heading {
@@ -796,8 +816,9 @@ button {
 .panel-section-heading h3,
 .panel-heading h3 {
   margin: 0;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 1.5rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.05;
 }
@@ -831,7 +852,7 @@ button {
 .field select {
   width: 100%;
   padding: 0.82rem 0.95rem;
-  border-radius: 999px;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.09);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
@@ -843,7 +864,7 @@ button {
 .field textarea {
   min-height: 116px;
   resize: vertical;
-  border-radius: 22px;
+  border-radius: 18px;
 }
 
 .color-field {
@@ -872,7 +893,7 @@ button {
 .section-card,
 .item-card,
 .nested-card {
-  border-radius: 24px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02)),
@@ -909,7 +930,7 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.035);
   color: rgba(247, 242, 235, 0.86);
-  border-radius: 999px;
+  border-radius: 12px;
   padding: 0.58rem 0.88rem;
   font-size: 0.92rem;
 }
@@ -953,7 +974,7 @@ button {
   gap: 0.5rem;
   color: var(--playground-muted);
   padding: 0.55rem 0.75rem;
-  border-radius: 999px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
 }
@@ -982,7 +1003,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
   color: var(--playground-muted);
   border-color: rgba(255, 255, 255, 0.08);
@@ -1013,18 +1034,19 @@ button {
   display: inline-flex;
   padding: 0.38rem 0.6rem;
   border-radius: 999px;
-  background: rgba(207, 95, 49, 0.16);
+  background: rgba(82, 199, 255, 0.14);
   color: var(--playground-ink);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .code-block {
   margin: 1rem 0 0;
   padding: 1rem;
   border-radius: 24px;
-  background: #101815;
+  background: #091116;
   border: 1px solid rgba(255, 255, 255, 0.06);
   overflow: auto;
   min-height: 620px;
@@ -1040,11 +1062,11 @@ button {
 .inline-code-block {
   margin: 1rem 0 0;
   padding: 0.95rem 1rem;
-  border-radius: 20px;
-  background: #1b2320;
-  border: 1px solid rgba(29, 35, 29, 0.12);
+  border-radius: 16px;
+  background: #091116;
+  border: 1px solid rgba(121, 145, 160, 0.16);
   overflow: auto;
-  color: #f4eee7;
+  color: #f4fbff;
 }
 
 .docs-shell {
@@ -1054,24 +1076,26 @@ button {
 .docs-panel {
   max-width: 860px;
   padding: 1.8rem;
-  border-radius: 34px;
+  border-radius: 24px;
   border: 1px solid var(--line);
-  background: rgba(255, 251, 245, 0.86);
-  box-shadow: 0 24px 70px rgba(92, 74, 44, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
+    rgba(10, 17, 22, 0.94);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
 }
 
 .docs-panel h1 {
   margin-top: 0.6rem;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: clamp(2.8rem, 5vw, 4.4rem);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2.6rem, 5vw, 4rem);
   line-height: 0.95;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
 }
 
 .docs-panel h2 {
   margin-top: 2rem;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 1.6rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.45rem;
   letter-spacing: -0.03em;
 }
 
