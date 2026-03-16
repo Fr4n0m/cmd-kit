@@ -1,6 +1,4 @@
 import React from "react";
-import { MoonIcon } from "./icons/MoonIcon";
-import { SunIcon } from "./icons/SunIcon";
 
 interface IconProps {
   className?: string;
@@ -119,25 +117,11 @@ export function Icon({ className, name, title }: IconProps) {
       return (
         <svg {...sharedProps}>
           <ellipse cx="12" cy="12" rx="9" ry="3.8" />
-          <ellipse
-            cx="12"
-            cy="12"
-            rx="9"
-            ry="3.8"
-            transform="rotate(60 12 12)"
-          />
-          <ellipse
-            cx="12"
-            cy="12"
-            rx="9"
-            ry="3.8"
-            transform="rotate(120 12 12)"
-          />
+          <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(60 12 12)" />
+          <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(120 12 12)" />
           <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
         </svg>
       );
-    case "moon":
-      return <MoonIcon className={className} title={title} />;
     case "menu":
       return (
         <svg {...sharedProps}>
@@ -152,8 +136,6 @@ export function Icon({ className, name, title }: IconProps) {
           <path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z" />
         </svg>
       );
-    case "sun":
-      return <SunIcon className={className} title={title} />;
     case "trash":
       return (
         <svg {...sharedProps}>
@@ -197,5 +179,8 @@ export function Icon({ className, name, title }: IconProps) {
           <path d="M18 6 6 18" />
         </svg>
       );
+    case "moon":
+    case "sun":
+      return null;
   }
 }

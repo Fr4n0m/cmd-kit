@@ -7,7 +7,7 @@ import { PlaygroundCodePanel } from "../features/playground/components/Playgroun
 import { PlaygroundConfigurator } from "../features/playground/components/PlaygroundConfigurator";
 import { PlaygroundHeader } from "../features/playground/components/PlaygroundHeader";
 import { usePlaygroundState } from "../features/playground/playground-state";
-import { playgroundLabels } from "../features/playground/ui";
+import { getPlaygroundCopy } from "../features/playground/ui";
 import type { Language } from "../features/playground/config";
 
 interface PlaygroundIslandProps {
@@ -44,7 +44,7 @@ export default function PlaygroundIsland({
     updateNestedSection,
     updateSection
   } = usePlaygroundState(initialLanguage);
-  const labels = playgroundLabels[config.language];
+  const { labels } = getPlaygroundCopy(config.language);
   const asyncSource = React.useMemo(
     () =>
       config.sourceMode === "async"

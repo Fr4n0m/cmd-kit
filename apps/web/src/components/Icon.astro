@@ -1,0 +1,84 @@
+---
+import ArrowRightIcon from "./icons/ArrowRightIcon.astro";
+import AstroIcon from "./icons/AstroIcon.astro";
+import CodeIcon from "./icons/CodeIcon.astro";
+import CopyIcon from "./icons/CopyIcon.astro";
+import CoreIcon from "./icons/CoreIcon.astro";
+import GlobeIcon from "./icons/GlobeIcon.astro";
+import MenuIcon from "./icons/MenuIcon.astro";
+import MoonIcon from "./icons/MoonIcon.astro";
+import PlayIcon from "./icons/PlayIcon.astro";
+import PlusIcon from "./icons/PlusIcon.astro";
+import PreactIcon from "./icons/PreactIcon.astro";
+import ReactIcon from "./icons/ReactIcon.astro";
+import SparkIcon from "./icons/SparkIcon.astro";
+import SunIcon from "./icons/SunIcon.astro";
+import TrashIcon from "./icons/TrashIcon.astro";
+import TriangleDownIcon from "./icons/TriangleDownIcon.astro";
+import TriangleUpIcon from "./icons/TriangleUpIcon.astro";
+import VanillaJSIcon from "./icons/VanillaJSIcon.astro";
+import VueIcon from "./icons/VueIcon.astro";
+import XIcon from "./icons/XIcon.astro";
+
+interface Props {
+  className?: string;
+  name:
+    | "arrow-right"
+    | "astro"
+    | "code"
+    | "copy"
+    | "core"
+    | "globe"
+    | "play"
+    | "plus"
+    | "preact"
+    | "react"
+    | "moon"
+    | "menu"
+    | "spark"
+    | "sun"
+    | "trash"
+    | "triangle-down"
+    | "triangle-up"
+    | "vanilla"
+    | "vue"
+    | "x";
+  title?: string;
+}
+
+const { className, name, title } = Astro.props as Props;
+const labelled = Boolean(title);
+const iconProps = {
+  "aria-hidden": labelled ? undefined : "true",
+  "aria-label": title,
+  class: className,
+  role: labelled ? "img" : "presentation"
+};
+
+const icons = {
+  "arrow-right": ArrowRightIcon,
+  astro: AstroIcon,
+  code: CodeIcon,
+  copy: CopyIcon,
+  core: CoreIcon,
+  globe: GlobeIcon,
+  menu: MenuIcon,
+  moon: MoonIcon,
+  play: PlayIcon,
+  plus: PlusIcon,
+  preact: PreactIcon,
+  react: ReactIcon,
+  spark: SparkIcon,
+  sun: SunIcon,
+  trash: TrashIcon,
+  "triangle-down": TriangleDownIcon,
+  "triangle-up": TriangleUpIcon,
+  vanilla: VanillaJSIcon,
+  vue: VueIcon,
+  x: XIcon
+} as const;
+
+const SelectedIcon = icons[name];
+---
+
+<SelectedIcon {...iconProps} />
