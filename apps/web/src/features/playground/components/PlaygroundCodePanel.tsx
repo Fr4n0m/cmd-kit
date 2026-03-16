@@ -1,6 +1,6 @@
 import React, { useId, useState } from "react";
 
-import { Icon } from "../../../components/Icon";
+import { Icon } from "../../../components/icons/PlaygroundIcon";
 import type { SnippetTab } from "../playground-state";
 import type { PlaygroundLabels } from "../ui";
 
@@ -37,7 +37,7 @@ export function PlaygroundCodePanel({
               : labels.jsonCode;
 
   async function handleCopy() {
-    setCopyMessage((await onCopy()) ? `${labels.copy} ready` : "Copy failed");
+    setCopyMessage((await onCopy()) ? labels.copyReady : labels.copyFailed);
   }
 
   return (
@@ -46,9 +46,7 @@ export function PlaygroundCodePanel({
         <div>
           <p className="eyebrow">{labels.code}</p>
           <h2>{heading}</h2>
-          <p className="panel-copy">
-            Switch frameworks, copy the snippet, and keep the same command structure.
-          </p>
+          <p className="panel-copy">{labels.codeDescription}</p>
         </div>
         <button className="ghost-button compact-button" onClick={() => void handleCopy()} type="button">
           <Icon className="button-icon" name="copy" />
@@ -145,9 +143,9 @@ export function PlaygroundCodePanel({
         </button>
       </div>
       <div className="code-panel-meta">
-        <span className="code-chip">Export</span>
+        <span className="code-chip">{labels.codeExportLabel}</span>
         <strong>{heading}</strong>
-        <span>Live output from the current configurator state</span>
+        <span>{labels.codeLiveOutput}</span>
       </div>
       <pre className="code-block" id={panelId} role="tabpanel">
         <code>{code}</code>

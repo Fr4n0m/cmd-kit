@@ -29,8 +29,8 @@ export function PlaygroundBasicsForm({
           }
           value={config.language}
         >
-          <option value="en">English</option>
-          <option value="es">Espanol</option>
+          <option value="en">{labels.languageEnglish}</option>
+          <option value="es">{labels.languageSpanish}</option>
         </select>
       </Field>
 

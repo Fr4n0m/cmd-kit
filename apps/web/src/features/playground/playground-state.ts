@@ -4,7 +4,7 @@ import {
   createChildSection,
   createItem,
   createSection,
-  defaultConfig,
+  createDefaultConfig,
   type PlaygroundConfig,
   type Language
 } from "./config";
@@ -28,10 +28,9 @@ export type SnippetTab =
   | "json";
 
 export function usePlaygroundState(initialLanguage: Language = "en") {
-  const [config, setConfig] = useState<PlaygroundConfig>({
-    ...defaultConfig,
-    language: initialLanguage
-  });
+  const [config, setConfig] = useState<PlaygroundConfig>(
+    createDefaultConfig(initialLanguage)
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<SnippetTab>("react");
 
@@ -96,7 +95,7 @@ export function usePlaygroundState(initialLanguage: Language = "en") {
   function addSectionToConfig() {
     setConfig((current) => ({
       ...current,
-      sections: [...current.sections, createSection()]
+      sections: [...current.sections, createSection(current.language)]
     }));
   }
 
@@ -108,9 +107,16 @@ export function usePlaygroundState(initialLanguage: Language = "en") {
   }
 
   function addItemToSection(sectionId: string) {
-    updateSection(sectionId, (section) => ({
-      ...section,
-      items: [...section.items, createItem()]
+    setConfig((current) => ({
+      ...current,
+      sections: current.sections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: [...section.items, createItem(current.language)]
+            }
+          : section
+      )
     }));
   }
 
@@ -148,9 +154,26 @@ export function usePlaygroundState(initialLanguage: Language = "en") {
   }
 
   function addNestedSection(sectionId: string, itemId: string) {
-    updateItem(sectionId, itemId, (item) => ({
-      ...item,
-      children: [...(item.children ?? []), createChildSection()]
+    setConfig((current) => ({
+      ...current,
+      sections: current.sections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: section.items.map((item) =>
+                item.id === itemId
+                  ? {
+                      ...item,
+                      children: [
+                        ...(item.children ?? []),
+                        createChildSection(current.language)
+                      ]
+                    }
+                  : item
+              )
+            }
+          : section
+      )
     }));
   }
 
@@ -194,9 +217,33 @@ export function usePlaygroundState(initialLanguage: Language = "en") {
     itemId: string,
     childSectionId: string
   ) {
-    updateNestedSection(sectionId, itemId, childSectionId, (childSection) => ({
-      ...childSection,
-      items: [...childSection.items, createItem()]
+    setConfig((current) => ({
+      ...current,
+      sections: current.sections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: section.items.map((item) =>
+                item.id === itemId
+                  ? {
+                      ...item,
+                      children: (item.children ?? []).map((childSection) =>
+                        childSection.id === childSectionId
+                          ? {
+                              ...childSection,
+                              items: [
+                                ...childSection.items,
+                                createItem(current.language)
+                              ]
+                            }
+                          : childSection
+                      )
+                    }
+                  : item
+              )
+            }
+          : section
+      )
     }));
   }
 

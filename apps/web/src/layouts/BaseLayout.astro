@@ -1,26 +1,27 @@
 ---
 import "../styles.css";
 import BrandLockup from "../components/BrandLockup.astro";
-import { Icon } from "../components/Icon";
+import Icon from "../components/Icon.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import {
   defaultLocale,
-  getDocsNavigation,
   layoutCopy,
   localizedPath,
   swapLocalePath,
   type Locale
 } from "../i18n/site";
+import { getDocsNavigation, type DocsSectionItem } from "../i18n/docs";
 
 interface Props {
   description: string;
   title: string;
   locale?: Locale;
   image?: string;
+  docsHeadings?: DocsSectionItem[];
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-const { description, image, locale = defaultLocale, structuredData, title } =
+const { description, docsHeadings = [], image, locale = defaultLocale, structuredData, title } =
   Astro.props;
 const pathname = Astro.url.pathname;
 const canonicalUrl = new URL(pathname, Astro.site ?? Astro.url).toString();
@@ -69,12 +70,12 @@ function isCurrentPath(target: string) {
     <meta content="website" property="og:type" />
     <meta content={canonicalUrl} property="og:url" />
     {socialImageUrl ? <meta content={socialImageUrl} property="og:image" /> : null}
-    <meta content="Cmd+kit" property="og:site_name" />
+    <meta content={copy.brandAlt} property="og:site_name" />
     <link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
     <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
     <link href="/favicon.ico" rel="shortcut icon" />
     <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
-    <meta content="Cmd+Kit" name="apple-mobile-web-app-title" />
+    <meta content={copy.brandAlt} name="apple-mobile-web-app-title" />
     <link href="/site.webmanifest" rel="manifest" />
     <link href={canonicalUrl} rel="canonical" />
     <link href={englishUrl} hreflang="en" rel="alternate" />
@@ -98,12 +99,12 @@ function isCurrentPath(target: string) {
     <header class="topbar">
       <div class="topbar-inner">
         <div class="topbar-primary">
-          <BrandLockup current={isCurrentPath("/")} href={homeHref} />
+          <BrandLockup current={isCurrentPath("/")} href={homeHref} locale={locale} />
           <div class="topbar-mobile-actions">
             <button
               aria-controls="site-menu"
               aria-expanded="false"
-              aria-label="Open menu"
+              aria-label={copy.menuToggleLabel}
               class="nav-button nav-button-utility menu-toggle"
               data-menu-toggle
               type="button"
@@ -118,7 +119,7 @@ function isCurrentPath(target: string) {
             <Icon className="button-icon" name="play" />
             <span>{copy.launchPlayground}</span>
           </a>
-          <nav aria-label="Primary" class="topbar-nav">
+          <nav aria-label={copy.primaryNavigationLabel} class="topbar-nav">
             <a
               aria-current={isCurrentPath("/docs/getting-started") ? "page" : undefined}
               href={docsHref}
@@ -128,16 +129,31 @@ function isCurrentPath(target: string) {
           </nav>
           {
             isDocsPage ? (
-              <nav aria-label="Documentation" class="mobile-docs-nav">
+              <nav aria-label={copy.docsNavigationLabel} class="mobile-docs-nav">
                 <p class="mobile-docs-nav-label">{copy.docs}</p>
                 {
                   docsNavigation.map((item) => (
-                    <a
-                      aria-current={isCurrentPath(item.href) ? "page" : undefined}
-                      href={localizedPath(locale, item.href)}
-                    >
-                      {item.label}
-                    </a>
+                    <>
+                      <a
+                        aria-current={isCurrentPath(item.href) ? "page" : undefined}
+                        href={localizedPath(locale, item.href)}
+                      >
+                        {item.label}
+                      </a>
+                      {
+                        isCurrentPath(item.href) && docsHeadings.length ? (
+                          <div class="mobile-docs-subnav">
+                            {
+                              docsHeadings.map((heading) => (
+                                <a class="mobile-docs-subnav-link" href={`#${heading.id}`}>
+                                  {heading.label}
+                                </a>
+                              ))
+                            }
+                          </div>
+                        ) : null
+                      }
+                    </>
                   ))
                 }
               </nav>
@@ -172,8 +188,8 @@ function isCurrentPath(target: string) {
                   <Icon className="button-icon locale-caret" name="triangle-down" />
                 </button>
                 <div class="locale-menu" id="locale-menu">
-                  <a aria-current={locale === "en" ? "true" : undefined} href={englishUrl}>English</a>
-                  <a aria-current={locale === "es" ? "true" : undefined} href={spanishUrl}>Español</a>
+                  <a aria-current={locale === "en" ? "true" : undefined} href={englishUrl}>{copy.localeEnglish}</a>
+                  <a aria-current={locale === "es" ? "true" : undefined} href={spanishUrl}>{copy.localeSpanish}</a>
                 </div>
                 <a
                   aria-label={copy.switchLanguage}

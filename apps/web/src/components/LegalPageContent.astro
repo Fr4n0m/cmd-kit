@@ -1,0 +1,17 @@
+---
+import type { LegalPageCopy } from "../i18n/pages";
+
+interface Props {
+  content: LegalPageCopy;
+}
+
+const { content } = Astro.props;
+---
+
+<main class="site-shell legal-shell" id="main-content" tabindex="-1">
+  <article class="docs-panel legal-panel">
+    <p class="eyebrow">{content.eyebrow}</p>
+    <h1>{content.heading}</h1>
+    {content.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+  </article>
+</main>

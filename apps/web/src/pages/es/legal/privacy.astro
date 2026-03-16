@@ -1,28 +1,12 @@
 ---
+import LegalPageContent from "../../../components/LegalPageContent.astro";
+import { getLegalPage } from "../../../i18n/pages";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
-const title = "Cmd+kit | Privacidad";
-const description = "Información de privacidad del sitio web de Cmd+kit.";
+const locale = "es";
+const content = getLegalPage(locale, "privacy");
 ---
 
-<BaseLayout description={description} locale="es" title={title}>
-  <main class="site-shell legal-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel legal-panel">
-      <p class="eyebrow">Legal</p>
-      <h1>Privacidad</h1>
-      <p>
-        Este sitio web es una web de producto y documentación para `Cmd+kit`. No ofrece cuentas de
-        usuario ni un área privada de aplicación.
-      </p>
-      <p>
-        Si en el futuro se añaden analítica, formularios de contacto o integraciones de terceros,
-        esta página deberá actualizarse con el detalle exacto de los datos recogidos, su finalidad,
-        el periodo de conservación y la información de contacto correspondiente.
-      </p>
-      <p>
-        Los enlaces externos como GitHub, Buy Me a Coffee o Code by Fran se rigen por sus propias
-        políticas una vez sales de este sitio.
-      </p>
-    </article>
-  </main>
+<BaseLayout description={content.description} locale={locale} title={content.title}>
+  <LegalPageContent content={content} />
 </BaseLayout>

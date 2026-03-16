@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Icon } from "../../../components/Icon";
+import { Icon } from "../../../components/icons/PlaygroundIcon";
 import type { PlaygroundConfig } from "../config";
 import type { PlaygroundLabels } from "../ui";
 import { SectionEditor } from "./SectionEditor";
@@ -95,10 +95,8 @@ export function PlaygroundSectionsPanel({
     <>
       <div className="panel-heading">
         <p className="eyebrow">{labels.sections}</p>
-        <h3>Information architecture</h3>
-        <p className="panel-copy">
-          Define sections, commands, nested flows, and the order users move through.
-        </p>
+        <h3>{labels.sectionsHeading}</h3>
+        <p className="panel-copy">{labels.sectionsDescription}</p>
         <button className="ghost-button" onClick={onAddSection} type="button">
           <Icon className="button-icon" name="plus" />
           <span>{labels.addSection}</span>

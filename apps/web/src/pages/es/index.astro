@@ -1,16 +1,16 @@
 ---
-import { Icon } from "../../components/Icon";
+import HomePageContent from "../../components/HomePageContent.astro";
+import { getHomePage } from "../../i18n/pages";
 import { localizedPath } from "../../i18n/site";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const title = "Cmd+kit";
-const description =
-  "Toolkit open source de command palette con core agnostico al framework, adaptador oficial para React y configurador en vivo.";
+const locale = "es";
+const content = getHomePage(locale);
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   applicationCategory: "DeveloperApplication",
-  description,
+  description: content.metaDescription,
   name: "Cmd+kit",
   operatingSystem: "Web",
   offers: {
@@ -19,172 +19,18 @@ const structuredData = {
     priceCurrency: "USD"
   }
 };
-const docsHref = localizedPath("es", "/docs/getting-started");
-const customizationHref = localizedPath("es", "/docs/customization");
-const playgroundHref = localizedPath("es", "/playground");
 ---
 
 <BaseLayout
-  description={description}
-  locale="es"
+  description={content.description}
+  locale={locale}
   structuredData={structuredData}
-  title={title}
+  title={content.title}
 >
-  <main class="site-shell" id="main-content" tabindex="-1">
-    <section class="hero">
-      <div class="hero-copy">
-        <span class="badge">Toolkit open source de command palette</span>
-        <p class="hero-kicker">Motor headless. Adaptadores oficiales. UI orientada a produccion.</p>
-        <h1>Haz que tu command palette se sienta nativa.</h1>
-        <p>
-          `Cmd+kit` te da un motor de comandos agnostico al framework, adaptadores oficiales,
-          navegacion anidada, recientes y un playground que exporta codigo real en vez de snippets
-          decorativos.
-        </p>
-        <div class="stack-inline hero-stack">
-          <span class="tech-chip"><Icon className="tech-icon" name="core" /> Core tipado</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React first</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="spark" /> Flujos anidados</span>
-        </div>
-        <div class="hero-actions">
-          <a class="primary-button" href={playgroundHref}>
-            <Icon className="button-icon" name="play" />
-            <span>Abrir playground</span>
-          </a>
-          <a class="ghost-button" href={docsHref}>
-            <Icon className="button-icon" name="code" />
-            <span>Ir a la documentacion</span>
-          </a>
-        </div>
-        <div class="hero-proof">
-          <div class="proof-card">
-            <Icon className="proof-icon" name="core" />
-            <span>Core</span>
-            <strong>Busqueda, agrupacion, ejecucion y recientes sin acoplarse a la UI</strong>
-          </div>
-          <div class="proof-card">
-            <Icon className="proof-icon" name="react" />
-            <span>Adaptadores</span>
-            <strong>React, Vue, Preact, Astro islands y uso vanilla en navegador</strong>
-          </div>
-        </div>
-      </div>
-      <div class="hero-stage">
-        <div class="hero-stage-card">
-          <div class="stage-toolbar">
-            <span class="stage-pill">Cmd / Ctrl + K</span>
-            <span class="stage-pill stage-pill-muted">React primero</span>
-          </div>
-          <div class="stage-command">
-            <div class="stage-command-top">
-              <span class="stage-command-title">Comandos del proyecto</span>
-              <span class="stage-command-meta">mod+k</span>
-            </div>
-            <div class="stage-search">Busca comandos, paginas y acciones...</div>
-            <div class="stage-section">
-              <span class="stage-section-label">Recientes</span>
-              <div class="stage-item stage-item-active">
-                <div>
-                  <strong>Abrir dashboard</strong>
-                  <span>Salta a la vista principal del workspace</span>
-                </div>
-                <em>G D</em>
-              </div>
-              <div class="stage-item">
-                <div>
-                  <strong>Buscar docs</strong>
-                  <span>Seccion anidada con comandos por contexto</span>
-                </div>
-                <em>Enter</em>
-              </div>
-            </div>
-          </div>
-          <div class="stage-note">
-            Astro para el shell. Islas interactivas solo donde el producto necesita estado real.
-          </div>
-        </div>
-        <div class="hero-metrics">
-          <div class="metric-card">
-            <span>Superficie</span>
-            <strong>Headless + styled</strong>
-          </div>
-          <div class="metric-card">
-            <span>Salida</span>
-            <strong>React, Vue, Preact, CSS, Tailwind, JSON</strong>
-          </div>
-        </div>
-        <div class="hero-terminal">
-          <div class="hero-terminal-bar">
-            <span>terminal</span>
-            <span>cmd-kit</span>
-          </div>
-          <pre><code>{`npm install @cmd-kit/react\nnpm install @cmd-kit/core\nnpm run build --workspace @cmd-kit/web`}</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <section class="overview-grid">
-      <article class="overview-card overview-card-large">
-        <p class="eyebrow">Por que existe</p>
-        <h2>La mayoria de command palettes te obligan a elegir entre velocidad de entrega y control de la superficie.</h2>
-        <p>
-          `Cmd+kit` mantiene el motor portable y tipado mientras deja a los equipos lanzar una UI
-          por defecto util o sustituirla sin pelearse con las tripas del sistema.
-        </p>
-      </article>
-      <article class="overview-card">
-        <p class="eyebrow">Busqueda</p>
-        <h2>Fuzzy por defecto</h2>
-        <p>Matching rapido, secciones agrupadas, paginas anidadas y recientes sin meter codigo de framework en el core.</p>
-      </article>
-      <article class="overview-card">
-        <p class="eyebrow">React</p>
-        <h2>Superficie componible</h2>
-        <p>Usa la UI por defecto, sobreescribe renderers o trata el hook como la frontera de integracion de tu propia capa de comandos.</p>
-      </article>
-    </section>
-
-    <section class="launch-band">
-      <article class="launch-card install-panel">
-        <p class="eyebrow">Instalacion</p>
-        <h2>Paquetes npm</h2>
-        <p>Empieza por el adaptador que te haga lanzar antes y baja al core cuando necesites control total.</p>
-        <pre class="inline-code-block"><code>{`npm install @cmd-kit/react`}</code></pre>
-        <pre class="inline-code-block"><code>{`npm install @cmd-kit/core`}</code></pre>
-      </article>
-      <article class="launch-card">
-        <p class="eyebrow">Docs</p>
-        <h2>Instalacion, personalizacion y release flow</h2>
-        <p>
-          La documentacion forma parte de la superficie del producto. Cubre los adaptadores, el
-          core, los patrones de personalizacion y la preparacion de releases.
-        </p>
-        <div class="hero-actions">
-          <a class="primary-button" href={docsHref}>Primeros pasos</a>
-          <a class="ghost-button" href={customizationHref}>Personalizacion</a>
-        </div>
-      </article>
-      <article class="launch-card playground-callout">
-        <p class="eyebrow">Playground</p>
-        <h2>Un workspace dedicado para dar forma a toda la superficie del comando</h2>
-        <p>
-          El configurador vive ahora en su propia pagina para que el editor, la preview y el codigo
-          generado aprovechen todo el ancho y mantengan una jerarquia limpia.
-        </p>
-        <div class="tech-strip" aria-label="Tecnologias soportadas">
-          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="astro" /> Astro</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="vanilla" /> Vanilla</span>
-        </div>
-        <div class="hero-actions">
-          <a class="primary-button" href={playgroundHref}>
-            <Icon className="button-icon" name="arrow-right" />
-            <span>Abrir playground</span>
-          </a>
-        </div>
-      </article>
-    </section>
-  </main>
+  <HomePageContent
+    content={content}
+    customizationHref={localizedPath(locale, "/docs/customization")}
+    docsHref={localizedPath(locale, "/docs/getting-started")}
+    playgroundHref={localizedPath(locale, "/playground")}
+  />
 </BaseLayout>

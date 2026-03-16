@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Icon } from "../../../components/Icon";
+import { Icon } from "../../../components/icons/PlaygroundIcon";
 import type { PlaygroundLabels } from "../ui";
 
 interface PlaygroundHeaderProps {
@@ -13,18 +13,16 @@ export function PlaygroundHeader({ labels, onLaunch }: PlaygroundHeaderProps) {
     <div className="playground-header">
       <div className="playground-header-copy">
         <p className="eyebrow">{labels.preview}</p>
-        <h2>Shape the palette, then take the code with you.</h2>
-        <p>
-          Edit content, theme, sections, nested commands, and exports in one place.
-        </p>
+        <h2>{labels.previewHeading}</h2>
+        <p>{labels.previewDescription}</p>
         <div className="playground-header-badges">
           <span className="playground-badge">
             <Icon className="tech-icon" name="react" />
-            React first
+            {labels.previewBadgeFramework}
           </span>
           <span className="playground-badge">
             <Icon className="tech-icon" name="code" />
-            Vue / Preact / Vanilla exports
+            {labels.previewBadgeExports}
           </span>
         </div>
       </div>

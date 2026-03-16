@@ -1,28 +1,12 @@
 ---
+import LegalPageContent from "../../components/LegalPageContent.astro";
+import { getLegalPage } from "../../i18n/pages";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const title = "Cmd+kit | Terms";
-const description = "Terms information for the Cmd+kit website.";
+const locale = "en";
+const content = getLegalPage(locale, "terms");
 ---
 
-<BaseLayout description={description} locale="en" title={title}>
-  <main class="site-shell legal-shell" id="main-content" tabindex="-1">
-    <article class="docs-panel legal-panel">
-      <p class="eyebrow">Legal</p>
-      <h1>Terms</h1>
-      <p>
-        `Cmd+kit` is presented here as an open source project. Code usage, redistribution, and
-        contribution rules should follow the repository license and contribution guidelines once
-        they are published in the project root.
-      </p>
-      <p>
-        The website content is provided for documentation and product presentation purposes. You
-        should evaluate the package in your own environment before relying on it in production.
-      </p>
-      <p>
-        External services linked from this site are operated independently and may apply their own
-        terms of service.
-      </p>
-    </article>
-  </main>
+<BaseLayout description={content.description} locale={locale} title={content.title}>
+  <LegalPageContent content={content} />
 </BaseLayout>

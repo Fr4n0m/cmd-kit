@@ -1,7 +1,10 @@
 ---
+import { layoutCopy, type Locale } from "../i18n/site";
+
 interface Props {
   current?: boolean;
   href?: string;
+  locale?: Locale;
   subtitle?: string;
   title?: string;
 }
@@ -9,9 +12,11 @@ interface Props {
 const {
   current = false,
   href = "/",
-  subtitle = "command palette system",
-  title = "+ Kit"
+  locale = "en",
+  subtitle = layoutCopy[locale].brandSubtitle,
+  title = layoutCopy[locale].brandTitle
 } = Astro.props;
+const copy = layoutCopy[locale];
 ---
 
 <a
@@ -21,7 +26,7 @@ const {
 >
   <span class="brand-mark">
     <img
-      alt="Cmd+kit"
+      alt={copy.brandAlt}
       class="brand-logo brand-logo-light"
       height="44"
       src="/brand/cmd-kit-logo-light.png"

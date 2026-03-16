@@ -1,0 +1,41 @@
+---
+import Icon from "./Icon.astro";
+import PlaygroundIsland from "./PlaygroundIsland";
+import type { PlaygroundPageCopy } from "../i18n/pages";
+import type { Locale } from "../i18n/site";
+
+interface Props {
+  content: PlaygroundPageCopy;
+  locale: Locale;
+}
+
+const { content, locale } = Astro.props;
+---
+
+<main class="site-shell playground-page" id="main-content" tabindex="-1">
+  <section class="playground-page-hero">
+    <div class="playground-page-copy">
+      <span class="badge">{content.badge}</span>
+      <h1>{content.heading}</h1>
+      <p>{content.description}</p>
+      <div class="tech-strip" aria-label={content.stackAriaLabel}>
+        <span class="tech-chip"><Icon className="tech-icon" name="react" /> {content.stackNames[0]}</span>
+        <span class="tech-chip"><Icon className="tech-icon" name="vue" /> {content.stackNames[1]}</span>
+        <span class="tech-chip"><Icon className="tech-icon" name="preact" /> {content.stackNames[2]}</span>
+        <span class="tech-chip"><Icon className="tech-icon" name="astro" /> {content.stackNames[3]}</span>
+        <span class="tech-chip"><Icon className="tech-icon" name="code" /> {content.stackCss}</span>
+      </div>
+    </div>
+    <aside class="playground-page-aside">
+      <div class="metric-card">
+        <span>{content.metricExportsLabel}</span>
+        <strong>{content.metricExportsValue}</strong>
+      </div>
+      <div class="metric-card">
+        <span>{content.metricCoverageLabel}</span>
+        <strong>{content.metricCoverageValue}</strong>
+      </div>
+    </aside>
+  </section>
+  <PlaygroundIsland client:load initialLanguage={locale} mode="page" />
+</main>

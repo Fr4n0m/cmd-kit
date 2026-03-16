@@ -1,4 +1,5 @@
 import type { CommandSection, CommandTheme } from "@cmd-kit/react";
+import { getPlaygroundCopy } from "./ui";
 
 export type Language = "en" | "es";
 
@@ -28,88 +29,97 @@ export interface PlaygroundConfig {
   sections: CommandSection[];
 }
 
-export const defaultSections: CommandSection[] = [
-  {
-    id: "navigation",
-    title: "Navigation",
-    items: [
-      {
-        id: "home",
-        title: "Go to dashboard",
-        subtitle: "Open the main application view",
-        icon: "⌂",
-        shortcut: "G D",
-        href: "/dashboard",
-        keywords: ["home", "overview"]
-      }
-    ]
-  },
-  {
-    id: "actions",
-    title: "Actions",
-    items: [
-      {
-        id: "search",
-        title: "Search everything",
-        subtitle: "Jump across the whole workspace",
-        icon: "⌕",
-        shortcut: "S",
-        keywords: ["finder", "jump"],
-        children: [
-          {
-            id: "search-scope",
-            title: "Search scope",
-            items: [
-              { id: "docs", title: "Documentation", icon: "D" },
-              { id: "components", title: "Components", icon: "C" }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: "preferences",
-    title: "Preferences",
-    items: [
-      {
-        id: "theme",
-        title: "Switch theme",
-        subtitle: "Preview alternate visual presets",
-        icon: "◐",
-        shortcut: "T",
-        disabled: false
-      }
-    ]
-  }
-];
+export function getDefaultSections(language: Language): CommandSection[] {
+  const { defaults } = getPlaygroundCopy(language);
 
-export const defaultConfig: PlaygroundConfig = {
-  language: "en",
-  title: "Build your command palette live",
-  description:
-    "Tune colors, sections, and commands while exporting the exact code your project needs.",
-  defaultOpen: false,
-  sourceMode: "static",
-  sourceDelayMs: 450,
-  recentsEnabled: true,
-  recentsLimit: 5,
-  recentsTitle: "Recent",
-  placeholder: "Search commands...",
-  noResults: "No results found.",
-  closeLabel: "Close command palette",
-  accentColor: "#ff6b35",
-  backgroundColor: "#101828",
-  textColor: "#f8fafc",
-  mutedColor: "rgba(226, 232, 240, 0.72)",
-  borderColor: "#334155",
-  overlayColor: "rgba(10, 15, 28, 0.72)",
-  radius: "26px",
-  shadow: "0 32px 120px rgba(0, 0, 0, 0.35)",
-  shortcut: "mod+k",
-  layout: "centered",
-  sections: defaultSections
-};
+  return [
+    {
+      id: "navigation",
+      title: defaults.sectionNavigation,
+      items: [
+        {
+        id: "home",
+          title: defaults.dashboardTitle,
+          subtitle: defaults.dashboardSubtitle,
+          icon: "⌂",
+          shortcut: "G D",
+          href: "/dashboard",
+          keywords: defaults.dashboardKeywords
+        }
+      ]
+    },
+    {
+      id: "actions",
+      title: defaults.actionsSection,
+      items: [
+        {
+          id: "search",
+          title: defaults.searchTitle,
+          subtitle: defaults.searchSubtitle,
+          icon: "⌕",
+          shortcut: "S",
+          keywords: defaults.searchKeywords,
+          children: [
+            {
+              id: "search-scope",
+              title: defaults.childScope,
+              items: [
+                { id: "docs", title: defaults.childDocs, icon: "D" },
+                { id: "components", title: defaults.childComponents, icon: "C" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "preferences",
+      title: defaults.preferencesSection,
+      items: [
+        {
+          id: "theme",
+          title: defaults.switchThemeTitle,
+          subtitle: defaults.switchThemeSubtitle,
+          icon: "◐",
+          shortcut: "T",
+          disabled: false
+        }
+      ]
+    }
+  ];
+}
+
+export function createDefaultConfig(language: Language): PlaygroundConfig {
+  const { defaults } = getPlaygroundCopy(language);
+
+  return {
+    language,
+    title: defaults.commandTitle,
+    description: defaults.commandDescription,
+    defaultOpen: false,
+    sourceMode: "static",
+    sourceDelayMs: 450,
+    recentsEnabled: true,
+    recentsLimit: 5,
+    recentsTitle: defaults.recentTitle,
+    placeholder: defaults.placeholder,
+    noResults: defaults.noResults,
+    closeLabel: defaults.closeLabel,
+    accentColor: "#ff6b35",
+    backgroundColor: "#101828",
+    textColor: "#f8fafc",
+    mutedColor: "rgba(226, 232, 240, 0.72)",
+    borderColor: "#334155",
+    overlayColor: "rgba(10, 15, 28, 0.72)",
+    radius: "26px",
+    shadow: "0 32px 120px rgba(0, 0, 0, 0.35)",
+    shortcut: "mod+k",
+    layout: "centered",
+    sections: getDefaultSections(language)
+  };
+}
+
+export const defaultConfig: PlaygroundConfig = createDefaultConfig("en");
 
 export function toTheme(config: PlaygroundConfig): CommandTheme {
   return {
@@ -124,27 +134,30 @@ export function toTheme(config: PlaygroundConfig): CommandTheme {
   };
 }
 
-export function createSection(): CommandSection {
+export function createSection(language: Language): CommandSection {
+  const { defaults } = getPlaygroundCopy(language);
   return {
     id: createId("section"),
-    title: "New section",
-    items: [createItem()]
+    title: defaults.newSectionTitle,
+    items: [createItem(language)]
   };
 }
 
-export function createChildSection(): CommandSection {
+export function createChildSection(language: Language): CommandSection {
+  const { defaults } = getPlaygroundCopy(language);
   return {
     id: createId("child-section"),
-    title: "Nested section",
-    items: [createItem()]
+    title: defaults.newNestedSectionTitle,
+    items: [createItem(language)]
   };
 }
 
-export function createItem() {
+export function createItem(language: Language) {
+  const { defaults } = getPlaygroundCopy(language);
   return {
     id: createId("item"),
-    title: "New item",
-    subtitle: "Describe this command",
+    title: defaults.newItemTitle,
+    subtitle: defaults.previewDescription,
     icon: "•",
     shortcut: "",
     href: "",

@@ -15,10 +15,10 @@ const termsHref = localizedPath(locale, "/legal/terms");
 <footer class="site-footer">
   <div class="site-footer-inner">
     <div class="site-footer-brand">
-      <BrandLockup href={localizedPath(locale, "/")} />
+      <BrandLockup href={localizedPath(locale, "/")} locale={locale} />
       <p class="site-footer-copy">{copy.footerDescription}</p>
     </div>
-    <nav aria-label="Footer" class="site-footer-links">
+    <nav aria-label={copy.footerNavLabel} class="site-footer-links">
       <div class="site-footer-group">
         <p>{copy.footerLegal}</p>
         <a href={privacyHref}>{copy.footerPrivacy}</a>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Icon } from "../../../components/Icon";
+import { Icon } from "../../../components/icons/PlaygroundIcon";
 import type { PlaygroundConfig } from "../config";
 import type { PlaygroundLabels } from "../ui";
 import { PlaygroundBasicsForm } from "./PlaygroundBasicsForm";
@@ -106,10 +106,8 @@ export function PlaygroundConfigurator({
     <section className="panel configurator-panel">
       <div className="panel-heading">
         <p className="eyebrow">{labels.config}</p>
-        <h2>Command surface</h2>
-        <p className="panel-copy">
-          Tune the visible product layer first, then export the code that matches it.
-        </p>
+        <h2>{labels.configuratorHeading}</h2>
+        <p className="panel-copy">{labels.configuratorDescription}</p>
       </div>
 
       <div className="playground-preview-card">
@@ -123,23 +121,23 @@ export function PlaygroundConfigurator({
 
       <div className="playground-summary-grid">
         <article className="summary-tile">
-          <span><Icon className="summary-icon" name="core" /> Sections</span>
+          <span><Icon className="summary-icon" name="core" /> {labels.summarySections}</span>
           <strong>{config.sections.length}</strong>
         </article>
         <article className="summary-tile">
-          <span><Icon className="summary-icon" name="spark" /> Commands</span>
+          <span><Icon className="summary-icon" name="spark" /> {labels.summaryCommands}</span>
           <strong>{commandCount}</strong>
         </article>
         <article className="summary-tile">
-          <span><Icon className="summary-icon" name="play" /> Recents</span>
-          <strong>{config.recentsEnabled ? "On" : "Off"}</strong>
+          <span><Icon className="summary-icon" name="play" /> {labels.summaryRecents}</span>
+          <strong>{config.recentsEnabled ? labels.recentsEnabled : labels.recentsDisabled}</strong>
         </article>
       </div>
 
       <div className="panel-section panel-section-accent">
         <div className="panel-section-heading">
-          <span className="eyebrow">Basics</span>
-          <h3>Message and behavior</h3>
+          <span className="eyebrow">{labels.basicsEyebrow}</span>
+          <h3>{labels.basicsHeading}</h3>
         </div>
         <PlaygroundBasicsForm
           config={config}
@@ -150,8 +148,8 @@ export function PlaygroundConfigurator({
 
       <div className="panel-section panel-section-accent">
         <div className="panel-section-heading">
-          <span className="eyebrow">Theme</span>
-          <h3>Palette and feel</h3>
+          <span className="eyebrow">{labels.themeEyebrow}</span>
+          <h3>{labels.themeHeading}</h3>
         </div>
         <PlaygroundThemeForm
           config={config}

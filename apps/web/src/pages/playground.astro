@@ -1,42 +1,12 @@
 ---
-import { Icon } from "../components/Icon";
-import PlaygroundIsland from "../components/PlaygroundIsland";
+import PlaygroundPageContent from "../components/PlaygroundPageContent.astro";
+import { getPlaygroundPage } from "../i18n/pages";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const title = "Cmd+kit | Playground";
-const description =
-  "Dedicated playground for shaping the command palette, tuning sections and theme, and exporting real code.";
+const locale = "en";
+const content = getPlaygroundPage(locale);
 ---
 
-<BaseLayout description={description} locale="en" title={title}>
-  <main class="site-shell playground-page" id="main-content" tabindex="-1">
-    <section class="playground-page-hero">
-      <div class="playground-page-copy">
-        <span class="badge">Configurator</span>
-        <h1>Work in a dedicated playground that behaves more like a tool than a landing page.</h1>
-        <p>
-          Edit structure, theme, nested commands, messages, and exports with room to think. The
-          preview stays interactive while the generated code tracks every change in real time.
-        </p>
-        <div class="tech-strip" aria-label="Playground stack">
-          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="astro" /> Astro</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="code" /> CSS / Tailwind</span>
-        </div>
-      </div>
-      <aside class="playground-page-aside">
-        <div class="metric-card">
-          <span>Exports</span>
-          <strong>React, Vue, Preact, Vanilla, Tailwind, CSS, JSON</strong>
-        </div>
-        <div class="metric-card">
-          <span>Coverage</span>
-          <strong>Theme, messages, recents, nested commands, async source</strong>
-        </div>
-      </aside>
-    </section>
-    <PlaygroundIsland client:load initialLanguage="en" mode="page" />
-  </main>
+<BaseLayout description={content.metaDescription} locale={locale} title={content.title}>
+  <PlaygroundPageContent content={content} locale={locale} />
 </BaseLayout>
