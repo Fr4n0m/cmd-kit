@@ -1,0 +1,43 @@
+---
+interface Props {
+  current?: boolean;
+  href?: string;
+  subtitle?: string;
+  title?: string;
+}
+
+const {
+  current = false,
+  href = "/",
+  subtitle = "command palette system",
+  title = "+ Kit"
+} = Astro.props;
+---
+
+<a
+  aria-current={current ? "page" : undefined}
+  class="brand-link"
+  href={href}
+>
+  <span class="brand-mark">
+    <img
+      alt="Cmd+kit"
+      class="brand-logo brand-logo-light"
+      height="44"
+      src="/brand/cmd-kit-logo-light.png"
+      width="44"
+    />
+    <img
+      alt=""
+      aria-hidden="true"
+      class="brand-logo brand-logo-dark"
+      height="44"
+      src="/brand/cmd-kit-logo-dark.png"
+      width="44"
+    />
+  </span>
+  <span class="brand-copy">
+    <strong class="brand-title">{title}</strong>
+    <span class="brand-subtitle">{subtitle}</span>
+  </span>
+</a>
