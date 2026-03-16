@@ -2,36 +2,28 @@
 
 ## Current Status
 
-Last reviewed: March 13, 2026
+Last reviewed: March 16, 2026
 
-- `npm audit` reports `5` moderate vulnerabilities
-- no high or critical vulnerabilities are currently reported
-- the findings come from the Astro checking toolchain used by `apps/web`, not from the published runtime packages
-- the same audit run still passes `test`, `typecheck`, `build`, and `pack:verify` for the repo
+- `npm audit` reports `0` vulnerabilities
+- the previous Astro diagnostics-chain advisory is resolved after updating `@astrojs/check` to `0.9.8`
+- local verification still passes `test`, `typecheck`, `build`, and `pack:verify`
 
-Affected chain:
+Resolved chain:
 
 - `@astrojs/check`
 - `@astrojs/language-server`
 - `volar-service-yaml`
 - `yaml-language-server`
 - `lodash`
-- `npm audit fix --force` would currently downgrade `@astrojs/check` to `0.9.2`, so it is not a safe automatic fix path
-
-## Why This Is Still Open
-
-- the current `npm audit fix` recommendation is a semver-major change path through `@astrojs/check`
-- the vulnerable tree is development-only tooling for Astro diagnostics
-- `@cmd-kit/core`, `@cmd-kit/react`, `@cmd-kit/vue`, and `@cmd-kit/preact` do not ship these dependencies in their npm tarballs
 
 ## Release Impact
 
-- this is still a production-readiness blocker for the repository
-- it is not currently a published runtime-package blocker for consumers of the command palette packages
-- the issue should be revisited before the first public release
+- there is no current `npm audit` blocker for the repository
+- runtime packages remain clean of Astro-specific tooling dependencies in their published tarballs
+- dependency health should still be re-checked before every release candidate
 
 ## Required Follow-Up
 
-- re-check `npm audit` before every release candidate
-- watch for a non-breaking Astro toolchain update that clears the advisory chain
-- avoid force-applying semver-major audit fixes without validating the Astro docs workflow first
+- re-run `npm audit` before every release candidate
+- review minor updates in the Astro toolchain before adopting them
+- keep the release checklist in sync with the actual audit result
