@@ -49,6 +49,37 @@ export function PlaygroundBasicsForm({
         </select>
       </Field>
 
+      <Field label={labels.sourceMode}>
+        <select
+          onChange={(event) =>
+            onUpdateConfig((current) => ({
+              ...current,
+              sourceMode: event.target.value as PlaygroundConfig["sourceMode"]
+            }))
+          }
+          value={config.sourceMode}
+        >
+          <option value="static">{labels.staticMode}</option>
+          <option value="async">{labels.asyncMode}</option>
+        </select>
+      </Field>
+
+      <Field label={labels.defaultOpen}>
+        <label className="toggle-field">
+          <input
+            checked={config.defaultOpen}
+            onChange={(event) =>
+              onUpdateConfig((current) => ({
+                ...current,
+                defaultOpen: event.target.checked
+              }))
+            }
+            type="checkbox"
+          />
+          <span>{labels.defaultOpen}</span>
+        </label>
+      </Field>
+
       <Field label={labels.title}>
         <input
           onChange={(event) =>
@@ -118,6 +149,21 @@ export function PlaygroundBasicsForm({
             }))
           }
           value={config.shortcut}
+        />
+      </Field>
+
+      <Field label={labels.sourceDelay}>
+        <input
+          disabled={config.sourceMode !== "async"}
+          min={0}
+          onChange={(event) =>
+            onUpdateConfig((current) => ({
+              ...current,
+              sourceDelayMs: Number(event.target.value) || 0
+            }))
+          }
+          type="number"
+          value={config.sourceDelayMs}
         />
       </Field>
 

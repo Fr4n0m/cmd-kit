@@ -3,79 +3,54 @@ import type { CommandSection } from "@cmd-kit/react";
 import type { PlaygroundConfig } from "./config";
 
 export function buildReactSnippet(config: PlaygroundConfig): string {
-  const sectionsSnippet = toSectionsSnippet(config.sections);
-  const recentsSnippet = toRecentsSnippet(config);
-  const messagesSnippet = toMessagesSnippet(config);
-  const themeSnippet = toThemeSnippet(config);
-
-  return `import { CommandPalette } from "@cmd-kit/react";
-
-const sections = ${sectionsSnippet};
-
-export function Demo() {
-  return (
-    <CommandPalette
-      recents={${recentsSnippet}}
-      sections={sections}
-      shortcut="${escapeString(config.shortcut)}"
-      title="${escapeString(config.title)}"
-      messages={${messagesSnippet}}
-      theme={${themeSnippet}}
-    />
-  );
-}`;
+  return buildReactLikeSnippet("@cmd-kit/react", config);
 }
 
 export function buildVueSnippet(config: PlaygroundConfig): string {
-  const sectionsSnippet = toJsonSnippet(config.sections);
-  const recentsSnippet = toJsonSnippet(toRecentsValue(config));
-  const messagesSnippet = toJsonSnippet(toMessagesValue(config));
-  const themeSnippet = toJsonSnippet(toThemeValue(config));
+  const scriptLines = [
+    '<script setup lang="ts">',
+    'import { CommandPalette } from "@cmd-kit/vue";',
+    "",
+    `const sections = ${toJsonSnippet(config.sections)};`,
+    `const recents = ${toJsonSnippet(toRecentsValue(config))};`,
+    `const messages = ${toJsonSnippet(toMessagesValue(config))};`,
+    `const theme = ${toJsonSnippet(toThemeValue(config))};`
+  ];
 
-  return `<script setup lang="ts">
-import { CommandPalette } from "@cmd-kit/vue";
+  const sourceSnippet = toSourceSnippet(config);
+  if (sourceSnippet) {
+    scriptLines.push("", sourceSnippet);
+  }
 
-const sections = ${sectionsSnippet};
-const recents = ${recentsSnippet};
-const messages = ${messagesSnippet};
-const theme = ${themeSnippet};
-</script>
+  scriptLines.push("</script>", "", "<template>");
 
-<template>
-  <CommandPalette
-    :messages="messages"
-    :recents="recents"
-    :sections="sections"
-    :theme="theme"
-    shortcut="${escapeString(config.shortcut)}"
-    title="${escapeString(config.title)}"
-  />
-</template>`;
+  const templateLines = [
+    "  <CommandPalette",
+    '    :messages="messages"',
+    '    :recents="recents"',
+    '    :theme="theme"',
+    `    shortcut="${escapeString(config.shortcut)}"`,
+    `    title="${escapeString(config.title)}"`
+  ];
+
+  if (config.sourceMode === "static") {
+    templateLines.push('    :sections="sections"');
+  } else {
+    templateLines.push('    :source="source"');
+  }
+
+  if (config.defaultOpen) {
+    templateLines.push('    :default-open="true"');
+  }
+
+  templateLines.push("  />");
+
+  return [...scriptLines, ...templateLines, "</template>"].join("\n");
 }
 
 export function buildPreactSnippet(config: PlaygroundConfig): string {
-  const sectionsSnippet = toSectionsSnippet(config.sections);
-  const recentsSnippet = toRecentsSnippet(config);
-  const messagesSnippet = toMessagesSnippet(config);
-  const themeSnippet = toThemeSnippet(config);
-
-  return `import { CommandPalette } from "@cmd-kit/preact";
-
-const sections = ${sectionsSnippet};
-
-export function Demo() {
-  return (
-    <CommandPalette
-      recents={${recentsSnippet}}
-      sections={sections}
-      shortcut="${escapeString(config.shortcut)}"
-      title="${escapeString(config.title)}"
-      messages={${messagesSnippet}}
-      theme={${themeSnippet}}
-    />
-  );
-}`;
-} 
+  return buildReactLikeSnippet("@cmd-kit/preact", config);
+}
 
 export function buildVanillaSnippet(config: PlaygroundConfig): string {
   return `import {
@@ -130,23 +105,76 @@ const themeBlock = \`:root {
 }
 
 export function buildTailwindSnippet(config: PlaygroundConfig): string {
+  const sourceSnippet = toSourceSnippet(config);
+  const componentLines = [
+    "<div",
+    `  className="rounded-[${config.radius}] border border-[${config.borderColor}] bg-[${config.backgroundColor}] text-[${config.textColor}] shadow-[${config.shadow}]"`,
+    ">",
+    "  <CommandPalette",
+    `    recents={${toRecentsSnippet(config)}}`,
+    `    shortcut="${escapeString(config.shortcut)}"`,
+    `    title="${escapeString(config.title)}"`
+  ];
+
+  if (config.sourceMode === "static") {
+    componentLines.push("    sections={sections}");
+  } else {
+    componentLines.push("    source={source}");
+  }
+
+  if (config.defaultOpen) {
+    componentLines.push("    defaultOpen");
+  }
+
+  componentLines.push("  />", "</div>");
+
   return `import { CommandPalette } from "@cmd-kit/react";
 
 const sections = ${toSectionsSnippet(config.sections)};
+${sourceSnippet ? `\n${sourceSnippet}` : ""}
 
-<div className="rounded-[${config.radius}] border bg-[${config.backgroundColor}] text-[${config.textColor}]">
-  <CommandPalette
-    recents={
-      ${toRecentsSnippet(config)}
-    }
-    sections={sections}
-    shortcut="${config.shortcut}"
-  />
-</div>`;
+${componentLines.join("\n")}`;
 }
 
 export function buildJsonSnippet(config: PlaygroundConfig): string {
   return JSON.stringify(toPortableConfig(config), null, 2);
+}
+
+function buildReactLikeSnippet(packageName: string, config: PlaygroundConfig): string {
+  const lines = [
+    `import { CommandPalette } from "${packageName}";`,
+    "",
+    `const sections = ${toSectionsSnippet(config.sections)};`
+  ];
+
+  const sourceSnippet = toSourceSnippet(config);
+  if (sourceSnippet) {
+    lines.push("", sourceSnippet);
+  }
+
+  lines.push("", "export function Demo() {", "  return (", "    <CommandPalette");
+
+  const propLines = [
+    `      recents={${toRecentsSnippet(config)}}`,
+    `      shortcut="${escapeString(config.shortcut)}"`,
+    `      title="${escapeString(config.title)}"`,
+    `      messages={${toMessagesSnippet(config)}}`,
+    `      theme={${toThemeSnippet(config)}}`
+  ];
+
+  if (config.sourceMode === "static") {
+    propLines.splice(1, 0, "      sections={sections}");
+  } else {
+    propLines.splice(1, 0, "      source={source}");
+  }
+
+  if (config.defaultOpen) {
+    propLines.push("      defaultOpen");
+  }
+
+  lines.push(...propLines, "    />", "  );", "}");
+
+  return lines.join("\n");
 }
 
 function toSectionsSnippet(sections: CommandSection[]): string {
@@ -208,6 +236,9 @@ function toPortableConfig(config: PlaygroundConfig) {
     title: config.title,
     description: config.description,
     shortcut: config.shortcut,
+    defaultOpen: config.defaultOpen,
+    sourceMode: config.sourceMode,
+    sourceDelayMs: config.sourceDelayMs,
     layout: config.layout,
     recents: toRecentsValue(config),
     messages: toMessagesValue(config),
@@ -222,4 +253,18 @@ function toObjectLiteralSnippet(value: unknown): string {
 
 function toJsonSnippet(value: unknown): string {
   return JSON.stringify(value, null, 2);
+}
+
+function toSourceSnippet(config: PlaygroundConfig): string {
+  if (config.sourceMode !== "async") {
+    return "";
+  }
+
+  return `const source = async () => {
+  await new Promise((resolve) => setTimeout(resolve, ${config.sourceDelayMs}));
+
+  return {
+    sections
+  };
+};`;
 }

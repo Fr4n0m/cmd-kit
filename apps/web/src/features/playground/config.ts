@@ -6,6 +6,9 @@ export interface PlaygroundConfig {
   language: Language;
   title: string;
   description: string;
+  defaultOpen: boolean;
+  sourceMode: "static" | "async";
+  sourceDelayMs: number;
   recentsEnabled: boolean;
   recentsLimit: number;
   recentsTitle: string;
@@ -86,6 +89,9 @@ export const defaultConfig: PlaygroundConfig = {
   title: "Build your command palette live",
   description:
     "Tune colors, sections, and commands while exporting the exact code your project needs.",
+  defaultOpen: false,
+  sourceMode: "static",
+  sourceDelayMs: 450,
   recentsEnabled: true,
   recentsLimit: 5,
   recentsTitle: "Recent",
