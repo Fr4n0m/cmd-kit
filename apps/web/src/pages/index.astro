@@ -41,6 +41,11 @@ const playgroundHref = localizedPath("en", "/playground");
           navigation, recent commands, and a playground that exports real code instead of static
           design snippets.
         </p>
+        <div class="stack-inline hero-stack">
+          <span class="tech-chip"><Icon className="tech-icon" name="core" /> Typed core</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React-first</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="spark" /> Nested flows</span>
+        </div>
         <div class="hero-actions">
           <a class="primary-button" href={playgroundHref}>
             <Icon className="button-icon" name="play" />
@@ -107,6 +112,13 @@ const playgroundHref = localizedPath("en", "/playground");
             <span>Output</span>
             <strong>React, Vue, Preact, CSS, Tailwind, JSON</strong>
           </div>
+        </div>
+        <div class="hero-terminal">
+          <div class="hero-terminal-bar">
+            <span>terminal</span>
+            <span>cmd-kit</span>
+          </div>
+          <pre><code>{`npm install @cmd-kit/react\nnpm install @cmd-kit/core\nnpm run build --workspace @cmd-kit/web`}</code></pre>
         </div>
       </div>
     </section>
