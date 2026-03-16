@@ -154,20 +154,20 @@ button {
 }
 
 .brand-mark {
-  display: grid;
-  place-items: center;
-  width: 2.3rem;
-  height: 2.3rem;
-  border-radius: 12px;
-  border: 1px solid rgba(53, 215, 255, 0.28);
-  background:
-    linear-gradient(135deg, rgba(53, 215, 255, 0.15), rgba(138, 242, 188, 0.08)),
-    rgba(10, 16, 21, 0.9);
-  color: var(--ink);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.95rem;
-  font-weight: 600;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+}
+
+.brand-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 14px;
 }
 
 .brand-copy {
