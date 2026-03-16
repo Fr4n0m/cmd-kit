@@ -33,13 +33,13 @@ const playgroundHref = localizedPath("en", "/playground");
   <main class="site-shell" id="main-content" tabindex="-1">
     <section class="hero">
       <div class="hero-copy">
-        <span class="badge">Open source command palette system</span>
-        <p class="hero-kicker">Headless core. Official adapters. Copyable UI.</p>
-        <h1>Design a command palette that looks like your product, not a plugin.</h1>
+        <span class="badge">Open source command palette toolkit</span>
+        <p class="hero-kicker">Headless engine. Official adapters. Production-oriented UI.</p>
+        <h1>Ship a command palette that feels native to your product and predictable in code.</h1>
         <p>
           `cmd+kit` gives you a framework-agnostic command engine, official adapters, nested
-          navigation, recent commands, and a live configurator that exports real code instead of
-          static mock snippets.
+          navigation, recent commands, and a playground that exports real code instead of static
+          design snippets.
         </p>
         <div class="hero-actions">
           <a class="primary-button" href={playgroundHref}>
@@ -114,11 +114,10 @@ const playgroundHref = localizedPath("en", "/playground");
     <section class="overview-grid">
       <article class="overview-card overview-card-large">
         <p class="eyebrow">Why it exists</p>
-        <h2>Most command palettes are either beautiful but rigid, or flexible but forgettable.</h2>
+        <h2>Most command palettes force you to choose between speed of shipping and control of the surface.</h2>
         <p>
-          `cmd+kit` is designed so the engine stays portable while the product surface stays
-          opinionated enough to ship quickly. You can keep the UI, replace it, or generate a new
-          one from the configurator.
+          `cmd+kit` keeps the engine portable and typed while letting teams ship a usable default UI
+          or replace it without fighting the internals.
         </p>
       </article>
       <article class="overview-card">
@@ -128,8 +127,8 @@ const playgroundHref = localizedPath("en", "/playground");
       </article>
       <article class="overview-card">
         <p class="eyebrow">React</p>
-        <h2>Customizable surface</h2>
-        <p>Use the default UI, override renderers, or treat the hook as a lower-level integration boundary.</p>
+        <h2>Composable surface</h2>
+        <p>Use the default UI, override renderers, or treat the hook as the integration boundary for your own command layer.</p>
       </article>
     </section>
 
