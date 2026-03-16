@@ -11,7 +11,7 @@
     "typecheck": "astro check"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.7",
+    "@astrojs/check": "^0.9.8",
     "@astrojs/react": "^4.4.1",
     "@cmd-kit/react": "^0.1.0",
     "astro": "^5.5.2",

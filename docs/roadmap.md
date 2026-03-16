@@ -59,7 +59,6 @@ Not started or incomplete:
 - multi-framework rollout beyond React is underway but incomplete
 - public adapter coverage now includes Vue and Preact
 - deployed web audit and manual QA are still pending
-- the Astro tooling vulnerability chain reported by `npm audit` is still unresolved
 
 ## Phases
 
@@ -230,6 +229,7 @@ Completed:
 - expand React coverage for focus trapping, busy states, and typing-target shortcut guards
 - add local package packing verification before publish
 - add an explicit dependency audit step to the local release workflow
+- clear the Astro tooling audit chain with a safe `@astrojs/check` update
 - run a baseline `react-doctor` scan and reduce it to component-size warnings only
 - add a code-first baseline `web-quality-audit` document for `apps/web`
 - clear the `apps/web` `react-doctor` score to `100/100` by splitting the playground feature
@@ -244,7 +244,6 @@ Remaining:
 - add a deployed full web audit pass using `web-quality-audit`
 - break the web audit into explicit checks for `accessibility`, `performance`, `core-web-vitals`, `seo`, and `best-practices`
 - add manual QA passes across desktop and mobile
-- resolve or explicitly accept the remaining Astro tooling vulnerability chain before production
 
 Production bar:
 
