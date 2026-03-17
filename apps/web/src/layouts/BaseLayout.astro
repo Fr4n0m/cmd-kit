@@ -142,10 +142,14 @@ function isCurrentPath(target: string) {
                       </a>
                       {
                         isCurrentPath(item.href) && docsHeadings.length ? (
-                          <div class="mobile-docs-subnav">
+                          <div class="mobile-docs-subnav" data-docs-subnav>
                             {
                               docsHeadings.map((heading) => (
-                                <a class="mobile-docs-subnav-link" href={`#${heading.id}`}>
+                                <a
+                                  class="mobile-docs-subnav-link"
+                                  data-docs-section-link
+                                  href={`#${heading.id}`}
+                                >
                                   {heading.label}
                                 </a>
                               ))

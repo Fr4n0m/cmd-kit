@@ -114,7 +114,9 @@ const sections = [
   {
     id: "navigation",
     title: "Navigation",
-    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" }
+    ]
   }
 ];
 
@@ -123,9 +125,19 @@ export function Example() {
 }` }] },
       { id: "core-props", label: "Core props", blocks: [{ type: "list", items: ["<code>sections</code> or <code>items</code>: static data", "<code>source</code>: computed or async commands", "<code>messages</code>: placeholder, empty state, close label", "<code>theme</code>: colors, border, radius, shadow", "<code>classNames</code> and <code>renderers</code>: visual and structural overrides", "<code>open</code>, <code>defaultOpen</code>, <code>onOpenChange</code>: controlled state"] }] },
       { id: "customization-example", label: "Customization example", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
-  classNames={{ dialog: "palette-shell", item: "palette-item" }}
-  messages={{ searchPlaceholder: "Search actions", noResults: "No commands match your query." }}
-  theme={{ accentColor: "#12b5e5", backgroundColor: "#0f1720", textColor: "#f5fbff" }}
+  classNames={{
+    dialog: "palette-shell",
+    item: "palette-item"
+  }}
+  messages={{
+    searchPlaceholder: "Search actions",
+    noResults: "No commands match your query."
+  }}
+  theme={{
+    accentColor: "#12b5e5",
+    backgroundColor: "#0f1720",
+    textColor: "#f5fbff"
+  }}
   sections={sections}
   title="Workspace commands"
 />` }] },
@@ -149,7 +161,16 @@ yarn add @cmd-kit/vue vue
 bun add @cmd-kit/vue vue` }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
 import { CommandPalette } from "@cmd-kit/vue";
-const sections = [{ id: "navigation", title: "Navigation", items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }] }];
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" }
+    ]
+  }
+];
 </script>
 
 <template>
@@ -157,7 +178,10 @@ const sections = [{ id: "navigation", title: "Navigation", items: [{ id: "dashbo
 </template>` }] },
       { id: "what-you-can-configure", label: "What you can configure", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code>, and <code>source</code>", "<code>messages</code> for localized or product-specific copy", "<code>theme</code> for palette colors and surfaces", "<code>classNames</code> for slot-level styling hooks", "<code>recents</code> for automatic recent command tracking"] }] },
       { id: "messages-example", label: "Messages example", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<CommandPalette
-  :messages="{ searchPlaceholder: 'Search docs, pages, or actions', noResults: 'No matching command found.' }"
+  :messages="{
+    searchPlaceholder: 'Search docs, pages, or actions',
+    noResults: 'No matching command found.'
+  }"
   :sections="sections"
   title="Project commands"
 />` }] }
@@ -173,14 +197,26 @@ pnpm add @cmd-kit/preact preact
 yarn add @cmd-kit/preact preact
 bun add @cmd-kit/preact preact` }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/preact";
-const sections = [{ id: "navigation", title: "Navigation", items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }] }];
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
 export function Example() {
   return <CommandPalette sections={sections} title="Project commands" />;
 }` }] },
       { id: "configuration-surface", label: "Configuration surface", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code>, and <code>source</code> for static or async data", "<code>messages</code> for copy overrides", "<code>theme</code> for visual tokens", "<code>classNames</code> for slot-level styling", "<code>renderers</code> for rendering overrides", "<code>recents</code> for automatic recent commands"] }] },
       { id: "theme-example", label: "Theme example", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
-  theme={{ accentColor: "#12b5e5", backgroundColor: "#0f1720", textColor: "#f5fbff" }}
+  theme={{
+    accentColor: "#12b5e5",
+    backgroundColor: "#0f1720",
+    textColor: "#f5fbff"
+  }}
   title="Project commands"
 />` }] }
     ]
@@ -221,7 +257,9 @@ const config = createResolvedConfig({
     {
       id: "navigation",
       title: "Navigation",
-      items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+      items: [
+        { id: "home", title: "Dashboard", href: "/dashboard" }
+      ]
     }
   ]
 });
@@ -269,7 +307,9 @@ await dispatchCommandExecution({
           {
             id: "guides",
             title: "Guides",
-            items: [{ id: "api", title: "API reference" }]
+            items: [
+              { id: "api", title: "API reference" }
+            ]
           }
         ]
       }
@@ -298,9 +338,15 @@ await dispatchCommandExecution({
   }}
 />` }] },
       { id: "render-and-style-overrides", label: "Render and style overrides", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
-  classNames={{ dialog: "palette-shell", item: "palette-item", emptyState: "palette-empty" }}
+  classNames={{
+    dialog: "palette-shell",
+    item: "palette-item",
+    emptyState: "palette-empty"
+  }}
   renderers={{
-    title: ({ activeTitle, breadcrumbs }) => <span>{breadcrumbs.join(" / ") || activeTitle}</span>,
+    title: ({ activeTitle, breadcrumbs }) => (
+      <span>{breadcrumbs.join(" / ") || activeTitle}</span>
+    ),
     emptyState: ({ query }) => <span>No result for "{query}"</span>
   }}
   sections={sections}
@@ -372,15 +418,35 @@ pnpm add @cmd-kit/react react react-dom
 yarn add @cmd-kit/react react react-dom
 bun add @cmd-kit/react react react-dom` }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/react";
-const sections = [{ id: "navigation", title: "Navigation", items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }] }];
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" }
+    ]
+  }
+];
+
 export function Example() {
   return <CommandPalette sections={sections} title="Comandos del proyecto" />;
 }` }] },
       { id: "props-principales", label: "Props principales", blocks: [{ type: "list", items: ["<code>sections</code> o <code>items</code>: datos estáticos", "<code>source</code>: comandos calculados o asíncronos", "<code>messages</code>: placeholder, estado vacío y cierre", "<code>theme</code>: colores, borde, radio y sombra", "<code>classNames</code> y <code>renderers</code>: overrides visuales y estructurales", "<code>open</code>, <code>defaultOpen</code>, <code>onOpenChange</code>: control de estado"] }] },
       { id: "ejemplo-de-personalizacion", label: "Ejemplo de personalización", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
-  classNames={{ dialog: "palette-shell", item: "palette-item" }}
-  messages={{ searchPlaceholder: "Busca acciones", noResults: "No hay comandos para esta búsqueda." }}
-  theme={{ accentColor: "#12b5e5", backgroundColor: "#0f1720", textColor: "#f5fbff" }}
+  classNames={{
+    dialog: "palette-shell",
+    item: "palette-item"
+  }}
+  messages={{
+    searchPlaceholder: "Busca acciones",
+    noResults: "No hay comandos para esta búsqueda."
+  }}
+  theme={{
+    accentColor: "#12b5e5",
+    backgroundColor: "#0f1720",
+    textColor: "#f5fbff"
+  }}
   sections={sections}
   title="Comandos del workspace"
 />` }] },
@@ -404,7 +470,16 @@ yarn add @cmd-kit/vue vue
 bun add @cmd-kit/vue vue` }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
 import { CommandPalette } from "@cmd-kit/vue";
-const sections = [{ id: "navigation", title: "Navigation", items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }] }];
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" }
+    ]
+  }
+];
 </script>
 
 <template>
@@ -412,7 +487,10 @@ const sections = [{ id: "navigation", title: "Navigation", items: [{ id: "dashbo
 </template>` }] },
       { id: "que-puedes-configurar", label: "Qué puedes configurar", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy localizado o del producto", "<code>theme</code> para colores y superficies", "<code>classNames</code> para hooks de estilo", "<code>recents</code> para recientes automáticos"] }] },
       { id: "ejemplo-de-mensajes", label: "Ejemplo de mensajes", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<CommandPalette
-  :messages="{ searchPlaceholder: 'Busca docs, páginas o acciones', noResults: 'No se ha encontrado ningún comando.' }"
+  :messages="{
+    searchPlaceholder: 'Busca docs, páginas o acciones',
+    noResults: 'No se ha encontrado ningún comando.'
+  }"
   :sections="sections"
   title="Comandos del proyecto"
 />` }] }
@@ -428,7 +506,15 @@ pnpm add @cmd-kit/preact preact
 yarn add @cmd-kit/preact preact
 bun add @cmd-kit/preact preact` }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/preact";
-const sections = [{ id: "navigation", title: "Navigation", items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }] }];
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [{ id: "dashboard", title: "Dashboard", href: "/dashboard" }]
+  }
+];
+
 export function Example() {
   return <CommandPalette sections={sections} title="Comandos del proyecto" />;
 }` }] },
@@ -471,7 +557,9 @@ const config = createResolvedConfig({
     {
       id: "navigation",
       title: "Navigation",
-      items: [{ id: "home", title: "Dashboard", href: "/dashboard" }]
+      items: [
+        { id: "home", title: "Dashboard", href: "/dashboard" }
+      ]
     }
   ]
 });
@@ -519,7 +607,9 @@ await dispatchCommandExecution({
           {
             id: "guides",
             title: "Guides",
-            items: [{ id: "api", title: "API reference" }]
+            items: [
+              { id: "api", title: "API reference" }
+            ]
           }
         ]
       }
@@ -548,9 +638,15 @@ await dispatchCommandExecution({
   }}
 />` }] },
       { id: "overrides-de-render-y-estilo", label: "Overrides de render y estilo", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
-  classNames={{ dialog: "palette-shell", item: "palette-item", emptyState: "palette-empty" }}
+  classNames={{
+    dialog: "palette-shell",
+    item: "palette-item",
+    emptyState: "palette-empty"
+  }}
   renderers={{
-    title: ({ activeTitle, breadcrumbs }) => <span>{breadcrumbs.join(" / ") || activeTitle}</span>,
+    title: ({ activeTitle, breadcrumbs }) => (
+      <span>{breadcrumbs.join(" / ") || activeTitle}</span>
+    ),
     emptyState: ({ query }) => <span>Sin resultados para "{query}"</span>
   }}
   sections={sections}
