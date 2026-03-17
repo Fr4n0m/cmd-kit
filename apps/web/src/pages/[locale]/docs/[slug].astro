@@ -1,0 +1,23 @@
+---
+import DocsPageContent from "../../../components/DocsPageContent.astro";
+import { getDocHeadings, getDocPage, getDocSlugs, type DocSlug } from "../../../i18n/docs";
+import { secondaryLocales, type Locale } from "../../../i18n/site";
+import DocsLayout from "../../../layouts/DocsLayout.astro";
+
+export function getStaticPaths() {
+  return secondaryLocales.flatMap((locale) =>
+    getDocSlugs().map((slug) => ({
+      params: { locale, slug }
+    }))
+  );
+}
+
+const locale = Astro.params.locale as Locale;
+const slug = Astro.params.slug as DocSlug;
+const page = getDocPage(locale, slug);
+const headings = getDocHeadings(locale, slug);
+---
+
+<DocsLayout description={page.description} headings={headings} locale={locale} title={page.title}>
+  <DocsPageContent locale={locale} page={page} />
+</DocsLayout>

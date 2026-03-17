@@ -3,6 +3,9 @@ export const locales = ["en", "es"] as const;
 export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = "en";
+export const secondaryLocales = locales.filter(
+  (locale): locale is Exclude<Locale, typeof defaultLocale> => locale !== defaultLocale
+);
 
 export interface LayoutCopy {
   brandAlt: string;

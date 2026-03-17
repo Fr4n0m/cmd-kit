@@ -1,9 +1,16 @@
 ---
 import PlaygroundPageContent from "../../components/PlaygroundPageContent.astro";
 import { getPlaygroundPage } from "../../i18n/pages";
+import { secondaryLocales, type Locale } from "../../i18n/site";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const locale = "es";
+export function getStaticPaths() {
+  return secondaryLocales.map((locale) => ({
+    params: { locale }
+  }));
+}
+
+const locale = Astro.params.locale as Locale;
 const content = getPlaygroundPage(locale);
 ---
 
