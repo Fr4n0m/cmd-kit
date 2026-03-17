@@ -46,7 +46,14 @@ const { locale, page } = Astro.props;
             return <DocsCodeBlock code={block.code} label={block.label} lang={block.lang} />;
           }
 
-          return <InstallCommandSelector locale={locale} />;
+          return (
+            <InstallCommandSelector
+              adapter={block.adapter}
+              locale={locale}
+              showAdapter={block.showAdapter}
+              showLink={block.showLink}
+            />
+          );
         })
       }
     </>

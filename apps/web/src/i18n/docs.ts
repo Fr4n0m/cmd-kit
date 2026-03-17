@@ -24,7 +24,12 @@ export type DocBlock =
   | { type: "paragraph"; html: string }
   | { type: "list"; items: string[]; ordered?: boolean }
   | { type: "code"; code: string; lang: string; label?: string }
-  | { type: "install-selector" };
+  | {
+      type: "install-selector";
+      adapter?: "core" | "preact" | "react" | "vue";
+      showAdapter?: boolean;
+      showLink?: boolean;
+    };
 
 export interface DocSection {
   blocks: DocBlock[];
@@ -104,10 +109,7 @@ docsByLocale.en = {
     description: "Install the React package and configure sections, theming, messages, and render overrides.",
     intro: ["<code>@cmd-kit/react</code> ships a ready-to-use <code>CommandPalette</code> component plus the <code>useCommandPalette</code> hook for custom integrations."],
     sections: [
-      { id: "install", label: "Install", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npm install @cmd-kit/react react react-dom
-pnpm add @cmd-kit/react react react-dom
-yarn add @cmd-kit/react react react-dom
-bun add @cmd-kit/react react react-dom` }] },
+      { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "react", showAdapter: false, showLink: false }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/react";
 
 const sections = [
@@ -155,10 +157,7 @@ export function Example() {
     description: "Install the Vue package and configure sections, messages, theming, and recent commands.",
     intro: ["<code>@cmd-kit/vue</code> provides a <code>CommandPalette</code> component plus a Vue composable for cases where you want to orchestrate state more directly."],
     sections: [
-      { id: "install", label: "Install", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npm install @cmd-kit/vue vue
-pnpm add @cmd-kit/vue vue
-yarn add @cmd-kit/vue vue
-bun add @cmd-kit/vue vue` }] },
+      { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "vue", showAdapter: false, showLink: false }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
 import { CommandPalette } from "@cmd-kit/vue";
 
@@ -192,10 +191,7 @@ const sections = [
     description: "Install the Preact package and configure a command palette with the same core API.",
     intro: ["<code>@cmd-kit/preact</code> mirrors the React-facing API while targeting Preact."],
     sections: [
-      { id: "install", label: "Install", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npm install @cmd-kit/preact preact
-pnpm add @cmd-kit/preact preact
-yarn add @cmd-kit/preact preact
-bun add @cmd-kit/preact preact` }] },
+      { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "preact", showAdapter: false, showLink: false }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/preact";
 
 const sections = [
@@ -244,7 +240,7 @@ import PlaygroundPalette from "../components/PlaygroundPalette.tsx";
     description: "Use the Cmd+kit headless core to build a command palette in vanilla browser code or your own framework adapter.",
     intro: ["<code>@cmd-kit/core</code> is the framework-agnostic center of the project. It gives you typed command sections, fuzzy search, snapshot building, command execution primitives, recent command tracking, and theme token helpers without forcing any rendering layer."],
     sections: [
-      { id: "install", label: "Install", blocks: [{ type: "code", lang: "bash", label: "bash", code: "npm install @cmd-kit/core" }] },
+      { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "core", showAdapter: false, showLink: false }] },
       { id: "what-it-covers", label: "What it covers", blocks: [{ type: "list", items: ["command items and sections", "fuzzy filtering through the shared search pipeline", "grouped snapshots for rendering", "nested command navigation modeling", "execution dispatch for callbacks, links, and nested pages", "recent command state primitives", "theme resolution and CSS variable helpers"] }] },
       { id: "minimal-example", label: "Minimal example", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import {
   createCommandSnapshot,
@@ -413,10 +409,7 @@ Object.assign(docsByLocale.es, {
     description: "Instala el paquete de React y configura secciones, tema, mensajes y overrides de render.",
     intro: ["<code>@cmd-kit/react</code> incluye el componente <code>CommandPalette</code> y el hook <code>useCommandPalette</code> para integraciones más personalizadas."],
     sections: [
-      { id: "instalacion", label: "Instalación", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npm install @cmd-kit/react react react-dom
-pnpm add @cmd-kit/react react react-dom
-yarn add @cmd-kit/react react react-dom
-bun add @cmd-kit/react react react-dom` }] },
+      { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "react", showAdapter: false, showLink: false }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/react";
 
 const sections = [
@@ -464,10 +457,7 @@ export function Example() {
     description: "Instala el paquete de Vue y configura secciones, mensajes, tema y comandos recientes.",
     intro: ["<code>@cmd-kit/vue</code> ofrece un componente <code>CommandPalette</code> y una API composable para los casos donde quieres controlar más directamente el estado de la palette."],
     sections: [
-      { id: "instalacion", label: "Instalación", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npm install @cmd-kit/vue vue
-pnpm add @cmd-kit/vue vue
-yarn add @cmd-kit/vue vue
-bun add @cmd-kit/vue vue` }] },
+      { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "vue", showAdapter: false, showLink: false }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
 import { CommandPalette } from "@cmd-kit/vue";
 
@@ -501,10 +491,7 @@ const sections = [
     description: "Instala el paquete de Preact y configura una command palette con la misma API base.",
     intro: ["<code>@cmd-kit/preact</code> replica la API pública de React sobre Preact."],
     sections: [
-      { id: "instalacion", label: "Instalación", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npm install @cmd-kit/preact preact
-pnpm add @cmd-kit/preact preact
-yarn add @cmd-kit/preact preact
-bun add @cmd-kit/preact preact` }] },
+      { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "preact", showAdapter: false, showLink: false }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/preact";
 
 const sections = [
@@ -544,7 +531,7 @@ import PlaygroundPalette from "../components/PlaygroundPalette.tsx";
     description: "Usa el core headless de Cmd+kit para construir una command palette en vanilla o en tu propio adaptador.",
     intro: ["<code>@cmd-kit/core</code> es el centro agnostico al framework del proyecto. Te da secciones tipadas, fuzzy search, snapshot building, primitivas de ejecucion, seguimiento de recientes y helpers de tema sin imponer ninguna capa de render."],
     sections: [
-      { id: "instalacion", label: "Instalacion", blocks: [{ type: "code", lang: "bash", label: "bash", code: "npm install @cmd-kit/core" }] },
+      { id: "instalacion", label: "Instalacion", blocks: [{ type: "install-selector", adapter: "core", showAdapter: false, showLink: false }] },
       { id: "que-cubre", label: "Que cubre", blocks: [{ type: "list", items: ["items y secciones de comandos", "filtrado fuzzy mediante el pipeline de busqueda compartido", "snapshots agrupados para renderizado", "modelado de navegacion anidada", "despacho de ejecucion para callbacks, links y paginas anidadas", "primitivas de estado para recientes", "resolucion de tema y helpers de CSS variables"] }] },
       { id: "ejemplo-minimo", label: "Ejemplo minimo", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import {
   createCommandSnapshot,
