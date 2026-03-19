@@ -56,7 +56,7 @@ export function getInstallSelectorCopy(locale: Locale): InstallSelectorCopy {
       installerLabel: "Gestor de paquetes",
       packageHint: "Ver documentación del adaptador",
       techLabel: "Tecnología",
-      technologies: { core: "Core", preact: "Preact", react: "React", vue: "Vue" }
+      technologies: { astro: "Astro", core: "Core", preact: "Preact", react: "React", vue: "Vue" }
     };
   }
 
@@ -65,6 +65,6 @@ export function getInstallSelectorCopy(locale: Locale): InstallSelectorCopy {
     installerLabel: "Package manager",
     packageHint: "Open adapter documentation",
     techLabel: "Technology",
-    technologies: { core: "Core", preact: "Preact", react: "React", vue: "Vue" }
+    technologies: { astro: "Astro", core: "Core", preact: "Preact", react: "React", vue: "Vue" }
   };
 }

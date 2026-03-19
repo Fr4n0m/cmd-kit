@@ -1,0 +1,29 @@
+---
+import LegalPageContent from "../../../components/LegalPageContent.astro";
+import { getLegalPage } from "../../../i18n/pages";
+import { defaultLocale, secondaryLocales, type Locale } from "../../../i18n/site";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  const slugs = ["privacy", "terms"] as const;
+
+  return [
+    ...slugs.map((slug) => ({
+      params: { locale: undefined, slug }
+    })),
+    ...secondaryLocales.flatMap((locale) =>
+      slugs.map((slug) => ({
+        params: { locale, slug }
+      }))
+    )
+  ];
+}
+
+const locale = (Astro.params.locale as Locale | undefined) ?? defaultLocale;
+const slug = Astro.params.slug as "privacy" | "terms";
+const page = getLegalPage(locale, slug);
+---
+
+<BaseLayout description={page.description} locale={locale} title={page.title}>
+  <LegalPageContent content={page} />
+</BaseLayout>

@@ -24,7 +24,7 @@ export type DocBlock =
   | { type: "code"; code: string; lang: string; label?: string }
   | {
       type: "install-selector";
-      adapter?: "core" | "preact" | "react" | "vue";
+      adapter?: "astro" | "core" | "preact" | "react" | "vue";
       showAdapter?: boolean;
       showLink?: boolean;
     };
@@ -51,7 +51,7 @@ export interface InstallSelectorCopy {
   installerLabel: string;
   packageHint: string;
   techLabel: string;
-  technologies: Record<"core" | "preact" | "react" | "vue", string>;
+  technologies: Record<"astro" | "core" | "preact" | "react" | "vue", string>;
 }
 
 export const docsSlugs: DocSlug[] = [

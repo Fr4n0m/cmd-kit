@@ -1,28 +1,48 @@
 import type { DocPageData, DocSlug } from "./shared";
 export const docsEs: Record<DocSlug, DocPageData> = {"getting-started": {
     slug: "getting-started", navLabel: "Primeros pasos", eyebrow: "Docs", heading: "Primeros pasos", title: "Cmd+kit | Primeros pasos",
-    description: "Instala Cmd+kit, elige el adaptador adecuado y configura tu primera palette.",
-    intro: ["<code>Cmd+kit</code> es un sistema de command palette distribuido como paquetes npm. Elige el adaptador que encaje con tu stack, instálalo con tu gestor de paquetes y configura la palette mediante secciones tipadas, copy, tokens de tema y fuentes asíncronas si las necesitas."],
+    description: "Instala Cmd+kit desde npm, elige el paquete correcto y entiende el modelo de comandos antes de integrarlo en tu aplicación.",
+    intro: ["<code>Cmd+kit</code> se instala desde npm. Elige el paquete que encaja con tu runtime, define tus comandos en código y después personaliza la palette con mensajes, tokens de tema y overrides de render."],
     sections: [
-      { id: "paquetes", label: "Paquetes", blocks: [{ type: "list", items: ["<code>@cmd-kit/react</code>: componente oficial y hook para React", "<code>@cmd-kit/vue</code>: componente y API composable para Vue", "<code>@cmd-kit/preact</code>: adaptador para Preact alineado con la API de React", "<code>@cmd-kit/core</code>: primitivas headless para UIs propias e integraciones custom"] }] },
+      { id: "que-se-instala", label: "Qué se instala", blocks: [{ type: "list", items: ["<code>@cmd-kit/react</code>: componente listo para usar y hook para React", "<code>@cmd-kit/vue</code>: componente y API composable para Vue", "<code>@cmd-kit/preact</code>: adaptador para Preact con una API muy cercana a React", "<code>@cmd-kit/astro</code>: punto de entrada para Astro con integración basada en islas", "<code>@cmd-kit/core</code>: primitivas headless para UIs propias o integraciones avanzadas"] }] },
+      { id: "elige-el-paquete-correcto", label: "Elige el paquete correcto", blocks: [{ type: "list", items: ['<a href="/es/docs/react">React</a>: úsalo si tu UI ya es React y quieres la surface empaquetada más completa', '<a href="/es/docs/vue">Vue</a>: úsalo si tu aplicación es Vue y quieres slots y una integración propia de Vue', '<a href="/es/docs/preact">Preact</a>: úsalo si buscas una API estilo React sobre un runtime más ligero', '<a href="/es/docs/astro">Astro</a>: úsalo si tu shell es Astro y quieres un paquete pensado para islas de Astro', '<a href="/es/docs/core">Core</a>: úsalo si necesitas controlar toda la UI o crear tu propio adaptador'] }] },
       { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector" }] },
-      { id: "modelo-de-comandos", label: "Modelo de comandos", blocks: [{ type: "paragraph", html: "Todos los adaptadores comparten la misma estructura: las secciones contienen items, y los items pueden abrir enlaces, ejecutar callbacks o navegar a secciones anidadas." }, { type: "code", lang: "ts", label: "ts", code: `const sections = [
+      { id: "modelo-de-comandos", label: "Modelo de comandos", blocks: [{ type: "paragraph", html: "La palette se construye con <strong>secciones</strong>. Cada sección contiene <strong>items</strong>. Un item puede abrir un enlace, ejecutar un callback o navegar a secciones hijas." }, { type: "code", lang: "ts", label: "ts", code: `const sections = [
   {
     id: "navigation",
     title: "Navigation",
     items: [
-      { id: "home", title: "Home", href: "/" },
-      { id: "settings", title: "Settings", shortcut: "G S" }
+      {
+        id: "dashboard",
+        title: "Dashboard",
+        subtitle: "Open the main workspace",
+        href: "/dashboard",
+        shortcut: "G D"
+      },
+      {
+        id: "settings",
+        title: "Settings",
+        children: [
+          {
+            id: "preferences",
+            title: "Preferences",
+            items: [
+              { id: "theme", title: "Theme" },
+              { id: "account", title: "Account" }
+            ]
+          }
+        ]
+      }
     ]
   }
 ];` }] },
-      { id: "elige-tu-adaptador", label: "Elige tu adaptador", blocks: [{ type: "list", items: ['<a href="/es/docs/react">React</a>: la opción empaquetada más completa', '<a href="/es/docs/vue">Vue</a>: integración propia para Vue', '<a href="/es/docs/preact">Preact</a>: runtime más ligero con una API cercana', '<a href="/es/docs/core">Core</a>: camino headless para una UI custom', '<a href="/es/docs/playground">Playground</a>: guía del configurador y sus exports'] }] },
-      { id: "personalizacion", label: "Personalización", blocks: [{ type: "paragraph", html: 'Cuando la integración base funcione, pasa a <a href="/es/docs/customization">Personalización</a> para ajustar estilos, mensajes, renderizado y fuentes asíncronas.' }] }
+      { id: "checklist-de-la-primera-integracion", label: "Checklist de la primera integración", blocks: [{ type: "list", ordered: true, items: ["Elige el paquete que coincide con el runtime de tu UI.", "Instálalo con tu gestor de paquetes junto con las peer dependencies que necesite.", "Empieza con una o dos secciones raíz y unos pocos items.", "Confirma que enlaces, callbacks y navegación anidada funcionan antes de estilizar mucho.", 'Después pasa a <a href="/es/docs/customization">Personalización</a> para iconos, estilos, mensajes y datos asíncronos.'] }] },
+      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Tengo que empezar por <code>@cmd-kit/core</code>?</strong> No. Empieza por React, Vue, Preact o Astro si uno de ellos coincide con tu aplicación.", "<strong>¿Puedo cambiar iconos, textos y estilos después?</strong> Sí. Las secciones, los mensajes, el tema, las clases, los renderers y los slots están pensados para personalizarse.", "<strong>¿Y si uso Astro?</strong> Usa <code>@cmd-kit/astro</code> como punto de entrada y pasa a una isla propia solo si necesitas más control de render."] }] }
     ]
   },
   react: {
     slug: "react", navLabel: "React", eyebrow: "React", heading: "Integración con React", title: "Cmd+kit | React",
-    description: "Instala el paquete de React y configura secciones, tema, mensajes y overrides de render.",
+    description: "Instala el paquete de React y personaliza iconos, estilos, datos asíncronos y comportamiento con la API pública del paquete.",
     intro: ["<code>@cmd-kit/react</code> incluye el componente <code>CommandPalette</code> y el hook <code>useCommandPalette</code> para integraciones más personalizadas."],
     sections: [
       { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "react", showAdapter: false, showLink: false }] },
@@ -42,6 +62,19 @@ export function Example() {
   return <CommandPalette sections={sections} title="Comandos del proyecto" />;
 }` }] },
       { id: "props-principales", label: "Props principales", blocks: [{ type: "list", items: ["<code>sections</code> o <code>items</code>: datos estáticos", "<code>source</code>: comandos calculados o asíncronos", "<code>messages</code>: placeholder, estado vacío y cierre", "<code>theme</code>: colores, borde, radio y sombra", "<code>classNames</code> y <code>renderers</code>: overrides visuales y estructurales", "<code>open</code>, <code>defaultOpen</code>, <code>onOpenChange</code>: control de estado"] }] },
+      { id: "iconos-y-layout-de-item", label: "Iconos y layout de item", blocks: [{ type: "paragraph", html: "Usa <code>renderItem</code> cuando quieras controlar completamente la fila del item, incluyendo iconos, espaciado y metadatos." }, { type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
+  sections={sections}
+  renderItem={(item, active) => (
+    <div className={active ? "palette-row is-active" : "palette-row"}>
+      <MyIcon name={item.id} />
+      <div className="palette-row-copy">
+        <strong>{item.title}</strong>
+        {item.subtitle ? <span>{item.subtitle}</span> : null}
+      </div>
+    </div>
+  )}
+  title="Comandos del proyecto"
+/>` }] },
       { id: "ejemplo-de-personalizacion", label: "Ejemplo de personalización", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   classNames={{
     dialog: "palette-shell",
@@ -64,8 +97,10 @@ export function Example() {
     const response = await fetch("/api/commands");
     return response.json();
   }}
+  recents={{ limit: 6, sectionTitle: "Recientes" }}
   title="Comandos del workspace"
-/>` }] }
+/>` }] },
+      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Cómo cambio el icono del item?</strong> Usa <code>renderItem</code> o <code>renderers.item</code> y mapea los ids a tus componentes de icono.", "<strong>¿Cómo lo reestilizo?</strong> Usa <code>classNames</code> para los slots y <code>theme</code> para los tokens integrados.", "<strong>¿Puedo abrirlo programáticamente?</strong> Sí. Usa estado controlado con <code>open</code> y <code>onOpenChange</code>."] }] }
     ]
   },
   vue: {
@@ -92,6 +127,17 @@ const sections = [
   <CommandPalette :sections="sections" title="Comandos del proyecto" />
 </template>` }] },
       { id: "que-puedes-configurar", label: "Qué puedes configurar", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy localizado o del producto", "<code>theme</code> para colores y superficies", "<code>classNames</code> para hooks de estilo", "<code>recents</code> para recientes automáticos"] }] },
+      { id: "slots-e-iconos", label: "Slots e iconos", blocks: [{ type: "paragraph", html: "La personalización en Vue se hace con slots. Usa el slot <code>item</code> cuando quieras cambiar iconos o la estructura de la fila." }, { type: "code", lang: "vue", label: "vue", code: `<CommandPalette :sections="sections" title="Comandos del proyecto">
+  <template #item="{ item, active }">
+    <div :class="['palette-row', { 'is-active': active }]">
+      <MyIcon :name="item.id" />
+      <div class="palette-row-copy">
+        <strong>{{ item.title }}</strong>
+        <span v-if="item.subtitle">{{ item.subtitle }}</span>
+      </div>
+    </div>
+  </template>
+</CommandPalette>` }] },
       { id: "ejemplo-de-mensajes", label: "Ejemplo de mensajes", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<CommandPalette
   :messages="{
     searchPlaceholder: 'Busca docs, páginas o acciones',
@@ -99,12 +145,13 @@ const sections = [
   }"
   :sections="sections"
   title="Comandos del proyecto"
-/>` }] }
+/>` }] },
+      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Cómo cambio iconos en Vue?</strong> Usa el slot <code>item</code> y renderiza tu propio componente según el item actual.", "<strong>¿Puedo personalizar la zona del título?</strong> Sí. Vue expone <code>title</code>, <code>section-title</code>, <code>item</code> y <code>empty-state</code>.", "<strong>¿Cómo lo estilizo?</strong> Usa <code>classNames</code> para clases por slot y <code>theme</code> para los tokens visuales integrados."] }] }
     ]
   },
   preact: {
     slug: "preact", navLabel: "Preact", eyebrow: "Preact", heading: "Integración con Preact", title: "Cmd+kit | Preact",
-    description: "Instala el paquete de Preact y configura una command palette con la misma API base.",
+    description: "Instala el paquete de Preact y personaliza una command palette con el mismo modelo de comandos que usa el adaptador de React.",
     intro: ["<code>@cmd-kit/preact</code> replica la API pública de React sobre Preact."],
     sections: [
       { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "preact", showAdapter: false, showLink: false }] },
@@ -121,22 +168,76 @@ const sections = [
 export function Example() {
   return <CommandPalette sections={sections} title="Comandos del proyecto" />;
 }` }] },
-      { id: "superficie-de-configuracion", label: "Superficie de configuración", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy específico del producto", "<code>theme</code> para tokens visuales", "<code>classNames</code> para estilos por slot", "<code>renderers</code> para overrides de renderizado", "<code>recents</code> para comandos recientes"] }] }
+      { id: "superficie-de-configuracion", label: "Superficie de configuración", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy específico del producto", "<code>theme</code> para tokens visuales", "<code>classNames</code> para estilos por slot", "<code>renderers</code> para overrides de renderizado", "<code>recents</code> para comandos recientes"] }] },
+      { id: "iconos-y-layout", label: "Iconos y layout", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
+  sections={sections}
+  renderItem={(item, active) => (
+    <div className={active ? "palette-row is-active" : "palette-row"}>
+      <MyIcon name={item.id} />
+      <span>{item.title}</span>
+    </div>
+  )}
+  title="Comandos del proyecto"
+/>` }] },
+      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿La API es parecida a React?</strong> Sí. Esa es la idea del adaptador de Preact.", "<strong>¿Puedo reemplazar la UI de la fila?</strong> Sí. Usa <code>renderItem</code> o los hooks de renderer.", "<strong>¿Cuándo salto a Core?</strong> Solo cuando la UI empaquetada deje de encajar con tu producto."] }] }
     ]
   },
   astro: {
-    slug: "astro", navLabel: "Astro", eyebrow: "Astro", heading: "Integracion con Astro", title: "Cmd+kit | Astro",
-    description: "Usa Cmd+kit en Astro combinando un shell estatico con una isla de React, Vue o Preact.",
-    intro: ["Astro es el shell recomendado para docs y marketing porque mantiene rapida la parte estatica y solo hidrata <code>Cmd+kit</code> donde la interfaz necesita interactividad real."],
+    slug: "astro", navLabel: "Astro", eyebrow: "Astro", heading: "Integración con Astro", title: "Cmd+kit | Astro",
+    description: "Instala el paquete de Astro, monta tu primera palette en una isla y entiende cuándo te conviene quedarte en el paquete de Astro o pasar a una isla propia.",
+    intro: ["<code>@cmd-kit/astro</code> es el paquete de Astro para Cmd+kit. Te da un punto de entrada pensado para Astro, manteniendo el mismo modelo de comandos y la misma superficie de personalización que el resto de adaptadores."],
     sections: [
-      { id: "enfoque-recomendado", label: "Enfoque recomendado", blocks: [{ type: "list", items: ["renderiza landing y docs como paginas estaticas de Astro", "usa <code>@cmd-kit/react</code>, <code>@cmd-kit/vue</code> o <code>@cmd-kit/preact</code> dentro de una isla de Astro", "hidrata la palette solo en rutas o componentes interactivos"] }] },
-      { id: "ejemplo-con-react", label: "Ejemplo con React", blocks: [{ type: "code", lang: "astro", label: "astro", code: `---
-import PlaygroundPalette from "../components/PlaygroundPalette.tsx";
+      { id: "cuando-usar-el-paquete-de-astro", label: "Cuándo usar el paquete de Astro", blocks: [{ type: "list", items: ["Usa <code>@cmd-kit/astro</code> cuando Astro sea el shell de la página y quieras la integración empaquetada más rápida.", "Quédate en el paquete de Astro si tu palette puede configurarse con props serializables como secciones, mensajes, tema y recientes.", "Pasa a una isla propia de React, Vue o Preact cuando necesites callbacks avanzados, hooks locales o renderizado totalmente custom.", "Usa <code>@cmd-kit/core</code> si quieres construir toda la capa de UI tú mismo."] }] },
+      { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "astro", showAdapter: false, showLink: false }] },
+      { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "astro", label: "astro", code: `---
+import CommandPalette from "@cmd-kit/astro/component";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" }
+    ]
+  }
+];
 ---
 
-<PlaygroundPalette client:load />` }] },
-      { id: "por-que-encaja-con-el-proyecto", label: "Por que encaja con el proyecto", blocks: [{ type: "paragraph", html: "<code>Cmd+kit</code> separa el core headless de sus adaptadores de UI. Eso hace de Astro un shell de entrega, no un framework que haya que atacar con un motor de render especifico." }] },
-      { id: "estado", label: "Estado", blocks: [{ type: "paragraph", html: "La guia de Astro ya esta documentada y esta misma web la usa. Un paquete especifico para Astro no es necesario todavia porque el patrón de islas ya cubre la integración real." }] }
+<CommandPalette sections={sections} title="Comandos del proyecto" />` }] },
+      { id: "activar-react-en-astro", label: "Activar React en Astro", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npx astro add react` }, { type: "paragraph", html: "El paquete de Astro usa islas de Astro y React por debajo, así que tu proyecto necesita tener activada la integración oficial de React." }] },
+      { id: "personalizacion", label: "Personalización", blocks: [{ type: "paragraph", html: "La superficie de personalización es la misma que en el resto de adaptadores: <code>sections</code>, <code>messages</code>, <code>theme</code> y configuración de recientes. Si necesitas cambiar iconos y layouts de fila con lógica propia, crea una isla de tu proyecto y lleva ahí el render avanzado." }, { type: "code", lang: "astro", label: "astro", code: `---
+import CommandPalette from "@cmd-kit/astro/component";
+
+const sections = [
+  {
+    id: "workspace",
+    title: "Workspace",
+    items: [
+      { id: "search-docs", title: "Buscar documentación", href: "/docs" }
+    ]
+  }
+];
+---
+
+<CommandPalette
+  sections={sections}
+  messages={{
+    searchPlaceholder: "Busca docs, páginas o acciones",
+    noResults: "No hay ningún comando para esta búsqueda."
+  }}
+  theme={{
+    accentColor: "#12b5e5",
+    backgroundColor: "#0f1720",
+    textColor: "#f5fbff"
+  }}
+  title="Comandos del proyecto"
+/>` }] },
+      { id: "patron-de-isla-avanzada", label: "Patrón de isla avanzada", blocks: [{ type: "paragraph", html: "Cuando necesites callbacks, hooks de framework o una fila totalmente custom, crea una isla en tu aplicación y usa dentro el adaptador que prefieras. Astro sigue siendo el shell y la isla controla el comportamiento avanzado." }, { type: "code", lang: "astro", label: "astro", code: `---
+import ProjectPaletteIsland from "../components/ProjectPaletteIsland.tsx";
+---
+
+<ProjectPaletteIsland client:load />` }] },
+      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Instalo <code>@cmd-kit/astro</code>?</strong> Sí. Ese es el paquete pensado para proyectos Astro.", "<strong>¿Por qué Astro sigue necesitando React?</strong> Porque la palette empaquetada funciona como isla interactiva.", "<strong>¿Cuándo paso a una isla propia?</strong> Cuando necesites callbacks de render, hooks locales o una composición de UI que vaya más allá de props serializables."] }] }
     ]
   },
   core: {

@@ -7,7 +7,7 @@ export const playgroundPages: Record<Locale, PlaygroundPageCopy> = {
     description:
       "Edit structure, theme, nested commands, messages, and exports with room to think. The preview stays interactive while the generated code tracks every change in real time.",
     heading:
-      "Work in a dedicated playground that behaves more like a tool than a landing page.",
+      "Work in a dedicated playground that behaves like a focused configuration tool.",
     metaDescription:
       "Dedicated playground for shaping the command palette, tuning sections and theme, and exporting real code.",
     metricCoverageLabel: "Coverage",
@@ -24,7 +24,7 @@ export const playgroundPages: Record<Locale, PlaygroundPageCopy> = {
     description:
       "Edita estructura, tema, comandos anidados, mensajes y exports con espacio real para pensar. La preview sigue viva mientras el código generado refleja cada cambio.",
     heading:
-      "Trabaja en un playground dedicado que se comporte más como una herramienta que como una landing.",
+      "Trabaja en un playground dedicado que se comporte como una herramienta de configuración enfocada.",
     metaDescription:
       "Playground dedicado para construir la command palette, ajustar secciones y tema, y exportar código real.",
     metricCoverageLabel: "Cobertura",
