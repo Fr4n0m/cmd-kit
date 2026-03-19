@@ -29,58 +29,62 @@ const legalTermsHref = withLocale("/legal/terms");
 
 <main class="site-shell" id="main-content" tabindex="-1">
   <section class="hero">
-    <div class="hero-copy">
-      <span class="badge">{content.badge}</span>
-      <p class="hero-kicker">{content.heroKicker}</p>
-      <h1>{content.heroHeading}</h1>
-      <p>{content.heroBody}</p>
-    </div>
-    <div class="hero-stage">
-      <HeroPaletteIsland
-        customizationHref={customizationHref}
-        docsAstroHref={docsAstroHref}
-        docsCoreHref={docsCoreHref}
-        docsGettingStartedHref={docsGettingStartedHref}
-        docsPlaygroundHref={docsPlaygroundHref}
-        docsPreactHref={docsPreactHref}
-        docsReactHref={docsReactHref}
-        docsVueHref={docsVueHref}
-        homeHref={homeHref}
-        legalPrivacyHref={legalPrivacyHref}
-        legalTermsHref={legalTermsHref}
-        locale={locale}
-        playgroundHref={playgroundHref}
-        recentLabel={content.heroStageRecentLabel}
-        searchPlaceholder={content.heroStageSearchPlaceholder}
-        title={content.heroStageLabel}
-        client:load
-      />
-    </div>
-    <div class="hero-proof">
-      <div class="hero-output-card" aria-label={content.playgroundAriaLabel}>
-        <p class="hero-output-title">{content.heroStackCardTitle}</p>
-        <div class="hero-output-list">
-          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="css" /> CSS</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="tailwind" /> Tailwind</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="json" /> JSON</span>
-        </div>
+    <div class="hero-column hero-column-main">
+      <div class="hero-copy">
+        <span class="badge">{content.badge}</span>
+        <p class="hero-kicker">{content.heroKicker}</p>
+        <h1>{content.heroHeading}</h1>
+        <p>{content.heroBody}</p>
       </div>
-      <HeroInstallSelector locale={locale} />
+      <div class="hero-proof">
+        <div class="hero-output-card" aria-label={content.playgroundAriaLabel}>
+          <p class="hero-output-title">{content.heroStackCardTitle}</p>
+          <div class="hero-output-list">
+            <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
+            <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
+            <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
+            <span class="tech-chip"><Icon className="tech-icon" name="css" /> CSS</span>
+            <span class="tech-chip"><Icon className="tech-icon" name="tailwind" /> Tailwind</span>
+            <span class="tech-chip"><Icon className="tech-icon" name="json" /> JSON</span>
+          </div>
+        </div>
+        <HeroInstallSelector locale={locale} />
+      </div>
     </div>
-    <div class="hero-stage-footer">
-      <p class="stage-note">{content.heroStageNote}</p>
-      <div class="hero-actions">
-        <a class="primary-button" href={playgroundHref}>
-          <Icon className="button-icon" name="play" />
-          <span>{content.heroCta}</span>
-        </a>
-        <a class="ghost-button" href={docsHref}>
-          <Icon className="button-icon" name="code" />
-          <span>{content.heroDocsCta}</span>
-        </a>
+    <div class="hero-column hero-column-stage">
+      <div class="hero-stage">
+        <HeroPaletteIsland
+          customizationHref={customizationHref}
+          docsAstroHref={docsAstroHref}
+          docsCoreHref={docsCoreHref}
+          docsGettingStartedHref={docsGettingStartedHref}
+          docsPlaygroundHref={docsPlaygroundHref}
+          docsPreactHref={docsPreactHref}
+          docsReactHref={docsReactHref}
+          docsVueHref={docsVueHref}
+          homeHref={homeHref}
+          legalPrivacyHref={legalPrivacyHref}
+          legalTermsHref={legalTermsHref}
+          locale={locale}
+          playgroundHref={playgroundHref}
+          recentLabel={content.heroStageRecentLabel}
+          searchPlaceholder={content.heroStageSearchPlaceholder}
+          title={content.heroStageLabel}
+          client:load
+        />
+      </div>
+      <div class="hero-stage-footer">
+        <p class="stage-note">{content.heroStageNote}</p>
+        <div class="hero-actions">
+          <a class="primary-button" href={playgroundHref}>
+            <Icon className="button-icon" name="play" />
+            <span>{content.heroCta}</span>
+          </a>
+          <a class="ghost-button" href={docsHref}>
+            <Icon className="button-icon" name="code" />
+            <span>{content.heroDocsCta}</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>

@@ -70,6 +70,10 @@ export function useCommandPalette({
   const rootSections = loadedSections ?? sections;
   const activeSections = navigationStack.at(-1)?.sections ?? rootSections;
   const activeTitle = navigationStack.at(-1)?.title ?? title;
+  const breadcrumbs = useMemo(
+    () => [title, ...navigationStack.map((entry) => entry.title)],
+    [navigationStack, title]
+  );
   const rootResolvedConfig = useMemo(
     () =>
       createResolvedConfig({
@@ -324,6 +328,7 @@ export function useCommandPalette({
   return {
     activeIndex,
     activeTitle,
+    breadcrumbs,
     canGoBack: navigationStack.length > 0,
     flatItems,
     isLoading,

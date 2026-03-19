@@ -5,7 +5,7 @@ Astro bindings for Cmd+kit.
 ## Install
 
 ```bash
-npm install @cmd-kit/astro @astrojs/react react react-dom
+npm install @cmd-kit/astro
 ```
 
 ## Usage
@@ -26,4 +26,4 @@ const sections = [
 <CommandPalette sections={sections} title="Project commands" />
 ```
 
-For advanced renderers or hook-driven integrations, build a React island and use the types re-exported by `@cmd-kit/astro`.
+For advanced control, pass `items`/`sections`, `messages`, `theme`, `shortcut`, and `recents` props directly to the Astro component.

@@ -19,6 +19,7 @@ type SlotName =
   | "overlay"
   | "dialog"
   | "header"
+  | "breadcrumbs"
   | "title"
   | "caption"
   | "headerActions"
@@ -160,6 +161,16 @@ export const CommandPalette = defineComponent({
                 },
                 [
                   h("div", [
+                    palette.breadcrumbs.value.length > 1
+                      ? h(
+                          "p",
+                          {
+                            class: props.classNames?.breadcrumbs,
+                            style: breadcrumbsStyle
+                          },
+                          palette.breadcrumbs.value.join(" / ")
+                        )
+                      : null,
                     h(
                       "p",
                       {
@@ -169,10 +180,11 @@ export const CommandPalette = defineComponent({
                       },
                       slots.title
                         ? slots.title({
-                            activeTitle: palette.activeTitle.value,
-                            canGoBack: palette.canGoBack.value,
-                            shortcut: props.shortcut
-                          })
+                          activeTitle: palette.activeTitle.value,
+                          breadcrumbs: palette.breadcrumbs.value,
+                          canGoBack: palette.canGoBack.value,
+                          shortcut: props.shortcut
+                        })
                         : palette.activeTitle.value
                     ),
                     h(
@@ -515,6 +527,15 @@ const headerStyle: CSSProperties = {
   justifyContent: "space-between",
   gap: "1rem",
   alignItems: "start"
+};
+
+const breadcrumbsStyle: CSSProperties = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "0.35rem",
+  marginBottom: "0.45rem",
+  color: "#94a3b8",
+  fontSize: "0.78rem"
 };
 
 const headerActionsStyle: CSSProperties = {

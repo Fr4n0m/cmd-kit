@@ -29,7 +29,7 @@ const payload = JSON.stringify({
           <p class="cmdkit-astro-caption" data-slot="caption"></p>
         </div>
         <div class="cmdkit-astro-header-actions" data-slot="headerActions">
-          <button class="cmdkit-astro-close cmdkit-astro-back" data-slot="backButton" type="button">←</button>
+          <button class="cmdkit-astro-close cmdkit-astro-back" data-slot="backButton" type="button">Back</button>
           <button class="cmdkit-astro-close" data-slot="closeButton" type="button">✕</button>
         </div>
       </div>
@@ -158,6 +158,32 @@ const payload = JSON.stringify({
     );
   };
 
+  const prettyShortcut = (shortcut) => {
+    const normalized = String(shortcut ?? "").trim();
+
+    if (!normalized) {
+      return "";
+    }
+
+    if (typeof navigator === "undefined") {
+      return normalized
+        .split("+")
+        .map((token) => token.charAt(0).toUpperCase() + token.slice(1))
+        .join(" + ");
+    }
+
+    return normalized
+      .split("+")
+      .map((token) => {
+        if (token === "mod") {
+          return navigator.userAgent.includes("Mac") ? "Cmd" : "Ctrl";
+        }
+
+        return token.charAt(0).toUpperCase() + token.slice(1);
+      })
+      .join(" + ");
+  };
+
   const toSections = (items) => {
     if (!items?.length) {
       return undefined;
@@ -242,7 +268,11 @@ const payload = JSON.stringify({
   };
 
   const updateTheme = (theme) => {
-    if (!(dialog instanceof HTMLElement) || !(overlay instanceof HTMLElement)) {
+    if (
+      !(dialog instanceof HTMLElement) ||
+      !(overlay instanceof HTMLElement) ||
+      !(input instanceof HTMLInputElement)
+    ) {
       return;
     }
 
@@ -252,6 +282,22 @@ const payload = JSON.stringify({
     dialog.style.color = theme.textColor;
     dialog.style.boxShadow = theme.shadow;
     overlay.style.background = theme.overlayColor;
+    input.style.border = `1px solid ${theme.borderColor}`;
+    input.style.background = "rgba(15, 23, 42, 0.35)";
+    input.style.color = theme.textColor;
+
+    for (const button of root.querySelectorAll(".cmdkit-astro-close")) {
+      if (button instanceof HTMLElement) {
+        button.style.border = `1px solid ${theme.borderColor}`;
+        button.style.color = theme.mutedColor;
+      }
+    }
+
+    const emptyState = list?.querySelector(".cmdkit-astro-empty");
+    if (emptyState instanceof HTMLElement) {
+      emptyState.style.border = `1px dashed ${theme.borderColor}`;
+      emptyState.style.color = theme.mutedColor;
+    }
   };
 
   const renderList = (runtime) => {
@@ -291,20 +337,30 @@ const payload = JSON.stringify({
             const itemClass = classNames?.item
               ? `cmdkit-astro-item ${classNames.item}`
               : "cmdkit-astro-item";
-            const shortcut = item.shortcut ? `<span class="cmdkit-astro-shortcut">${item.shortcut}</span>` : "";
+            const shortcut = item.shortcut
+              ? `<span class="cmdkit-astro-shortcut">${item.shortcut}</span>`
+              : item.children?.length
+                ? `<span class="cmdkit-astro-shortcut">Enter</span>`
+                : "";
             const subtitle = item.subtitle ? `<span class="cmdkit-astro-subtitle">${item.subtitle}</span>` : "";
+            const icon = item.icon ?? "⌘";
+            const itemColor = isDisabled ? runtime.theme.mutedColor : runtime.theme.textColor;
 
             return `<button
               aria-selected="${isActive ? "true" : "false"}"
               class="${itemClass}"
               data-item-id="${item.id}"
               role="option"
+              style="color: ${itemColor};"
               type="button"
               ${isDisabled ? "disabled" : ""}
             >
-              <span>
-                <span class="cmdkit-astro-item-title">${item.title}</span>
-                ${subtitle}
+              <span class="cmdkit-astro-leading">
+                <span class="cmdkit-astro-icon" data-active="${isActive ? "true" : "false"}">${icon}</span>
+                <span>
+                  <span class="cmdkit-astro-item-title">${item.title}</span>
+                  ${subtitle}
+                </span>
               </span>
               ${shortcut}
             </button>`;
@@ -342,9 +398,7 @@ const payload = JSON.stringify({
     }
 
     if (caption instanceof HTMLElement) {
-      caption.textContent = runtime.canGoBack
-        ? runtime.breadcrumbs.join(" / ")
-        : `Press ${props.shortcut} to toggle.`;
+      caption.textContent = `Press ${prettyShortcut(props.shortcut)} to toggle.`;
     }
 
     if (breadcrumbs instanceof HTMLElement) {
@@ -602,7 +656,6 @@ const payload = JSON.stringify({
     padding: 0.4rem 0.7rem;
     background: transparent;
     cursor: pointer;
-    color: inherit;
   }
 
   .cmdkit-astro-input {
@@ -667,6 +720,25 @@ const payload = JSON.stringify({
   .cmdkit-astro-item-title {
     display: block;
     font-weight: 600;
+  }
+
+  .cmdkit-astro-leading {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .cmdkit-astro-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(148, 163, 184, 0.12);
+  }
+
+  .cmdkit-astro-icon[data-active="true"] {
+    background: rgba(59, 130, 246, 0.25);
   }
 
   .cmdkit-astro-subtitle {

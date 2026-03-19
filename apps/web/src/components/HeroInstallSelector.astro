@@ -75,6 +75,7 @@ const adapters = [
   }
 ] as const;
 
+const managers = ["npm", "pnpm", "yarn", "bun"] as const;
 const defaultAdapter = "react";
 const defaultManager = "npm";
 
@@ -105,41 +106,79 @@ function formatInstallCommand(command: string) {
   ].join(" ");
 }
 
-const heroInstallScript = `(function(){const root=document.getElementById(${JSON.stringify(rootId)});if(!root)return;const adapterSelect=root.querySelector('[data-hero-install=\"adapter\"]');const managerSelect=root.querySelector('[data-hero-install=\"manager\"]');const command=root.querySelector('[data-hero-install=\"code\"]');const packageData=${JSON.stringify(adapters)};const escapeHtml=(value)=>value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('\"','&quot;').replaceAll(\"'\",'&#39;');const formatInstallCommand=(command)=>{const parts=command.split(' ');if(parts.length<2){return '<span class=\"install-token install-token-manager\">'+escapeHtml(command)+'</span>';}const [manager,action,...packages]=parts;return ['<span class=\"install-token install-token-manager\">'+escapeHtml(manager)+'</span>','<span class=\"install-token install-token-action\">'+escapeHtml(action)+'</span>',...packages.map((entry)=>'<span class=\"install-token install-token-package\">'+escapeHtml(entry)+'</span>')].join(' ');};const sync=()=>{if(!(adapterSelect instanceof HTMLSelectElement)||!(managerSelect instanceof HTMLSelectElement)||!(command instanceof HTMLElement))return;const selected=packageData.find((entry)=>entry.id===adapterSelect.value)??packageData[0];const manager=managerSelect.value;command.innerHTML=formatInstallCommand(selected.packages[manager]??selected.packages.npm);};adapterSelect?.addEventListener('change',sync);managerSelect?.addEventListener('change',sync);sync();})();`;
+const heroInstallScript = `(function(){const root=document.getElementById(${JSON.stringify(rootId)});if(!root)return;const packageData=${JSON.stringify(adapters)};const managers=${JSON.stringify(managers)};const command=root.querySelector('[data-hero-install=\"code\"]');const adapterLabel=root.querySelector('[data-hero-install-label=\"adapter\"]');const managerLabel=root.querySelector('[data-hero-install-label=\"manager\"]');const buttons={adapter:root.querySelector('[data-hero-install-toggle=\"adapter\"]'),manager:root.querySelector('[data-hero-install-toggle=\"manager\"]')};const menus={adapter:root.querySelector('[data-hero-install-menu=\"adapter\"]'),manager:root.querySelector('[data-hero-install-menu=\"manager\"]')};const escapeHtml=(value)=>value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('\"','&quot;').replaceAll(\"'\",'&#39;');const formatInstallCommand=(command)=>{const parts=command.split(' ');if(parts.length<2){return '<span class=\"install-token install-token-manager\">'+escapeHtml(command)+'</span>';}const [manager,action,...packages]=parts;return ['<span class=\"install-token install-token-manager\">'+escapeHtml(manager)+'</span>','<span class=\"install-token install-token-action\">'+escapeHtml(action)+'</span>',...packages.map((entry)=>'<span class=\"install-token install-token-package\">'+escapeHtml(entry)+'</span>')].join(' ');};let state={adapter:${JSON.stringify(defaultAdapter)},manager:${JSON.stringify(defaultManager)},open:null};const sync=()=>{const selected=packageData.find((entry)=>entry.id===state.adapter)??packageData[0];if(command instanceof HTMLElement){command.innerHTML=formatInstallCommand(selected.packages[state.manager]??selected.packages.npm);}if(adapterLabel instanceof HTMLElement){adapterLabel.textContent=selected.label;}if(managerLabel instanceof HTMLElement){managerLabel.textContent=state.manager;}['adapter','manager'].forEach((key)=>{const open=state.open===key;const button=buttons[key];const menu=menus[key];if(button instanceof HTMLElement){button.setAttribute('aria-expanded',String(open));button.classList.toggle('is-open',open);}if(menu instanceof HTMLElement){menu.hidden=!open;}root.querySelectorAll('[data-hero-install-option-group=\"'+key+'\"]').forEach((item)=>{const value=item.getAttribute('data-hero-install-option-value');const current=key==='adapter'?state.adapter:state.manager;item.setAttribute('aria-current',String(value===current));});});};const close=()=>{state.open=null;sync();};root.addEventListener('click',(event)=>{const target=event.target instanceof Element?event.target:null;if(!target)return;const toggle=target.closest('[data-hero-install-toggle]');if(toggle){const key=toggle.getAttribute('data-hero-install-toggle');state.open=state.open===key?null:key;sync();return;}const option=target.closest('[data-hero-install-option-group]');if(option){const key=option.getAttribute('data-hero-install-option-group');const value=option.getAttribute('data-hero-install-option-value');if(key==='adapter'&&packageData.some((entry)=>entry.id===value)){state.adapter=value;}if(key==='manager'&&managers.includes(value)){state.manager=value;}state.open=null;sync();return;}if(!target.closest('.install-selector-dropdown')){close();}});document.addEventListener('keydown',(event)=>{if(event.key==='Escape'){close();}});sync();})();`;
 ---
 
-<section class="hero-install-selector" id={rootId}>
-  <div class="hero-install-controls">
-    <label class="hero-install-field">
-      <span class="hero-install-label">{labels.adapter}</span>
-      <span class="hero-install-select-wrap">
-        <select class="hero-install-select" data-hero-install="adapter" value={defaultAdapter}>
-          {
-            adapters.map((adapter) => (
-              <option value={adapter.id}>{adapter.label}</option>
-            ))
-          }
-        </select>
-        <Icon className="hero-install-caret" name="triangle-down" />
-      </span>
-    </label>
-    <label class="hero-install-field">
-      <span class="hero-install-label">{labels.manager}</span>
-      <span class="hero-install-select-wrap">
-        <select class="hero-install-select" data-hero-install="manager" value={defaultManager}>
-          <option value="npm">npm</option>
-          <option value="pnpm">pnpm</option>
-          <option value="yarn">yarn</option>
-          <option value="bun">bun</option>
-        </select>
-        <Icon className="hero-install-caret" name="triangle-down" />
-      </span>
-    </label>
+<section class="install-selector hero-install-selector" id={rootId}>
+  <div class="install-selector-controls hero-install-controls">
+    <div class="install-selector-group">
+      <div class="install-selector-field install-selector-dropdown">
+        <span class="install-selector-label">{labels.adapter}</span>
+      <button
+        aria-expanded="false"
+        class="nav-button nav-button-utility dropdown-trigger install-selector-trigger"
+        data-hero-install-toggle="adapter"
+        type="button"
+      >
+        <span data-hero-install-label="adapter">React</span>
+        <Icon className="button-icon locale-caret" name="triangle-down" />
+      </button>
+      <div class="dropdown-menu install-selector-menu" data-hero-install-menu="adapter" hidden>
+        {
+          adapters.map((adapter) => (
+            <button
+              aria-current={adapter.id === defaultAdapter ? "true" : "false"}
+              class="dropdown-item install-selector-item"
+              data-hero-install-option-group="adapter"
+              data-hero-install-option-value={adapter.id}
+              type="button"
+            >
+              {adapter.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    </div>
+    <div class="install-selector-group">
+      <div class="install-selector-field install-selector-dropdown">
+        <span class="install-selector-label">{labels.manager}</span>
+      <button
+        aria-expanded="false"
+        class="nav-button nav-button-utility dropdown-trigger install-selector-trigger"
+        data-hero-install-toggle="manager"
+        type="button"
+      >
+        <span data-hero-install-label="manager">npm</span>
+        <Icon className="button-icon locale-caret" name="triangle-down" />
+      </button>
+      <div class="dropdown-menu install-selector-menu" data-hero-install-menu="manager" hidden>
+        {
+          managers.map((manager) => (
+            <button
+              aria-current={manager === defaultManager ? "true" : "false"}
+              class="dropdown-item install-selector-item"
+              data-hero-install-option-group="manager"
+              data-hero-install-option-value={manager}
+              type="button"
+            >
+              {manager}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    </div>
   </div>
-  <div class="hero-terminal">
-    <div class="hero-terminal-bar">
-      <span>{labels.terminal}</span>
-      <span>cmd-kit</span>
+
+  <div class="code-block docs-code-block install-code-block hero-install-code">
+    <div class="docs-code-toolbar" aria-hidden="true">
+      <div class="docs-code-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span class="docs-code-label">{labels.terminal}</span>
     </div>
     <pre class="install-code-pre"><code data-hero-install="code" set:html={formatInstallCommand(adapters[0].packages.npm)}></code></pre>
   </div>

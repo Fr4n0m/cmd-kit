@@ -117,6 +117,15 @@ export const headerStyle: CSSProperties = {
   alignItems: "start"
 };
 
+export const breadcrumbsStyle: CSSProperties = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "0.35rem",
+  marginBottom: "0.45rem",
+  color: "#94a3b8",
+  fontSize: "0.78rem"
+};
+
 export const headerActionsStyle: CSSProperties = {
   display: "flex",
   gap: "0.5rem"

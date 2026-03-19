@@ -71,6 +71,10 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   const activeTitle = computed(
     () => navigationStack.value.at(-1)?.title ?? resolvedTitle.value
   );
+  const breadcrumbs = computed(() => [
+    resolvedTitle.value,
+    ...navigationStack.value.map((entry) => entry.title)
+  ]);
   const rootResolvedConfig = computed(() =>
     createResolvedConfig({
       items: rootItems.value,
@@ -319,6 +323,7 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   return {
     activeIndex,
     activeTitle,
+    breadcrumbs,
     canGoBack,
     flatItems,
     isLoading,

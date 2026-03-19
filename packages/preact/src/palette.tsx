@@ -41,6 +41,7 @@ export function CommandPalette({
   const {
     activeIndex,
     activeTitle,
+    breadcrumbs,
     canGoBack,
     flatItems,
     isLoading,
@@ -72,6 +73,7 @@ export function CommandPalette({
   usePaletteInputFocus(resolvedOpen, inputRef);
   const renderContext: CommandPaletteRenderContext = {
     activeTitle,
+    breadcrumbs,
     canGoBack,
     close: () => setOpenState(false),
     goBack,
@@ -98,6 +100,7 @@ export function CommandPalette({
       >
         <PaletteHeader
           activeTitle={activeTitle}
+          breadcrumbs={breadcrumbs}
           canGoBack={canGoBack}
           captionId={captionId}
           classNames={classNames}
