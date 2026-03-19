@@ -32,18 +32,15 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --external react,react-dom,@cmd-kit/react",
+    "build": "tsup src/index.ts --format esm,cjs --dts --external @cmd-kit/core",
     "lint": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
-    "typecheck": "npm run build --workspace @cmd-kit/core && npm run build --workspace @cmd-kit/react && tsc -p tsconfig.json --noEmit"
+    "typecheck": "npm run build --workspace @cmd-kit/core && tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@cmd-kit/react": "^0.1.0"
+    "@cmd-kit/core": "^0.1.0"
   },
   "peerDependencies": {
-    "@astrojs/react": "^4.4.1",
-    "astro": "^5.5.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "astro": "^5.5.2"
   }
 }

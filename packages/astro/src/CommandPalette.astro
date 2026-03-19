@@ -1,10 +1,692 @@
 ---
-import { CommandPalette as ReactCommandPalette } from "@cmd-kit/react";
-import type { CommandPaletteProps } from "@cmd-kit/react";
+import type { CommandPaletteProps } from "./types";
 
-type Props = CommandPaletteProps;
-
-const props = Astro.props as Props;
+const props = Astro.props as CommandPaletteProps;
+const rootId = `cmdkit-astro-${Math.random().toString(36).slice(2, 10)}`;
+const payload = JSON.stringify({
+  className: props.className ?? "",
+  classNames: props.classNames ?? {},
+  defaultOpen: props.defaultOpen ?? false,
+  items: props.items,
+  messages: props.messages,
+  open: props.open,
+  recents: props.recents ?? false,
+  sections: props.sections,
+  shortcut: props.shortcut ?? "mod+k",
+  source: props.source,
+  theme: props.theme,
+  title: props.title ?? "Command menu"
+});
 ---
 
-<ReactCommandPalette client:load {...props} />
+<div class="cmdkit-astro-root" id={rootId}>
+  <div class="cmdkit-astro-overlay" data-slot="overlay" hidden>
+    <div class="cmdkit-astro-dialog" data-slot="dialog" role="dialog" aria-modal="true">
+      <div class="cmdkit-astro-header" data-slot="header">
+        <div>
+          <p class="cmdkit-astro-breadcrumbs" data-slot="breadcrumbs"></p>
+          <p class="cmdkit-astro-title" data-slot="title"></p>
+          <p class="cmdkit-astro-caption" data-slot="caption"></p>
+        </div>
+        <div class="cmdkit-astro-header-actions" data-slot="headerActions">
+          <button class="cmdkit-astro-close cmdkit-astro-back" data-slot="backButton" type="button">←</button>
+          <button class="cmdkit-astro-close" data-slot="closeButton" type="button">✕</button>
+        </div>
+      </div>
+      <input class="cmdkit-astro-input" data-slot="input" type="text" />
+      <div class="cmdkit-astro-list" data-slot="list"></div>
+    </div>
+  </div>
+</div>
+
+<script is:inline type="application/json" id={`${rootId}-payload`} set:html={payload}></script>
+<script type="module">
+  import {
+    createCommandSnapshot,
+    createResolvedConfig,
+    executeCommand,
+    recordRecentCommand,
+    resolveRecentCommands
+  } from "@cmd-kit/core";
+
+  const root = document.getElementById({JSON.stringify(rootId)});
+  const payloadNode = document.getElementById({JSON.stringify(`${rootId}-payload`)});
+
+  if (!root || !payloadNode?.textContent) {
+    throw new Error("Cmd+kit Astro component initialization failed.");
+  }
+
+  const props = JSON.parse(payloadNode.textContent);
+  const classNames = props.classNames ?? {};
+  const recents = props.recents ?? false;
+
+  const overlay = root.querySelector("[data-slot='overlay']");
+  const dialog = root.querySelector("[data-slot='dialog']");
+  const header = root.querySelector("[data-slot='header']");
+  const breadcrumbs = root.querySelector("[data-slot='breadcrumbs']");
+  const title = root.querySelector("[data-slot='title']");
+  const caption = root.querySelector("[data-slot='caption']");
+  const headerActions = root.querySelector("[data-slot='headerActions']");
+  const closeButton = root.querySelector("[data-slot='closeButton']");
+  const backButton = root.querySelector("[data-slot='backButton']");
+  const input = root.querySelector("[data-slot='input']");
+  const list = root.querySelector("[data-slot='list']");
+
+  const previousFocus = { current: null };
+  let query = "";
+  let activeIndex = 0;
+  let open = props.open ?? props.defaultOpen ?? false;
+  let navigationStack = [];
+  let recentRecords = [];
+
+  const sourcePayload =
+    props.source && typeof props.source === "object"
+      ? props.source
+      : undefined;
+
+  const rootItems = sourcePayload?.items ?? props.items;
+  const rootSections = sourcePayload?.sections ?? props.sections;
+
+  const rootResolved = createResolvedConfig({
+    items: rootItems,
+    sections: rootSections,
+    messages: props.messages,
+    shortcut: props.shortcut,
+    theme: props.theme
+  });
+
+  const applyClass = (element, slot, baseClass) => {
+    if (!element) return;
+    const slotClass = classNames?.[slot];
+    element.className = slotClass ? `${baseClass} ${slotClass}` : baseClass;
+  };
+
+  applyClass(overlay, "overlay", "cmdkit-astro-overlay");
+  applyClass(dialog, "dialog", `cmdkit-astro-dialog${props.className ? ` ${props.className}` : ""}`);
+  applyClass(header, "header", "cmdkit-astro-header");
+  applyClass(breadcrumbs, "breadcrumbs", "cmdkit-astro-breadcrumbs");
+  applyClass(title, "title", "cmdkit-astro-title");
+  applyClass(caption, "caption", "cmdkit-astro-caption");
+  applyClass(headerActions, "headerActions", "cmdkit-astro-header-actions");
+  applyClass(closeButton, "closeButton", "cmdkit-astro-close");
+  applyClass(backButton, "backButton", "cmdkit-astro-close cmdkit-astro-back");
+  applyClass(input, "input", "cmdkit-astro-input");
+  applyClass(list, "list", "cmdkit-astro-list");
+
+  const isTypingTarget = (target) => {
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+    const tagName = target.tagName.toLowerCase();
+    return (
+      tagName === "input" ||
+      tagName === "textarea" ||
+      target.isContentEditable ||
+      target.getAttribute("role") === "textbox"
+    );
+  };
+
+  const matchesShortcut = (event, shortcut) => {
+    const normalizedShortcut = String(shortcut ?? "").trim();
+
+    if (!normalizedShortcut) {
+      return false;
+    }
+
+    const tokens = normalizedShortcut
+      .toLowerCase()
+      .split("+")
+      .map((token) => token.trim());
+    const key = tokens.at(-1);
+
+    if (!key || event.key.toLowerCase() !== key) {
+      return false;
+    }
+
+    const expectsMod = tokens.includes("mod");
+    const expectsCtrl = tokens.includes("ctrl");
+    const expectsShift = tokens.includes("shift");
+    const expectsAlt = tokens.includes("alt");
+    const isMac = navigator.userAgent.includes("Mac");
+    const modPressed = isMac ? event.metaKey : event.ctrlKey;
+
+    return (
+      (!expectsMod || modPressed) &&
+      (!expectsCtrl || event.ctrlKey) &&
+      (!expectsShift || event.shiftKey) &&
+      (!expectsAlt || event.altKey)
+    );
+  };
+
+  const toSections = (items) => {
+    if (!items?.length) {
+      return undefined;
+    }
+
+    const groupedItems = new Map();
+
+    for (const item of items) {
+      const sectionTitle = item.section ?? "Commands";
+      const current = groupedItems.get(sectionTitle) ?? [];
+      current.push(item);
+      groupedItems.set(sectionTitle, current);
+    }
+
+    return Array.from(groupedItems.entries()).map(([sectionTitle, sectionItems]) => ({
+      id: String(sectionTitle).toLowerCase().replace(/\s+/g, "-"),
+      title: sectionTitle,
+      items: sectionItems
+    }));
+  };
+
+  const withRecentSection = (sections, recentItems, recentsConfig, items) => {
+    if (!recentItems.length || !recentsConfig) {
+      return sections ?? toSections(items);
+    }
+
+    const baseSections = sections ?? toSections(items);
+
+    if (!baseSections?.length) {
+      return undefined;
+    }
+
+    return [
+      {
+        id: "recent",
+        title:
+          typeof recentsConfig === "object" && recentsConfig.sectionTitle
+            ? recentsConfig.sectionTitle
+            : "Recent",
+        items: recentItems.map((item) => ({
+          ...item,
+          section: undefined
+        }))
+      },
+      ...baseSections
+    ];
+  };
+
+  const findItemById = (items, id) => items.find((item) => item.id === id);
+
+  const buildRuntime = () => {
+    const activeSections = navigationStack.at(-1)?.sections ?? rootSections;
+    const activeTitle = navigationStack.at(-1)?.title ?? props.title;
+    const recentItems = recents
+      ? resolveRecentCommands(rootResolved.items, recentRecords)
+      : [];
+
+    const resolved = createResolvedConfig({
+      items: navigationStack.length ? undefined : rootItems,
+      sections: withRecentSection(activeSections, recentItems, recents, rootItems),
+      messages: props.messages,
+      shortcut: props.shortcut,
+      theme: props.theme
+    });
+
+    const snapshot = createCommandSnapshot(resolved, query);
+    const flatItems = snapshot.items.filter((item) => !item.disabled);
+
+    if (activeIndex >= flatItems.length) {
+      activeIndex = 0;
+    }
+
+    return {
+      activeTitle,
+      breadcrumbs: [props.title, ...navigationStack.map((entry) => entry.title)],
+      canGoBack: navigationStack.length > 0,
+      flatItems,
+      messages: resolved.messages,
+      snapshot,
+      theme: resolved.theme
+    };
+  };
+
+  const updateTheme = (theme) => {
+    if (!(dialog instanceof HTMLElement) || !(overlay instanceof HTMLElement)) {
+      return;
+    }
+
+    dialog.style.borderRadius = theme.radius;
+    dialog.style.border = `1px solid ${theme.borderColor}`;
+    dialog.style.background = theme.backgroundColor;
+    dialog.style.color = theme.textColor;
+    dialog.style.boxShadow = theme.shadow;
+    overlay.style.background = theme.overlayColor;
+  };
+
+  const renderList = (runtime) => {
+    if (!(list instanceof HTMLElement)) {
+      return;
+    }
+
+    if (!runtime.flatItems.length) {
+      const emptyStateClass = classNames?.emptyState
+        ? `cmdkit-astro-empty ${classNames.emptyState}`
+        : "cmdkit-astro-empty";
+      list.innerHTML = `<div class="${emptyStateClass}">${runtime.messages.noResults}</div>`;
+      return;
+    }
+
+    let itemIndex = -1;
+    const sectionsHtml = runtime.snapshot.groups
+      .map((group) => {
+        const sectionClass = classNames?.section
+          ? `cmdkit-astro-section ${classNames.section}`
+          : "cmdkit-astro-section";
+        const sectionTitleClass = classNames?.sectionTitle
+          ? `cmdkit-astro-section-title ${classNames.sectionTitle}`
+          : "cmdkit-astro-section-title";
+        const sectionItemsClass = classNames?.sectionItems
+          ? `cmdkit-astro-section-items ${classNames.sectionItems}`
+          : "cmdkit-astro-section-items";
+
+        const itemsHtml = group.items
+          .map((item) => {
+            const isDisabled = Boolean(item.disabled);
+            if (!isDisabled) {
+              itemIndex += 1;
+            }
+
+            const isActive = !isDisabled && itemIndex === activeIndex;
+            const itemClass = classNames?.item
+              ? `cmdkit-astro-item ${classNames.item}`
+              : "cmdkit-astro-item";
+            const shortcut = item.shortcut ? `<span class="cmdkit-astro-shortcut">${item.shortcut}</span>` : "";
+            const subtitle = item.subtitle ? `<span class="cmdkit-astro-subtitle">${item.subtitle}</span>` : "";
+
+            return `<button
+              aria-selected="${isActive ? "true" : "false"}"
+              class="${itemClass}"
+              data-item-id="${item.id}"
+              role="option"
+              type="button"
+              ${isDisabled ? "disabled" : ""}
+            >
+              <span>
+                <span class="cmdkit-astro-item-title">${item.title}</span>
+                ${subtitle}
+              </span>
+              ${shortcut}
+            </button>`;
+          })
+          .join("");
+
+        return `<section class="${sectionClass}">
+          <p class="${sectionTitleClass}">${group.title}</p>
+          <div class="${sectionItemsClass}">${itemsHtml}</div>
+        </section>`;
+      })
+      .join("");
+
+    list.innerHTML = sectionsHtml;
+  };
+
+  const render = () => {
+    const runtime = buildRuntime();
+
+    if (!(overlay instanceof HTMLElement) || !(input instanceof HTMLInputElement)) {
+      return;
+    }
+
+    overlay.hidden = !open;
+    if (!open) {
+      return;
+    }
+
+    updateTheme(runtime.theme);
+    input.placeholder = runtime.messages.searchPlaceholder;
+    input.value = query;
+
+    if (title instanceof HTMLElement) {
+      title.textContent = runtime.activeTitle;
+    }
+
+    if (caption instanceof HTMLElement) {
+      caption.textContent = runtime.canGoBack
+        ? runtime.breadcrumbs.join(" / ")
+        : `Press ${props.shortcut} to toggle.`;
+    }
+
+    if (breadcrumbs instanceof HTMLElement) {
+      breadcrumbs.textContent = runtime.canGoBack
+        ? runtime.breadcrumbs.join(" / ")
+        : "";
+      breadcrumbs.hidden = !runtime.canGoBack;
+    }
+
+    if (backButton instanceof HTMLElement) {
+      backButton.hidden = !runtime.canGoBack;
+    }
+
+    if (closeButton instanceof HTMLElement) {
+      closeButton.setAttribute("aria-label", runtime.messages.closeLabel);
+    }
+
+    renderList(runtime);
+  };
+
+  const setOpenState = (nextOpen) => {
+    if (nextOpen && !open) {
+      previousFocus.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+    }
+
+    open = nextOpen;
+
+    if (!open) {
+      query = "";
+      activeIndex = 0;
+      navigationStack = [];
+      setTimeout(() => {
+        previousFocus.current?.focus();
+      }, 0);
+    }
+
+    render();
+  };
+
+  const runItem = (item) => {
+    const result = executeCommand(item);
+
+    if (result.type === "navigate") {
+      navigationStack = [...navigationStack, { sections: result.sections, title: result.title }];
+      query = "";
+      activeIndex = 0;
+      render();
+      return;
+    }
+
+    if (!item || result.type === "noop") {
+      return;
+    }
+
+    if (recents) {
+      recentRecords = recordRecentCommand({
+        current: recentRecords,
+        itemId: item.id,
+        limit: typeof recents === "object" ? recents.limit : undefined
+      });
+    }
+
+    if (result.type === "href") {
+      window.location.assign(result.href);
+      setOpenState(false);
+      return;
+    }
+
+    setOpenState(false);
+  };
+
+  const goBack = () => {
+    navigationStack = navigationStack.slice(0, -1);
+    query = "";
+    activeIndex = 0;
+    render();
+  };
+
+  const findMatchingShortcutItem = (items, event) =>
+    items.find((item) => !item.disabled && item.shortcut && matchesShortcut(event, item.shortcut));
+
+  window.addEventListener("keydown", (event) => {
+    if (isTypingTarget(event.target)) {
+      return;
+    }
+
+    const runtime = buildRuntime();
+    const shortcutItem = findMatchingShortcutItem(open ? runtime.snapshot.items : rootResolved.items, event);
+
+    if (shortcutItem) {
+      event.preventDefault();
+      if (!open) {
+        setOpenState(true);
+      }
+      runItem(shortcutItem);
+      return;
+    }
+
+    if (!matchesShortcut(event, props.shortcut)) {
+      return;
+    }
+
+    event.preventDefault();
+    setOpenState(!open);
+  });
+
+  if (overlay instanceof HTMLElement) {
+    overlay.addEventListener("mousedown", (event) => {
+      if (event.target === overlay) {
+        setOpenState(false);
+      }
+    });
+  }
+
+  closeButton?.addEventListener("click", () => setOpenState(false));
+  backButton?.addEventListener("click", goBack);
+
+  input?.addEventListener("input", (event) => {
+    query = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value : "";
+    activeIndex = 0;
+    render();
+  });
+
+  input?.addEventListener("keydown", (event) => {
+    const runtime = buildRuntime();
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      if (runtime.canGoBack) {
+        goBack();
+      } else {
+        setOpenState(false);
+      }
+      return;
+    }
+
+    if (event.key === "Backspace" && !query && runtime.canGoBack) {
+      event.preventDefault();
+      goBack();
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (runtime.flatItems.length) {
+        activeIndex = (activeIndex + 1) % runtime.flatItems.length;
+        render();
+      }
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (runtime.flatItems.length) {
+        activeIndex = (activeIndex - 1 + runtime.flatItems.length) % runtime.flatItems.length;
+        render();
+      }
+      return;
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      runItem(runtime.flatItems[activeIndex]);
+    }
+  });
+
+  list?.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target.closest("[data-item-id]") : null;
+    const itemId = target?.getAttribute("data-item-id");
+    const runtime = buildRuntime();
+    const item = itemId ? findItemById(runtime.snapshot.items, itemId) : undefined;
+
+    runItem(item);
+  });
+
+  list?.addEventListener("mousemove", (event) => {
+    const target = event.target instanceof Element ? event.target.closest("[data-item-id]") : null;
+    const itemId = target?.getAttribute("data-item-id");
+
+    if (!itemId) {
+      return;
+    }
+
+    const runtime = buildRuntime();
+    const index = runtime.flatItems.findIndex((item) => item.id === itemId);
+
+    if (index !== -1 && index !== activeIndex) {
+      activeIndex = index;
+      render();
+    }
+  });
+
+  render();
+</script>
+
+<style is:global>
+  .cmdkit-astro-overlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    z-index: 9999;
+    backdrop-filter: blur(14px);
+  }
+
+  .cmdkit-astro-dialog {
+    width: min(680px, calc(100vw - 2rem));
+    max-height: min(720px, calc(100vh - 2rem));
+    overflow: hidden;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cmdkit-astro-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .cmdkit-astro-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0 0 0.45rem;
+    color: #94a3b8;
+    font-size: 0.78rem;
+  }
+
+  .cmdkit-astro-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .cmdkit-astro-caption {
+    margin: 0.35rem 0 0;
+    color: #94a3b8;
+    font-size: 0.92rem;
+  }
+
+  .cmdkit-astro-header-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .cmdkit-astro-close {
+    border-radius: 999px;
+    padding: 0.4rem 0.7rem;
+    background: transparent;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .cmdkit-astro-input {
+    width: 100%;
+    border-radius: 18px;
+    padding: 1rem 1.1rem;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .cmdkit-astro-list {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cmdkit-astro-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .cmdkit-astro-section-title {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .cmdkit-astro-section-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .cmdkit-astro-item {
+    width: 100%;
+    border: none;
+    border-radius: 18px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    background: transparent;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .cmdkit-astro-item[aria-selected="true"] {
+    background: rgba(59, 130, 246, 0.15);
+  }
+
+  .cmdkit-astro-item[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .cmdkit-astro-item-title {
+    display: block;
+    font-weight: 600;
+  }
+
+  .cmdkit-astro-subtitle {
+    display: block;
+    font-size: 0.88rem;
+    color: #94a3b8;
+    margin-top: 0.15rem;
+  }
+
+  .cmdkit-astro-shortcut {
+    color: #94a3b8;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .cmdkit-astro-empty {
+    border-radius: 18px;
+    border: 1px dashed currentColor;
+    color: #94a3b8;
+    text-align: center;
+    padding: 2rem;
+  }
+</style>

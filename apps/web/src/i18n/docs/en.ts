@@ -43,7 +43,7 @@ export const docsEn: Record<DocSlug, DocPageData> = {"getting-started": {
   }
 ];` }] },
       { id: "first-integration-checklist", label: "First integration checklist", blocks: [{ type: "list", ordered: true, items: ["Choose the package that matches your UI runtime.", "Install it with your package manager together with the peer dependencies it needs.", "Start with one or two root sections and a handful of items.", "Make sure links, callbacks, and nested sections behave correctly before styling heavily.", 'Then move to <a href="/docs/customization">Customization</a> for icons, styles, messages, and async data.'] }] },
-      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Which package should I install if my app mixes multiple frameworks?</strong> Install the adapter used by the UI tree that will render the palette. Use <code>@cmd-kit/core</code> only if you are building your own UI layer.", "<strong>Do I need to install peer dependencies manually?</strong> Yes. Install the adapter package together with its required peers (for example React + React DOM, Vue, Preact, or Astro + React integration).", "<strong>Can I start with static sections and move to async data later?</strong> Yes. You can begin with <code>sections</code> or <code>items</code> and later migrate to <code>source</code> without changing the command model.", "<strong>Is Cmd+kit suitable for production apps?</strong> Yes, as long as you validate your command structure, keyboard flow, and app-specific behavior in your own environment before shipping.", "<strong>When should I move from an adapter to Core?</strong> Move to Core when you need complete control over rendering and interaction details that exceed the packaged component surface."] }] }
+      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Which package should I install if my app mixes multiple frameworks?</strong> Install the adapter used by the UI tree that will render the palette. Use <code>@cmd-kit/core</code> only if you are building your own UI layer.", "<strong>Do I need to install peer dependencies manually?</strong> Yes. Install the adapter package together with the runtime your project already uses (React, Vue, Preact, or Astro).", "<strong>Can I start with static sections and move to async data later?</strong> Yes. You can begin with <code>sections</code> or <code>items</code> and later migrate to <code>source</code> without changing the command model.", "<strong>Is Cmd+kit suitable for production apps?</strong> Yes, as long as you validate your command structure, keyboard flow, and app-specific behavior in your own environment before shipping.", "<strong>When should I move from an adapter to Core?</strong> Move to Core when you need complete control over rendering and interaction details that exceed the packaged component surface."] }] }
     ]
   },
   react: {
@@ -203,10 +203,10 @@ export function Example() {
   },
   astro: {
     slug: "astro", navLabel: "Astro", eyebrow: "Astro", heading: "Astro Integration", title: "Cmd+kit | Astro",
-    description: "Install the Astro package, mount your first palette in an island, and understand when to stay on the Astro package versus moving to a custom island.",
-    intro: ["<code>@cmd-kit/astro</code> is the Astro package for Cmd+kit. It gives you an Astro-facing entry point for the packaged command palette, while still keeping the same command model and customization surface used across the other adapters."],
+    description: "Install the Astro package and mount your first palette in Astro without React dependencies.",
+    intro: ["<code>@cmd-kit/astro</code> is the Astro package for Cmd+kit. It renders the default command palette directly in Astro while keeping the same command model and customization surface used across adapters."],
     sections: [
-      { id: "when-to-use-the-astro-package", label: "When to use the Astro package", blocks: [{ type: "list", items: ["Use <code>@cmd-kit/astro</code> when Astro owns the page shell and you want the quickest packaged setup.", "Stay on the Astro package if your palette can be configured with serializable props such as sections, messages, theme, and recent-command settings.", "Move to a custom React, Vue, or Preact island only when you need advanced render callbacks, app-local hooks, or framework-specific composition.", "Use <code>@cmd-kit/core</code> if you want to build the entire UI layer yourself."] }] },
+      { id: "when-to-use-the-astro-package", label: "When to use the Astro package", blocks: [{ type: "list", items: ["Use <code>@cmd-kit/astro</code> when Astro owns the page shell and you want the quickest packaged setup without React dependencies.", "Stay on the Astro package if your palette can be configured with serializable props such as sections, messages, theme, and recent-command settings.", "Move to <code>@cmd-kit/core</code> only when you need full custom rendering beyond the packaged Astro component.", "Use another framework adapter only if your product already uses that framework for interactive UI."] }] },
       { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "astro", showAdapter: false, showLink: false }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "astro", label: "astro", code: `---
 import CommandPalette from "@cmd-kit/astro/component";
@@ -223,8 +223,8 @@ const sections = [
 ---
 
 <CommandPalette sections={sections} title="Project commands" />` }] },
-      { id: "astro-react-integration", label: "Enable the React integration in Astro", blocks: [{ type: "code", lang: "bash", label: "bash", code: `npx astro add react` }, { type: "paragraph", html: "The Astro package uses Astro islands plus React under the hood, so your project needs the React integration enabled." }] },
-      { id: "customization", label: "Customization", blocks: [{ type: "paragraph", html: "The customization surface is the same one you already use in the other adapters: <code>sections</code>, <code>messages</code>, <code>theme</code>, and recent-command settings. If you need custom item layouts with your own icon components, build a small island component in your project and pass the render logic there." }, { type: "code", lang: "astro", label: "astro", code: `---
+      { id: "astro-runtime", label: "Runtime requirements", blocks: [{ type: "paragraph", html: "No React integration is required. Install <code>@cmd-kit/astro</code> in your Astro project and use the component directly." }] },
+      { id: "customization", label: "Customization", blocks: [{ type: "paragraph", html: "The customization surface is the same one you already use in other adapters: <code>sections</code>, <code>messages</code>, <code>theme</code>, and recent-command settings." }, { type: "code", lang: "astro", label: "astro", code: `---
 import CommandPalette from "@cmd-kit/astro/component";
 
 const sections = [
@@ -251,12 +251,8 @@ const sections = [
   }}
   title="Project commands"
 />` }] },
-      { id: "advanced-island", label: "Advanced island pattern", blocks: [{ type: "paragraph", html: "When you need callbacks, framework hooks, or fully custom row rendering, create a framework island in your app and use the relevant adapter inside it. Astro stays as the shell; the island owns the advanced behavior." }, { type: "code", lang: "astro", label: "astro", code: `---
-import ProjectPaletteIsland from "../components/ProjectPaletteIsland.tsx";
----
-
-<ProjectPaletteIsland client:load />` }] },
-      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Do I need both <code>@cmd-kit/astro</code> and React integration?</strong> Yes. The Astro package uses an interactive island under the hood, so React integration is required.", "<strong>Why does the package export <code>/component</code>?</strong> Astro consumes the packaged component through <code>@cmd-kit/astro/component</code> as the island entrypoint.", "<strong>Can I pass functions as props from <code>.astro</code> files?</strong> Not reliably. Keep Astro props serializable and move callback-driven behavior into a framework island component.", "<strong>When should I move to a custom island?</strong> Move when you need framework hooks, render callbacks, or app-local composition not expressible via serializable props.", "<strong>Does Astro limit theme or messages customization?</strong> No. You can still configure <code>theme</code>, <code>messages</code>, sections, and recents from Astro props."] }] }
+      { id: "advanced-custom-ui", label: "When to move to Core", blocks: [{ type: "paragraph", html: "When you need callback-driven commands or a fully custom item renderer, move to <code>@cmd-kit/core</code> and implement your own UI layer. Keep <code>@cmd-kit/astro</code> for the packaged default experience." }] },
+      { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Do I need React to use <code>@cmd-kit/astro</code>?</strong> No. The Astro package no longer depends on React.", "<strong>Why does the package export <code>/component</code>?</strong> Astro consumes the packaged component through <code>@cmd-kit/astro/component</code>.", "<strong>Can I pass callbacks from <code>.astro</code> files?</strong> Keep props serializable in Astro. For callback-driven behavior, use <code>@cmd-kit/core</code> with a custom UI.", "<strong>When should I move to Core?</strong> Move when you need behavior or rendering beyond the packaged Astro component surface.", "<strong>Does Astro limit theme or messages customization?</strong> No. You can still configure <code>theme</code>, <code>messages</code>, sections, and recents from Astro props."] }] }
     ]
   },
   core: {
