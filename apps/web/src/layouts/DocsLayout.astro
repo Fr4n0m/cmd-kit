@@ -69,6 +69,9 @@ const copy = layoutCopy[locale];
       const linkSelector = "[data-docs-section-link]";
       const links = Array.from(document.querySelectorAll(linkSelector));
       const headings = Array.from(document.querySelectorAll(headingSelector));
+      const MANUAL_ACTIVE_LOCK_MS = 700;
+      let manualActiveId = "";
+      let manualActiveLockUntil = 0;
 
       if (!links.length || !headings.length) {
         return;
@@ -93,6 +96,14 @@ const copy = layoutCopy[locale];
 
       const observer = new IntersectionObserver(
         (entries) => {
+          const isManualLockActive =
+            manualActiveId &&
+            window.performance.now() < manualActiveLockUntil;
+
+          if (isManualLockActive) {
+            return;
+          }
+
           const visible = entries
             .filter((entry) => entry.isIntersecting)
             .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
@@ -122,6 +133,9 @@ const copy = layoutCopy[locale];
         link.addEventListener("click", () => {
           const id = link.getAttribute("href")?.slice(1);
           if (id) {
+            manualActiveId = id;
+            manualActiveLockUntil =
+              window.performance.now() + MANUAL_ACTIVE_LOCK_MS;
             setActive(id);
           }
         });

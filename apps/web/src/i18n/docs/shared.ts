@@ -22,6 +22,7 @@ export type DocBlock =
   | { type: "paragraph"; html: string }
   | { type: "list"; items: string[]; ordered?: boolean }
   | { type: "code"; code: string; lang: string; label?: string }
+  | { type: "image"; src: string; alt: string; caption?: string }
   | {
       type: "install-selector";
       adapter?: "astro" | "core" | "preact" | "react" | "vue";

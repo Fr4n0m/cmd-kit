@@ -2422,6 +2422,27 @@ html[data-theme="light"] .docs-panel li code {
   color: #eff7fb;
 }
 
+.docs-media {
+  margin: 1rem 0 1.35rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.docs-media img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.docs-media figcaption {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.86rem;
+}
+
 html[data-theme="light"] .docs-panel a {
   color: #0878a8;
 }
