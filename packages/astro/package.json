@@ -1,0 +1,49 @@
+{
+  "name": "@cmd-kit/astro",
+  "version": "0.1.0",
+  "description": "Astro bindings for cmd+kit",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "cmdk",
+    "command-palette",
+    "astro",
+    "palette",
+    "search",
+    "ui"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./component": "./src/CommandPalette.astro"
+  },
+  "files": [
+    "dist",
+    "src/CommandPalette.astro"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react,react-dom,@cmd-kit/react",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "npm run build --workspace @cmd-kit/core && npm run build --workspace @cmd-kit/react && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@cmd-kit/react": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@astrojs/react": "^4.4.1",
+    "astro": "^5.5.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

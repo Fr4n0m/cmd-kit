@@ -1,0 +1,10 @@
+---
+import { CommandPalette as ReactCommandPalette } from "@cmd-kit/react";
+import type { CommandPaletteProps } from "@cmd-kit/react";
+
+type Props = CommandPaletteProps;
+
+const props = Astro.props as Props;
+---
+
+<ReactCommandPalette client:load {...props} />

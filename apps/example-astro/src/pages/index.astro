@@ -1,5 +1,41 @@
 ---
-import { PaletteDemo } from "../components/PaletteDemo";
+import CommandPalette from "@cmd-kit/astro/component";
+
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      {
+        id: "dashboard",
+        title: "Dashboard",
+        subtitle: "Open the project dashboard",
+        href: "/dashboard"
+      }
+    ]
+  },
+  {
+    id: "actions",
+    title: "Actions",
+    items: [
+      {
+        id: "search",
+        title: "Search docs",
+        subtitle: "Jump into the documentation space",
+        children: [
+          {
+            id: "search-scope",
+            title: "Search scope",
+            items: [
+              { id: "guides", title: "Guides" },
+              { id: "api", title: "API" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
 ---
 
 <!doctype html>
@@ -80,7 +116,22 @@ import { PaletteDemo } from "../components/PaletteDemo";
         </p>
       </section>
 
-      <PaletteDemo client:load />
+      <CommandPalette
+        recents={{ limit: 4, sectionTitle: "Recent" }}
+        sections={sections}
+        shortcut="mod+k"
+        theme={{
+          accentColor: "#ff6b35",
+          backgroundColor: "#0f172a",
+          borderColor: "#334155",
+          mutedColor: "rgba(226, 232, 240, 0.72)",
+          overlayColor: "rgba(2, 6, 23, 0.72)",
+          radius: "24px",
+          shadow: "0 32px 120px rgba(0, 0, 0, 0.35)",
+          textColor: "#f8fafc"
+        }}
+        title="Astro example commands"
+      />
     </main>
   </body>
 </html>
