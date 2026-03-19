@@ -1,4 +1,9 @@
 @import "./styles/base.css";
+@import "./styles/topbar.css";
+@import "./styles/buttons-forms.css";
 @import "./styles/hero-and-layout.css";
 @import "./styles/content.css";
+@import "./styles/playground.css";
+@import "./styles/docs.css";
+@import "./styles/legal.css";
 @import "./styles/responsive.css";
