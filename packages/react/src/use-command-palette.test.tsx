@@ -185,4 +185,35 @@ describe("useCommandPalette", () => {
 
     input.remove();
   });
+
+  it("executes item shortcuts and can open nested sections", async () => {
+    const { result } = renderHook(() =>
+      useCommandPalette({
+        items: [
+          {
+            id: "settings",
+            title: "Settings",
+            shortcut: "ctrl+l",
+            children: [
+              {
+                id: "preferences",
+                title: "Preferences",
+                items: [{ id: "theme", title: "Theme" }]
+              }
+            ]
+          }
+        ]
+      })
+    );
+
+    await act(async () => {
+      fireEvent.keyDown(window, { ctrlKey: true, key: "l" });
+    });
+
+    await waitFor(() => {
+      expect(result.current.resolvedOpen).toBe(true);
+      expect(result.current.activeTitle).toBe("Settings");
+      expect(result.current.snapshot.groups[0]?.title).toBe("Preferences");
+    });
+  });
 });

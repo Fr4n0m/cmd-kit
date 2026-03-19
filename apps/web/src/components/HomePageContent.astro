@@ -1,5 +1,7 @@
 ---
 import Icon from "./Icon.astro";
+import { HeroPaletteIsland } from "./HeroPaletteIsland";
+import HeroInstallSelector from "./HeroInstallSelector.astro";
 import type { HomePageCopy } from "../i18n/pages";
 
 interface Props {
@@ -10,6 +12,19 @@ interface Props {
 }
 
 const { content, customizationHref, docsHref, playgroundHref } = Astro.props;
+const localePrefix = docsHref.startsWith("/es/") ? "/es" : "";
+const locale = localePrefix ? "es" : "en";
+const withLocale = (path: string) => `${localePrefix}${path}`;
+const homeHref = localePrefix || "/";
+const docsGettingStartedHref = docsHref;
+const docsReactHref = withLocale("/docs/react");
+const docsVueHref = withLocale("/docs/vue");
+const docsPreactHref = withLocale("/docs/preact");
+const docsAstroHref = withLocale("/docs/astro");
+const docsCoreHref = withLocale("/docs/core");
+const docsPlaygroundHref = withLocale("/docs/playground");
+const legalPrivacyHref = withLocale("/legal/privacy");
+const legalTermsHref = withLocale("/legal/terms");
 ---
 
 <main class="site-shell" id="main-content" tabindex="-1">
@@ -19,11 +34,44 @@ const { content, customizationHref, docsHref, playgroundHref } = Astro.props;
       <p class="hero-kicker">{content.heroKicker}</p>
       <h1>{content.heroHeading}</h1>
       <p>{content.heroBody}</p>
-      <div class="stack-inline hero-stack">
-        <span class="tech-chip"><Icon className="tech-icon" name="core" /> {content.techCore}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="react" /> {content.techReact}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="spark" /> {content.techNestedFlows}</span>
+    </div>
+    <div class="hero-stage">
+      <HeroPaletteIsland
+        customizationHref={customizationHref}
+        docsAstroHref={docsAstroHref}
+        docsCoreHref={docsCoreHref}
+        docsGettingStartedHref={docsGettingStartedHref}
+        docsPlaygroundHref={docsPlaygroundHref}
+        docsPreactHref={docsPreactHref}
+        docsReactHref={docsReactHref}
+        docsVueHref={docsVueHref}
+        homeHref={homeHref}
+        legalPrivacyHref={legalPrivacyHref}
+        legalTermsHref={legalTermsHref}
+        locale={locale}
+        playgroundHref={playgroundHref}
+        recentLabel={content.heroStageRecentLabel}
+        searchPlaceholder={content.heroStageSearchPlaceholder}
+        title={content.heroStageLabel}
+        client:load
+      />
+    </div>
+    <div class="hero-proof">
+      <div class="hero-output-card" aria-label={content.playgroundAriaLabel}>
+        <p class="hero-output-title">{content.heroStackCardTitle}</p>
+        <div class="hero-output-list">
+          <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="css" /> CSS</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="tailwind" /> Tailwind</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="json" /> JSON</span>
+        </div>
       </div>
+      <HeroInstallSelector locale={locale} />
+    </div>
+    <div class="hero-stage-footer">
+      <p class="stage-note">{content.heroStageNote}</p>
       <div class="hero-actions">
         <a class="primary-button" href={playgroundHref}>
           <Icon className="button-icon" name="play" />
@@ -34,124 +82,104 @@ const { content, customizationHref, docsHref, playgroundHref } = Astro.props;
           <span>{content.heroDocsCta}</span>
         </a>
       </div>
-      <div class="hero-proof">
-        <div class="proof-card">
-          <Icon className="proof-icon" name="core" />
-          <span>{content.heroProofCoreLabel}</span>
-          <strong>{content.heroProofCoreBody}</strong>
-        </div>
-        <div class="proof-card">
-          <Icon className="proof-icon" name="react" />
-          <span>{content.heroProofAdapterLabel}</span>
-          <strong>{content.heroProofAdapterBody}</strong>
-        </div>
-      </div>
-    </div>
-    <div class="hero-stage">
-      <div class="hero-stage-card">
-        <div class="stage-toolbar">
-          <span class="stage-pill">{content.heroStageShortcut}</span>
-          <span class="stage-pill stage-pill-muted">{content.heroStageSurface}</span>
-        </div>
-        <div class="stage-command">
-          <div class="stage-command-top">
-            <span class="stage-command-title">{content.heroStageLabel}</span>
-            <span class="stage-command-meta">{content.heroStageSurfaceMuted}</span>
-          </div>
-          <div class="stage-search">{content.heroStageSearchPlaceholder}</div>
-          <div class="stage-section">
-            <span class="stage-section-label">{content.heroStageRecentLabel}</span>
-            <div class="stage-item stage-item-active">
-              <div>
-                <strong>{content.heroStageActiveTitle}</strong>
-                <span>{content.heroStageActiveSubtitle}</span>
-              </div>
-              <em>{content.heroStageActiveShortcut}</em>
-            </div>
-            <div class="stage-item">
-              <div>
-                <strong>{content.heroStageInactiveTitle}</strong>
-                <span>{content.heroStageInactiveSubtitle}</span>
-              </div>
-              <em>{content.heroStageInactiveShortcut}</em>
-            </div>
-          </div>
-        </div>
-        <div class="stage-note">{content.heroStageNote}</div>
-      </div>
-      <div class="hero-metrics">
-        <div class="metric-card">
-          <span>{content.metricSurfaceLabel}</span>
-          <strong>{content.metricSurfaceValue}</strong>
-        </div>
-        <div class="metric-card">
-          <span>{content.metricOutputLabel}</span>
-          <strong>{content.metricOutputValue}</strong>
-        </div>
-      </div>
-      <div class="hero-terminal">
-        <div class="hero-terminal-bar">
-          <span>{content.heroTerminalLabel}</span>
-          <span>{content.heroTerminalTitle}</span>
-        </div>
-        <pre><code>{`npm install @cmd-kit/react\nnpm install @cmd-kit/core\nnpm run build --workspace @cmd-kit/web`}</code></pre>
-      </div>
     </div>
   </section>
 
-  <section class="overview-grid">
-    <article class="overview-card overview-card-large">
-      <p class="eyebrow">{content.overviewLargeEyebrow}</p>
-      <h2>{content.overviewLargeHeading}</h2>
-      <p>{content.overviewLargeBody}</p>
-    </article>
-    <article class="overview-card">
-      <p class="eyebrow">{content.overviewSearchEyebrow}</p>
-      <h2>{content.overviewSearchHeading}</h2>
-      <p>{content.overviewSearchBody}</p>
-    </article>
-    <article class="overview-card">
-      <p class="eyebrow">{content.overviewReactEyebrow}</p>
-      <h2>{content.overviewReactHeading}</h2>
-      <p>{content.overviewReactBody}</p>
-    </article>
+  <section class="content-band content-band-overview">
+    <div class="overview-grid">
+      <article class="overview-card overview-card-large overview-card-primary">
+        <div class="card-topline">
+          <span class="card-icon-wrap">
+            <Icon className="card-icon" name="core" />
+          </span>
+          <p class="card-label">{content.overviewLargeEyebrow}</p>
+        </div>
+        <h2>{content.overviewLargeHeading}</h2>
+        <p>{content.overviewLargeBody}</p>
+        <div class="card-meta-list">
+          <span class="card-meta-pill">
+            <strong>{content.metricSurfaceLabel}:</strong> {content.metricSurfaceValue}
+          </span>
+          <span class="card-meta-pill">
+            <strong>{content.metricOutputLabel}:</strong> {content.metricOutputValue}
+          </span>
+        </div>
+      </article>
+      <article class="overview-card overview-card-search">
+        <div class="card-topline">
+          <span class="card-icon-wrap">
+            <Icon className="card-icon" name="spark" />
+          </span>
+          <p class="card-label">{content.overviewSearchEyebrow}</p>
+        </div>
+        <h2>{content.overviewSearchHeading}</h2>
+        <p>{content.overviewSearchBody}</p>
+      </article>
+      <article class="overview-card overview-card-react">
+        <div class="card-topline">
+          <span class="card-icon-wrap">
+            <Icon className="card-icon" name="react" />
+          </span>
+          <p class="card-label">{content.overviewReactEyebrow}</p>
+        </div>
+        <h2>{content.overviewReactHeading}</h2>
+        <p>{content.overviewReactBody}</p>
+      </article>
+    </div>
   </section>
 
-  <section class="launch-band">
-    <article class="launch-card install-panel">
-      <p class="eyebrow">{content.installEyebrow}</p>
-      <h2>{content.installHeading}</h2>
-      <p>{content.installDescription}</p>
-      {content.installCommands.map((command) => (
-        <pre class="inline-code-block"><code>{command}</code></pre>
-      ))}
-    </article>
-    <article class="launch-card">
-      <p class="eyebrow">{content.docsEyebrow}</p>
-      <h2>{content.docsHeading}</h2>
-      <p>{content.docsDescription}</p>
-      <div class="hero-actions">
-        <a class="primary-button" href={docsHref}>{content.docsCta}</a>
-        <a class="ghost-button" href={customizationHref}>{content.customizationCta}</a>
-      </div>
-    </article>
-    <article class="launch-card playground-callout">
-      <p class="eyebrow">{content.playgroundEyebrow}</p>
-      <h2>{content.playgroundHeading}</h2>
-      <p>{content.playgroundDescription}</p>
-      <div class="tech-strip" aria-label={content.playgroundAriaLabel}>
-        <span class="tech-chip"><Icon className="tech-icon" name="react" /> {content.technologyNames[0]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="vue" /> {content.technologyNames[1]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="preact" /> {content.technologyNames[2]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="astro" /> {content.technologyNames[3]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="vanilla" /> {content.technologyNames[4]}</span>
-      </div>
-      <div class="hero-actions">
-        <a class="primary-button" href={playgroundHref}>
-          <Icon className="button-icon" name="arrow-right" />
-          <span>{content.playgroundCta}</span>
-        </a>
-      </div>
-    </article>
+  <section class="content-band content-band-actions">
+    <div class="launch-band">
+      <article class="launch-card install-panel launch-card-install">
+        <div class="card-topline">
+          <span class="card-icon-wrap">
+            <Icon className="card-icon" name="play" />
+          </span>
+          <p class="card-label">{content.installEyebrow}</p>
+        </div>
+        <h2>{content.installHeading}</h2>
+        <p>{content.installDescription}</p>
+        {content.installCommands.map((command) => (
+          <pre class="inline-code-block"><code>{command}</code></pre>
+        ))}
+      </article>
+      <article class="launch-card launch-card-docs">
+        <div class="card-topline">
+          <span class="card-icon-wrap">
+            <Icon className="card-icon" name="code" />
+          </span>
+          <p class="card-label">{content.docsEyebrow}</p>
+        </div>
+        <h2>{content.docsHeading}</h2>
+        <p>{content.docsDescription}</p>
+        <div class="card-actions">
+          <a class="primary-button" href={docsHref}>{content.docsCta}</a>
+          <a class="ghost-button" href={customizationHref}>{content.customizationCta}</a>
+        </div>
+      </article>
+      <article class="launch-card playground-callout launch-card-playground">
+        <div class="card-topline">
+          <span class="card-icon-wrap">
+            <Icon className="card-icon" name="arrow-right" />
+          </span>
+          <p class="card-label">{content.playgroundEyebrow}</p>
+        </div>
+        <h2>{content.playgroundHeading}</h2>
+        <p>{content.playgroundDescription}</p>
+        <div class="tech-strip" aria-label={content.playgroundAriaLabel}>
+          <span class="tech-chip"><Icon className="tech-icon" name="react" /> {content.technologyNames[0]}</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> {content.technologyNames[1]}</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> {content.technologyNames[2]}</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="astro" /> {content.technologyNames[3]}</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="vanilla" /> {content.technologyNames[4]}</span>
+        </div>
+        <div class="card-actions">
+          <a class="primary-button" href={playgroundHref}>
+            <Icon className="button-icon" name="arrow-right" />
+            <span>{content.playgroundCta}</span>
+          </a>
+        </div>
+      </article>
+    </div>
   </section>
 </main>

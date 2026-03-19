@@ -101,7 +101,13 @@ export function matchesShortcut(
   event: KeyboardEvent,
   shortcut: string
 ): boolean {
-  const tokens = shortcut
+  const normalizedShortcut = shortcut.trim();
+
+  if (!normalizedShortcut) {
+    return false;
+  }
+
+  const tokens = normalizedShortcut
     .toLowerCase()
     .split("+")
     .map((token) => token.trim());
@@ -124,6 +130,19 @@ export function matchesShortcut(
     (!expectsShift || event.shiftKey) &&
     (!expectsAlt || event.altKey)
   );
+}
+
+export function findMatchingShortcutItem(
+  items: CommandItem[],
+  event: KeyboardEvent
+): CommandItem | undefined {
+  return items.find((item) => {
+    if (item.disabled || !item.shortcut?.trim()) {
+      return false;
+    }
+
+    return matchesShortcut(event, item.shortcut);
+  });
 }
 
 export function isTypingTarget(target: EventTarget | null): boolean {

@@ -5,7 +5,11 @@ import { executeCommand } from "./application/commands/execute-command";
 import { loadCommandSource } from "./application/commands/load-command-source";
 import { recordRecentCommand } from "./application/commands/record-recent-command";
 import { resolveRecentCommands } from "./application/commands/resolve-recent-commands";
-import { flattenSections, resolveCommandItems } from "./state";
+import {
+  createCommandSnapshot,
+  flattenSections,
+  resolveCommandItems
+} from "./state";
 
 const items = [
   {
@@ -97,6 +101,37 @@ describe("section normalization", () => {
         section: "Workspace"
       }
     ]);
+  });
+
+  it("includes nested child items in search snapshots only when query is present", () => {
+    const config = {
+      sections: [
+        {
+          id: "docs",
+          title: "Documentation",
+          items: [
+            {
+              id: "docs-root",
+              title: "Docs",
+              children: [
+                {
+                  id: "frameworks",
+                  title: "Frameworks",
+                  items: [{ id: "docs-react", title: "React docs" }]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    expect(createCommandSnapshot(config, "").items.map((item) => item.id)).toEqual([
+      "docs-root"
+    ]);
+    expect(
+      createCommandSnapshot(config, "react").items.map((item) => item.id)
+    ).toContain("docs-react");
   });
 });
 

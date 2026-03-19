@@ -15,6 +15,7 @@ import type { MaybeRefOrGetter, Ref } from "vue";
 
 import {
   isTypingTarget,
+  findMatchingShortcutItem,
   matchesShortcut,
   restoreFocus,
   resolveRecentItems,
@@ -279,10 +280,27 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   }
 
   function handleWindowKeyDown(event: KeyboardEvent) {
-    if (
-      !matchesShortcut(event, resolvedShortcut.value) ||
-      isTypingTarget(event.target)
-    ) {
+    if (isTypingTarget(event.target)) {
+      return;
+    }
+
+    const shortcutItem = findMatchingShortcutItem(
+      resolvedOpen.value ? resolvedConfig.value.items : rootResolvedConfig.value.items,
+      event
+    );
+
+    if (shortcutItem) {
+      event.preventDefault();
+
+      if (!resolvedOpen.value) {
+        setOpenState(true);
+      }
+
+      void runItem(shortcutItem);
+      return;
+    }
+
+    if (!matchesShortcut(event, resolvedShortcut.value)) {
       return;
     }
 

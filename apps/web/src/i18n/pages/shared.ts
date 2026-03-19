@@ -15,6 +15,7 @@ export interface HomePageCopy {
   heroProofAdapterLabel: string;
   heroProofCoreBody: string;
   heroProofCoreLabel: string;
+  heroStackCardTitle: string;
   heroStageActiveShortcut: string;
   heroStageActiveSubtitle: string;
   heroStageActiveTitle: string;

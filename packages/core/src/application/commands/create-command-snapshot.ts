@@ -12,7 +12,13 @@ export function createCommandSnapshot(
   config: CommandKitConfig,
   query = ""
 ): CommandSnapshot {
-  const filteredItems = filterCommandItems(resolveCommandItems(config), query);
+  const normalizedQuery = query.trim();
+  const filteredItems = filterCommandItems(
+    resolveCommandItems(config, {
+      includeNestedChildren: normalizedQuery.length > 0
+    }),
+    normalizedQuery
+  );
 
   return {
     items: filteredItems,

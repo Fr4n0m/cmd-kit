@@ -1,0 +1,148 @@
+---
+import Icon from "./Icon.astro";
+import type { Locale } from "../i18n/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props as Props;
+const rootId = `hero-install-selector-${locale}`;
+const isEs = locale === "es";
+
+const labels = isEs
+  ? {
+      adapter: "Tecnología",
+      manager: "Instalador",
+      terminal: "terminal"
+    }
+  : {
+      adapter: "Technology",
+      manager: "Installer",
+      terminal: "terminal"
+    };
+
+const adapters = [
+  {
+    id: "react",
+    label: "React",
+    packages: {
+      bun: "bun add @cmd-kit/react",
+      npm: "npm install @cmd-kit/react",
+      pnpm: "pnpm add @cmd-kit/react",
+      yarn: "yarn add @cmd-kit/react"
+    }
+  },
+  {
+    id: "vue",
+    label: "Vue",
+    packages: {
+      bun: "bun add @cmd-kit/vue",
+      npm: "npm install @cmd-kit/vue",
+      pnpm: "pnpm add @cmd-kit/vue",
+      yarn: "yarn add @cmd-kit/vue"
+    }
+  },
+  {
+    id: "preact",
+    label: "Preact",
+    packages: {
+      bun: "bun add @cmd-kit/preact",
+      npm: "npm install @cmd-kit/preact",
+      pnpm: "pnpm add @cmd-kit/preact",
+      yarn: "yarn add @cmd-kit/preact"
+    }
+  },
+  {
+    id: "astro",
+    label: "Astro",
+    packages: {
+      bun: "bun add @cmd-kit/astro @astrojs/react react react-dom",
+      npm: "npm install @cmd-kit/astro @astrojs/react react react-dom",
+      pnpm: "pnpm add @cmd-kit/astro @astrojs/react react react-dom",
+      yarn: "yarn add @cmd-kit/astro @astrojs/react react react-dom"
+    }
+  },
+  {
+    id: "core",
+    label: "Core",
+    packages: {
+      bun: "bun add @cmd-kit/core",
+      npm: "npm install @cmd-kit/core",
+      pnpm: "pnpm add @cmd-kit/core",
+      yarn: "yarn add @cmd-kit/core"
+    }
+  }
+] as const;
+
+const defaultAdapter = "react";
+const defaultManager = "npm";
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function formatInstallCommand(command: string) {
+  const parts = command.split(" ");
+
+  if (parts.length < 2) {
+    return `<span class="install-token install-token-manager">${escapeHtml(command)}</span>`;
+  }
+
+  const [manager, action, ...packages] = parts;
+
+  return [
+    `<span class="install-token install-token-manager">${escapeHtml(manager)}</span>`,
+    `<span class="install-token install-token-action">${escapeHtml(action)}</span>`,
+    ...packages.map(
+      (entry) => `<span class="install-token install-token-package">${escapeHtml(entry)}</span>`
+    )
+  ].join(" ");
+}
+
+const heroInstallScript = `(function(){const root=document.getElementById(${JSON.stringify(rootId)});if(!root)return;const adapterSelect=root.querySelector('[data-hero-install=\"adapter\"]');const managerSelect=root.querySelector('[data-hero-install=\"manager\"]');const command=root.querySelector('[data-hero-install=\"code\"]');const packageData=${JSON.stringify(adapters)};const escapeHtml=(value)=>value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('\"','&quot;').replaceAll(\"'\",'&#39;');const formatInstallCommand=(command)=>{const parts=command.split(' ');if(parts.length<2){return '<span class=\"install-token install-token-manager\">'+escapeHtml(command)+'</span>';}const [manager,action,...packages]=parts;return ['<span class=\"install-token install-token-manager\">'+escapeHtml(manager)+'</span>','<span class=\"install-token install-token-action\">'+escapeHtml(action)+'</span>',...packages.map((entry)=>'<span class=\"install-token install-token-package\">'+escapeHtml(entry)+'</span>')].join(' ');};const sync=()=>{if(!(adapterSelect instanceof HTMLSelectElement)||!(managerSelect instanceof HTMLSelectElement)||!(command instanceof HTMLElement))return;const selected=packageData.find((entry)=>entry.id===adapterSelect.value)??packageData[0];const manager=managerSelect.value;command.innerHTML=formatInstallCommand(selected.packages[manager]??selected.packages.npm);};adapterSelect?.addEventListener('change',sync);managerSelect?.addEventListener('change',sync);sync();})();`;
+---
+
+<section class="hero-install-selector" id={rootId}>
+  <div class="hero-install-controls">
+    <label class="hero-install-field">
+      <span class="hero-install-label">{labels.adapter}</span>
+      <span class="hero-install-select-wrap">
+        <select class="hero-install-select" data-hero-install="adapter" value={defaultAdapter}>
+          {
+            adapters.map((adapter) => (
+              <option value={adapter.id}>{adapter.label}</option>
+            ))
+          }
+        </select>
+        <Icon className="hero-install-caret" name="triangle-down" />
+      </span>
+    </label>
+    <label class="hero-install-field">
+      <span class="hero-install-label">{labels.manager}</span>
+      <span class="hero-install-select-wrap">
+        <select class="hero-install-select" data-hero-install="manager" value={defaultManager}>
+          <option value="npm">npm</option>
+          <option value="pnpm">pnpm</option>
+          <option value="yarn">yarn</option>
+          <option value="bun">bun</option>
+        </select>
+        <Icon className="hero-install-caret" name="triangle-down" />
+      </span>
+    </label>
+  </div>
+  <div class="hero-terminal">
+    <div class="hero-terminal-bar">
+      <span>{labels.terminal}</span>
+      <span>cmd-kit</span>
+    </div>
+    <pre class="install-code-pre"><code data-hero-install="code" set:html={formatInstallCommand(adapters[0].packages.npm)}></code></pre>
+  </div>
+</section>
+
+<script is:inline set:html={heroInstallScript} />

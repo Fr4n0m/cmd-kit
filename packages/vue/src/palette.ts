@@ -220,7 +220,7 @@ export const CommandPalette = defineComponent({
                           ),
                           type: "button"
                         },
-                        "Esc"
+                        "×"
                       )
                     ]
                   )

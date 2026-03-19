@@ -94,7 +94,7 @@ export function PaletteHeader({
           style={closeButtonStyle(theme)}
           type="button"
         >
-          Esc
+          ×
         </button>
       </div>
     </div>

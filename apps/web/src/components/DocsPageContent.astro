@@ -10,6 +10,22 @@ interface Props {
 }
 
 const { locale, page } = Astro.props;
+
+function parseFaqItem(item: string) {
+  const match = item.match(/^<strong>(.*?)<\/strong>\s*(.*)$/i);
+
+  if (!match) {
+    return {
+      answer: item,
+      question: item
+    };
+  }
+
+  return {
+    answer: match[2]?.trim() || "",
+    question: match[1]?.trim() || item
+  };
+}
 ---
 
 <p class="eyebrow">{page.eyebrow}</p>
@@ -30,6 +46,25 @@ const { locale, page } = Astro.props;
           }
 
           if (block.type === "list") {
+            if (section.id === "faq") {
+              const faqItems = block.items.map(parseFaqItem);
+
+              return (
+                <div class="docs-faq">
+                  {
+                    faqItems.map((entry) => (
+                      <article class="docs-faq-item">
+                        <p class="docs-faq-question"><span set:html={entry.question}></span></p>
+                        <div class="docs-faq-answer">
+                          <p><span set:html={entry.answer}></span></p>
+                        </div>
+                      </article>
+                    ))
+                  }
+                </div>
+              );
+            }
+
             const ListTag = block.ordered ? "ol" : "ul";
             return (
               <ListTag>
