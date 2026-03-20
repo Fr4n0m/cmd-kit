@@ -164,6 +164,10 @@ describe("useCommandPalette", () => {
     });
 
     expect(result.current.snapshot.groups[0]?.items[0]?.id).toBe("run");
+    const visibleRunItems = result.current.snapshot.groups
+      .flatMap((group) => group.items)
+      .filter((item) => item.id === "run");
+    expect(visibleRunItems).toHaveLength(1);
   });
 
   it("ignores the global shortcut while typing in a text input", async () => {

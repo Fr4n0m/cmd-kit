@@ -1,18 +1,8 @@
 import type { CommandTheme } from "@cmd-kit/core";
 import type { CSSProperties } from "react";
 
-const SQUIRCLE_SHAPE = "superellipse(0.7)";
-
-function withSquircle(styles: CSSProperties): CSSProperties {
-  return {
-    ...styles,
-    ["corner-shape" as unknown as keyof CSSProperties]:
-      SQUIRCLE_SHAPE as unknown as CSSProperties[keyof CSSProperties]
-  } as CSSProperties;
-}
-
 export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
-  return withSquircle({
+  return {
     width: "min(700px, calc(100vw - 4rem))",
     maxHeight: "min(720px, calc(100vh - 2rem))",
     overflow: "hidden",
@@ -21,12 +11,14 @@ export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
     border: `1px solid ${theme.borderColor}`,
     background: theme.backgroundColor,
     color: theme.textColor,
+    fontFamily:
+      'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif',
     boxShadow: theme.shadow,
     padding: "1.6rem",
     display: "flex",
     flexDirection: "column",
     gap: "1.15rem"
-  });
+  };
 }
 
 export function overlayStyle(color: string): CSSProperties {
@@ -72,7 +64,7 @@ export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
 
 export function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     borderRadius: "0.65rem",
     border: `1px solid ${theme.borderColor}`,
     background: light ? "rgba(15, 166, 216, 0.08)" : "rgba(255, 255, 255, 0.03)",
@@ -86,12 +78,12 @@ export function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     fontSize: "0.95rem",
     fontWeight: 600,
     cursor: "pointer"
-  });
+  };
 }
 
 export function inputStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "100%",
     boxSizing: "border-box",
     borderRadius: "18px",
@@ -101,7 +93,7 @@ export function inputStyle(theme: Required<CommandTheme>): CSSProperties {
     padding: "1.06rem 1.22rem",
     fontSize: "1rem",
     outline: "none"
-  });
+  };
 }
 
 export function itemStyle(
@@ -110,7 +102,7 @@ export function itemStyle(
   disabled?: boolean
 ): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "100%",
     boxSizing: "border-box",
     display: "flex",
@@ -131,7 +123,7 @@ export function itemStyle(
     color: disabled ? theme.mutedColor : theme.textColor,
     opacity: disabled ? 0.55 : 1,
     cursor: disabled ? "not-allowed" : "pointer"
-  });
+  };
 }
 
 export function sectionTitleStyle(
@@ -142,18 +134,20 @@ export function sectionTitleStyle(
     color: theme.mutedColor,
     fontSize: "0.78rem",
     textTransform: "uppercase",
-    letterSpacing: "0.08em"
+    letterSpacing: "0.08em",
+    fontFamily:
+      '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
   };
 }
 
 export function emptyStateStyle(theme: Required<CommandTheme>): CSSProperties {
-  return withSquircle({
+  return {
     borderRadius: "18px",
     border: `1px dashed ${theme.borderColor}`,
     color: theme.mutedColor,
     textAlign: "center",
     padding: "2rem"
-  });
+  };
 }
 
 export function iconStyle(
@@ -161,7 +155,7 @@ export function iconStyle(
   active: boolean
 ): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "2rem",
     height: "2rem",
     borderRadius: "0.78rem",
@@ -184,7 +178,7 @@ export function iconStyle(
       : light
         ? "rgba(83, 112, 136, 0.1)"
         : "rgba(180, 205, 221, 0.12)"
-  });
+  };
 }
 
 export const headerStyle: CSSProperties = {
@@ -200,7 +194,9 @@ export const breadcrumbsStyle: CSSProperties = {
   gap: "0.35rem",
   marginBottom: "0.45rem",
   color: "#94a3b8",
-  fontSize: "0.78rem"
+  fontSize: "0.78rem",
+  fontFamily:
+    '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
 };
 
 export const headerActionsStyle: CSSProperties = {
@@ -225,7 +221,9 @@ export const titleRowStyle: CSSProperties = {
 export const captionStyle: CSSProperties = {
   margin: "0.35rem 0 0",
   color: "#94a3b8",
-  fontSize: "0.92rem"
+  fontSize: "0.92rem",
+  fontFamily:
+    'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 export const listStyle: CSSProperties = {
@@ -270,7 +268,9 @@ export const itemSubtitleStyle: CSSProperties = {
 
 export const shortcutStyle: CSSProperties = {
   color: "#94a3b8",
-  fontSize: "0.82rem"
+  fontSize: "0.82rem",
+  fontFamily:
+    '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
 };
 
 function isLightTheme(theme: Required<CommandTheme>): boolean {

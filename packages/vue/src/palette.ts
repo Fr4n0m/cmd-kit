@@ -581,13 +581,8 @@ function renderDefaultTitle({
   );
 }
 
-const SQUIRCLE_SHAPE = "superellipse(0.7)";
 function withSquircle(styles: CSSProperties): CSSProperties {
-  return {
-    ...styles,
-    cornerShape: SQUIRCLE_SHAPE,
-    "corner-shape": SQUIRCLE_SHAPE
-  } as CSSProperties;
+  return styles;
 }
 
 function paletteStyle(theme: Required<CommandTheme>): CSSProperties {

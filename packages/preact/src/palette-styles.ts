@@ -1,18 +1,8 @@
 import type { CommandTheme } from "@cmd-kit/core";
 import type { CSSProperties } from "preact/compat";
 
-const SQUIRCLE_SHAPE = "superellipse(0.7)";
-
-function withSquircle(styles: CSSProperties): CSSProperties {
-  return {
-    ...styles,
-    ["corner-shape" as unknown as keyof CSSProperties]:
-      SQUIRCLE_SHAPE as unknown as CSSProperties[keyof CSSProperties]
-  } as CSSProperties;
-}
-
 export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
-  return withSquircle({
+  return {
     width: "min(680px, calc(100vw - 2rem))",
     maxHeight: "min(720px, calc(100vh - 2rem))",
     overflow: "hidden",
@@ -25,7 +15,7 @@ export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
     display: "flex",
     flexDirection: "column",
     gap: "1rem"
-  });
+  };
 }
 
 export function overlayStyle(color: string): CSSProperties {
@@ -43,7 +33,7 @@ export function overlayStyle(color: string): CSSProperties {
 
 export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     borderRadius: "999px",
     border: light
       ? `1px solid ${theme.borderColor}`
@@ -63,12 +53,12 @@ export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     fontWeight: 700,
     textAlign: "center",
     fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-  });
+  };
 }
 
 export function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     borderRadius: "0.65rem",
     border: `1px solid ${theme.borderColor}`,
     background: light ? "rgba(15, 166, 216, 0.08)" : "rgba(255, 255, 255, 0.03)",
@@ -81,12 +71,12 @@ export function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     lineHeight: 1,
     fontSize: "0.95rem",
     fontWeight: 600
-  });
+  };
 }
 
 export function inputStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "100%",
     borderRadius: "18px",
     border: `1px solid ${theme.borderColor}`,
@@ -95,7 +85,7 @@ export function inputStyle(theme: Required<CommandTheme>): CSSProperties {
     padding: "1rem 1.1rem",
     fontSize: "1rem",
     outline: "none"
-  });
+  };
 }
 
 export function itemStyle(
@@ -104,7 +94,7 @@ export function itemStyle(
   disabled?: boolean
 ): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "100%",
     display: "flex",
     alignItems: "center",
@@ -123,7 +113,7 @@ export function itemStyle(
       : "transparent",
     color: disabled ? theme.mutedColor : theme.textColor,
     opacity: disabled ? 0.55 : 1
-  });
+  };
 }
 
 export function sectionTitleStyle(
@@ -139,13 +129,13 @@ export function sectionTitleStyle(
 }
 
 export function emptyStateStyle(theme: Required<CommandTheme>): CSSProperties {
-  return withSquircle({
+  return {
     borderRadius: "18px",
     border: `1px dashed ${theme.borderColor}`,
     color: theme.mutedColor,
     textAlign: "center",
     padding: "2rem"
-  });
+  };
 }
 
 export function iconStyle(
@@ -153,7 +143,7 @@ export function iconStyle(
   active: boolean
 ): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "2rem",
     height: "2rem",
     borderRadius: "0.78rem",
@@ -176,7 +166,7 @@ export function iconStyle(
       : light
         ? "rgba(83, 112, 136, 0.1)"
         : "rgba(180, 205, 221, 0.12)"
-  });
+  };
 }
 
 export const headerStyle: CSSProperties = {

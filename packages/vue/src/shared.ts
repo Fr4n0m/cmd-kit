@@ -28,6 +28,14 @@ export function withRecentSection(
     return undefined;
   }
 
+  const recentIds = new Set(recentItems.map((item) => item.id));
+  const filteredSections = baseSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => !recentIds.has(item.id))
+    }))
+    .filter((section) => section.items.length > 0);
+
   return [
     {
       id: "recent",
@@ -40,7 +48,7 @@ export function withRecentSection(
         section: undefined
       }))
     },
-    ...baseSections
+    ...filteredSections
   ];
 }
 

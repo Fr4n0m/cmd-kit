@@ -61,7 +61,6 @@ const payload = JSON.stringify({
   const props = JSON.parse(payloadNode.textContent);
   const classNames = props.classNames ?? {};
   const recents = props.recents ?? false;
-  const squircleShape = "superellipse(0.7)";
   const neutralInputBackground = "rgba(255, 255, 255, 0.03)";
   const neutralLightInputBackground = "rgba(171, 189, 205, 0.16)";
   const defaultLightTheme = {
@@ -299,6 +298,14 @@ const payload = JSON.stringify({
       return undefined;
     }
 
+    const recentIds = new Set(recentItems.map((item) => item.id));
+    const filteredSections = baseSections
+      .map((section) => ({
+        ...section,
+        items: section.items.filter((item) => !recentIds.has(item.id))
+      }))
+      .filter((section) => section.items.length > 0);
+
     return [
       {
         id: "recent",
@@ -311,7 +318,7 @@ const payload = JSON.stringify({
           section: undefined
         }))
       },
-      ...baseSections
+      ...filteredSections
     ];
   };
 
@@ -361,7 +368,6 @@ const payload = JSON.stringify({
 
     const light = isLightTheme(theme.backgroundColor);
     dialog.style.borderRadius = theme.radius;
-    dialog.style.cornerShape = squircleShape;
     dialog.dataset.mode = light ? "light" : "dark";
     dialog.style.border = `1px solid ${theme.borderColor}`;
     dialog.style.background = theme.backgroundColor;
@@ -371,11 +377,9 @@ const payload = JSON.stringify({
     input.style.border = `1px solid ${theme.borderColor}`;
     input.style.background = light ? neutralLightInputBackground : neutralInputBackground;
     input.style.color = theme.textColor;
-    input.style.cornerShape = squircleShape;
 
     for (const button of root.querySelectorAll(".cmdkit-astro-close")) {
       if (button instanceof HTMLElement) {
-        button.style.cornerShape = squircleShape;
         button.style.width = "2.25rem";
         button.style.height = "2.25rem";
         button.style.minWidth = "2.25rem";
@@ -399,7 +403,6 @@ const payload = JSON.stringify({
 
     for (const button of root.querySelectorAll(".cmdkit-astro-title-back")) {
       if (button instanceof HTMLElement) {
-        button.style.cornerShape = squircleShape;
         button.style.border = `1px solid ${theme.borderColor}`;
         button.style.color = theme.mutedColor;
         button.style.background = light
@@ -410,7 +413,6 @@ const payload = JSON.stringify({
 
     const emptyState = list?.querySelector(".cmdkit-astro-empty");
     if (emptyState instanceof HTMLElement) {
-      emptyState.style.cornerShape = squircleShape;
       emptyState.style.border = `1px dashed ${theme.borderColor}`;
       emptyState.style.color = theme.mutedColor;
     }
@@ -791,7 +793,6 @@ const payload = JSON.stringify({
     width: min(680px, calc(100vw - 2rem));
     max-height: min(720px, calc(100vh - 2rem));
     overflow: hidden;
-    corner-shape: superellipse(0.7);
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
@@ -826,7 +827,6 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-title-back {
     border-radius: 0.65rem;
-    corner-shape: superellipse(0.7);
     width: 1.65rem;
     height: 1.65rem;
     padding: 0;
@@ -851,7 +851,6 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-close {
     border-radius: 999px;
-    corner-shape: superellipse(0.7);
     min-width: 2.15rem;
     min-height: 2.15rem;
     padding: 0;
@@ -867,7 +866,6 @@ const payload = JSON.stringify({
   .cmdkit-astro-input {
     width: 100%;
     border-radius: 18px;
-    corner-shape: superellipse(0.7);
     padding: 1rem 1.1rem;
     font-size: 1rem;
     outline: none;
@@ -915,7 +913,6 @@ const payload = JSON.stringify({
     width: 100%;
     border: 1px solid transparent;
     border-radius: 18px;
-    corner-shape: superellipse(0.7);
     text-align: left;
     display: flex;
     align-items: center;
@@ -952,7 +949,6 @@ const payload = JSON.stringify({
     width: 2rem;
     height: 2rem;
     border-radius: 0.78rem;
-    corner-shape: superellipse(0.7);
     display: grid;
     place-items: center;
     color: rgba(188, 208, 223, 0.88);
@@ -998,7 +994,6 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-empty {
     border-radius: 18px;
-    corner-shape: superellipse(0.7);
     border: 1px dashed currentColor;
     color: #94a3b8;
     text-align: center;
