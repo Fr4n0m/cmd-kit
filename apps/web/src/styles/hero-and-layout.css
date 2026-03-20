@@ -239,7 +239,9 @@ html[data-theme="light"] .hero-stage-card {
   text-align: center;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   corner-shape: superellipse(0.7);
-  background: rgba(255, 255, 255, 0.02) !important;
+  background: rgba(166, 191, 212, 0.08) !important;
+  border-color: rgba(146, 173, 194, 0.22) !important;
+  color: rgba(216, 232, 244, 0.92) !important;
 }
 
 .site-palette-back-button {
@@ -433,7 +435,7 @@ html[data-theme="light"] .site-palette-dialog {
 }
 
 html[data-theme="light"] .site-palette-close-button {
-  background: rgba(15, 166, 216, 0.06) !important;
+  background: rgba(15, 166, 216, 0.05) !important;
   color: #27465a !important;
 }
 
@@ -452,7 +454,7 @@ html[data-theme="light"] .site-palette-title-hint {
 }
 
 html[data-theme="light"] .site-palette-input {
-  background: rgba(88, 108, 126, 0.12) !important;
+  background: rgba(171, 189, 205, 0.16) !important;
 }
 
 html[data-theme="light"] .site-palette-item[aria-selected="true"] {

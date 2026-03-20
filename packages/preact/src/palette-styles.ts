@@ -6,7 +6,6 @@ const SQUIRCLE_SHAPE = "superellipse(0.7)";
 function withSquircle(styles: CSSProperties): CSSProperties {
   return {
     ...styles,
-    cornerShape: SQUIRCLE_SHAPE,
     ["corner-shape" as unknown as keyof CSSProperties]:
       SQUIRCLE_SHAPE as unknown as CSSProperties[keyof CSSProperties]
   } as CSSProperties;
@@ -46,9 +45,11 @@ export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
   return withSquircle({
     borderRadius: "999px",
-    border: `1px solid ${theme.borderColor}`,
-    background: light ? "rgba(15, 166, 216, 0.06)" : "rgba(255, 255, 255, 0.02)",
-    color: theme.mutedColor,
+    border: light
+      ? `1px solid ${theme.borderColor}`
+      : "1px solid rgba(146, 173, 194, 0.22)",
+    background: light ? "rgba(15, 166, 216, 0.05)" : "rgba(166, 191, 212, 0.08)",
+    color: light ? theme.mutedColor : "rgba(216, 232, 244, 0.92)",
     appearance: "none",
     width: "2.25rem",
     height: "2.25rem",
@@ -89,7 +90,7 @@ export function inputStyle(theme: Required<CommandTheme>): CSSProperties {
     width: "100%",
     borderRadius: "18px",
     border: `1px solid ${theme.borderColor}`,
-    background: light ? "rgba(88, 108, 126, 0.12)" : "rgba(255, 255, 255, 0.03)",
+    background: light ? "rgba(171, 189, 205, 0.16)" : "rgba(255, 255, 255, 0.03)",
     color: theme.textColor,
     padding: "1rem 1.1rem",
     fontSize: "1rem",

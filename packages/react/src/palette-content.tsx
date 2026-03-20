@@ -61,6 +61,8 @@ export function PaletteHeader({
   theme,
   titleId
 }: PaletteHeaderProps) {
+  const light = isLightTheme(theme);
+
   return (
     <div className={classNames?.header} style={headerStyle}>
       <div>
@@ -89,14 +91,92 @@ export function PaletteHeader({
           aria-label={closeLabel}
           className={classNames?.closeButton}
           onClick={onClose}
+          onMouseEnter={(event) => {
+            event.currentTarget.style.background = light
+              ? "rgba(15, 166, 216, 0.12)"
+              : "rgba(166, 191, 212, 0.18)";
+            event.currentTarget.style.borderColor = light
+              ? "rgba(15, 166, 216, 0.26)"
+              : "rgba(146, 173, 194, 0.34)";
+            event.currentTarget.style.transform = "translateY(-1px)";
+          }}
+          onMouseLeave={(event) => {
+            event.currentTarget.style.background = light
+              ? "rgba(15, 166, 216, 0.05)"
+              : "rgba(166, 191, 212, 0.08)";
+            event.currentTarget.style.borderColor = light
+              ? theme.borderColor
+              : "rgba(146, 173, 194, 0.22)";
+            event.currentTarget.style.transform = "translateY(0)";
+          }}
           style={closeButtonStyle(theme)}
           type="button"
         >
-          ×
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 16 16"
+            width="16"
+            height="16"
+            style={{ display: "block" }}
+          >
+            <path
+              d="M4 4L12 12M12 4L4 12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
         </button>
       </div>
     </div>
   );
+}
+
+function isLightTheme(theme: Required<CommandTheme>): boolean {
+  const rgb = parseColorToRgb(theme.backgroundColor);
+  if (!rgb) {
+    return false;
+  }
+
+  const [r, g, b] = rgb;
+  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+  return luminance > 0.72;
+}
+
+function parseColorToRgb(color: string): [number, number, number] | null {
+  const value = color.trim();
+
+  if (value.startsWith("#")) {
+    const hex = value.slice(1);
+
+    if (hex.length === 3) {
+      return [
+        Number.parseInt(hex[0] + hex[0], 16),
+        Number.parseInt(hex[1] + hex[1], 16),
+        Number.parseInt(hex[2] + hex[2], 16)
+      ];
+    }
+
+    if (hex.length >= 6) {
+      return [
+        Number.parseInt(hex.slice(0, 2), 16),
+        Number.parseInt(hex.slice(2, 4), 16),
+        Number.parseInt(hex.slice(4, 6), 16)
+      ];
+    }
+  }
+
+  const rgbMatch = value.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (rgbMatch) {
+    return [
+      Number.parseInt(rgbMatch[1], 10),
+      Number.parseInt(rgbMatch[2], 10),
+      Number.parseInt(rgbMatch[3], 10)
+    ];
+  }
+
+  return null;
 }
 
 interface PaletteInputProps {
