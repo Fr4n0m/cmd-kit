@@ -1,40 +1,10 @@
 import type { PlaygroundPageCopy } from "./shared";
 import type { Locale } from "../site";
+import { playgroundEn } from "./playground/en";
+import { playgroundEs } from "./playground/es";
 
 export const playgroundPages: Record<Locale, PlaygroundPageCopy> = {
-  en: {
-    badge: "Configurator",
-    description:
-      "Edit structure, theme, nested commands, messages, and exports with room to think. The preview stays interactive while the generated code tracks every change in real time.",
-    heading:
-      "Work in a dedicated playground that behaves like a focused configuration tool.",
-    metaDescription:
-      "Dedicated playground for shaping the command palette, tuning sections and theme, and exporting real code.",
-    metricCoverageLabel: "Coverage",
-    metricCoverageValue: "Theme, messages, recents, nested commands, async source",
-    metricExportsLabel: "Exports",
-    metricExportsValue: "React, Vue, Preact, Vanilla, Tailwind, CSS, JSON",
-    stackAriaLabel: "Playground stack",
-    stackCss: "CSS / Tailwind",
-    stackNames: ["React", "Vue", "Preact", "Astro"],
-    title: "Cmd+kit | Playground"
-  },
-  es: {
-    badge: "Configurador",
-    description:
-      "Edita estructura, tema, comandos anidados, mensajes y exports con espacio real para pensar. La preview sigue viva mientras el código generado refleja cada cambio.",
-    heading:
-      "Trabaja en un playground dedicado que se comporte como una herramienta de configuración enfocada.",
-    metaDescription:
-      "Playground dedicado para construir la command palette, ajustar secciones y tema, y exportar código real.",
-    metricCoverageLabel: "Cobertura",
-    metricCoverageValue: "Tema, mensajes, recientes, comandos anidados y source async",
-    metricExportsLabel: "Exports",
-    metricExportsValue: "React, Vue, Preact, Vanilla, Tailwind, CSS, JSON",
-    stackAriaLabel: "Stack del playground",
-    stackCss: "CSS / Tailwind",
-    stackNames: ["React", "Vue", "Preact", "Astro"],
-    title: "Cmd+kit | Playground"
-  }
+  en: playgroundEn,
+  es: playgroundEs
 };
 
