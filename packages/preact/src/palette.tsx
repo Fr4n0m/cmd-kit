@@ -87,12 +87,20 @@ export function CommandPalette({
   return (
     <div
       className={classNames?.overlay}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          setOpenState(false);
+        }
+      }}
       style={overlayStyle(resolvedConfig.theme.overlayColor)}
     >
       <div
         aria-labelledby={titleId}
         aria-modal="true"
         className={joinClassNames(className, classNames?.dialog)}
+        onMouseDown={(event) => {
+          event.stopPropagation();
+        }}
         onKeyDown={createDialogKeyDownHandler(dialogRef)}
         ref={dialogRef}
         role="dialog"
@@ -144,6 +152,7 @@ export function CommandPalette({
         />
 
         <PaletteResults
+          activeTitle={activeTitle}
           activeIndex={activeIndex}
           classNames={classNames}
           flatItems={flatItems}

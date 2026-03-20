@@ -18,9 +18,11 @@ export const homePages: Record<Locale, HomePageCopy> = {
     heroDocsCta: "Start with docs",
     heroHeading: "Make your command palette feel native.",
     heroKicker: "Headless engine. Official adapters. Production-oriented UI.",
-    heroProofAdapterBody: "React, Vue, Preact, Astro islands and vanilla browser",
+    heroProofAdapterBody:
+      "React, Vue, Preact, Astro islands and vanilla browser",
     heroProofAdapterLabel: "Adapters",
-    heroProofCoreBody: "Framework-agnostic search, grouping, execution, recents",
+    heroProofCoreBody:
+      "Framework-agnostic search, grouping, execution, recents",
     heroProofCoreLabel: "Core",
     heroStackCardTitle: "Compatibility",
     heroStageActiveShortcut: "G D",
@@ -39,7 +41,10 @@ export const homePages: Record<Locale, HomePageCopy> = {
     heroStageSurfaceMuted: "mod+k",
     heroTerminalLabel: "terminal",
     heroTerminalTitle: "cmd-kit",
-    installCommands: ["npm install @cmd-kit/react", "npm install @cmd-kit/core"],
+    installCommands: [
+      "npm install @cmd-kit/react",
+      "npm install @cmd-kit/core"
+    ],
     installDescription:
       "Start from one adapter and keep the core as your escape hatch. No framework lock-in, no migration rewrite later.",
     installEyebrow: "Install",
@@ -91,10 +96,13 @@ export const homePages: Record<Locale, HomePageCopy> = {
     heroCta: "Abrir playground",
     heroDocsCta: "Ir a la documentación",
     heroHeading: "Haz que tu command palette se sienta nativa.",
-    heroKicker: "Motor headless. Adaptadores oficiales. UI orientada a producción.",
-    heroProofAdapterBody: "React, Vue, Preact, Astro islands y uso vanilla en navegador",
+    heroKicker:
+      "Motor headless. Adaptadores oficiales. UI orientada a producción.",
+    heroProofAdapterBody:
+      "React, Vue, Preact, Astro islands y uso vanilla en navegador",
     heroProofAdapterLabel: "Adaptadores",
-    heroProofCoreBody: "Búsqueda, agrupación, ejecución y recientes sin acoplarse a la UI",
+    heroProofCoreBody:
+      "Búsqueda, agrupación, ejecución y recientes sin acoplarse a la UI",
     heroProofCoreLabel: "Core",
     heroStackCardTitle: "Compatibilidad",
     heroStageActiveShortcut: "G D",
@@ -105,7 +113,7 @@ export const homePages: Record<Locale, HomePageCopy> = {
     heroStageInactiveTitle: "Buscar docs",
     heroStageLabel: "Cmd+kit",
     heroStageNote:
-      "Usa Cmd / Ctrl + K para abrirla, buscar comandos y navegar secciones anidadas en tiempo real.",
+      "Usa Cmd / Ctrl + K para abrir, buscar comandos y navegar secciones anidadas en tiempo real.",
     heroStageRecentLabel: "Recientes",
     heroStageSearchPlaceholder: "Busca comandos, páginas y acciones...",
     heroStageShortcut: "Cmd / Ctrl + K",
@@ -113,7 +121,10 @@ export const homePages: Record<Locale, HomePageCopy> = {
     heroStageSurfaceMuted: "mod+k",
     heroTerminalLabel: "terminal",
     heroTerminalTitle: "cmd-kit",
-    installCommands: ["npm install @cmd-kit/react", "npm install @cmd-kit/core"],
+    installCommands: [
+      "npm install @cmd-kit/react",
+      "npm install @cmd-kit/core"
+    ],
     installDescription:
       "Empieza por un adaptador y deja el core como vía de salida. Sin bloqueo por framework ni migraciones traumáticas después.",
     installEyebrow: "Instalación",
@@ -151,4 +162,3 @@ export const homePages: Record<Locale, HomePageCopy> = {
     title: "Cmd+kit"
   }
 };
-

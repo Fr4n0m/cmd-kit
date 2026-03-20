@@ -106,8 +106,7 @@ html[data-theme="light"] .primary-button:active {
 .ghost-button:hover,
 .primary-button:hover,
 .inline-button:hover,
-.tab:hover,
-.nav-button:hover {
+.tab:hover {
   transform: translateY(-1px);
   box-shadow: 0 14px 26px rgba(0, 0, 0, 0.18);
 }

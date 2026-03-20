@@ -25,11 +25,13 @@ const payload = JSON.stringify({
       <div class="cmdkit-astro-header" data-slot="header">
         <div>
           <p class="cmdkit-astro-breadcrumbs" data-slot="breadcrumbs"></p>
-          <p class="cmdkit-astro-title" data-slot="title"></p>
+          <p class="cmdkit-astro-title" data-slot="title">
+            <button aria-label="Go back" class="cmdkit-astro-title-back" data-slot="backButton" title="Go back" type="button">←</button>
+            <span data-slot="titleText"></span>
+          </p>
           <p class="cmdkit-astro-caption" data-slot="caption"></p>
         </div>
         <div class="cmdkit-astro-header-actions" data-slot="headerActions">
-          <button class="cmdkit-astro-close cmdkit-astro-back" data-slot="backButton" type="button">Back</button>
           <button class="cmdkit-astro-close" data-slot="closeButton" type="button">✕</button>
         </div>
       </div>
@@ -59,12 +61,36 @@ const payload = JSON.stringify({
   const props = JSON.parse(payloadNode.textContent);
   const classNames = props.classNames ?? {};
   const recents = props.recents ?? false;
+  const squircleShape = "superellipse(0.7)";
+  const neutralInputBackground = "rgba(255, 255, 255, 0.03)";
+  const neutralLightInputBackground = "rgba(88, 108, 126, 0.12)";
+  const defaultLightTheme = {
+    accentColor: "#0fa6d8",
+    backgroundColor: "#ffffff",
+    textColor: "#0e1720",
+    mutedColor: "rgba(49, 68, 84, 0.78)",
+    borderColor: "rgba(83, 112, 136, 0.16)",
+    overlayColor: "rgba(232, 241, 248, 0.7)",
+    radius: "22px",
+    shadow: "0 20px 44px rgba(40, 64, 81, 0.14)"
+  };
+  const defaultDarkTheme = {
+    accentColor: "#35d7ff",
+    backgroundColor: "#0b1116",
+    textColor: "#eff7fb",
+    mutedColor: "rgba(172, 192, 207, 0.74)",
+    borderColor: "rgba(129, 155, 174, 0.16)",
+    overlayColor: "rgba(6, 10, 14, 0.74)",
+    radius: "22px",
+    shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
+  };
 
   const overlay = root.querySelector("[data-slot='overlay']");
   const dialog = root.querySelector("[data-slot='dialog']");
   const header = root.querySelector("[data-slot='header']");
   const breadcrumbs = root.querySelector("[data-slot='breadcrumbs']");
   const title = root.querySelector("[data-slot='title']");
+  const titleText = root.querySelector("[data-slot='titleText']");
   const caption = root.querySelector("[data-slot='caption']");
   const headerActions = root.querySelector("[data-slot='headerActions']");
   const closeButton = root.querySelector("[data-slot='closeButton']");
@@ -92,7 +118,7 @@ const payload = JSON.stringify({
     sections: rootSections,
     messages: props.messages,
     shortcut: props.shortcut,
-    theme: props.theme
+    theme: resolveAdaptiveTheme(props.theme)
   });
 
   const applyClass = (element, slot, baseClass) => {
@@ -109,7 +135,7 @@ const payload = JSON.stringify({
   applyClass(caption, "caption", "cmdkit-astro-caption");
   applyClass(headerActions, "headerActions", "cmdkit-astro-header-actions");
   applyClass(closeButton, "closeButton", "cmdkit-astro-close");
-  applyClass(backButton, "backButton", "cmdkit-astro-close cmdkit-astro-back");
+  applyClass(backButton, "backButton", "cmdkit-astro-title-back");
   applyClass(input, "input", "cmdkit-astro-input");
   applyClass(list, "list", "cmdkit-astro-list");
 
@@ -184,6 +210,63 @@ const payload = JSON.stringify({
       .join(" + ");
   };
 
+  const parseColorToRgb = (color) => {
+    const value = String(color ?? "").trim();
+
+    if (value.startsWith("#")) {
+      const hex = value.slice(1);
+
+      if (hex.length === 3) {
+        return [
+          Number.parseInt(hex[0] + hex[0], 16),
+          Number.parseInt(hex[1] + hex[1], 16),
+          Number.parseInt(hex[2] + hex[2], 16)
+        ];
+      }
+
+      if (hex.length >= 6) {
+        return [
+          Number.parseInt(hex.slice(0, 2), 16),
+          Number.parseInt(hex.slice(2, 4), 16),
+          Number.parseInt(hex.slice(4, 6), 16)
+        ];
+      }
+    }
+
+    const rgbMatch = value.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+    if (rgbMatch) {
+      return [
+        Number.parseInt(rgbMatch[1], 10),
+        Number.parseInt(rgbMatch[2], 10),
+        Number.parseInt(rgbMatch[3], 10)
+      ];
+    }
+
+    return null;
+  };
+
+  const isLightTheme = (backgroundColor) => {
+    const rgb = parseColorToRgb(backgroundColor);
+    if (!rgb) {
+      return false;
+    }
+
+    const [r, g, b] = rgb;
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    return luminance > 0.72;
+  };
+
+  const resolveAdaptiveTheme = (theme) => {
+    if (theme) {
+      return theme;
+    }
+
+    const rootTheme = document.documentElement.dataset.theme;
+    const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+    const isLight = rootTheme === "light" || (!rootTheme && prefersLight);
+    return isLight ? defaultLightTheme : defaultDarkTheme;
+  };
+
   const toSections = (items) => {
     if (!items?.length) {
       return undefined;
@@ -246,7 +329,7 @@ const payload = JSON.stringify({
       sections: withRecentSection(activeSections, recentItems, recents, rootItems),
       messages: props.messages,
       shortcut: props.shortcut,
-      theme: props.theme
+      theme: resolveAdaptiveTheme(props.theme)
     });
 
     const snapshot = createCommandSnapshot(resolved, query);
@@ -276,25 +359,54 @@ const payload = JSON.stringify({
       return;
     }
 
+    const light = isLightTheme(theme.backgroundColor);
     dialog.style.borderRadius = theme.radius;
+    dialog.style.cornerShape = squircleShape;
+    dialog.dataset.mode = light ? "light" : "dark";
     dialog.style.border = `1px solid ${theme.borderColor}`;
     dialog.style.background = theme.backgroundColor;
     dialog.style.color = theme.textColor;
     dialog.style.boxShadow = theme.shadow;
     overlay.style.background = theme.overlayColor;
     input.style.border = `1px solid ${theme.borderColor}`;
-    input.style.background = "rgba(15, 23, 42, 0.35)";
+    input.style.background = light ? neutralLightInputBackground : neutralInputBackground;
     input.style.color = theme.textColor;
+    input.style.cornerShape = squircleShape;
 
     for (const button of root.querySelectorAll(".cmdkit-astro-close")) {
       if (button instanceof HTMLElement) {
+        button.style.cornerShape = squircleShape;
+        button.style.width = "2.25rem";
+        button.style.height = "2.25rem";
+        button.style.minWidth = "2.25rem";
+        button.style.minHeight = "2.25rem";
+        button.style.lineHeight = "1";
+        button.style.fontSize = "1.1rem";
+        button.style.fontWeight = "700";
+        button.style.fontFamily =
+          "system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
         button.style.border = `1px solid ${theme.borderColor}`;
         button.style.color = theme.mutedColor;
+        button.style.background = light
+          ? "rgba(15, 166, 216, 0.06)"
+          : "rgba(255, 255, 255, 0.02)";
+      }
+    }
+
+    for (const button of root.querySelectorAll(".cmdkit-astro-title-back")) {
+      if (button instanceof HTMLElement) {
+        button.style.cornerShape = squircleShape;
+        button.style.border = `1px solid ${theme.borderColor}`;
+        button.style.color = theme.mutedColor;
+        button.style.background = light
+          ? "rgba(15, 166, 216, 0.08)"
+          : "rgba(255, 255, 255, 0.03)";
       }
     }
 
     const emptyState = list?.querySelector(".cmdkit-astro-empty");
     if (emptyState instanceof HTMLElement) {
+      emptyState.style.cornerShape = squircleShape;
       emptyState.style.border = `1px dashed ${theme.borderColor}`;
       emptyState.style.color = theme.mutedColor;
     }
@@ -314,6 +426,9 @@ const payload = JSON.stringify({
     }
 
     let itemIndex = -1;
+    const hideRepeatedSectionTitle =
+      runtime.snapshot.groups.length === 1 &&
+      runtime.snapshot.groups[0]?.title === runtime.activeTitle;
     const sectionsHtml = runtime.snapshot.groups
       .map((group) => {
         const sectionClass = classNames?.section
@@ -368,13 +483,56 @@ const payload = JSON.stringify({
           .join("");
 
         return `<section class="${sectionClass}">
-          <p class="${sectionTitleClass}">${group.title}</p>
+          <p class="${sectionTitleClass}">${hideRepeatedSectionTitle ? "" : group.title}</p>
           <div class="${sectionItemsClass}">${itemsHtml}</div>
         </section>`;
       })
       .join("");
 
     list.innerHTML = sectionsHtml;
+  };
+
+  const syncListMask = () => {
+    if (!(list instanceof HTMLElement)) {
+      return;
+    }
+
+    const scrollable = list.scrollHeight > list.clientHeight + 1;
+    const hasTop = list.scrollTop > 0;
+    const hasBottom = list.scrollTop + list.clientHeight < list.scrollHeight - 1;
+
+    if (!scrollable) {
+      list.style.maskImage = "none";
+      list.style.webkitMaskImage = "none";
+      return;
+    }
+
+    if (hasTop && hasBottom) {
+      const gradient =
+        "linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%)";
+      list.style.maskImage = gradient;
+      list.style.webkitMaskImage = gradient;
+      return;
+    }
+
+    if (!hasTop && hasBottom) {
+      const gradient =
+        "linear-gradient(to bottom, #000 0, #000 calc(100% - 14px), transparent 100%)";
+      list.style.maskImage = gradient;
+      list.style.webkitMaskImage = gradient;
+      return;
+    }
+
+    if (hasTop && !hasBottom) {
+      const gradient =
+        "linear-gradient(to bottom, transparent 0, #000 14px, #000 100%)";
+      list.style.maskImage = gradient;
+      list.style.webkitMaskImage = gradient;
+      return;
+    }
+
+    list.style.maskImage = "none";
+    list.style.webkitMaskImage = "none";
   };
 
   const render = () => {
@@ -393,8 +551,8 @@ const payload = JSON.stringify({
     input.placeholder = runtime.messages.searchPlaceholder;
     input.value = query;
 
-    if (title instanceof HTMLElement) {
-      title.textContent = runtime.activeTitle;
+    if (titleText instanceof HTMLElement) {
+      titleText.textContent = runtime.activeTitle;
     }
 
     if (caption instanceof HTMLElement) {
@@ -417,6 +575,7 @@ const payload = JSON.stringify({
     }
 
     renderList(runtime);
+    syncListMask();
   };
 
   const setOpenState = (nextOpen) => {
@@ -508,6 +667,19 @@ const payload = JSON.stringify({
     setOpenState(!open);
   });
 
+  if (!props.theme) {
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const rerender = () => render();
+    const observer = new MutationObserver(rerender);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"]
+    });
+
+    media.addEventListener("change", rerender);
+    window.addEventListener("cmd-kit-theme-change", rerender);
+  }
+
   if (overlay instanceof HTMLElement) {
     overlay.addEventListener("mousedown", (event) => {
       if (event.target === overlay) {
@@ -594,6 +766,9 @@ const payload = JSON.stringify({
     }
   });
 
+  list?.addEventListener("scroll", syncListMask, { passive: true });
+  window.addEventListener("resize", syncListMask);
+
   render();
 </script>
 
@@ -612,6 +787,7 @@ const payload = JSON.stringify({
     width: min(680px, calc(100vw - 2rem));
     max-height: min(720px, calc(100vh - 2rem));
     overflow: hidden;
+    corner-shape: superellipse(0.7);
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
@@ -638,6 +814,24 @@ const payload = JSON.stringify({
     margin: 0;
     font-size: 1.1rem;
     font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  .cmdkit-astro-title-back {
+    border-radius: 0.65rem;
+    corner-shape: superellipse(0.7);
+    width: 1.65rem;
+    height: 1.65rem;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    line-height: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
   }
 
   .cmdkit-astro-caption {
@@ -653,7 +847,15 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-close {
     border-radius: 999px;
-    padding: 0.4rem 0.7rem;
+    corner-shape: superellipse(0.7);
+    min-width: 2.15rem;
+    min-height: 2.15rem;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    line-height: 1;
+    font-size: 1rem;
+    font-weight: 600;
     background: transparent;
     cursor: pointer;
   }
@@ -661,6 +863,7 @@ const payload = JSON.stringify({
   .cmdkit-astro-input {
     width: 100%;
     border-radius: 18px;
+    corner-shape: superellipse(0.7);
     padding: 1rem 1.1rem;
     font-size: 1rem;
     outline: none;
@@ -668,9 +871,16 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-list {
     overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .cmdkit-astro-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
   }
 
   .cmdkit-astro-section {
@@ -687,6 +897,10 @@ const payload = JSON.stringify({
     letter-spacing: 0.08em;
   }
 
+  .cmdkit-astro-section-title:empty {
+    display: none;
+  }
+
   .cmdkit-astro-section-items {
     display: flex;
     flex-direction: column;
@@ -695,8 +909,9 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-item {
     width: 100%;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 18px;
+    corner-shape: superellipse(0.7);
     text-align: left;
     display: flex;
     align-items: center;
@@ -709,7 +924,8 @@ const payload = JSON.stringify({
   }
 
   .cmdkit-astro-item[aria-selected="true"] {
-    background: rgba(59, 130, 246, 0.15);
+    background: rgba(53, 215, 255, 0.14);
+    border-color: rgba(53, 215, 255, 0.26);
   }
 
   .cmdkit-astro-item[disabled] {
@@ -731,14 +947,36 @@ const payload = JSON.stringify({
   .cmdkit-astro-icon {
     width: 2rem;
     height: 2rem;
-    border-radius: 12px;
+    border-radius: 0.78rem;
+    corner-shape: superellipse(0.7);
     display: grid;
     place-items: center;
-    background: rgba(148, 163, 184, 0.12);
+    color: rgba(188, 208, 223, 0.88);
+    border: 1px solid rgba(129, 155, 174, 0.18);
+    background: rgba(180, 205, 221, 0.12);
   }
 
   .cmdkit-astro-icon[data-active="true"] {
-    background: rgba(59, 130, 246, 0.25);
+    color: #eaf8ff;
+    border-color: rgba(53, 215, 255, 0.3);
+    background: rgba(53, 215, 255, 0.24);
+  }
+
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[aria-selected="true"] {
+    background: rgba(15, 166, 216, 0.13);
+    border-color: rgba(15, 166, 216, 0.22);
+  }
+
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-icon {
+    color: #2f546b;
+    border-color: rgba(83, 112, 136, 0.18);
+    background: rgba(83, 112, 136, 0.1);
+  }
+
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-icon[data-active="true"] {
+    color: #0b607f;
+    border-color: rgba(15, 166, 216, 0.28);
+    background: rgba(15, 166, 216, 0.2);
   }
 
   .cmdkit-astro-subtitle {
@@ -756,6 +994,7 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-empty {
     border-radius: 18px;
+    corner-shape: superellipse(0.7);
     border: 1px dashed currentColor;
     color: #94a3b8;
     text-align: center;

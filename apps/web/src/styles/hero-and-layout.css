@@ -100,7 +100,7 @@ html[data-theme="light"] .eyebrow {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.85rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .proof-card {
@@ -207,6 +207,7 @@ html[data-theme="light"] .hero-stage-card {
   border: 1px solid var(--playground-border) !important;
   color: var(--playground-ink) !important;
   box-shadow: 0 26px 70px rgba(4, 10, 16, 0.3) !important;
+  corner-shape: superellipse(0.7);
 }
 
 .site-palette-caption,
@@ -224,14 +225,20 @@ html[data-theme="light"] .hero-stage-card {
 }
 
 .site-palette-close-button {
-  min-width: 2.15rem;
-  min-height: 2.15rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
   padding: 0 !important;
-  font-size: 1.12rem;
-  font-weight: 600;
-  line-height: 1;
-  display: inline-grid;
-  place-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  corner-shape: superellipse(0.7);
   background: rgba(255, 255, 255, 0.02) !important;
 }
 
@@ -269,6 +276,7 @@ html[data-theme="light"] .hero-stage-card {
   place-items: center;
   padding: 0;
   flex: 0 0 auto;
+  corner-shape: superellipse(0.7);
 }
 
 .site-palette-title-back:hover {
@@ -287,11 +295,13 @@ html[data-theme="light"] .hero-stage-card {
   background: rgba(255, 255, 255, 0.03) !important;
   border-color: var(--playground-border) !important;
   color: var(--playground-ink) !important;
+  corner-shape: superellipse(0.7);
 }
 
 .site-palette-item {
   border: 1px solid transparent !important;
   transition: background-color 160ms ease, border-color 160ms ease !important;
+  corner-shape: superellipse(0.7);
 }
 
 .site-palette-list {
@@ -392,6 +402,7 @@ html[data-theme="light"] .hero-stage-card {
   background: rgba(180, 205, 221, 0.12);
   border: 1px solid rgba(129, 155, 174, 0.18);
   flex: 0 0 auto;
+  corner-shape: superellipse(0.7);
 }
 
 .site-palette-icon.is-active {
@@ -441,7 +452,7 @@ html[data-theme="light"] .site-palette-title-hint {
 }
 
 html[data-theme="light"] .site-palette-input {
-  background: rgba(15, 166, 216, 0.08) !important;
+  background: rgba(88, 108, 126, 0.12) !important;
 }
 
 html[data-theme="light"] .site-palette-item[aria-selected="true"] {
@@ -502,17 +513,21 @@ html[data-theme="light"] .site-palette-icon.is-active {
   align-items: stretch;
 }
 
-.hero-proof > * {
+.hero-proof > .hero-output-card,
+.hero-proof > .hero-install-selector {
   padding: 0.95rem;
   border-radius: 16px;
   border: 1px solid var(--line);
-  height: fit-content;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
     rgba(8, 13, 17, 0.92);
 }
 
-html[data-theme="light"] .hero-proof > * {
+html[data-theme="light"] .hero-proof > .hero-output-card,
+html[data-theme="light"] .hero-proof > .hero-install-selector {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent),
     rgba(255, 255, 255, 0.92);
@@ -523,6 +538,10 @@ html[data-theme="light"] .hero-proof > * {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
+}
+
+html[data-theme="light"] .hero-output-list .tech-chip-astro .tech-icon path[fill="#fff"] {
+  fill: #1b3a57 !important;
 }
 
 .hero-output-title {

@@ -1,8 +1,10 @@
 import type { CommandItem, CommandTheme } from "@cmd-kit/core";
 import type { KeyboardEvent, ReactNode, RefObject } from "react";
+import { useEffect, useRef } from "react";
 
 import {
   breadcrumbsStyle,
+  backButtonStyle,
   captionStyle,
   closeButtonStyle,
   emptyStateStyle,
@@ -19,7 +21,8 @@ import {
   sectionStyle,
   sectionTitleStyle,
   shortcutStyle,
-  titleStyle
+  titleStyle,
+  titleRowStyle
 } from "./palette-styles";
 import type {
   CommandPaletteClassNames,
@@ -67,26 +70,21 @@ export function PaletteHeader({
           </p>
         ) : null}
         <p className={classNames?.title} id={titleId} style={titleStyle}>
-          {renderers?.title ? renderers.title(renderContext) : activeTitle}
+          {renderers?.title
+            ? renderers.title(renderContext)
+            : renderDefaultTitle(
+                activeTitle,
+                canGoBack,
+                onGoBack,
+                classNames,
+                theme
+              )}
         </p>
         <p className={classNames?.caption} id={captionId} style={captionStyle}>
           Press {prettyShortcut(shortcut)} to toggle.
         </p>
       </div>
       <div className={classNames?.headerActions} style={headerActionsStyle}>
-        {canGoBack ? (
-          <button
-            className={joinClassNames(
-              classNames?.closeButton,
-              classNames?.backButton
-            )}
-            onClick={onGoBack}
-            style={closeButtonStyle(theme)}
-            type="button"
-          >
-            Back
-          </button>
-        ) : null}
         <button
           aria-label={closeLabel}
           className={classNames?.closeButton}
@@ -155,6 +153,7 @@ export function PaletteInput({
 }
 
 interface PaletteResultsProps {
+  activeTitle: string;
   activeIndex: number;
   classNames?: CommandPaletteClassNames;
   flatItems: CommandItem[];
@@ -178,6 +177,7 @@ interface PaletteResultsProps {
 }
 
 export function PaletteResults({
+  activeTitle,
   activeIndex,
   classNames,
   flatItems,
@@ -193,17 +193,77 @@ export function PaletteResults({
   theme,
   titleId
 }: PaletteResultsProps) {
+  const listRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) {
+      return;
+    }
+
+    const updateMask = () => {
+      const scrollable = list.scrollHeight > list.clientHeight + 1;
+      const hasTop = list.scrollTop > 0;
+      const hasBottom =
+        list.scrollTop + list.clientHeight < list.scrollHeight - 1;
+
+      if (!scrollable) {
+        list.style.maskImage = "none";
+        list.style.webkitMaskImage = "none";
+        return;
+      }
+
+      if (hasTop && hasBottom) {
+        const gradient =
+          "linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%)";
+        list.style.maskImage = gradient;
+        list.style.webkitMaskImage = gradient;
+        return;
+      }
+
+      if (!hasTop && hasBottom) {
+        const gradient =
+          "linear-gradient(to bottom, #000 0, #000 calc(100% - 14px), transparent 100%)";
+        list.style.maskImage = gradient;
+        list.style.webkitMaskImage = gradient;
+        return;
+      }
+
+      if (hasTop && !hasBottom) {
+        const gradient =
+          "linear-gradient(to bottom, transparent 0, #000 14px, #000 100%)";
+        list.style.maskImage = gradient;
+        list.style.webkitMaskImage = gradient;
+        return;
+      }
+
+      list.style.maskImage = "none";
+      list.style.webkitMaskImage = "none";
+    };
+
+    updateMask();
+    list.addEventListener("scroll", updateMask, { passive: true });
+    window.addEventListener("resize", updateMask);
+    return () => {
+      list.removeEventListener("scroll", updateMask);
+      window.removeEventListener("resize", updateMask);
+    };
+  }, [snapshot, query]);
+
   return (
-    <div
-      aria-busy={isLoading}
-      aria-labelledby={titleId}
-      className={classNames?.list}
-      id={listboxId}
-      role="listbox"
-      style={listStyle}
-    >
-      {snapshot.groups.length ? (
-        snapshot.groups.map((group) => (
+    <>
+      <style>{`#${listboxId}::-webkit-scrollbar{width:0;height:0}`}</style>
+      <div
+        aria-busy={isLoading}
+        aria-labelledby={titleId}
+        className={classNames?.list}
+        id={listboxId}
+        role="listbox"
+        style={listStyle}
+        ref={listRef}
+      >
+        {snapshot.groups.length ? (
+          snapshot.groups.map((group) => (
           <div
             aria-labelledby={`${listboxId}-${group.id}-label`}
             className={classNames?.section}
@@ -211,15 +271,17 @@ export function PaletteResults({
             role="group"
             style={sectionStyle}
           >
-            <p
-              className={classNames?.sectionTitle}
-              id={`${listboxId}-${group.id}-label`}
-              style={sectionTitleStyle(theme)}
-            >
-              {renderers?.sectionTitle
-                ? renderers.sectionTitle({ title: group.title })
-                : group.title}
-            </p>
+            {!(snapshot.groups.length === 1 && group.title === activeTitle) ? (
+              <p
+                className={classNames?.sectionTitle}
+                id={`${listboxId}-${group.id}-label`}
+                style={sectionTitleStyle(theme)}
+              >
+                {renderers?.sectionTitle
+                  ? renderers.sectionTitle({ title: group.title })
+                  : group.title}
+              </p>
+            ) : null}
             <div className={classNames?.sectionItems} style={sectionItemsStyle}>
               {group.items.map((item) => {
                 const itemIndex = flatItems.findIndex(
@@ -249,34 +311,37 @@ export function PaletteResults({
                     ) : renderers?.item ? (
                       renderers.item(item, { active: isActive })
                     ) : (
-                      <DefaultItem item={item} isActive={isActive} />
+                      <DefaultItem item={item} isActive={isActive} theme={theme} />
                     )}
                   </button>
                 );
               })}
             </div>
           </div>
-        ))
-      ) : (
-        <div className={classNames?.emptyState} style={emptyStateStyle(theme)}>
-          {renderers?.emptyState ? renderers.emptyState({ query }) : noResults}
-        </div>
-      )}
-    </div>
+          ))
+        ) : (
+          <div className={classNames?.emptyState} style={emptyStateStyle(theme)}>
+            {renderers?.emptyState ? renderers.emptyState({ query }) : noResults}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
 function DefaultItem({
   item,
-  isActive
+  isActive,
+  theme
 }: {
   item: CommandItem;
   isActive: boolean;
+  theme: Required<CommandTheme>;
 }) {
   return (
     <>
       <div style={itemLeadingStyle}>
-        <span style={iconStyle(isActive)}>{item.icon ?? "⌘"}</span>
+        <span style={iconStyle(theme, isActive)}>{item.icon ?? "⌘"}</span>
         <div>
           <span style={itemTitleStyle}>{item.title}</span>
           {item.subtitle ? (
@@ -312,6 +377,32 @@ function prettyShortcut(shortcut: string): string {
       return token.charAt(0).toUpperCase() + token.slice(1);
     })
     .join(" + ");
+}
+
+function renderDefaultTitle(
+  activeTitle: string,
+  canGoBack: boolean,
+  onGoBack: () => void,
+  classNames: CommandPaletteClassNames | undefined,
+  theme: Required<CommandTheme>
+) {
+  return (
+    <span style={titleRowStyle}>
+      {canGoBack ? (
+        <button
+          aria-label="Go back"
+          className={classNames?.backButton}
+          onClick={onGoBack}
+          style={backButtonStyle(theme)}
+          title="Go back"
+          type="button"
+        >
+          ←
+        </button>
+      ) : null}
+      <span>{activeTitle}</span>
+    </span>
+  );
 }
 
 function joinClassNames(

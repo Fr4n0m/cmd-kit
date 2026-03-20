@@ -9,6 +9,11 @@ import {
   computed,
   defineComponent,
   h,
+  onBeforeUnmount,
+  onMounted,
+  onUpdated,
+  ref,
+  watch,
   type CSSProperties,
   type PropType
 } from "vue";
@@ -90,6 +95,87 @@ export const CommandPalette = defineComponent({
       }
     });
 
+    const listRef = ref<HTMLElement | null>(null);
+    let detachListScroll: (() => void) | undefined;
+
+    const syncListMask = () => {
+      const list = listRef.value;
+      if (!list) {
+        return;
+      }
+
+      const scrollable = list.scrollHeight > list.clientHeight + 1;
+      const hasTop = list.scrollTop > 0;
+      const hasBottom = list.scrollTop + list.clientHeight < list.scrollHeight - 1;
+
+      if (!scrollable) {
+        list.style.maskImage = "none";
+        list.style.webkitMaskImage = "none";
+        return;
+      }
+
+      if (hasTop && hasBottom) {
+        const gradient =
+          "linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%)";
+        list.style.maskImage = gradient;
+        list.style.webkitMaskImage = gradient;
+        return;
+      }
+
+      if (!hasTop && hasBottom) {
+        const gradient =
+          "linear-gradient(to bottom, #000 0, #000 calc(100% - 14px), transparent 100%)";
+        list.style.maskImage = gradient;
+        list.style.webkitMaskImage = gradient;
+        return;
+      }
+
+      if (hasTop && !hasBottom) {
+        const gradient =
+          "linear-gradient(to bottom, transparent 0, #000 14px, #000 100%)";
+        list.style.maskImage = gradient;
+        list.style.webkitMaskImage = gradient;
+        return;
+      }
+
+      list.style.maskImage = "none";
+      list.style.webkitMaskImage = "none";
+    };
+
+    onMounted(() => {
+      const styleId = "cmdkit-vue-scrollbar-style";
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement("style");
+        style.id = styleId;
+        style.textContent = ".cmdkit-vue-list::-webkit-scrollbar{width:0;height:0}";
+        document.head.append(style);
+      }
+
+      window.addEventListener("resize", syncListMask);
+    });
+
+    watch(listRef, (element) => {
+      detachListScroll?.();
+
+      if (!element) {
+        return;
+      }
+
+      const onScroll = () => syncListMask();
+      element.addEventListener("scroll", onScroll, { passive: true });
+      detachListScroll = () => element.removeEventListener("scroll", onScroll);
+      syncListMask();
+    });
+
+    onUpdated(() => {
+      syncListMask();
+    });
+
+    onBeforeUnmount(() => {
+      detachListScroll?.();
+      window.removeEventListener("resize", syncListMask);
+    });
+
     function handleInputKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -140,6 +226,11 @@ export const CommandPalette = defineComponent({
         "div",
         {
           class: props.classNames?.overlay,
+          onMousedown: (event: MouseEvent) => {
+            if (event.target === event.currentTarget) {
+              palette.setOpenState(false);
+            }
+          },
           style: overlayStyle(palette.resolvedConfig.value.theme.overlayColor)
         },
         [
@@ -149,6 +240,9 @@ export const CommandPalette = defineComponent({
               "aria-labelledby": titleId,
               "aria-modal": "true",
               class: joinClassNames(props.className, props.classNames?.dialog),
+              onMousedown: (event: MouseEvent) => {
+                event.stopPropagation();
+              },
               role: "dialog",
               style: paletteStyle(palette.resolvedConfig.value.theme)
             },
@@ -185,7 +279,13 @@ export const CommandPalette = defineComponent({
                           canGoBack: palette.canGoBack.value,
                           shortcut: props.shortcut
                         })
-                        : palette.activeTitle.value
+                        : renderDefaultTitle({
+                          activeTitle: palette.activeTitle.value,
+                          canGoBack: palette.canGoBack.value,
+                          classNames: props.classNames,
+                          onGoBack: palette.goBack,
+                          theme: palette.resolvedConfig.value.theme
+                        })
                     ),
                     h(
                       "p",
@@ -203,23 +303,6 @@ export const CommandPalette = defineComponent({
                       style: headerActionsStyle
                     },
                     [
-                      palette.canGoBack.value
-                        ? h(
-                            "button",
-                            {
-                              class: joinClassNames(
-                                props.classNames?.closeButton,
-                                props.classNames?.backButton
-                              ),
-                              onClick: palette.goBack,
-                              style: closeButtonStyle(
-                                palette.resolvedConfig.value.theme
-                              ),
-                              type: "button"
-                            },
-                            "Back"
-                          )
-                        : null,
                       h(
                         "button",
                         {
@@ -268,8 +351,9 @@ export const CommandPalette = defineComponent({
                 "div",
                 {
                   "aria-labelledby": titleId,
-                  class: props.classNames?.list,
+                  class: joinClassNames("cmdkit-vue-list", props.classNames?.list),
                   id: listboxId,
+                  ref: listRef,
                   role: "listbox",
                   style: listStyle
                 },
@@ -285,19 +369,22 @@ export const CommandPalette = defineComponent({
                           style: sectionStyle
                         },
                         [
-                          h(
-                            "p",
-                            {
-                              class: props.classNames?.sectionTitle,
-                              id: `${listboxId}-${group.id}-label`,
-                              style: sectionTitleStyle(
-                                palette.resolvedConfig.value.theme
+                          !(palette.snapshot.value.groups.length === 1 &&
+                            group.title === palette.activeTitle.value)
+                            ? h(
+                                "p",
+                                {
+                                  class: props.classNames?.sectionTitle,
+                                  id: `${listboxId}-${group.id}-label`,
+                                  style: sectionTitleStyle(
+                                    palette.resolvedConfig.value.theme
+                                  )
+                                },
+                                slots["section-title"]
+                                  ? slots["section-title"]({ title: group.title })
+                                  : group.title
                               )
-                            },
-                            slots["section-title"]
-                              ? slots["section-title"]({ title: group.title })
-                              : group.title
-                          ),
+                            : null,
                           h(
                             "div",
                             {
@@ -336,7 +423,11 @@ export const CommandPalette = defineComponent({
                                 },
                                 slots.item
                                   ? slots.item({ item, active: isActive })
-                                  : defaultItem(item, isActive)
+                                  : defaultItem(
+                                      item,
+                                      isActive,
+                                      palette.resolvedConfig.value.theme
+                                    )
                               );
                             })
                           )
@@ -366,7 +457,11 @@ export const CommandPalette = defineComponent({
   }
 });
 
-function defaultItem(item: CommandItem, isActive: boolean) {
+function defaultItem(
+  item: CommandItem,
+  isActive: boolean,
+  theme: Required<CommandTheme>
+) {
   return [
     h(
       "div",
@@ -377,7 +472,7 @@ function defaultItem(item: CommandItem, isActive: boolean) {
         h(
           "span",
           {
-            style: iconStyle(isActive)
+            style: iconStyle(theme, isActive)
           },
           item.icon ?? "⌘"
         ),
@@ -448,8 +543,55 @@ function joinClassNames(
   return nextValue || undefined;
 }
 
-function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
+function renderDefaultTitle({
+  activeTitle,
+  canGoBack,
+  classNames,
+  onGoBack,
+  theme
+}: {
+  activeTitle: string;
+  canGoBack: boolean;
+  classNames: CommandPaletteClassNames | undefined;
+  onGoBack: () => void;
+  theme: Required<CommandTheme>;
+}) {
+  return h(
+    "span",
+    {
+      style: titleRowStyle
+    },
+    [
+      canGoBack
+        ? h(
+            "button",
+            {
+              "aria-label": "Go back",
+              class: classNames?.backButton,
+              onClick: onGoBack,
+              style: backButtonStyle(theme),
+              title: "Go back",
+              type: "button"
+            },
+            "←"
+          )
+        : null,
+      h("span", activeTitle)
+    ]
+  );
+}
+
+const SQUIRCLE_SHAPE = "superellipse(0.7)";
+function withSquircle(styles: CSSProperties): CSSProperties {
   return {
+    ...styles,
+    cornerShape: SQUIRCLE_SHAPE,
+    "corner-shape": SQUIRCLE_SHAPE
+  } as CSSProperties;
+}
+
+function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
+  return withSquircle({
     width: "min(680px, calc(100vw - 2rem))",
     maxHeight: "min(720px, calc(100vh - 2rem))",
     overflow: "hidden",
@@ -462,7 +604,7 @@ function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
     display: "flex",
     flexDirection: "column",
     gap: "1rem"
-  };
+  });
 }
 
 function overlayStyle(color: string): CSSProperties {
@@ -479,26 +621,58 @@ function overlayStyle(color: string): CSSProperties {
 }
 
 function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
+  const light = isLightTheme(theme);
+  return withSquircle({
     borderRadius: "999px",
     border: `1px solid ${theme.borderColor}`,
-    background: "transparent",
+    background: light ? "rgba(15, 166, 216, 0.06)" : "rgba(255, 255, 255, 0.02)",
     color: theme.mutedColor,
-    padding: "0.4rem 0.7rem"
-  };
+    appearance: "none",
+    width: "2.25rem",
+    height: "2.25rem",
+    minWidth: "2.25rem",
+    minHeight: "2.25rem",
+    padding: "0",
+    display: "inline-grid",
+    placeItems: "center",
+    lineHeight: "1",
+    fontSize: "1.1rem",
+    fontWeight: 700,
+    textAlign: "center",
+    fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+  });
+}
+
+function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
+  const light = isLightTheme(theme);
+  return withSquircle({
+    borderRadius: "0.65rem",
+    border: `1px solid ${theme.borderColor}`,
+    background: light ? "rgba(15, 166, 216, 0.08)" : "rgba(255, 255, 255, 0.03)",
+    color: theme.mutedColor,
+    width: "1.65rem",
+    height: "1.65rem",
+    padding: 0,
+    display: "inline-grid",
+    placeItems: "center",
+    lineHeight: 1,
+    fontSize: "0.95rem",
+    fontWeight: 600
+  });
 }
 
 function inputStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
+  const light = isLightTheme(theme);
+  return withSquircle({
     width: "100%",
     borderRadius: "18px",
     border: `1px solid ${theme.borderColor}`,
-    background: "rgba(15, 23, 42, 0.35)",
+    background: light ? "rgba(88, 108, 126, 0.12)" : "rgba(255, 255, 255, 0.03)",
     color: theme.textColor,
     padding: "1rem 1.1rem",
     fontSize: "1rem",
     outline: "none"
-  };
+  });
 }
 
 function itemStyle(
@@ -506,20 +680,27 @@ function itemStyle(
   active: boolean,
   disabled?: boolean
 ): CSSProperties {
-  return {
+  const light = isLightTheme(theme);
+  return withSquircle({
     width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     gap: "1rem",
     textAlign: "left",
-    border: "none",
+    border: active
+      ? `1px solid ${light ? "rgba(15, 166, 216, 0.22)" : "rgba(53, 215, 255, 0.26)"}`
+      : "1px solid transparent",
     borderRadius: "18px",
     padding: "0.9rem 1rem",
-    background: active ? "rgba(59, 130, 246, 0.15)" : "transparent",
+    background: active
+      ? light
+        ? "rgba(15, 166, 216, 0.13)"
+        : "rgba(53, 215, 255, 0.14)"
+      : "transparent",
     color: disabled ? theme.mutedColor : theme.textColor,
     opacity: disabled ? 0.55 : 1
-  };
+  });
 }
 
 const headerStyle: CSSProperties = {
@@ -549,6 +730,13 @@ const titleStyle: CSSProperties = {
   fontWeight: 700
 };
 
+const titleRowStyle: CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.45rem",
+  minWidth: 0
+};
+
 const captionStyle: CSSProperties = {
   margin: "0.35rem 0 0",
   color: "#94a3b8",
@@ -557,6 +745,8 @@ const captionStyle: CSSProperties = {
 
 const listStyle: CSSProperties = {
   overflow: "auto",
+  scrollbarWidth: "none",
+  msOverflowStyle: "none",
   display: "flex",
   flexDirection: "column",
   gap: "1rem"
@@ -585,13 +775,13 @@ const sectionItemsStyle: CSSProperties = {
 };
 
 function emptyStateStyle(theme: Required<CommandTheme>): CSSProperties {
-  return {
+  return withSquircle({
     borderRadius: "18px",
     border: `1px dashed ${theme.borderColor}`,
     color: theme.mutedColor,
     textAlign: "center",
     padding: "2rem"
-  };
+  });
 }
 
 const itemLeadingStyle: CSSProperties = {
@@ -600,17 +790,32 @@ const itemLeadingStyle: CSSProperties = {
   gap: "0.8rem"
 };
 
-function iconStyle(active: boolean): CSSProperties {
-  return {
+function iconStyle(theme: Required<CommandTheme>, active: boolean): CSSProperties {
+  const light = isLightTheme(theme);
+  return withSquircle({
     width: "2rem",
     height: "2rem",
-    borderRadius: "12px",
+    borderRadius: "0.78rem",
     display: "grid",
     placeItems: "center",
+    color: active
+      ? light
+        ? "#0b607f"
+        : "#eaf8ff"
+      : light
+        ? "#2f546b"
+        : "rgba(188, 208, 223, 0.88)",
+    border: active
+      ? `1px solid ${light ? "rgba(15, 166, 216, 0.28)" : "rgba(53, 215, 255, 0.3)"}`
+      : `1px solid ${light ? "rgba(83, 112, 136, 0.18)" : "rgba(129, 155, 174, 0.18)"}`,
     background: active
-      ? "rgba(59, 130, 246, 0.25)"
-      : "rgba(148, 163, 184, 0.12)"
-  };
+      ? light
+        ? "rgba(15, 166, 216, 0.2)"
+        : "rgba(53, 215, 255, 0.24)"
+      : light
+        ? "rgba(83, 112, 136, 0.1)"
+        : "rgba(180, 205, 221, 0.12)"
+  });
 }
 
 const itemTitleStyle: CSSProperties = {
@@ -629,3 +834,49 @@ const shortcutStyle: CSSProperties = {
   color: "#94a3b8",
   fontSize: "0.82rem"
 };
+
+function isLightTheme(theme: Required<CommandTheme>): boolean {
+  const rgb = parseColorToRgb(theme.backgroundColor);
+  if (!rgb) {
+    return false;
+  }
+
+  const [r, g, b] = rgb;
+  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+  return luminance > 0.72;
+}
+
+function parseColorToRgb(color: string): [number, number, number] | null {
+  const value = color.trim();
+
+  if (value.startsWith("#")) {
+    const hex = value.slice(1);
+
+    if (hex.length === 3) {
+      return [
+        Number.parseInt(hex[0] + hex[0], 16),
+        Number.parseInt(hex[1] + hex[1], 16),
+        Number.parseInt(hex[2] + hex[2], 16)
+      ];
+    }
+
+    if (hex.length >= 6) {
+      return [
+        Number.parseInt(hex.slice(0, 2), 16),
+        Number.parseInt(hex.slice(2, 4), 16),
+        Number.parseInt(hex.slice(4, 6), 16)
+      ];
+    }
+  }
+
+  const rgbMatch = value.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (rgbMatch) {
+    return [
+      Number.parseInt(rgbMatch[1], 10),
+      Number.parseInt(rgbMatch[2], 10),
+      Number.parseInt(rgbMatch[3], 10)
+    ];
+  }
+
+  return null;
+}

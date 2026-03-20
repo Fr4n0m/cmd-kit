@@ -152,6 +152,7 @@ export function CommandPalette({
         />
 
         <PaletteResults
+          activeTitle={activeTitle}
           activeIndex={activeIndex}
           classNames={classNames}
           flatItems={flatItems}

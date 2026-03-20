@@ -43,6 +43,28 @@ export interface UseCommandPaletteOptions {
   recents?: MaybeRefOrGetter<boolean | RecentOptions | undefined>;
 }
 
+const defaultLightTheme: CommandTheme = {
+  accentColor: "#0fa6d8",
+  backgroundColor: "#ffffff",
+  textColor: "#0e1720",
+  mutedColor: "rgba(49, 68, 84, 0.78)",
+  borderColor: "rgba(83, 112, 136, 0.16)",
+  overlayColor: "rgba(232, 241, 248, 0.7)",
+  radius: "22px",
+  shadow: "0 20px 44px rgba(40, 64, 81, 0.14)"
+};
+
+const defaultDarkTheme: CommandTheme = {
+  accentColor: "#35d7ff",
+  backgroundColor: "#0b1116",
+  textColor: "#eff7fb",
+  mutedColor: "rgba(172, 192, 207, 0.74)",
+  borderColor: "rgba(129, 155, 174, 0.16)",
+  overlayColor: "rgba(6, 10, 14, 0.74)",
+  radius: "22px",
+  shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
+};
+
 export function useCommandPalette(options: UseCommandPaletteOptions) {
   const internalOpen = ref(toValue(options.defaultOpen) ?? false);
   const query = ref("");
@@ -52,7 +74,11 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   const loadedSections = ref<CommandSection[]>();
   const isLoading = ref(false);
   const recentRecords = ref<CommandItemRecord[]>([]);
+  const autoTheme = ref<CommandTheme>(resolveAdaptiveTheme());
   const previousFocus = ref<HTMLElement | null>(null);
+  const effectiveTheme = computed(
+    () => toValue(options.theme) ?? autoTheme.value
+  );
 
   const resolvedOpen = computed(
     () => toValue(options.open) ?? internalOpen.value
@@ -80,7 +106,7 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
       items: rootItems.value,
       sections: rootSections.value,
       messages: toValue(options.messages),
-      theme: toValue(options.theme),
+      theme: effectiveTheme.value,
       shortcut: resolvedShortcut.value
     })
   );
@@ -101,7 +127,7 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
         rootItems.value
       ),
       messages: toValue(options.messages),
-      theme: toValue(options.theme),
+      theme: effectiveTheme.value,
       shortcut: resolvedShortcut.value
     })
   );
@@ -112,6 +138,7 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
     snapshot.value.items.filter((item) => !item.disabled)
   );
   const canGoBack = computed(() => navigationStack.value.length > 0);
+  let cleanupThemeWatchers: (() => void) | undefined;
 
   watch(flatItems, (nextItems) => {
     if (!nextItems.length || activeIndex.value >= nextItems.length) {
@@ -314,9 +341,33 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
 
   onMounted(() => {
     window.addEventListener("keydown", handleWindowKeyDown);
+
+    if (toValue(options.theme) !== undefined) {
+      return;
+    }
+
+    const handleThemeUpdate = () => {
+      autoTheme.value = resolveAdaptiveTheme();
+    };
+
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const observer = new MutationObserver(handleThemeUpdate);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"]
+    });
+
+    media.addEventListener("change", handleThemeUpdate);
+    window.addEventListener("cmd-kit-theme-change", handleThemeUpdate);
+    cleanupThemeWatchers = () => {
+      observer.disconnect();
+      media.removeEventListener("change", handleThemeUpdate);
+      window.removeEventListener("cmd-kit-theme-change", handleThemeUpdate);
+    };
   });
 
   onBeforeUnmount(() => {
+    cleanupThemeWatchers?.();
     window.removeEventListener("keydown", handleWindowKeyDown);
   });
 
@@ -350,4 +401,15 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
     source: computed(() => toValue(options.source)),
     recents: computed(() => toValue(options.recents) ?? false)
   };
+}
+
+function resolveAdaptiveTheme(): CommandTheme {
+  if (typeof window === "undefined") {
+    return defaultDarkTheme;
+  }
+
+  const themeFromRoot = document.documentElement.dataset.theme;
+  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  const isLight = themeFromRoot === "light" || (!themeFromRoot && prefersLight);
+  return isLight ? defaultLightTheme : defaultDarkTheme;
 }

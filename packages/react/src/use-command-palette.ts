@@ -40,6 +40,28 @@ export interface UseCommandPaletteOptions {
   recents?: boolean | { limit?: number; sectionTitle?: string };
 }
 
+const defaultLightTheme: CommandTheme = {
+  accentColor: "#0fa6d8",
+  backgroundColor: "#ffffff",
+  textColor: "#0e1720",
+  mutedColor: "rgba(49, 68, 84, 0.78)",
+  borderColor: "rgba(83, 112, 136, 0.16)",
+  overlayColor: "rgba(232, 241, 248, 0.7)",
+  radius: "22px",
+  shadow: "0 20px 44px rgba(40, 64, 81, 0.14)"
+};
+
+const defaultDarkTheme: CommandTheme = {
+  accentColor: "#35d7ff",
+  backgroundColor: "#0b1116",
+  textColor: "#eff7fb",
+  mutedColor: "rgba(172, 192, 207, 0.74)",
+  borderColor: "rgba(129, 155, 174, 0.16)",
+  overlayColor: "rgba(6, 10, 14, 0.74)",
+  radius: "22px",
+  shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
+};
+
 export function useCommandPalette({
   items,
   sections,
@@ -63,7 +85,11 @@ export function useCommandPalette({
   >();
   const [isLoading, setIsLoading] = useState(false);
   const [recentRecords, setRecentRecords] = useState<CommandItemRecord[]>([]);
+  const [autoTheme, setAutoTheme] = useState<CommandTheme>(() =>
+    resolveAdaptiveTheme()
+  );
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const resolvedTheme = theme ?? autoTheme;
 
   const resolvedOpen = open ?? internalOpen;
   const rootItems = loadedItems ?? items;
@@ -77,10 +103,10 @@ export function useCommandPalette({
         items: rootItems,
         sections: rootSections,
         messages,
-        theme,
+        theme: resolvedTheme,
         shortcut
       }),
-    [messages, rootItems, rootSections, shortcut, theme]
+    [messages, resolvedTheme, rootItems, rootSections, shortcut]
   );
   const recentItems = useMemo(() => {
     if (!recents) {
@@ -100,7 +126,7 @@ export function useCommandPalette({
           rootItems
         ),
         messages,
-        theme,
+        theme: resolvedTheme,
         shortcut
       }),
     [
@@ -111,9 +137,35 @@ export function useCommandPalette({
       recents,
       rootItems,
       shortcut,
-      theme
+      resolvedTheme
     ]
   );
+
+  useEffect(() => {
+    if (theme) {
+      return;
+    }
+
+    const handleThemeUpdate = () => {
+      setAutoTheme(resolveAdaptiveTheme());
+    };
+
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const observer = new MutationObserver(handleThemeUpdate);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"]
+    });
+
+    media.addEventListener("change", handleThemeUpdate);
+    window.addEventListener("cmd-kit-theme-change", handleThemeUpdate);
+
+    return () => {
+      observer.disconnect();
+      media.removeEventListener("change", handleThemeUpdate);
+      window.removeEventListener("cmd-kit-theme-change", handleThemeUpdate);
+    };
+  }, [theme]);
   const snapshot = useMemo(
     () => createCommandSnapshot(resolvedConfig, query),
     [query, resolvedConfig]
@@ -495,4 +547,15 @@ export function isTypingTarget(target: EventTarget | null): boolean {
     target.isContentEditable ||
     target.getAttribute("role") === "textbox"
   );
+}
+
+function resolveAdaptiveTheme(): CommandTheme {
+  if (typeof window === "undefined") {
+    return defaultDarkTheme;
+  }
+
+  const themeFromRoot = document.documentElement.dataset.theme;
+  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  const isLight = themeFromRoot === "light" || (!themeFromRoot && prefersLight);
+  return isLight ? defaultLightTheme : defaultDarkTheme;
 }

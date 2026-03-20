@@ -132,6 +132,7 @@ function isCurrentPath(target: string) {
           <nav aria-label={copy.primaryNavigationLabel} class="topbar-nav">
             <a
               aria-current={isCurrentPath("/docs/getting-started") ? "page" : undefined}
+              class="nav-button nav-button-subtle"
               href={docsHref}
             >
               {copy.docs}
