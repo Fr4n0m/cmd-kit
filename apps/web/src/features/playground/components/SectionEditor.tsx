@@ -1,10 +1,10 @@
 import React from "react";
 
-import { Icon } from "../../../components/icons/PlaygroundIcon";
+import { Icon } from "@/components/icons/PlaygroundIcon";
 import type { CommandItem, CommandSection } from "@cmd-kit/react";
 
-import type { PlaygroundConfig } from "../config";
-import type { PlaygroundLabels } from "../ui";
+import type { PlaygroundConfig } from "@/features/playground/config";
+import type { PlaygroundLabels } from "@/features/playground/ui";
 import { Field } from "./Fields";
 
 interface NestedSectionEditorProps {
@@ -398,3 +398,4 @@ export function SectionEditor({
     </div>
   );
 }
+

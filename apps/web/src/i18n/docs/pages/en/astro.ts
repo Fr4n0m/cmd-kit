@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const astroENDoc: DocPageData = {
     slug: "astro", navLabel: "Astro", eyebrow: "Astro", heading: "Astro Integration", title: "Cmd+kit | Astro",
@@ -59,3 +59,5 @@ const sections = [
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Do I need React to use <code>@cmd-kit/astro</code>?</strong> No. The Astro package no longer depends on React.", "<strong>Why does the package export <code>/component</code>?</strong> Astro consumes the packaged component through <code>@cmd-kit/astro/component</code>.", "<strong>Can I pass callbacks from <code>.astro</code> files?</strong> Keep props serializable in Astro. For callback-driven behavior, use <code>@cmd-kit/core</code> with a custom UI.", "<strong>How do I disable recent commands in Astro?</strong> Do not pass <code>recents</code> (default off) or set <code>recents={false}</code>.", "<strong>When should I move to Core?</strong> Move when you need behavior or rendering beyond the packaged Astro component surface.", "<strong>Does Astro limit theme or messages customization?</strong> No. You can still configure <code>theme</code>, <code>messages</code>, sections, and recents from Astro props."] }] }
     ]
   };
+
+

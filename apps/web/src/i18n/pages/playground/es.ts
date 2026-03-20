@@ -1,4 +1,4 @@
-import type { PlaygroundPageCopy } from "../shared";
+import type { PlaygroundPageCopy } from "@/i18n/pages/shared";
 
 export const playgroundEs: PlaygroundPageCopy = {
   badge: "Configurador",
@@ -17,3 +17,4 @@ export const playgroundEs: PlaygroundPageCopy = {
   stackNames: ["React", "Vue", "Preact", "Astro"],
   title: "Cmd+kit | Playground"
 };
+

@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-import { createSiteUrl } from "../config/site";
+import { createSiteUrl } from "@/config/site";
 
 export const GET: APIRoute = () => {
   const lines = ["User-agent: *", "Allow: /"];
@@ -16,3 +16,4 @@ export const GET: APIRoute = () => {
     }
   });
 };
+

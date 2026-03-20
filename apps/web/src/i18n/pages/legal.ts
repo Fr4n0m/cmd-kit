@@ -1,5 +1,5 @@
 import type { LegalPageCopy } from "./shared";
-import type { Locale } from "../site";
+import type { Locale } from "@/i18n/site";
 import { legalEn } from "./legal/en";
 import { legalEs } from "./legal/es";
 
@@ -7,4 +7,5 @@ export const legalPages: Record<Locale, Record<"privacy" | "terms", LegalPageCop
   en: legalEn,
   es: legalEs
 };
+
 

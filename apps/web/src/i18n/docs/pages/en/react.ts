@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const reactENDoc: DocPageData = {
     slug: "react",
@@ -72,3 +72,5 @@ export function Example() {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Should I use <code>CommandPalette</code> or <code>useCommandPalette</code>?</strong> Start with <code>CommandPalette</code>. Use <code>useCommandPalette</code> when you need to orchestrate state and rendering yourself.", "<strong>How do I avoid shortcut conflicts with my app?</strong> Override <code>shortcut</code> and pick a combination that does not collide with existing editor, search, or browser shortcuts.", "<strong>Can I control open state from React state?</strong> Yes. Use <code>open</code> and <code>onOpenChange</code> for controlled mode, or <code>defaultOpen</code> for uncontrolled mode.", "<strong>How do I disable recent commands in React?</strong> Keep <code>recents</code> undefined (default off) or pass <code>recents={false}</code>.", "<strong>How should I load commands from an API?</strong> Use <code>source</code> and return the same command shape (<code>items</code> and/or <code>sections</code>) that static configuration uses.", "<strong>What is the best way to customize row UI?</strong> Use <code>renderItem</code> for full row control, or <code>renderers</code> for targeted overrides like title, section title, and empty state."] }] }
     ]
   };
+
+

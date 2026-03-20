@@ -1,4 +1,4 @@
-import type { HomeOverviewCopy } from "../shared";
+import type { HomeOverviewCopy } from "@/i18n/pages/home/shared";
 
 export const homeOverviewEs: HomeOverviewCopy = {
   metricOutputLabel: "Salida",
@@ -19,3 +19,5 @@ export const homeOverviewEs: HomeOverviewCopy = {
   overviewSearchEyebrow: "Búsqueda",
   overviewSearchHeading: "Búsqueda diseñada para escalar contenido"
 };
+
+

@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const coreESDoc: DocPageData = {
     slug: "core", navLabel: "Core", eyebrow: "Core", heading: "Core headless", title: "Cmd+kit | Core",
@@ -51,3 +51,5 @@ const recentItems = resolveRecentCommands(config.items, recentRecords);` }] },
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Core incluye componentes visuales?</strong> No. Core es headless y aporta modelado de comandos, filtrado, snapshots, ejecución y helpers de tema/mensajes.", "<strong>¿Cuándo debo empezar directamente por Core?</strong> Cuando ya sabes que necesitas una UI completamente custom o un adaptador propio.", "<strong>¿Core soporta carga asíncrona de comandos?</strong> Sí. Puedes usar <code>source</code> y <code>loadCommandSource</code> con el mismo shape de datos que en los adaptadores.", "<strong>¿Cómo ejecuto enlaces, callbacks y navegación anidada?</strong> Con <code>dispatchCommandExecution</code> y una implementación de <code>port</code> para <code>openHref</code>, <code>runCallback</code> y <code>navigate</code>.", "<strong>¿Puedo compartir datos entre Core y los adaptadores?</strong> Sí. El modelo de comandos es común, así que puedes migrar sin rediseñar la estructura de ítems/secciones."] }] }
     ]
   };
+
+

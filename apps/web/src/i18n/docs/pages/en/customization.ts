@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const customizationENDoc: DocPageData = {
     slug: "customization", navLabel: "Customization", eyebrow: "Customization", heading: "Customization", title: "Cmd+kit | Customization",
@@ -108,3 +108,5 @@ const themeBlock = \`:root {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Should icon components live in the command data model?</strong> Usually no. Keep data framework-agnostic and map icons in renderers/slots.", "<strong>What is the cleanest styling strategy?</strong> Use <code>theme</code> for shared design tokens and <code>classNames</code> for slot-level CSS control.", "<strong>Can I use both nested navigation and async source data?</strong> Yes, as long as async payloads keep the same section/item shape including nested <code>children</code>.", "<strong>How should I localize placeholder and empty-state text?</strong> Override <code>messages</code> from your app-level i18n layer instead of hard-coding strings in command data.", "<strong>How do I keep custom renderers maintainable?</strong> Keep renderer functions focused on presentation and avoid embedding business logic that belongs in command generation."] }] }
     ]
   };
+
+

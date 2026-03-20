@@ -1,17 +1,17 @@
 ---
-import "../styles.css";
-import BrandLockup from "../components/BrandLockup.astro";
-import { GlobalPaletteIsland } from "../components/GlobalPaletteIsland";
-import Icon from "../components/Icon.astro";
-import SiteFooter from "../components/SiteFooter.astro";
+import "@/styles.css";
+import BrandLockup from "@/components/BrandLockup.astro";
+import { GlobalPaletteIsland } from "@/components/GlobalPaletteIsland";
+import Icon from "@/components/Icon.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
 import {
   defaultLocale,
   layoutCopy,
   localizedPath,
   swapLocalePath,
   type Locale
-} from "../i18n/site";
-import { getDocsNavigation, type DocsSectionItem } from "../i18n/docs";
+} from "@/i18n/site";
+import { getDocsNavigation, type DocsSectionItem } from "@/i18n/docs";
 
 interface Props {
   description: string;
@@ -244,3 +244,4 @@ function isCurrentPath(target: string) {
     <script is:inline set:html={localeMenuScript} />
   </body>
 </html>
+

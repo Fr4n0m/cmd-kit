@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const vueESDoc: DocPageData = {
     slug: "vue", navLabel: "Vue", eyebrow: "Vue", heading: "Integración con Vue", title: "Cmd+kit | Vue",
@@ -51,3 +51,5 @@ const sections = [
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Necesito <code>&lt;script setup&gt;</code> para usar el adaptador de Vue?</strong> No. También funciona con componentes Vue tradicionales; <code>&lt;script setup&gt;</code> es solo una comodidad.", "<strong>¿Cómo personalizo la fila de resultados en Vue?</strong> Usa el slot <code>item</code> para renderizar tus iconos, layout y metadatos según cada comando.", "<strong>¿Puedo sincronizar el estado abierto/cerrado con un estado padre?</strong> Sí. Vincula <code>v-model:open</code> (o escucha <code>open-change</code>) para integrarlo con tu estado global.", "<strong>¿Cómo desactivo recientes en Vue?</strong> Deja <code>recents</code> sin pasar (apagado por defecto) o usa <code>:recents=\"false\"</code>.", "<strong>¿Cómo lo estilizo sin rehacer todo el componente?</strong> Usa <code>theme</code> para tokens base y <code>classNames</code> para hooks CSS por slot.", "<strong>¿Cuándo conviene ir de Vue a Core?</strong> Cuando la personalización por slots ya no sea suficiente y necesites un pipeline de render completamente propio."] }] }
     ]
   };
+
+

@@ -1,4 +1,4 @@
-import type { LegalPageCopy } from "../../shared";
+import type { LegalPageCopy } from "@/i18n/pages/shared";
 
 export const legalTermsEn: LegalPageCopy = {
   description: "Terms information for the Cmd+kit site.",
@@ -13,3 +13,4 @@ export const legalTermsEn: LegalPageCopy = {
   ],
   title: "Cmd+kit | Terms"
 };
+

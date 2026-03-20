@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const reactESDoc: DocPageData = {
     slug: "react", navLabel: "React", eyebrow: "React", heading: "Integración con React", title: "Cmd+kit | React",
@@ -68,3 +68,5 @@ export function Example() {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Cuándo uso <code>CommandPalette</code> y cuándo <code>useCommandPalette</code>?</strong> Empieza por <code>CommandPalette</code>. Usa <code>useCommandPalette</code> cuando quieras orquestar estado y render por tu cuenta.", "<strong>¿Cómo evito conflictos de atajos con mi aplicación?</strong> Sobrescribe <code>shortcut</code> y usa una combinación que no choque con atajos globales del producto o del navegador.", "<strong>¿Puedo controlar la apertura desde estado de React?</strong> Sí. Usa <code>open</code> y <code>onOpenChange</code> en modo controlado, o <code>defaultOpen</code> en modo no controlado.", "<strong>¿Cómo desactivo los comandos recientes en React?</strong> Deja <code>recents</code> sin definir (apagado por defecto) o pásalo como <code>recents={false}</code>.", "<strong>¿Cuál es la forma recomendada de cargar comandos desde API?</strong> Usa <code>source</code> y devuelve la misma estructura (<code>items</code> y/o <code>sections</code>) que usarías en configuración estática.", "<strong>¿Cómo personalizo bien la fila del ítem?</strong> Usa <code>renderItem</code> si quieres control total de la fila o <code>renderers</code> para overrides puntuales (título, sección, estado vacío)."] }] }
     ]
   };
+
+

@@ -1,4 +1,4 @@
-import type { LegalPageCopy } from "../../shared";
+import type { LegalPageCopy } from "@/i18n/pages/shared";
 
 export const legalPrivacyEs: LegalPageCopy = {
   description: "Información de privacidad del sitio de Cmd+kit.",
@@ -13,3 +13,4 @@ export const legalPrivacyEs: LegalPageCopy = {
   ],
   title: "Cmd+kit | Privacidad"
 };
+

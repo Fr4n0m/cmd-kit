@@ -2,13 +2,13 @@ import React from "react";
 
 import { CommandPalette } from "@cmd-kit/react";
 
-import { toTheme } from "../features/playground/config";
-import { PlaygroundCodePanel } from "../features/playground/components/PlaygroundCodePanel";
-import { PlaygroundConfigurator } from "../features/playground/components/PlaygroundConfigurator";
-import { PlaygroundHeader } from "../features/playground/components/PlaygroundHeader";
-import { usePlaygroundState } from "../features/playground/playground-state";
-import { getPlaygroundCopy } from "../features/playground/ui";
-import type { Language } from "../features/playground/config";
+import { toTheme } from "@/features/playground/config";
+import { PlaygroundCodePanel } from "@/features/playground/components/PlaygroundCodePanel";
+import { PlaygroundConfigurator } from "@/features/playground/components/PlaygroundConfigurator";
+import { PlaygroundHeader } from "@/features/playground/components/PlaygroundHeader";
+import { usePlaygroundState } from "@/features/playground/playground-state";
+import { getPlaygroundCopy } from "@/features/playground/ui";
+import type { Language } from "@/features/playground/config";
 
 interface PlaygroundIslandProps {
   initialLanguage?: Language;
@@ -143,3 +143,4 @@ export default function PlaygroundIsland({
     </section>
   );
 }
+

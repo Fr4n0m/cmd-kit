@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Icon } from "../../../components/icons/PlaygroundIcon";
-import type { PlaygroundConfig } from "../config";
-import type { PlaygroundLabels } from "../ui";
+import { Icon } from "@/components/icons/PlaygroundIcon";
+import type { PlaygroundConfig } from "@/features/playground/config";
+import type { PlaygroundLabels } from "@/features/playground/ui";
 import { PlaygroundBasicsForm } from "./PlaygroundBasicsForm";
 import { PlaygroundSectionsPanel } from "./PlaygroundSectionsPanel";
 import { PlaygroundThemeForm } from "./PlaygroundThemeForm";
@@ -182,3 +182,4 @@ export function PlaygroundConfigurator({
     </section>
   );
 }
+

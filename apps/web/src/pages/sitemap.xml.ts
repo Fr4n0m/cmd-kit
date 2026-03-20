@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-import { createSiteUrl, siteOrigin } from "../config/site";
+import { createSiteUrl, siteOrigin } from "@/config/site";
 
 const routes = [
   "/",
@@ -50,3 +50,4 @@ ${routes
     }
   });
 };
+

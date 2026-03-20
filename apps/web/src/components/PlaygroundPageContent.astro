@@ -1,8 +1,8 @@
 ---
 import Icon from "./Icon.astro";
 import PlaygroundIsland from "./PlaygroundIsland";
-import type { PlaygroundPageCopy } from "../i18n/pages";
-import type { Locale } from "../i18n/site";
+import type { PlaygroundPageCopy } from "@/i18n/pages";
+import type { Locale } from "@/i18n/site";
 
 interface Props {
   content: PlaygroundPageCopy;
@@ -39,3 +39,4 @@ const { content, locale } = Astro.props;
   </section>
   <PlaygroundIsland client:load initialLanguage={locale} mode="page" />
 </main>
+

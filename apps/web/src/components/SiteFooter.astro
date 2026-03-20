@@ -1,6 +1,6 @@
 ---
 import BrandLockup from "./BrandLockup.astro";
-import { layoutCopy, localizedPath, type Locale } from "../i18n/site";
+import { layoutCopy, localizedPath, type Locale } from "@/i18n/site";
 
 interface Props {
   locale: Locale;
@@ -47,3 +47,4 @@ const termsHref = localizedPath(locale, "/legal/terms");
     </nav>
   </div>
 </footer>
+

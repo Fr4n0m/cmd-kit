@@ -1,7 +1,7 @@
 import React from "react";
 
-import type { PlaygroundConfig } from "../config";
-import type { PlaygroundLabels } from "../ui";
+import type { PlaygroundConfig } from "@/features/playground/config";
+import type { PlaygroundLabels } from "@/features/playground/ui";
 import { ColorField, Field } from "./Fields";
 
 interface PlaygroundThemeFormProps {
@@ -107,3 +107,4 @@ export function PlaygroundThemeForm({
     </div>
   );
 }
+

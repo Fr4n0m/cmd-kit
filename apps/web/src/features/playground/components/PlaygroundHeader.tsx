@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Icon } from "../../../components/icons/PlaygroundIcon";
-import type { PlaygroundLabels } from "../ui";
+import { Icon } from "@/components/icons/PlaygroundIcon";
+import type { PlaygroundLabels } from "@/features/playground/ui";
 
 interface PlaygroundHeaderProps {
   labels: PlaygroundLabels;
@@ -35,3 +35,4 @@ export function PlaygroundHeader({ labels, onLaunch }: PlaygroundHeaderProps) {
     </div>
   );
 }
+

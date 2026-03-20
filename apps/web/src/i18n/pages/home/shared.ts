@@ -1,4 +1,4 @@
-import type { HomePageCopy } from "../shared";
+import type { HomePageCopy } from "@/i18n/pages/shared";
 
 export type HomeHeroCopy = Pick<
   HomePageCopy,
@@ -72,3 +72,4 @@ export type HomeLaunchCopy = Pick<
   | "technologyNames"
   | "title"
 >;
+

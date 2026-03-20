@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const customizationESDoc: DocPageData = {
     slug: "customization", navLabel: "Personalización", eyebrow: "Personalización", heading: "Personalización", title: "Cmd+kit | Personalización",
@@ -86,3 +86,5 @@ export const customizationESDoc: DocPageData = {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Debo meter componentes de icono dentro del modelo de datos?</strong> Normalmente no. Mantén el modelo agnóstico y mapea iconos en renderers o slots.", "<strong>¿Qué estrategia de estilos es más limpia?</strong> Usa <code>theme</code> para tokens de diseño comunes y <code>classNames</code> para control CSS por slot.", "<strong>¿Puedo combinar navegación anidada con <code>source</code> asíncrono?</strong> Sí, siempre que la respuesta asíncrona respete el mismo shape de comandos.", "<strong>¿Cómo localizo placeholder y estado vacío?</strong> Sobrescribe <code>messages</code> desde tu capa de i18n en vez de hardcodearlo en los datos.", "<strong>¿Cómo mantener renderers custom sin que se vuelvan inmantenibles?</strong> Deja la lógica de negocio en la generación de comandos y usa renderers solo para presentación."] }] }
     ]
   };
+
+

@@ -1,4 +1,4 @@
-import type { HomeHeroCopy } from "../shared";
+import type { HomeHeroCopy } from "@/i18n/pages/home/shared";
 
 export const homeHeroEs: HomeHeroCopy = {
   badge: "Toolkit open source de command palette",
@@ -30,3 +30,5 @@ export const homeHeroEs: HomeHeroCopy = {
   heroTerminalLabel: "terminal",
   heroTerminalTitle: "cmd-kit"
 };
+
+

@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import type { Locale } from "../i18n/site";
+import type { Locale } from "@/i18n/site";
 
 interface Props {
   locale: Locale;
@@ -185,3 +185,4 @@ const heroInstallScript = `(function(){const root=document.getElementById(${JSON
 </section>
 
 <script is:inline set:html={heroInstallScript}></script>
+

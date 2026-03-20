@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const gettingStartedENDoc: DocPageData = {
     slug: "getting-started",
@@ -48,3 +48,5 @@ export const gettingStartedENDoc: DocPageData = {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Which package should I install if my app mixes multiple frameworks?</strong> Install the adapter used by the UI tree that will render the palette. Use <code>@cmd-kit/core</code> only if you are building your own UI layer.", "<strong>Do I need to install peer dependencies manually?</strong> Yes. Install the adapter package together with the runtime your project already uses (React, Vue, Preact, or Astro).", "<strong>Can I start with static sections and move to async data later?</strong> Yes. You can begin with <code>sections</code> or <code>items</code> and later migrate to <code>source</code> without changing the command model.", "<strong>Can I disable recent commands completely?</strong> Yes. Do not pass <code>recents</code> (default is off) or pass <code>recents={false}</code> explicitly.", "<strong>Is Cmd+kit suitable for production apps?</strong> Yes, as long as you validate your command structure, keyboard flow, and app-specific behavior in your own environment before shipping.", "<strong>When should I move from an adapter to Core?</strong> Move to Core when you need complete control over rendering and interaction details that exceed the packaged component surface."] }] }
     ]
   };
+
+

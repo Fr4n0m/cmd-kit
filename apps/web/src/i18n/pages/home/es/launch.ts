@@ -1,4 +1,4 @@
-import type { HomeLaunchCopy } from "../shared";
+import type { HomeLaunchCopy } from "@/i18n/pages/home/shared";
 
 export const homeLaunchEs: HomeLaunchCopy = {
   customizationCta: "Personalización",
@@ -29,3 +29,5 @@ export const homeLaunchEs: HomeLaunchCopy = {
   technologyNames: ["React", "Vue", "Preact", "Astro", "Vanilla"],
   title: "Cmd+kit"
 };
+
+

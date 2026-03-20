@@ -1,5 +1,5 @@
 ---
-import type { LegalPageCopy } from "../i18n/pages";
+import type { LegalPageCopy } from "@/i18n/pages";
 
 interface Props {
   content: LegalPageCopy;
@@ -15,3 +15,4 @@ const { content } = Astro.props;
     {content.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
   </article>
 </main>
+

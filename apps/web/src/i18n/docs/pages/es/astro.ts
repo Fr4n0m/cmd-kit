@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const astroESDoc: DocPageData = {
     slug: "astro", navLabel: "Astro", eyebrow: "Astro", heading: "Integración con Astro", title: "Cmd+kit | Astro",
@@ -59,3 +59,5 @@ const sections = [
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Necesito React para usar <code>@cmd-kit/astro</code>?</strong> No. El paquete de Astro ya no depende de React.", "<strong>¿Por qué se importa desde <code>@cmd-kit/astro/component</code>?</strong> Porque Astro consume el componente empaquetado a través de ese entrypoint.", "<strong>¿Puedo pasar callbacks desde un archivo <code>.astro</code>?</strong> Mantén props serializables en Astro. Para lógica con callbacks usa <code>@cmd-kit/core</code> y una UI propia.", "<strong>¿Cómo desactivo recientes en Astro?</strong> No pases <code>recents</code> (apagado por defecto) o usa <code>recents={false}</code>.", "<strong>¿Cuándo conviene pasar a Core?</strong> Cuando necesitas comportamiento o render que excede la superficie del componente empaquetado.", "<strong>¿Pierdo personalización de tema y mensajes en Astro?</strong> No. Puedes seguir configurando <code>theme</code>, <code>messages</code>, secciones y recientes desde props de Astro."] }] }
     ]
   };
+
+

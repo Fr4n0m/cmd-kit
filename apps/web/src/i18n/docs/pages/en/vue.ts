@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const vueENDoc: DocPageData = {
     slug: "vue", navLabel: "Vue", eyebrow: "Vue", heading: "Vue Integration", title: "Cmd+kit | Vue",
@@ -51,3 +51,5 @@ const sections = [
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Do I need <code>&lt;script setup&gt;</code> to use the Vue adapter?</strong> No. It works with regular Vue components too; <code>&lt;script setup&gt;</code> is only a convenience.", "<strong>How do I customize the item row in Vue?</strong> Use the <code>item</code> slot to render your own icon, layout, and metadata based on the current command item.", "<strong>Can I sync palette visibility with parent state?</strong> Yes. Bind <code>v-model:open</code> (or listen to <code>open-change</code>) to integrate with your app-level state.", "<strong>How do I disable recent commands in Vue?</strong> Keep <code>recents</code> unset (default off) or pass <code>:recents=\"false\"</code>.", "<strong>How do I style it without rewriting everything?</strong> Use <code>theme</code> for built-in tokens and <code>classNames</code> for slot-level CSS hooks.", "<strong>When should I switch from the Vue component to Core?</strong> Switch when slot-based customization is not enough and you need a fully custom rendering pipeline."] }] }
     ]
   };
+
+

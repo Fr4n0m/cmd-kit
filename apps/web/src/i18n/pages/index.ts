@@ -1,4 +1,4 @@
-import type { Locale } from "../site";
+import type { Locale } from "@/i18n/site";
 import { homePages } from "./home";
 import { legalPages } from "./legal";
 import { playgroundPages } from "./playground";
@@ -16,3 +16,4 @@ export function getPlaygroundPage(locale: Locale) {
 export function getLegalPage(locale: Locale, slug: "privacy" | "terms") {
   return legalPages[locale][slug];
 }
+

@@ -3,8 +3,8 @@ import BaseLayout from "./BaseLayout.astro";
 import {
   getDocsNavigation,
   type DocsSectionItem
-} from "../i18n/docs";
-import { layoutCopy, localizedPath, type Locale } from "../i18n/site";
+} from "@/i18n/docs";
+import { layoutCopy, localizedPath, type Locale } from "@/i18n/site";
 
 interface Props {
   description: string;
@@ -143,3 +143,4 @@ const copy = layoutCopy[locale];
     })();
   </script>
 </BaseLayout>
+

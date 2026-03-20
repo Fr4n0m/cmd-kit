@@ -1,8 +1,8 @@
 import React, { useId, useState } from "react";
 
-import { Icon } from "../../../components/icons/PlaygroundIcon";
-import type { SnippetTab } from "../playground-state";
-import type { PlaygroundLabels } from "../ui";
+import { Icon } from "@/components/icons/PlaygroundIcon";
+import type { SnippetTab } from "@/features/playground/playground-state";
+import type { PlaygroundLabels } from "@/features/playground/ui";
 
 interface PlaygroundCodePanelProps {
   activeTab: SnippetTab;
@@ -153,3 +153,4 @@ export function PlaygroundCodePanel({
     </section>
   );
 }
+

@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const playgroundENDoc: DocPageData = {
     slug: "playground", navLabel: "Playground", eyebrow: "Playground (Provisional)", heading: "Playground Guide (Provisional)", title: "Cmd+kit | Playground Docs",
@@ -15,3 +15,5 @@ export const playgroundENDoc: DocPageData = {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Should I ship exported code without changes?</strong> Usually no. Treat exports as a starting scaffold and adapt naming, styling, and behavior to your production codebase.", "<strong>Is the playground the source of truth for API details?</strong> No. Use package docs (React, Vue, Preact, Astro, Core) as the source of truth for supported props and behavior.", "<strong>Can I use the playground if I plan to build on Core?</strong> Yes. It is useful for validating command structure before implementing custom rendering.", "<strong>Why does exported code differ slightly from my project style?</strong> Exports are intentionally generic. Normalize them to your lint rules, architecture, and design system conventions.", "<strong>What should I validate before moving playground output to production?</strong> Verify keyboard flow, nested navigation, accessibility labels, and async/error behavior in your real app context."] }] }
     ]
   };
+
+

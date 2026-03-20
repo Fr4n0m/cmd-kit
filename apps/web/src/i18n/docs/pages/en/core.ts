@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const coreENDoc: DocPageData = {
     slug: "core", navLabel: "Core", eyebrow: "Core", heading: "Headless Core", title: "Cmd+kit | Core",
@@ -79,3 +79,5 @@ const cssText = createThemeCssText(theme);` }] },
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Does Core include any UI components?</strong> No. Core is headless and provides command modeling, filtering, snapshots, execution, messages, and theme helpers.", "<strong>When is Core the right starting point?</strong> Start with Core when you already know you need a custom UI layer or a custom framework adapter.", "<strong>Can Core load commands asynchronously?</strong> Yes. Use <code>source</code> and <code>loadCommandSource</code> with the same payload shape used by adapter packages.", "<strong>How do I execute links, callbacks, and nested navigation?</strong> Use <code>dispatchCommandExecution</code> with a <code>port</code> implementation for <code>openHref</code>, <code>runCallback</code>, and <code>navigate</code>.", "<strong>Can I share data between Core and adapter integrations?</strong> Yes. The command model is shared, so you can move between Core and adapters without redesigning item/section structures."] }] }
     ]
   };
+
+

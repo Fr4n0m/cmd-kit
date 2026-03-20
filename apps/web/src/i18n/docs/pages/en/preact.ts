@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const preactENDoc: DocPageData = {
     slug: "preact", navLabel: "Preact", eyebrow: "Preact", heading: "Preact Integration", title: "Cmd+kit | Preact",
@@ -47,3 +47,5 @@ export function Example() {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Is the Preact API intentionally close to React?</strong> Yes. The adapter mirrors the React-facing API so teams can share patterns and configuration.", "<strong>Do I need React compatibility aliases to use it?</strong> No. Use <code>@cmd-kit/preact</code> directly with Preact in your project.", "<strong>Can I still use async loading and recents?</strong> Yes. <code>source</code> and <code>recents</code> are available in the Preact adapter.", "<strong>How do I disable recent commands in Preact?</strong> Keep <code>recents</code> undefined (default off) or pass <code>recents={false}</code>.", "<strong>How do I replace the default item UI?</strong> Use <code>renderItem</code> for full row ownership or <code>renderers</code> for targeted render overrides.", "<strong>When is Core a better fit than the Preact adapter?</strong> When your product requires UI behavior that goes beyond the packaged component boundaries."] }] }
     ]
   };
+
+

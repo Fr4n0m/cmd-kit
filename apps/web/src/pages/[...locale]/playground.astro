@@ -1,8 +1,8 @@
 ---
-import PlaygroundPageContent from "../../components/PlaygroundPageContent.astro";
-import { getPlaygroundPage } from "../../i18n/pages";
-import { defaultLocale, secondaryLocales, type Locale } from "../../i18n/site";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import PlaygroundPageContent from "@/components/PlaygroundPageContent.astro";
+import { getPlaygroundPage } from "@/i18n/pages";
+import { defaultLocale, secondaryLocales, type Locale } from "@/i18n/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 
 export function getStaticPaths() {
   return [
@@ -20,3 +20,4 @@ const content = getPlaygroundPage(locale);
 <BaseLayout description={content.description} locale={locale} title={content.title}>
   <PlaygroundPageContent content={content} locale={locale} />
 </BaseLayout>
+

@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const playgroundESDoc: DocPageData = {
     slug: "playground", navLabel: "Playground", eyebrow: "Playground (Provisional)", heading: "Guía del playground (Provisional)", title: "Cmd+kit | Documentación del playground",
@@ -14,3 +14,5 @@ export const playgroundESDoc: DocPageData = {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Debo llevarme el código exportado tal cual a producción?</strong> Normalmente no. Úsalo como base y adáptalo a tu arquitectura, naming y estilos.", "<strong>¿El playground es la referencia oficial de API?</strong> No. La referencia oficial está en la documentación de cada paquete (React, Vue, Preact, Astro y Core).", "<strong>¿Tiene sentido usar playground si voy a implementar sobre Core?</strong> Sí. Es útil para validar primero la estructura de comandos antes de montar tu render custom.", "<strong>¿Por qué el snippet exportado no coincide al 100% con mi estilo de proyecto?</strong> Porque el export está diseñado como plantilla neutral. Ajusta formato, estructura y convenciones internas.", "<strong>¿Qué debería validar antes de pasar del playground a producción?</strong> Flujo de teclado, navegación anidada, labels de accesibilidad y comportamiento de carga/error en tu contexto real."] }] }
     ]
   };
+
+

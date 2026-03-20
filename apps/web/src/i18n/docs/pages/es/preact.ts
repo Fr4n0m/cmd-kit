@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const preactESDoc: DocPageData = {
     slug: "preact", navLabel: "Preact", eyebrow: "Preact", heading: "Integración con Preact", title: "Cmd+kit | Preact",
@@ -38,3 +38,5 @@ export function Example() {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿La API de Preact es intencionalmente parecida a React?</strong> Sí. El adaptador replica la API de React para compartir patrones y configuración.", "<strong>¿Necesito alias de compatibilidad de React para usarlo?</strong> No. Con <code>@cmd-kit/preact</code> trabajas directamente sobre Preact.", "<strong>¿También tengo <code>source</code> asíncrono y recientes en Preact?</strong> Sí. <code>source</code> y <code>recents</code> están soportados en el adaptador de Preact.", "<strong>¿Cómo desactivo recientes en Preact?</strong> Deja <code>recents</code> sin definir (apagado por defecto) o pásalo como <code>recents={false}</code>.", "<strong>¿Cómo reemplazo la UI por defecto de cada fila?</strong> Usa <code>renderItem</code> para controlar toda la fila o <code>renderers</code> para overrides puntuales.", "<strong>¿Cuándo es mejor usar Core en vez del adaptador de Preact?</strong> Cuando tu producto requiere una interacción o un render que sobrepasa los límites del componente empaquetado."] }] }
     ]
   };
+
+

@@ -1,4 +1,4 @@
-import type { DocPageData } from "../../shared";
+import type { DocPageData } from "@/i18n/docs/shared";
 
 export const gettingStartedESDoc: DocPageData = {
     slug: "getting-started", navLabel: "Primeros pasos", eyebrow: "Docs", heading: "Primeros pasos", title: "Cmd+kit | Primeros pasos",
@@ -42,3 +42,5 @@ export const gettingStartedESDoc: DocPageData = {
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>¿Qué paquete instalo si mi app mezcla varias tecnologías?</strong> Instala el adaptador del árbol de UI que va a renderizar la palette. Usa <code>@cmd-kit/core</code> solo si vas a construir tu propia capa de UI.", "<strong>¿Tengo que instalar las peer dependencies manualmente?</strong> Sí. Instala el adaptador junto al runtime que ya usa tu proyecto (React, Vue, Preact o Astro).", "<strong>¿Puedo empezar con secciones estáticas y luego pasar a datos asíncronos?</strong> Sí. Puedes arrancar con <code>sections</code> o <code>items</code> y migrar después a <code>source</code> sin cambiar el modelo de comandos.", "<strong>¿Puedo desactivar completamente los comandos recientes?</strong> Sí. No pases <code>recents</code> (por defecto está apagado) o pásalo como <code>recents={false}</code>.", "<strong>¿Cmd+kit está listo para producción?</strong> Sí, siempre que valides en tu app real la estructura de comandos, el flujo de teclado y el comportamiento específico del producto.", "<strong>¿Cuándo tiene sentido pasar de un adaptador a Core?</strong> Cuando necesitas control total del renderizado y de la interacción más allá de lo que ofrece el componente empaquetado."] }] }
     ]
   };
+
+

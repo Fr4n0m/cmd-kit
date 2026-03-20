@@ -1,7 +1,7 @@
 ---
 import Icon from "./Icon.astro";
-import { getInstallSelectorCopy } from "../i18n/docs";
-import { localizedPath, type Locale } from "../i18n/site";
+import { getInstallSelectorCopy } from "@/i18n/docs";
+import { localizedPath, type Locale } from "@/i18n/site";
 
 interface Props {
   adapter?: "astro" | "core" | "preact" | "react" | "vue";
@@ -188,3 +188,4 @@ const installSelectorScript = `(function(){const root=document.getElementById(${
 </section>
 
 <script is:inline set:html={installSelectorScript} />
+

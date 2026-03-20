@@ -1,4 +1,4 @@
-import type { Locale } from "../site";
+import type { Locale } from "@/i18n/site";
 import { docsEn } from "./en";
 import { docsEs } from "./es";
 import {
@@ -68,3 +68,4 @@ export function getInstallSelectorCopy(locale: Locale): InstallSelectorCopy {
     technologies: { astro: "Astro", core: "Core", preact: "Preact", react: "React", vue: "Vue" }
   };
 }
+
