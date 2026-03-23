@@ -1,5 +1,5 @@
 import "./style.css";
-import { createCommandPalette } from "@cmd-kit/vanilla";
+import { createCommandPalette } from "@cmd-kit/core";
 
 const root = document.querySelector<HTMLDivElement>("#app");
 

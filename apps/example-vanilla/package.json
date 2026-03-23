@@ -8,6 +8,6 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@cmd-kit/vanilla": "^0.1.0"
+    "@cmd-kit/core": "^0.1.0"
   }
 }

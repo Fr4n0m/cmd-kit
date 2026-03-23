@@ -1,0 +1,28 @@
+---
+import CommandPalette from "@cmd-kit/astro/component";
+
+import {
+  buildSitePaletteSections,
+  type SitePaletteHrefs
+} from "./site-palette-data";
+
+interface Props extends SitePaletteHrefs {
+  locale: "en" | "es";
+}
+
+const { locale, ...hrefs } = Astro.props as Props;
+const isEs = locale === "es";
+const sections = buildSitePaletteSections(locale, hrefs);
+---
+
+<CommandPalette
+  messages={{
+    searchPlaceholder: isEs
+      ? "Busca comandos, páginas y acciones..."
+      : "Search commands, pages, and actions..."
+  }}
+  recents={{ limit: 8, sectionTitle: isEs ? "Recientes" : "Recent" }}
+  sections={sections}
+  shortcut="mod+k"
+  title="Cmd+kit"
+/>

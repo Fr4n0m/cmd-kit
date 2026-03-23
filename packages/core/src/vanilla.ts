@@ -1,17 +1,16 @@
-import {
-  createCommandSnapshot,
-  createResolvedConfig,
-  dispatchCommandExecution,
-  loadCommandSource,
-  recordRecentCommand,
-  resolveRecentCommands,
-  type CommandItem,
-  type CommandItemRecord,
-  type CommandMessages,
-  type CommandSection,
-  type CommandSource,
-  type CommandTheme
-} from "@cmd-kit/core";
+import { createCommandSnapshot, createResolvedConfig } from "./application/commands/create-command-snapshot";
+import { dispatchCommandExecution } from "./application/commands/dispatch-command-execution";
+import { loadCommandSource } from "./application/commands/load-command-source";
+import { recordRecentCommand } from "./application/commands/record-recent-command";
+import { resolveRecentCommands } from "./application/commands/resolve-recent-commands";
+import type {
+  CommandItem,
+  CommandItemRecord,
+  CommandMessages,
+  CommandSection,
+  CommandSource,
+  CommandTheme
+} from "./types";
 
 const STYLE_ID = "cmdkit-vanilla-styles";
 const ROOT_CLASS = "cmdkit-vanilla-root";
@@ -309,6 +308,11 @@ const CSS_TEXT = `
   background: transparent;
   cursor: pointer;
   color: inherit;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 .cmdkit-item[aria-selected="true"] {
   background: rgba(53, 215, 255, 0.14);
@@ -350,7 +354,7 @@ const CSS_TEXT = `
   letter-spacing: -0.004em;
   transform: scale(1);
   transform-origin: left center;
-  transition: transform 160ms ease;
+  transition: transform 160ms ease, color 160ms ease;
   font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
   color: rgba(188, 208, 223, 0.88);
 }
@@ -1089,4 +1093,4 @@ export type {
   CommandSource,
   CommandSourcePayload,
   CommandTheme
-} from "@cmd-kit/core";
+} from "./types";

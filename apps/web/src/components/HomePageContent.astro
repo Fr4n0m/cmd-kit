@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { HeroPaletteIsland } from "./HeroPaletteIsland";
+import HeroPalette from "./HeroPalette.astro";
 import HeroInstallSelector from "./HeroInstallSelector.astro";
 import type { HomePageCopy } from "@/i18n/pages";
 
@@ -54,7 +54,7 @@ const legalTermsHref = withLocale("/legal/terms");
     </div>
     <div class="hero-column hero-column-stage">
       <div class="hero-stage">
-        <HeroPaletteIsland
+        <HeroPalette
           customizationHref={customizationHref}
           docsAstroHref={docsAstroHref}
           docsCoreHref={docsCoreHref}
@@ -71,7 +71,6 @@ const legalTermsHref = withLocale("/legal/terms");
           recentLabel={content.heroStageRecentLabel}
           searchPlaceholder={content.heroStageSearchPlaceholder}
           title={content.heroStageLabel}
-          client:load
         />
       </div>
       <div class="hero-stage-footer">

@@ -1,7 +1,7 @@
 ---
 import "@/styles.css";
 import BrandLockup from "@/components/BrandLockup.astro";
-import { GlobalPaletteIsland } from "@/components/GlobalPaletteIsland";
+import GlobalPalette from "@/components/GlobalPalette.astro";
 import Icon from "@/components/Icon.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
 import {
@@ -221,7 +221,7 @@ function isCurrentPath(target: string) {
         </div>
       </div>
     </header>
-    <GlobalPaletteIsland
+    <GlobalPalette
       customizationHref={customizationHref}
       docsAstroHref={docsAstroHref}
       docsCoreHref={docsCoreHref}
@@ -235,7 +235,6 @@ function isCurrentPath(target: string) {
       legalTermsHref={legalTermsHref}
       locale={locale}
       playgroundHref={playgroundHref}
-      client:load
     />
     <slot />
     <SiteFooter locale={locale} />

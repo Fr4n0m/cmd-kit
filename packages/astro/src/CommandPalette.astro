@@ -720,6 +720,12 @@ const payload = JSON.stringify({
     }
 
     render();
+
+    if (open && input instanceof HTMLInputElement) {
+      requestAnimationFrame(() => {
+        input.focus({ preventScroll: true });
+      });
+    }
   };
 
   const runItem = (item) => {
@@ -764,7 +770,59 @@ const payload = JSON.stringify({
   const findMatchingShortcutItem = (items, event) =>
     items.find((item) => !item.disabled && item.shortcut && matchesShortcut(event, item.shortcut));
 
+  const handleOpenNavigationKey = (event) => {
+    const runtime = buildRuntime();
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      if (runtime.canGoBack) {
+        goBack();
+      } else {
+        setOpenState(false);
+      }
+      return true;
+    }
+
+    if (event.key === "Backspace" && !query && runtime.canGoBack) {
+      event.preventDefault();
+      goBack();
+      return true;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (runtime.flatItems.length) {
+        activeIndex = (activeIndex + 1) % runtime.flatItems.length;
+        render();
+      }
+      return true;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (runtime.flatItems.length) {
+        activeIndex = (activeIndex - 1 + runtime.flatItems.length) % runtime.flatItems.length;
+        render();
+      }
+      return true;
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      runItem(runtime.flatItems[activeIndex]);
+      return true;
+    }
+
+    return false;
+  };
+
   window.addEventListener("keydown", (event) => {
+    if (open && !isTypingTarget(event.target)) {
+      if (handleOpenNavigationKey(event)) {
+        return;
+      }
+    }
+
     if (isTypingTarget(event.target)) {
       return;
     }
@@ -862,46 +920,7 @@ const payload = JSON.stringify({
   });
 
   input?.addEventListener("keydown", (event) => {
-    const runtime = buildRuntime();
-
-    if (event.key === "Escape") {
-      event.preventDefault();
-      if (runtime.canGoBack) {
-        goBack();
-      } else {
-        setOpenState(false);
-      }
-      return;
-    }
-
-    if (event.key === "Backspace" && !query && runtime.canGoBack) {
-      event.preventDefault();
-      goBack();
-      return;
-    }
-
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      if (runtime.flatItems.length) {
-        activeIndex = (activeIndex + 1) % runtime.flatItems.length;
-        render();
-      }
-      return;
-    }
-
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      if (runtime.flatItems.length) {
-        activeIndex = (activeIndex - 1 + runtime.flatItems.length) % runtime.flatItems.length;
-        render();
-      }
-      return;
-    }
-
-    if (event.key === "Enter") {
-      event.preventDefault();
-      runItem(runtime.flatItems[activeIndex]);
-    }
+    handleOpenNavigationKey(event);
   });
 
   list?.addEventListener("click", (event) => {
@@ -1052,6 +1071,14 @@ const payload = JSON.stringify({
     outline: none;
   }
 
+  .cmdkit-astro-input:focus,
+  .cmdkit-astro-input:focus-visible,
+  .cmdkit-astro-input:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: inherit;
+  }
+
   .cmdkit-astro-list {
     overflow: auto;
     box-sizing: border-box;
@@ -1106,6 +1133,11 @@ const payload = JSON.stringify({
     background: transparent;
     cursor: pointer;
     color: inherit;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease,
+      transform 160ms ease;
   }
 
   .cmdkit-astro-item[aria-selected="true"] {
@@ -1126,7 +1158,7 @@ const payload = JSON.stringify({
     letter-spacing: -0.004em;
     transform: scale(1);
     transform-origin: left center;
-    transition: transform 160ms ease;
+    transition: transform 160ms ease, color 160ms ease;
     font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
     color: rgba(188, 208, 223, 0.88);
   }

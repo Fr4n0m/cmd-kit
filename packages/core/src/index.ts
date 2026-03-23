@@ -3,5 +3,6 @@ export * from "./messages";
 export * from "./state";
 export * from "./theme";
 export * from "./types";
+export * from "./vanilla";
 export { executeCommand } from "./application/commands/execute-command";
 export type { SearchPort } from "./ports/search/search-port";

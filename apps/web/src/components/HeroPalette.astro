@@ -1,0 +1,41 @@
+---
+import CommandPalette from "@cmd-kit/astro/component";
+
+import {
+  buildSitePaletteSections,
+  type SitePaletteHrefs
+} from "./site-palette-data";
+
+interface Props extends SitePaletteHrefs {
+  locale: "en" | "es";
+  recentLabel: string;
+  searchPlaceholder: string;
+  title: string;
+}
+
+const {
+  locale,
+  recentLabel,
+  searchPlaceholder,
+  title,
+  ...hrefs
+} = Astro.props as Props;
+const sections = buildSitePaletteSections(locale, hrefs);
+---
+
+<div class="hero-stage-card hero-palette-shell">
+  <CommandPalette
+    classNames={{
+      caption: "hero-palette-caption",
+      headerActions: "hero-palette-header-actions",
+      overlay: "hero-palette-overlay",
+      dialog: "hero-palette-dialog"
+    }}
+    messages={{ searchPlaceholder }}
+    open={true}
+    recents={{ limit: 6, sectionTitle: recentLabel }}
+    sections={sections}
+    shortcut="shift+f12"
+    title={title}
+  />
+</div>

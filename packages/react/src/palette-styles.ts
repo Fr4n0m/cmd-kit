@@ -123,6 +123,8 @@ export function itemStyle(
         ? "rgba(15, 166, 216, 0.13)"
         : "rgba(53, 215, 255, 0.14)"
       : "transparent",
+    transition:
+      "background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease",
     color: disabled ? theme.mutedColor : theme.textColor,
     opacity: disabled ? 0.55 : 1,
     cursor: disabled ? "not-allowed" : "pointer"
@@ -265,7 +267,7 @@ export const itemTitleStyle: CSSProperties = {
   letterSpacing: "-0.004em",
   transform: "scale(1)",
   transformOrigin: "left center",
-  transition: "transform 160ms ease",
+  transition: "transform 160ms ease, color 160ms ease",
   fontFamily:
     'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };

@@ -17,6 +17,20 @@ const { description, headings = [], locale, title } = Astro.props;
 const pathname = Astro.url.pathname;
 const navigation = getDocsNavigation(locale);
 const copy = layoutCopy[locale];
+
+function normalizePath(path: string) {
+  if (path === "/") {
+    return "/";
+  }
+
+  return path.endsWith("/") ? path.slice(0, -1) : path;
+}
+
+function isCurrentDocsPath(target: string) {
+  const currentPath = normalizePath(pathname);
+  const targetPath = normalizePath(target);
+  return currentPath === targetPath;
+}
 ---
 
 <BaseLayout description={description} docsHeadings={headings} locale={locale} title={title}>
@@ -28,7 +42,7 @@ const copy = layoutCopy[locale];
           {
             navigation.map((item) => {
               const href = localizedPath(locale, item.href);
-              const current = pathname === href;
+              const current = isCurrentDocsPath(href);
 
               return (
                 <>
