@@ -352,9 +352,11 @@ const CSS_TEXT = `
   transform-origin: left center;
   transition: transform 160ms ease;
   font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: rgba(188, 208, 223, 0.88);
 }
 .cmdkit-item[aria-selected="true"] .cmdkit-item-title {
   transform: scale(1.03);
+  color: #eaf8ff;
 }
 .cmdkit-subtitle {
   display: block;
@@ -387,10 +389,13 @@ const CSS_TEXT = `
   color: rgba(49, 68, 84, 0.58);
 }
 .cmdkit-dialog[data-mode="light"] .cmdkit-icon {
-  color: #2f546b;
+  color: rgba(47, 84, 107, 0.86);
 }
 .cmdkit-dialog[data-mode="light"] .cmdkit-icon[data-active="true"] {
   color: #0b607f;
+}
+.cmdkit-dialog[data-mode="light"] .cmdkit-item-title {
+  color: rgba(47, 84, 107, 0.86);
 }
 .cmdkit-dialog[data-mode="light"] .cmdkit-item[aria-selected="true"] .cmdkit-item-title {
   color: #0b607f;

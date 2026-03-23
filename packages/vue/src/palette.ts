@@ -507,7 +507,13 @@ function defaultItem(
   theme: Required<CommandTheme>
 ) {
   const light = isLightTheme(theme);
-  const activeTitleColor = light && isActive ? "#0b607f" : undefined;
+  const itemColor = isActive
+    ? light
+      ? "#0b607f"
+      : "#eaf8ff"
+    : light
+      ? "rgba(47, 84, 107, 0.86)"
+      : "rgba(188, 208, 223, 0.88)";
   const hasCustomIcon = typeof item.icon === "string" && item.icon.trim().length > 0;
 
   return [
@@ -525,9 +531,7 @@ function defaultItem(
             "span",
             {
               "data-cmdkit-title": "",
-              style: activeTitleColor
-                ? { ...itemTitleStyle(isActive), color: activeTitleColor }
-                : itemTitleStyle(isActive)
+              style: { ...itemTitleStyle(isActive), color: itemColor }
             },
             item.title
           ),
@@ -892,7 +896,7 @@ function iconStyle(theme: Required<CommandTheme>, active: boolean): CSSPropertie
         ? "#0b607f"
         : "#eaf8ff"
       : light
-        ? "#2f546b"
+        ? "rgba(47, 84, 107, 0.86)"
         : "rgba(188, 208, 223, 0.88)"
   };
 }

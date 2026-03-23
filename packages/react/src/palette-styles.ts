@@ -175,7 +175,7 @@ export function iconStyle(
         ? "#0b607f"
         : "#eaf8ff"
       : light
-        ? "#2f546b"
+        ? "rgba(47, 84, 107, 0.86)"
         : "rgba(188, 208, 223, 0.88)"
   };
 }
