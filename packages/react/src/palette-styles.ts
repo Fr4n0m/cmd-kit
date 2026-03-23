@@ -260,19 +260,22 @@ export const itemLeadingStyle: CSSProperties = {
 export const itemTitleStyle: CSSProperties = {
   display: "block",
   fontWeight: 600,
-  fontSize: "1.04rem",
-  lineHeight: 1.22,
+  fontSize: "0.98rem",
+  lineHeight: 1.16,
   letterSpacing: "-0.004em",
+  transform: "scale(1)",
+  transformOrigin: "left center",
+  transition: "transform 160ms ease",
   fontFamily:
     'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 export const itemSubtitleStyle: CSSProperties = {
   display: "block",
-  fontSize: "0.92rem",
+  fontSize: "0.86rem",
   color: "#94a3b8",
-  marginTop: "0.22rem",
-  lineHeight: 1.25
+  marginTop: "0.12rem",
+  lineHeight: 1.2
 };
 
 export const shortcutStyle: CSSProperties = {

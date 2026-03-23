@@ -64,37 +64,44 @@ const defaultDarkTheme: CommandTheme = {
 
 const defaultDemoSections: CommandSection[] = [
   {
-    id: "navigation",
-    title: "Navigation",
+    id: "workspace",
+    title: "Workspace",
     items: [
       {
-        id: "demo-dashboard",
-        title: "Open dashboard",
-        subtitle: "Default demo command",
-        shortcut: "mod+d",
-        icon: "⌂"
+        id: "demo-overview",
+        title: "Overview",
+        subtitle: "Open the workspace overview",
+        shortcut: "mod+o"
       },
       {
-        id: "demo-docs",
-        title: "Browse docs",
-        subtitle: "Navigate into nested demo commands",
-        icon: "</>",
+        id: "demo-projects",
+        title: "Projects",
+        subtitle: "Jump to your active projects",
+        shortcut: "mod+p"
+      },
+      {
+        id: "demo-resources",
+        title: "Resources",
+        subtitle: "Guides and references for the team",
         children: [
           {
-            id: "demo-docs-children",
-            title: "Documentation",
+            id: "demo-resources-sections",
+            title: "Resources",
             items: [
               {
-                id: "demo-getting-started",
-                title: "Getting started",
-                subtitle: "See installation basics",
-                shortcut: "mod+g"
+                id: "demo-guides",
+                title: "Guides",
+                subtitle: "Implementation walkthroughs"
               },
               {
-                id: "demo-customization",
-                title: "Customization",
-                subtitle: "Theme, messages, and renderers",
-                shortcut: "mod+j"
+                id: "demo-api-reference",
+                title: "API reference",
+                subtitle: "Props, events, and renderers"
+              },
+              {
+                id: "demo-release-notes",
+                title: "Release notes",
+                subtitle: "Recent updates and breaking changes"
               }
             ]
           }
@@ -107,18 +114,45 @@ const defaultDemoSections: CommandSection[] = [
     title: "Commands",
     items: [
       {
-        id: "demo-search",
-        title: "Search commands",
-        subtitle: "Try typing to filter this demo list",
-        shortcut: "mod+f",
-        icon: "⌕"
+        id: "demo-open-search",
+        title: "Search across project",
+        subtitle: "Open the global search flow",
+        shortcut: "mod+shift+p"
       },
       {
-        id: "demo-theme",
+        id: "demo-create-command",
+        title: "Create command",
+        subtitle: "Create a new command entry",
+        shortcut: "mod+n"
+      },
+      {
+        id: "demo-toggle-theme",
         title: "Toggle theme",
-        subtitle: "Example command without side effects",
-        shortcut: "mod+t",
-        icon: "◐"
+        subtitle: "Switch between light and dark mode",
+        shortcut: "mod+j"
+      },
+      {
+        id: "demo-settings",
+        title: "Settings",
+        subtitle: "Open workspace settings",
+        children: [
+          {
+            id: "demo-settings-sections",
+            title: "Settings",
+            items: [
+              {
+                id: "demo-profile-settings",
+                title: "Profile",
+                subtitle: "Update account details and preferences"
+              },
+              {
+                id: "demo-keyboard-settings",
+                title: "Keyboard shortcuts",
+                subtitle: "Customize command shortcuts"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

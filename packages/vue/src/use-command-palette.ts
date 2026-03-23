@@ -65,7 +65,109 @@ const defaultDarkTheme: CommandTheme = {
   shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
 };
 
+const defaultDemoSections: CommandSection[] = [
+  {
+    id: "workspace",
+    title: "Workspace",
+    items: [
+      {
+        id: "demo-overview",
+        title: "Overview",
+        subtitle: "Open the workspace overview",
+        shortcut: "mod+o"
+      },
+      {
+        id: "demo-projects",
+        title: "Projects",
+        subtitle: "Jump to your active projects",
+        shortcut: "mod+p"
+      },
+      {
+        id: "demo-resources",
+        title: "Resources",
+        subtitle: "Guides and references for the team",
+        children: [
+          {
+            id: "demo-resources-sections",
+            title: "Resources",
+            items: [
+              {
+                id: "demo-guides",
+                title: "Guides",
+                subtitle: "Implementation walkthroughs"
+              },
+              {
+                id: "demo-api-reference",
+                title: "API reference",
+                subtitle: "Props, events, and renderers"
+              },
+              {
+                id: "demo-release-notes",
+                title: "Release notes",
+                subtitle: "Recent updates and breaking changes"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "commands",
+    title: "Commands",
+    items: [
+      {
+        id: "demo-open-search",
+        title: "Search across project",
+        subtitle: "Open the global search flow",
+        shortcut: "mod+shift+p"
+      },
+      {
+        id: "demo-create-command",
+        title: "Create command",
+        subtitle: "Create a new command entry",
+        shortcut: "mod+n"
+      },
+      {
+        id: "demo-toggle-theme",
+        title: "Toggle theme",
+        subtitle: "Switch between light and dark mode",
+        shortcut: "mod+j"
+      },
+      {
+        id: "demo-settings",
+        title: "Settings",
+        subtitle: "Open workspace settings",
+        children: [
+          {
+            id: "demo-settings-sections",
+            title: "Settings",
+            items: [
+              {
+                id: "demo-profile-settings",
+                title: "Profile",
+                subtitle: "Update account details and preferences"
+              },
+              {
+                id: "demo-keyboard-settings",
+                title: "Keyboard shortcuts",
+                subtitle: "Customize command shortcuts"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
 export function useCommandPalette(options: UseCommandPaletteOptions) {
+  const shouldUseDefaultDemoData = computed(
+    () =>
+      toValue(options.items) === undefined &&
+      toValue(options.sections) === undefined &&
+      toValue(options.source) === undefined
+  );
   const internalOpen = ref(toValue(options.defaultOpen) ?? false);
   const query = ref("");
   const activeIndex = ref(0);
@@ -89,7 +191,10 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   const resolvedShortcut = computed(() => toValue(options.shortcut) ?? "mod+k");
   const rootItems = computed(() => loadedItems.value ?? toValue(options.items));
   const rootSections = computed(
-    () => loadedSections.value ?? toValue(options.sections)
+    () =>
+      loadedSections.value ??
+      toValue(options.sections) ??
+      (shouldUseDefaultDemoData.value ? defaultDemoSections : undefined)
   );
   const activeSections = computed(
     () => navigationStack.value.at(-1)?.sections ?? rootSections.value

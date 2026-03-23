@@ -293,7 +293,7 @@ export const CommandPalette = defineComponent({
                         class: props.classNames?.caption,
                         style: captionStyle
                       },
-                      `Press ${prettyShortcut(props.shortcut)} to toggle.`
+                      `Press ${prettyShortcut(props.shortcut)} to open or close.`
                     )
                   ]),
                   h(
@@ -502,7 +502,7 @@ function defaultItem(
           {
             style: shortcutStyle
           },
-          item.shortcut
+          prettyShortcut(item.shortcut)
         )
       : item.children?.length
         ? h(

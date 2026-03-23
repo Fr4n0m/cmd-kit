@@ -390,16 +390,28 @@ export function PaletteResults({
                       const iconElement = event.currentTarget.querySelector(
                         "[data-cmdkit-icon]"
                       ) as HTMLElement | null;
+                      const titleElement = event.currentTarget.querySelector(
+                        "[data-cmdkit-title]"
+                      ) as HTMLElement | null;
                       if (iconElement) {
                         iconElement.style.transform = "scale(1.08)";
+                      }
+                      if (titleElement) {
+                        titleElement.style.transform = "scale(1.03)";
                       }
                     }}
                     onMouseLeave={(event) => {
                       const iconElement = event.currentTarget.querySelector(
                         "[data-cmdkit-icon]"
                       ) as HTMLElement | null;
+                      const titleElement = event.currentTarget.querySelector(
+                        "[data-cmdkit-title]"
+                      ) as HTMLElement | null;
                       if (iconElement) {
                         iconElement.style.transform = "scale(1)";
+                      }
+                      if (titleElement) {
+                        titleElement.style.transform = "scale(1)";
                       }
                     }}
                     role="option"
@@ -451,6 +463,7 @@ function DefaultItem({
         </span>
         <div>
           <span
+            data-cmdkit-title
             style={
               activeTitleColor
                 ? { ...itemTitleStyle, color: activeTitleColor }
