@@ -270,7 +270,9 @@ export const CommandPalette = defineComponent({
                       {
                         class: props.classNames?.title,
                         id: titleId,
-                        style: titleStyle
+                        style: isLightTheme(palette.resolvedConfig.value.theme)
+                          ? { ...titleStyle, color: "rgba(14, 23, 32, 0.78)" }
+                          : titleStyle
                       },
                       slots.title
                         ? slots.title({
@@ -310,12 +312,54 @@ export const CommandPalette = defineComponent({
                             palette.resolvedConfig.value.messages.closeLabel,
                           class: props.classNames?.closeButton,
                           onClick: () => palette.setOpenState(false),
+                          onMouseenter: (event: MouseEvent) => {
+                            const target = event.currentTarget as HTMLElement;
+                            const light = isLightTheme(palette.resolvedConfig.value.theme);
+                            target.style.background = light
+                              ? "rgba(15, 166, 216, 0.12)"
+                              : "rgba(166, 191, 212, 0.18)";
+                            target.style.borderColor = light
+                              ? "rgba(15, 166, 216, 0.26)"
+                              : "rgba(146, 173, 194, 0.34)";
+                            target.style.transform = "translateY(-1px)";
+                          },
+                          onMouseleave: (event: MouseEvent) => {
+                            const target = event.currentTarget as HTMLElement;
+                            const light = isLightTheme(palette.resolvedConfig.value.theme);
+                            target.style.background = light
+                              ? "rgba(15, 166, 216, 0.05)"
+                              : "rgba(166, 191, 212, 0.08)";
+                            target.style.borderColor = light
+                              ? palette.resolvedConfig.value.theme.borderColor
+                              : "rgba(146, 173, 194, 0.22)";
+                            target.style.transform = "translateY(0)";
+                          },
                           style: closeButtonStyle(
                             palette.resolvedConfig.value.theme
                           ),
                           type: "button"
                         },
-                        "×"
+                        [
+                          h(
+                            "svg",
+                            {
+                              "aria-hidden": "true",
+                              height: "16",
+                              style: { display: "block" },
+                              viewBox: "0 0 16 16",
+                              width: "16"
+                            },
+                            [
+                              h("path", {
+                                d: "M4 4L12 12M12 4L4 12",
+                                fill: "none",
+                                stroke: "currentColor",
+                                "stroke-linecap": "round",
+                                "stroke-width": "2"
+                              })
+                            ]
+                          )
+                        ]
                       )
                     ]
                   )
@@ -462,6 +506,10 @@ function defaultItem(
   isActive: boolean,
   theme: Required<CommandTheme>
 ) {
+  const light = isLightTheme(theme);
+  const activeTitleColor = light && isActive ? "#0b607f" : undefined;
+  const hasCustomIcon = typeof item.icon === "string" && item.icon.trim().length > 0;
+
   return [
     h(
       "div",
@@ -469,18 +517,17 @@ function defaultItem(
         style: itemLeadingStyle
       },
       [
-        h(
-          "span",
-          {
-            style: iconStyle(theme, isActive)
-          },
-          item.icon ?? "⌘"
-        ),
+        h("span", { "data-cmdkit-icon": "", style: iconStyle(theme, isActive) }, [
+          hasCustomIcon ? item.icon : defaultBrandIcon()
+        ]),
         h("div", [
           h(
             "span",
             {
-              style: itemTitleStyle
+              "data-cmdkit-title": "",
+              style: activeTitleColor
+                ? { ...itemTitleStyle(isActive), color: activeTitleColor }
+                : itemTitleStyle(isActive)
             },
             item.title
           ),
@@ -517,23 +564,28 @@ function defaultItem(
 }
 
 function prettyShortcut(shortcut: string): string {
-  if (typeof navigator === "undefined") {
-    return shortcut
-      .split("+")
-      .map((token) => token.charAt(0).toUpperCase() + token.slice(1))
-      .join(" + ");
-  }
-
-  return shortcut
+  const tokens = shortcut
     .split("+")
-    .map((token) => {
-      if (token === "mod") {
-        return navigator.userAgent.includes("Mac") ? "Cmd" : "Ctrl";
-      }
+    .map((token) => token.trim())
+    .filter(Boolean);
 
-      return token.charAt(0).toUpperCase() + token.slice(1);
-    })
-    .join(" + ");
+  const formatToken = (token: string): string => {
+    const normalized = token.toLowerCase();
+    if (normalized === "mod") {
+      if (typeof navigator === "undefined") {
+        return "Mod";
+      }
+      return navigator.userAgent.includes("Mac") ? "Cmd" : "Ctrl";
+    }
+
+    if (normalized.length === 1) {
+      return normalized.toUpperCase();
+    }
+
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  };
+
+  return tokens.map((token) => formatToken(token)).join(" + ");
 }
 
 function joinClassNames(
@@ -569,6 +621,18 @@ function renderDefaultTitle({
               "aria-label": "Go back",
               class: classNames?.backButton,
               onClick: onGoBack,
+              onMouseenter: (event: MouseEvent) => {
+                const target = event.currentTarget as HTMLElement;
+                target.style.transform = "translateY(-1px)";
+                target.style.color = theme.textColor;
+                target.style.opacity = "1";
+              },
+              onMouseleave: (event: MouseEvent) => {
+                const target = event.currentTarget as HTMLElement;
+                target.style.transform = "translateY(0)";
+                target.style.color = theme.mutedColor;
+                target.style.opacity = "0.9";
+              },
               style: backButtonStyle(theme),
               title: "Go back",
               type: "button"
@@ -581,25 +645,24 @@ function renderDefaultTitle({
   );
 }
 
-function withSquircle(styles: CSSProperties): CSSProperties {
-  return styles;
-}
-
 function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
-  return withSquircle({
-    width: "min(680px, calc(100vw - 2rem))",
+  return {
+    width: "min(700px, calc(100vw - 4rem))",
     maxHeight: "min(720px, calc(100vh - 2rem))",
     overflow: "hidden",
+    boxSizing: "border-box",
     borderRadius: theme.radius,
     border: `1px solid ${theme.borderColor}`,
     background: theme.backgroundColor,
     color: theme.textColor,
+    fontFamily:
+      'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif',
     boxShadow: theme.shadow,
-    padding: "1.25rem",
+    padding: "1.6rem",
     display: "flex",
     flexDirection: "column",
-    gap: "1rem"
-  });
+    gap: "1.15rem"
+  };
 }
 
 function overlayStyle(color: string): CSSProperties {
@@ -609,7 +672,7 @@ function overlayStyle(color: string): CSSProperties {
     background: color,
     display: "grid",
     placeItems: "center",
-    padding: "1rem",
+    padding: "1.5rem",
     zIndex: 9999,
     backdropFilter: "blur(14px)"
   };
@@ -617,7 +680,7 @@ function overlayStyle(color: string): CSSProperties {
 
 function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     borderRadius: "999px",
     border: light
       ? `1px solid ${theme.borderColor}`
@@ -625,51 +688,60 @@ function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     background: light ? "rgba(15, 166, 216, 0.05)" : "rgba(166, 191, 212, 0.08)",
     color: light ? theme.mutedColor : "rgba(216, 232, 244, 0.92)",
     appearance: "none",
-    width: "2.25rem",
-    height: "2.25rem",
-    minWidth: "2.25rem",
-    minHeight: "2.25rem",
+    width: "2.4rem",
+    height: "2.4rem",
+    minWidth: "2.4rem",
+    minHeight: "2.4rem",
     padding: "0",
     display: "inline-grid",
     placeItems: "center",
     lineHeight: "1",
-    fontSize: "1.1rem",
+    fontSize: "0",
     fontWeight: 700,
     textAlign: "center",
-    fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-  });
+    fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+    cursor: "pointer",
+    transition:
+      "background-color 160ms ease, border-color 160ms ease, transform 140ms ease"
+  };
 }
 
 function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
-  const light = isLightTheme(theme);
-  return withSquircle({
-    borderRadius: "0.65rem",
-    border: `1px solid ${theme.borderColor}`,
-    background: light ? "rgba(15, 166, 216, 0.08)" : "rgba(255, 255, 255, 0.03)",
+  return {
+    border: "none",
+    background: "transparent",
     color: theme.mutedColor,
-    width: "1.65rem",
-    height: "1.65rem",
+    width: "auto",
+    height: "auto",
+    minWidth: "auto",
+    minHeight: "auto",
     padding: 0,
-    display: "inline-grid",
-    placeItems: "center",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     lineHeight: 1,
-    fontSize: "0.95rem",
+    fontSize: "1.1rem",
     fontWeight: 600
-  });
+    ,
+    cursor: "pointer",
+    transition: "transform 140ms ease, color 160ms ease, opacity 160ms ease",
+    opacity: 0.9
+  };
 }
 
 function inputStyle(theme: Required<CommandTheme>): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "100%",
+    boxSizing: "border-box",
     borderRadius: "18px",
     border: `1px solid ${theme.borderColor}`,
     background: light ? "rgba(171, 189, 205, 0.16)" : "rgba(255, 255, 255, 0.03)",
     color: theme.textColor,
-    padding: "1rem 1.1rem",
+    padding: "1.06rem 1.22rem",
     fontSize: "1rem",
     outline: "none"
-  });
+  };
 }
 
 function itemStyle(
@@ -678,8 +750,9 @@ function itemStyle(
   disabled?: boolean
 ): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
+  return {
     width: "100%",
+    boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -689,22 +762,23 @@ function itemStyle(
       ? `1px solid ${light ? "rgba(15, 166, 216, 0.22)" : "rgba(53, 215, 255, 0.26)"}`
       : "1px solid transparent",
     borderRadius: "18px",
-    padding: "0.9rem 1rem",
+    padding: "0.64rem 0.86rem",
     background: active
       ? light
         ? "rgba(15, 166, 216, 0.13)"
         : "rgba(53, 215, 255, 0.14)"
       : "transparent",
     color: disabled ? theme.mutedColor : theme.textColor,
-    opacity: disabled ? 0.55 : 1
-  });
+    opacity: disabled ? 0.55 : 1,
+    cursor: disabled ? "not-allowed" : "pointer"
+  };
 }
 
 const headerStyle: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
-  gap: "1rem",
-  alignItems: "start"
+  gap: "1.1rem",
+  alignItems: "flex-start"
 };
 
 const breadcrumbsStyle: CSSProperties = {
@@ -713,18 +787,25 @@ const breadcrumbsStyle: CSSProperties = {
   gap: "0.35rem",
   marginBottom: "0.45rem",
   color: "#94a3b8",
-  fontSize: "0.78rem"
+  fontSize: "0.78rem",
+  fontFamily:
+    '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
 };
 
 const headerActionsStyle: CSSProperties = {
   display: "flex",
-  gap: "0.5rem"
+  gap: "0.5rem",
+  alignItems: "flex-start"
 };
 
 const titleStyle: CSSProperties = {
   margin: 0,
-  fontSize: "1.1rem",
-  fontWeight: 700
+  fontSize: "1.24rem",
+  fontWeight: 600,
+  letterSpacing: "-0.006em",
+  lineHeight: 1.2,
+  fontFamily:
+    'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 const titleRowStyle: CSSProperties = {
@@ -737,11 +818,14 @@ const titleRowStyle: CSSProperties = {
 const captionStyle: CSSProperties = {
   margin: "0.35rem 0 0",
   color: "#94a3b8",
-  fontSize: "0.92rem"
+  fontSize: "0.92rem",
+  fontFamily:
+    'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 const listStyle: CSSProperties = {
   overflow: "auto",
+  boxSizing: "border-box",
   scrollbarWidth: "none",
   msOverflowStyle: "none",
   display: "flex",
@@ -752,85 +836,134 @@ const listStyle: CSSProperties = {
 const sectionStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
-  gap: "0.55rem"
+  gap: "0.7rem"
 };
 
 function sectionTitleStyle(theme: Required<CommandTheme>): CSSProperties {
+  const light = isLightTheme(theme);
   return {
     margin: 0,
-    color: theme.mutedColor,
+    color: light ? "rgba(49, 68, 84, 0.58)" : theme.mutedColor,
     fontSize: "0.78rem",
     textTransform: "uppercase",
-    letterSpacing: "0.08em"
+    letterSpacing: "0.08em",
+    fontFamily:
+      '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
   };
 }
 
 const sectionItemsStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
-  gap: "0.35rem"
+  gap: "0.32rem"
 };
 
 function emptyStateStyle(theme: Required<CommandTheme>): CSSProperties {
-  return withSquircle({
+  return {
     borderRadius: "18px",
     border: `1px dashed ${theme.borderColor}`,
     color: theme.mutedColor,
     textAlign: "center",
     padding: "2rem"
-  });
+  };
 }
 
 const itemLeadingStyle: CSSProperties = {
   display: "flex",
   alignItems: "center",
-  gap: "0.8rem"
+  gap: "0.9rem"
 };
 
 function iconStyle(theme: Required<CommandTheme>, active: boolean): CSSProperties {
   const light = isLightTheme(theme);
-  return withSquircle({
-    width: "2rem",
-    height: "2rem",
-    borderRadius: "0.78rem",
-    display: "grid",
-    placeItems: "center",
+  return {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "2.05rem",
+    height: "2.05rem",
+    fontSize: "1.5rem",
+    lineHeight: 1,
+    flexShrink: 0,
+    transform: active ? "scale(1.08)" : "scale(1)",
+    transition: "transform 160ms ease, color 160ms ease",
     color: active
       ? light
         ? "#0b607f"
         : "#eaf8ff"
       : light
         ? "#2f546b"
-        : "rgba(188, 208, 223, 0.88)",
-    border: active
-      ? `1px solid ${light ? "rgba(15, 166, 216, 0.28)" : "rgba(53, 215, 255, 0.3)"}`
-      : `1px solid ${light ? "rgba(83, 112, 136, 0.18)" : "rgba(129, 155, 174, 0.18)"}`,
-    background: active
-      ? light
-        ? "rgba(15, 166, 216, 0.2)"
-        : "rgba(53, 215, 255, 0.24)"
-      : light
-        ? "rgba(83, 112, 136, 0.1)"
-        : "rgba(180, 205, 221, 0.12)"
-  });
+        : "rgba(188, 208, 223, 0.88)"
+  };
 }
 
-const itemTitleStyle: CSSProperties = {
-  display: "block",
-  fontWeight: 600
-};
+function itemTitleStyle(active: boolean): CSSProperties {
+  return {
+    display: "block",
+    fontWeight: 600,
+    fontSize: "0.98rem",
+    lineHeight: 1.16,
+    letterSpacing: "-0.004em",
+    transform: active ? "scale(1.03)" : "scale(1)",
+    transformOrigin: "left center",
+    transition: "transform 160ms ease",
+    fontFamily:
+      'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
+  };
+}
 
 const itemSubtitleStyle: CSSProperties = {
   display: "block",
-  fontSize: "0.88rem",
+  fontSize: "0.86rem",
   color: "#94a3b8",
-  marginTop: "0.15rem"
+  marginTop: "0.12rem",
+  lineHeight: 1.2
 };
 
 const shortcutStyle: CSSProperties = {
   color: "#94a3b8",
-  fontSize: "0.82rem"
+  fontSize: "0.82rem",
+  fontFamily:
+    '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
 };
+
+function defaultBrandIcon() {
+  return h(
+    "svg",
+    {
+      "aria-hidden": "true",
+      height: "100%",
+      style: { display: "block" },
+      viewBox: "0 0 24 24",
+      width: "100%"
+    },
+    [
+      h("rect", {
+        fill: "none",
+        height: "19",
+        rx: "6",
+        stroke: "currentColor",
+        "stroke-width": "1.8",
+        width: "19",
+        x: "2.5",
+        y: "2.5"
+      }),
+      h(
+        "text",
+        {
+          "fill": "currentColor",
+          "font-family": 'Inter, "Segoe UI", system-ui, -apple-system, sans-serif',
+          "font-size": "7.2",
+          "font-weight": "700",
+          "text-anchor": "middle",
+          x: "12",
+          y: "14"
+        },
+        "Cmd"
+      )
+    ]
+  );
+}
 
 function isLightTheme(theme: Required<CommandTheme>): boolean {
   const rgb = parseColorToRgb(theme.backgroundColor);
