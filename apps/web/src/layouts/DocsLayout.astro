@@ -19,11 +19,13 @@ const navigation = getDocsNavigation(locale);
 const copy = layoutCopy[locale];
 
 function normalizePath(path: string) {
-  if (path === "/") {
+  const withoutIndex = path.replace(/\/index\.html$/i, "/");
+
+  if (withoutIndex === "/") {
     return "/";
   }
 
-  return path.endsWith("/") ? path.slice(0, -1) : path;
+  return withoutIndex.endsWith("/") ? withoutIndex.slice(0, -1) : withoutIndex;
 }
 
 function isCurrentDocsPath(target: string) {
