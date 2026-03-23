@@ -23,6 +23,19 @@ const config = createResolvedConfig({
     searchPlaceholder: "Search commands"
   }
 });` }] },
+      { id: "add-a-new-command", label: "Add a new command", blocks: [{ type: "paragraph", html: "To add a new option, append a new item in your section config. <code>shortcut</code> is optional at data level and only affects UI layers that render it." }, { type: "code", lang: "ts", label: "ts", code: `const config = createResolvedConfig({
+  sections: [
+    {
+      id: "navigation",
+      title: "Navigation",
+      items: [
+        { id: "dashboard", title: "Dashboard", href: "/dashboard" },
+        { id: "billing", title: "Billing", href: "/billing", shortcut: "mod+b" },
+        { id: "support", title: "Support", href: "/support" }
+      ]
+    }
+  ]
+});` }] },
       { id: "create-a-search-snapshot", label: "Create a search snapshot", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import { createCommandSnapshot } from "@cmd-kit/core";
 
 const snapshot = createCommandSnapshot(config, "dash");

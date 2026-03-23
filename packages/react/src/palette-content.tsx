@@ -71,7 +71,13 @@ export function PaletteHeader({
             {breadcrumbs.join(" / ")}
           </p>
         ) : null}
-        <p className={classNames?.title} id={titleId} style={titleStyle}>
+        <p
+          className={classNames?.title}
+          id={titleId}
+          style={
+            light ? { ...titleStyle, color: "rgba(14, 23, 32, 0.78)" } : titleStyle
+          }
+        >
           {renderers?.title
             ? renderers.title(renderContext)
             : renderDefaultTitle(
@@ -432,14 +438,27 @@ function DefaultItem({
   isActive: boolean;
   theme: Required<CommandTheme>;
 }) {
+  const hasCustomIcon =
+    typeof item.icon === "string" && item.icon.trim().length > 0;
+  const light = isLightTheme(theme);
+  const activeTitleColor = light && isActive ? "#0b607f" : undefined;
+
   return (
     <>
       <div style={itemLeadingStyle}>
         <span data-cmdkit-icon style={iconStyle(theme, isActive)}>
-          {item.icon ?? "⌘"}
+          {hasCustomIcon ? item.icon : <DefaultBrandIcon />}
         </span>
         <div>
-          <span style={itemTitleStyle}>{item.title}</span>
+          <span
+            style={
+              activeTitleColor
+                ? { ...itemTitleStyle, color: activeTitleColor }
+                : itemTitleStyle
+            }
+          >
+            {item.title}
+          </span>
           {item.subtitle ? (
             <span style={itemSubtitleStyle}>{item.subtitle}</span>
           ) : null}
@@ -456,23 +475,32 @@ function DefaultItem({
 }
 
 function prettyShortcut(shortcut: string): string {
+  const tokens = shortcut
+    .split("+")
+    .map((token) => token.trim())
+    .filter(Boolean);
+
+  const formatToken = (token: string): string => {
+    const normalized = token.toLowerCase();
+    if (normalized === "mod") {
+      if (typeof navigator === "undefined") {
+        return "Mod";
+      }
+      return navigator.userAgent.includes("Mac") ? "Cmd" : "Ctrl";
+    }
+
+    if (normalized.length === 1) {
+      return normalized.toUpperCase();
+    }
+
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  };
+
   if (typeof navigator === "undefined") {
-    return shortcut
-      .split("+")
-      .map((token) => token.charAt(0).toUpperCase() + token.slice(1))
-      .join(" + ");
+    return tokens.map((token) => formatToken(token)).join(" + ");
   }
 
-  return shortcut
-    .split("+")
-    .map((token) => {
-      if (token === "mod") {
-        return navigator.userAgent.includes("Mac") ? "Cmd" : "Ctrl";
-      }
-
-      return token.charAt(0).toUpperCase() + token.slice(1);
-    })
-    .join(" + ");
+  return tokens.map((token) => formatToken(token)).join(" + ");
 }
 
 function renderDefaultTitle(
@@ -508,6 +536,40 @@ function renderDefaultTitle(
       ) : null}
       <span>{activeTitle}</span>
     </span>
+  );
+}
+
+function DefaultBrandIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="100%"
+      height="100%"
+      style={{ display: "block" }}
+    >
+      <rect
+        x="2.5"
+        y="2.5"
+        width="19"
+        height="19"
+        rx="6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <text
+        x="12"
+        y="14"
+        textAnchor="middle"
+        fill="currentColor"
+        fontSize="7.2"
+        fontWeight="700"
+        fontFamily='Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
+      >
+        Cmd
+      </text>
+    </svg>
   );
 }
 

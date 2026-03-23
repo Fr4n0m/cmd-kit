@@ -50,6 +50,19 @@ const sections = [
   }}
   title="Project commands"
 />` }] },
+      { id: "add-a-new-command", label: "Add a new command", blocks: [{ type: "paragraph", html: "Add a new option by creating a new item in your section list. <code>shortcut</code> is optional." }, { type: "code", lang: "astro", label: "astro", code: `---
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" },
+      { id: "billing", title: "Billing", href: "/billing", shortcut: "mod+b" },
+      { id: "support", title: "Support", href: "/support" }
+    ]
+  }
+];
+---` }] },
       { id: "recent-commands", label: "Recent commands", blocks: [{ type: "paragraph", html: "<code>recents</code> is optional and disabled by default. Enable with <code>recents={true}</code> or configure <code>recents={{ limit, sectionTitle }}</code>. Disable with <code>recents={false}</code>." }, { type: "code", lang: "astro", label: "astro", code: `<CommandPalette
   sections={sections}
   recents={false}

@@ -64,6 +64,17 @@ export function Example() {
   recents={{ limit: 6, sectionTitle: "Recent" }}
   title="Workspace commands"
 />` }] },
+      { id: "add-a-new-command", label: "Add a new command", blocks: [{ type: "paragraph", html: "Add a new option by pushing a new item into your section. <code>shortcut</code> is optional: use it when needed or omit it for click/Enter only." }, { type: "code", lang: "tsx", label: "tsx", code: `const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" },
+      { id: "billing", title: "Billing", href: "/billing", shortcut: "mod+b" },
+      { id: "support", title: "Support", href: "/support" }
+    ]
+  }
+];` }] },
       { id: "recent-commands", label: "Recent commands", blocks: [{ type: "paragraph", html: "<code>recents</code> is optional and disabled by default. Enable it with <code>recents={true}</code> or configure it with <code>recents={{ limit: 6, sectionTitle: 'Recent' }}</code>. Disable it with <code>recents={false}</code>." }, { type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   recents={false}

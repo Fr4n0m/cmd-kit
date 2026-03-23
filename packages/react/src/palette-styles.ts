@@ -117,7 +117,7 @@ export function itemStyle(
       ? `1px solid ${light ? "rgba(15, 166, 216, 0.22)" : "rgba(53, 215, 255, 0.26)"}`
       : "1px solid transparent",
     borderRadius: "18px",
-    padding: "0.98rem 1.2rem",
+    padding: "0.64rem 0.86rem",
     background: active
       ? light
         ? "rgba(15, 166, 216, 0.13)"
@@ -132,9 +132,10 @@ export function itemStyle(
 export function sectionTitleStyle(
   theme: Required<CommandTheme>
 ): CSSProperties {
+  const light = isLightTheme(theme);
   return {
     margin: 0,
-    color: theme.mutedColor,
+    color: light ? "rgba(49, 68, 84, 0.58)" : theme.mutedColor,
     fontSize: "0.78rem",
     textTransform: "uppercase",
     letterSpacing: "0.08em",
@@ -162,7 +163,9 @@ export function iconStyle(
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: "1.08rem",
+    width: "2.05rem",
+    height: "2.05rem",
+    fontSize: "1.5rem",
     lineHeight: 1,
     flexShrink: 0,
     transform: "scale(1)",
@@ -203,12 +206,12 @@ export const headerActionsStyle: CSSProperties = {
 
 export const titleStyle: CSSProperties = {
   margin: 0,
-  fontSize: "1.32rem",
-  fontWeight: 800,
-  letterSpacing: "-0.012em",
-  lineHeight: 1.15,
+  fontSize: "1.24rem",
+  fontWeight: 600,
+  letterSpacing: "-0.006em",
+  lineHeight: 1.2,
   fontFamily:
-    '"Plus Jakarta Sans", "Sora", Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
+    'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 export const titleRowStyle: CSSProperties = {
@@ -256,12 +259,12 @@ export const itemLeadingStyle: CSSProperties = {
 
 export const itemTitleStyle: CSSProperties = {
   display: "block",
-  fontWeight: 700,
-  fontSize: "1.12rem",
-  lineHeight: 1.18,
-  letterSpacing: "-0.01em",
+  fontWeight: 600,
+  fontSize: "1.04rem",
+  lineHeight: 1.22,
+  letterSpacing: "-0.004em",
   fontFamily:
-    '"Plus Jakarta Sans", "Sora", Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
+    'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 export const itemSubtitleStyle: CSSProperties = {

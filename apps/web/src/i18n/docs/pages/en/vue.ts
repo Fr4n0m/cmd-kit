@@ -43,6 +43,19 @@ const sections = [
   :sections="sections"
   title="Project commands"
 />` }] },
+      { id: "add-a-new-command", label: "Add a new command", blocks: [{ type: "paragraph", html: "Add a new option by appending a new item to your section data. <code>shortcut</code> is optional." }, { type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" },
+      { id: "billing", title: "Billing", href: "/billing", shortcut: "mod+b" },
+      { id: "support", title: "Support", href: "/support" }
+    ]
+  }
+];
+</script>` }] },
       { id: "recent-commands", label: "Recent commands", blocks: [{ type: "paragraph", html: "<code>recents</code> is optional and off by default. Enable with <code>:recents=\"true\"</code> or configure an object with <code>limit</code> and <code>sectionTitle</code>. Disable with <code>:recents=\"false\"</code>." }, { type: "code", lang: "vue", label: "vue", code: `<CommandPalette
   :sections="sections"
   :recents="false"

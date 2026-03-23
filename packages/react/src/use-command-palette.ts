@@ -62,6 +62,68 @@ const defaultDarkTheme: CommandTheme = {
   shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
 };
 
+const defaultDemoSections: CommandSection[] = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      {
+        id: "demo-dashboard",
+        title: "Open dashboard",
+        subtitle: "Default demo command",
+        shortcut: "mod+d",
+        icon: "⌂"
+      },
+      {
+        id: "demo-docs",
+        title: "Browse docs",
+        subtitle: "Navigate into nested demo commands",
+        icon: "</>",
+        children: [
+          {
+            id: "demo-docs-children",
+            title: "Documentation",
+            items: [
+              {
+                id: "demo-getting-started",
+                title: "Getting started",
+                subtitle: "See installation basics",
+                shortcut: "mod+g"
+              },
+              {
+                id: "demo-customization",
+                title: "Customization",
+                subtitle: "Theme, messages, and renderers",
+                shortcut: "mod+j"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "commands",
+    title: "Commands",
+    items: [
+      {
+        id: "demo-search",
+        title: "Search commands",
+        subtitle: "Try typing to filter this demo list",
+        shortcut: "mod+f",
+        icon: "⌕"
+      },
+      {
+        id: "demo-theme",
+        title: "Toggle theme",
+        subtitle: "Example command without side effects",
+        shortcut: "mod+t",
+        icon: "◐"
+      }
+    ]
+  }
+];
+
 export function useCommandPalette({
   items,
   sections,
@@ -75,6 +137,8 @@ export function useCommandPalette({
   onOpenChange,
   recents = false
 }: UseCommandPaletteOptions) {
+  const shouldUseDefaultDemoData =
+    items === undefined && sections === undefined && source === undefined;
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -93,7 +157,8 @@ export function useCommandPalette({
 
   const resolvedOpen = open ?? internalOpen;
   const rootItems = loadedItems ?? items;
-  const rootSections = loadedSections ?? sections;
+  const rootSections =
+    loadedSections ?? sections ?? (shouldUseDefaultDemoData ? defaultDemoSections : undefined);
   const activeSections = navigationStack.at(-1)?.sections ?? rootSections;
   const activeTitle = navigationStack.at(-1)?.title ?? title;
   const breadcrumbs = [title, ...navigationStack.map((entry) => entry.title)];

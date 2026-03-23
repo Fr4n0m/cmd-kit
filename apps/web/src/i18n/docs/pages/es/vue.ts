@@ -43,6 +43,19 @@ const sections = [
   :sections="sections"
   title="Comandos del proyecto"
 />` }] },
+      { id: "anadir-un-comando-nuevo", label: "Añadir un comando nuevo", blocks: [{ type: "paragraph", html: "Para añadir una opción nueva, agrega un nuevo ítem en tus datos de sección. <code>shortcut</code> es opcional." }, { type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
+const sections = [
+  {
+    id: "navigation",
+    title: "Navigation",
+    items: [
+      { id: "dashboard", title: "Dashboard", href: "/dashboard" },
+      { id: "billing", title: "Billing", href: "/billing", shortcut: "mod+b" },
+      { id: "support", title: "Support", href: "/support" }
+    ]
+  }
+];
+</script>` }] },
       { id: "comandos-recientes", label: "Comandos recientes", blocks: [{ type: "paragraph", html: "<code>recents</code> es opcional y está apagado por defecto. Actívalo con <code>:recents=\"true\"</code> o pasando un objeto con <code>limit</code> y <code>sectionTitle</code>. Desactívalo con <code>:recents=\"false\"</code>." }, { type: "code", lang: "vue", label: "vue", code: `<CommandPalette
   :sections="sections"
   :recents="false"

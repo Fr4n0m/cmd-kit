@@ -33,6 +33,19 @@ await dispatchCommandExecution({
     openHref: ({ href }) => window.location.assign(href)
   }
 });` }] },
+      { id: "anadir-un-comando-nuevo", label: "Añadir un comando nuevo", blocks: [{ type: "paragraph", html: "Para añadir una opción nueva, agrega un nuevo ítem en la configuración de secciones. <code>shortcut</code> es opcional a nivel de datos y solo se mostrará si tu UI lo renderiza." }, { type: "code", lang: "ts", label: "ts", code: `const config = createResolvedConfig({
+  sections: [
+    {
+      id: "navigation",
+      title: "Navigation",
+      items: [
+        { id: "home", title: "Dashboard", href: "/dashboard" },
+        { id: "billing", title: "Billing", href: "/billing", shortcut: "mod+b" },
+        { id: "support", title: "Support", href: "/support" }
+      ]
+    }
+  ]
+});` }] },
       { id: "comandos-recientes-en-core", label: "Comandos recientes en Core", blocks: [{ type: "paragraph", html: "Core no expone una prop <code>recents</code> porque es headless. Para implementar recientes usa <code>recordRecentCommand</code> y <code>resolveRecentCommands</code> en tu estado, o no lo uses si no necesitas esa sección." }, { type: "code", lang: "ts", label: "ts", code: `import {
   recordRecentCommand,
   resolveRecentCommands
