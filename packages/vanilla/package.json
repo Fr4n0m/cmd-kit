@@ -1,0 +1,40 @@
+{
+  "name": "@cmd-kit/vanilla",
+  "version": "0.1.0",
+  "description": "Vanilla JS bindings for cmd+kit",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "cmdk",
+    "command-palette",
+    "vanilla",
+    "javascript",
+    "ui"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external @cmd-kit/core",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "npm run build --workspace @cmd-kit/core && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@cmd-kit/core": "^0.1.0"
+  }
+}
