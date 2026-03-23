@@ -63,21 +63,24 @@ export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
 }
 
 export function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
-  const light = isLightTheme(theme);
   return {
-    borderRadius: "0.65rem",
-    border: `1px solid ${theme.borderColor}`,
-    background: light ? "rgba(15, 166, 216, 0.08)" : "rgba(255, 255, 255, 0.03)",
+    border: "none",
+    background: "transparent",
     color: theme.mutedColor,
-    width: "1.65rem",
-    height: "1.65rem",
+    width: "auto",
+    height: "auto",
+    minWidth: "auto",
+    minHeight: "auto",
     padding: 0,
-    display: "inline-grid",
-    placeItems: "center",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     lineHeight: 1,
-    fontSize: "0.95rem",
+    fontSize: "1.1rem",
     fontWeight: 600,
-    cursor: "pointer"
+    cursor: "pointer",
+    transition: "transform 140ms ease, color 160ms ease, opacity 160ms ease",
+    opacity: 0.9
   };
 }
 
@@ -156,28 +159,21 @@ export function iconStyle(
 ): CSSProperties {
   const light = isLightTheme(theme);
   return {
-    width: "2rem",
-    height: "2rem",
-    borderRadius: "0.78rem",
-    display: "grid",
-    placeItems: "center",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "1.08rem",
+    lineHeight: 1,
+    flexShrink: 0,
+    transform: "scale(1)",
+    transition: "transform 160ms ease, color 160ms ease",
     color: active
       ? light
         ? "#0b607f"
         : "#eaf8ff"
       : light
         ? "#2f546b"
-        : "rgba(188, 208, 223, 0.88)",
-    border: active
-      ? `1px solid ${light ? "rgba(15, 166, 216, 0.28)" : "rgba(53, 215, 255, 0.3)"}`
-      : `1px solid ${light ? "rgba(83, 112, 136, 0.18)" : "rgba(129, 155, 174, 0.18)"}`,
-    background: active
-      ? light
-        ? "rgba(15, 166, 216, 0.2)"
-        : "rgba(53, 215, 255, 0.24)"
-      : light
-        ? "rgba(83, 112, 136, 0.1)"
-        : "rgba(180, 205, 221, 0.12)"
+        : "rgba(188, 208, 223, 0.88)"
   };
 }
 
@@ -207,8 +203,12 @@ export const headerActionsStyle: CSSProperties = {
 
 export const titleStyle: CSSProperties = {
   margin: 0,
-  fontSize: "1.1rem",
-  fontWeight: 700
+  fontSize: "1.32rem",
+  fontWeight: 800,
+  letterSpacing: "-0.012em",
+  lineHeight: 1.15,
+  fontFamily:
+    '"Plus Jakarta Sans", "Sora", Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 export const titleRowStyle: CSSProperties = {
@@ -256,14 +256,20 @@ export const itemLeadingStyle: CSSProperties = {
 
 export const itemTitleStyle: CSSProperties = {
   display: "block",
-  fontWeight: 600
+  fontWeight: 700,
+  fontSize: "1.12rem",
+  lineHeight: 1.18,
+  letterSpacing: "-0.01em",
+  fontFamily:
+    '"Plus Jakarta Sans", "Sora", Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
 export const itemSubtitleStyle: CSSProperties = {
   display: "block",
-  fontSize: "0.88rem",
+  fontSize: "0.92rem",
   color: "#94a3b8",
-  marginTop: "0.15rem"
+  marginTop: "0.22rem",
+  lineHeight: 1.25
 };
 
 export const shortcutStyle: CSSProperties = {

@@ -83,7 +83,7 @@ export function PaletteHeader({
               )}
         </p>
         <p className={classNames?.caption} id={captionId} style={captionStyle}>
-          Press {prettyShortcut(shortcut)} to toggle.
+          Press {prettyShortcut(shortcut)} to open or close.
         </p>
       </div>
       <div className={classNames?.headerActions} style={headerActionsStyle}>
@@ -377,9 +377,23 @@ export function PaletteResults({
                     id={`${listboxId}-${item.id}`}
                     key={item.id}
                     onClick={() => onRunItem(item)}
-                    onMouseEnter={() => {
+                    onMouseEnter={(event) => {
                       if (itemIndex >= 0) {
                         onSetActiveIndex(itemIndex);
+                      }
+                      const iconElement = event.currentTarget.querySelector(
+                        "[data-cmdkit-icon]"
+                      ) as HTMLElement | null;
+                      if (iconElement) {
+                        iconElement.style.transform = "scale(1.08)";
+                      }
+                    }}
+                    onMouseLeave={(event) => {
+                      const iconElement = event.currentTarget.querySelector(
+                        "[data-cmdkit-icon]"
+                      ) as HTMLElement | null;
+                      if (iconElement) {
+                        iconElement.style.transform = "scale(1)";
                       }
                     }}
                     role="option"
@@ -421,7 +435,9 @@ function DefaultItem({
   return (
     <>
       <div style={itemLeadingStyle}>
-        <span style={iconStyle(theme, isActive)}>{item.icon ?? "⌘"}</span>
+        <span data-cmdkit-icon style={iconStyle(theme, isActive)}>
+          {item.icon ?? "⌘"}
+        </span>
         <div>
           <span style={itemTitleStyle}>{item.title}</span>
           {item.subtitle ? (
@@ -430,7 +446,7 @@ function DefaultItem({
         </div>
       </div>
       {item.shortcut ? (
-        <span style={shortcutStyle}>{item.shortcut}</span>
+        <span style={shortcutStyle}>{prettyShortcut(item.shortcut)}</span>
       ) : null}
       {!item.shortcut && item.children?.length ? (
         <span style={shortcutStyle}>Enter</span>
@@ -473,6 +489,16 @@ function renderDefaultTitle(
           aria-label="Go back"
           className={classNames?.backButton}
           onClick={onGoBack}
+          onMouseEnter={(event) => {
+            event.currentTarget.style.transform = "translateY(-1px)";
+            event.currentTarget.style.color = theme.textColor;
+            event.currentTarget.style.opacity = "1";
+          }}
+          onMouseLeave={(event) => {
+            event.currentTarget.style.transform = "translateY(0)";
+            event.currentTarget.style.color = theme.mutedColor;
+            event.currentTarget.style.opacity = "0.9";
+          }}
           style={backButtonStyle(theme)}
           title="Go back"
           type="button"
