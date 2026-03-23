@@ -6,4 +6,3 @@ dist
 coverage
 .artifacts
 *.log
-docs/
