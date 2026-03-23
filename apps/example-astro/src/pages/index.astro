@@ -1,41 +1,5 @@
 ---
 import CommandPalette from "@cmd-kit/astro/component";
-
-const sections = [
-  {
-    id: "navigation",
-    title: "Navigation",
-    items: [
-      {
-        id: "dashboard",
-        title: "Dashboard",
-        subtitle: "Open the project dashboard",
-        href: "/dashboard"
-      }
-    ]
-  },
-  {
-    id: "actions",
-    title: "Actions",
-    items: [
-      {
-        id: "search",
-        title: "Search docs",
-        subtitle: "Jump into the documentation space",
-        children: [
-          {
-            id: "search-scope",
-            title: "Search scope",
-            items: [
-              { id: "guides", title: "Guides" },
-              { id: "api", title: "API" }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-];
 ---
 
 <!doctype html>
@@ -43,95 +7,107 @@ const sections = [
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>cmd+kit Astro Example</title>
+    <title>cmd+kit Astro example</title>
     <style>
       :root {
-        color-scheme: dark;
-        background:
-          radial-gradient(circle at top left, rgba(255, 107, 53, 0.18), transparent 30%),
-          #020617;
-        color: #f8fafc;
-        font-family: "Space Grotesk", "Segoe UI", sans-serif;
-      }
-
-      * {
-        box-sizing: border-box;
+        color-scheme: dark light;
       }
 
       body {
         margin: 0;
         min-height: 100vh;
+        font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+        color: #e9f4fb;
+        background:
+          radial-gradient(1200px 600px at 15% 0%, rgba(53, 215, 255, 0.12), transparent 65%),
+          #07111f;
       }
 
       main {
-        width: min(960px, calc(100vw - 2rem));
-        margin: 0 auto;
-        padding: 4rem 0;
-      }
-
-      .hero {
+        min-height: 100vh;
         padding: 2rem;
-        border-radius: 28px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(15, 23, 42, 0.78);
-        backdrop-filter: blur(18px);
       }
 
-      .badge {
-        display: inline-flex;
-        padding: 0.4rem 0.75rem;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        font-size: 0.75rem;
-        color: rgba(226, 232, 240, 0.72);
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+
+      .theme-toggle {
+        border-radius: 10px;
+        border: 1px solid rgba(129, 155, 174, 0.28);
+        background: rgba(255, 255, 255, 0.04);
+        color: #d8ecf8;
+        padding: 0.5rem 0.8rem;
+        cursor: pointer;
+      }
+
+      html[data-theme="light"] body {
+        color: #0f1b26;
+        background:
+          radial-gradient(1200px 600px at 15% 0%, rgba(15, 166, 216, 0.11), transparent 65%),
+          #edf4fa;
+      }
+
+      html[data-theme="light"] p {
+        color: #5b748a;
+      }
+
+      html[data-theme="light"] .theme-toggle {
+        border: 1px solid rgba(83, 112, 136, 0.24);
+        background: rgba(255, 255, 255, 0.75);
+        color: #1d3447;
       }
 
       h1 {
-        margin: 1rem 0 0.5rem;
-        font-size: clamp(2.5rem, 8vw, 4.75rem);
-        line-height: 0.95;
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
       }
 
       p {
-        max-width: 54ch;
-        line-height: 1.7;
-        color: rgba(226, 232, 240, 0.82);
-      }
-
-      code {
-        font-family: "IBM Plex Mono", "Cascadia Code", monospace;
+        margin: 0;
+        color: #8fa4ba;
       }
     </style>
   </head>
   <body>
     <main>
-      <section class="hero">
-        <span class="badge">Astro island example</span>
-        <h1>Use cmd+kit inside Astro without turning the page into a SPA.</h1>
-        <p>
-          This example keeps the page static and hydrates only the command palette island. Press
-          <code>Cmd/Ctrl + K</code> to open the palette.
-        </p>
-      </section>
-
-      <CommandPalette
-        recents={{ limit: 4, sectionTitle: "Recent" }}
-        sections={sections}
-        shortcut="mod+k"
-        theme={{
-          accentColor: "#ff6b35",
-          backgroundColor: "#0f172a",
-          borderColor: "#334155",
-          mutedColor: "rgba(226, 232, 240, 0.72)",
-          overlayColor: "rgba(2, 6, 23, 0.72)",
-          radius: "24px",
-          shadow: "0 32px 120px rgba(0, 0, 0, 0.35)",
-          textColor: "#f8fafc"
-        }}
-        title="Astro example commands"
-      />
+      <div class="toolbar">
+        <button class="theme-toggle" id="theme-toggle" type="button">Theme: auto</button>
+      </div>
+      <h1>cmd+kit Astro Example</h1>
+      <p>Press Cmd/Ctrl + K to open the palette.</p>
+      <CommandPalette />
     </main>
+    <script>
+      const root = document.documentElement;
+      const button = document.getElementById("theme-toggle");
+      const states = ["auto", "dark", "light"];
+      let index = 0;
+
+      const applyTheme = () => {
+        const mode = states[index];
+        if (mode === "auto") {
+          delete root.dataset.theme;
+        } else {
+          root.dataset.theme = mode;
+        }
+
+        if (button instanceof HTMLButtonElement) {
+          button.textContent = `Theme: ${mode}`;
+        }
+
+        window.dispatchEvent(new CustomEvent("cmd-kit-theme-change"));
+      };
+
+      button?.addEventListener("click", () => {
+        index = (index + 1) % states.length;
+        applyTheme();
+      });
+
+      applyTheme();
+    </script>
   </body>
 </html>

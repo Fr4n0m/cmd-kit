@@ -32,7 +32,11 @@ const payload = JSON.stringify({
           <p class="cmdkit-astro-caption" data-slot="caption"></p>
         </div>
         <div class="cmdkit-astro-header-actions" data-slot="headerActions">
-          <button class="cmdkit-astro-close" data-slot="closeButton" type="button">✕</button>
+          <button class="cmdkit-astro-close" data-slot="closeButton" type="button">
+            <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" style="display:block">
+              <path d="M4 4L12 12M12 4L4 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </button>
         </div>
       </div>
       <input class="cmdkit-astro-input" data-slot="input" type="text" />
@@ -42,7 +46,7 @@ const payload = JSON.stringify({
 </div>
 
 <script is:inline type="application/json" id={`${rootId}-payload`} set:html={payload}></script>
-<script type="module">
+<script>
   import {
     createCommandSnapshot,
     createResolvedConfig,
@@ -51,10 +55,14 @@ const payload = JSON.stringify({
     resolveRecentCommands
   } from "@cmd-kit/core";
 
-  const root = document.getElementById({JSON.stringify(rootId)});
-  const payloadNode = document.getElementById({JSON.stringify(`${rootId}-payload`)});
+  const root = document.querySelector(".cmdkit-astro-root:not([data-cmdkit-initialized='true'])");
+  if (!(root instanceof HTMLElement)) {
+    throw new Error("Cmd+kit Astro component root not found.");
+  }
+  root.dataset.cmdkitInitialized = "true";
+  const payloadNode = document.getElementById(`${root.id}-payload`);
 
-  if (!root || !payloadNode?.textContent) {
+  if (!payloadNode?.textContent) {
     throw new Error("Cmd+kit Astro component initialization failed.");
   }
 
@@ -83,6 +91,101 @@ const payload = JSON.stringify({
     radius: "22px",
     shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
   };
+  const defaultDemoSections = [
+    {
+      id: "workspace",
+      title: "Workspace",
+      items: [
+        {
+          id: "demo-overview",
+          title: "Overview",
+          subtitle: "Open the workspace overview",
+          shortcut: "mod+o"
+        },
+        {
+          id: "demo-projects",
+          title: "Projects",
+          subtitle: "Jump to your active projects",
+          shortcut: "mod+p"
+        },
+        {
+          id: "demo-resources",
+          title: "Resources",
+          subtitle: "Guides and references for the team",
+          children: [
+            {
+              id: "demo-resources-sections",
+              title: "Resources",
+              items: [
+                {
+                  id: "demo-guides",
+                  title: "Guides",
+                  subtitle: "Implementation walkthroughs"
+                },
+                {
+                  id: "demo-api-reference",
+                  title: "API reference",
+                  subtitle: "Props, events, and renderers"
+                },
+                {
+                  id: "demo-release-notes",
+                  title: "Release notes",
+                  subtitle: "Recent updates and breaking changes"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "commands",
+      title: "Commands",
+      items: [
+        {
+          id: "demo-open-search",
+          title: "Search across project",
+          subtitle: "Open the global search flow",
+          shortcut: "mod+shift+p"
+        },
+        {
+          id: "demo-create-command",
+          title: "Create command",
+          subtitle: "Create a new command entry",
+          shortcut: "mod+n"
+        },
+        {
+          id: "demo-toggle-theme",
+          title: "Toggle theme",
+          subtitle: "Switch between light and dark mode",
+          shortcut: "mod+j"
+        },
+        {
+          id: "demo-settings",
+          title: "Settings",
+          subtitle: "Open workspace settings",
+          children: [
+            {
+              id: "demo-settings-sections",
+              title: "Settings",
+              items: [
+                {
+                  id: "demo-profile-settings",
+                  title: "Profile",
+                  subtitle: "Update account details and preferences"
+                },
+                {
+                  id: "demo-keyboard-settings",
+                  title: "Keyboard shortcuts",
+                  subtitle: "Customize command shortcuts"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ];
 
   const overlay = root.querySelector("[data-slot='overlay']");
   const dialog = root.querySelector("[data-slot='dialog']");
@@ -110,7 +213,14 @@ const payload = JSON.stringify({
       : undefined;
 
   const rootItems = sourcePayload?.items ?? props.items;
-  const rootSections = sourcePayload?.sections ?? props.sections;
+  const shouldUseDefaultDemoData =
+    sourcePayload === undefined &&
+    rootItems === undefined &&
+    props.sections === undefined;
+  const rootSections =
+    sourcePayload?.sections ??
+    props.sections ??
+    (shouldUseDefaultDemoData ? defaultDemoSections : undefined);
 
   const rootResolved = createResolvedConfig({
     items: rootItems,
@@ -209,7 +319,7 @@ const payload = JSON.stringify({
       .join(" + ");
   };
 
-  const parseColorToRgb = (color) => {
+  function parseColorToRgb(color) {
     const value = String(color ?? "").trim();
 
     if (value.startsWith("#")) {
@@ -242,9 +352,9 @@ const payload = JSON.stringify({
     }
 
     return null;
-  };
+  }
 
-  const isLightTheme = (backgroundColor) => {
+  function isLightTheme(backgroundColor) {
     const rgb = parseColorToRgb(backgroundColor);
     if (!rgb) {
       return false;
@@ -253,9 +363,9 @@ const payload = JSON.stringify({
     const [r, g, b] = rgb;
     const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
     return luminance > 0.72;
-  };
+  }
 
-  const resolveAdaptiveTheme = (theme) => {
+  function resolveAdaptiveTheme(theme) {
     if (theme) {
       return theme;
     }
@@ -264,7 +374,7 @@ const payload = JSON.stringify({
     const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
     const isLight = rootTheme === "light" || (!rootTheme && prefersLight);
     return isLight ? defaultLightTheme : defaultDarkTheme;
-  };
+  }
 
   const toSections = (items) => {
     if (!items?.length) {
@@ -321,6 +431,11 @@ const payload = JSON.stringify({
       ...filteredSections
     ];
   };
+  const defaultBrandIconMarkup = () =>
+    `<svg aria-hidden="true" viewBox="0 0 24 24" width="100%" height="100%" style="display:block">
+      <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+      <text x="12" y="14" text-anchor="middle" fill="currentColor" font-size="7.2" font-weight="700" font-family='Inter, "Segoe UI", system-ui, -apple-system, sans-serif'>Cmd</text>
+    </svg>`;
 
   const findItemById = (items, id) => items.find((item) => item.id === id);
 
@@ -380,15 +495,17 @@ const payload = JSON.stringify({
 
     for (const button of root.querySelectorAll(".cmdkit-astro-close")) {
       if (button instanceof HTMLElement) {
-        button.style.width = "2.25rem";
-        button.style.height = "2.25rem";
-        button.style.minWidth = "2.25rem";
-        button.style.minHeight = "2.25rem";
+        button.style.width = "2.4rem";
+        button.style.height = "2.4rem";
+        button.style.minWidth = "2.4rem";
+        button.style.minHeight = "2.4rem";
         button.style.lineHeight = "1";
-        button.style.fontSize = "1.1rem";
+        button.style.fontSize = "0";
         button.style.fontWeight = "700";
         button.style.fontFamily =
           "system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+        button.style.transition =
+          "background-color 160ms ease, border-color 160ms ease, transform 140ms ease";
         button.style.border = light
           ? `1px solid ${theme.borderColor}`
           : "1px solid rgba(146, 173, 194, 0.22)";
@@ -403,11 +520,10 @@ const payload = JSON.stringify({
 
     for (const button of root.querySelectorAll(".cmdkit-astro-title-back")) {
       if (button instanceof HTMLElement) {
-        button.style.border = `1px solid ${theme.borderColor}`;
+        button.style.border = "none";
         button.style.color = theme.mutedColor;
-        button.style.background = light
-          ? "rgba(15, 166, 216, 0.08)"
-          : "rgba(255, 255, 255, 0.03)";
+        button.style.background = "transparent";
+        button.style.opacity = "0.9";
       }
     }
 
@@ -459,12 +575,12 @@ const payload = JSON.stringify({
               ? `cmdkit-astro-item ${classNames.item}`
               : "cmdkit-astro-item";
             const shortcut = item.shortcut
-              ? `<span class="cmdkit-astro-shortcut">${item.shortcut}</span>`
+              ? `<span class="cmdkit-astro-shortcut">${prettyShortcut(item.shortcut)}</span>`
               : item.children?.length
                 ? `<span class="cmdkit-astro-shortcut">Enter</span>`
                 : "";
             const subtitle = item.subtitle ? `<span class="cmdkit-astro-subtitle">${item.subtitle}</span>` : "";
-            const icon = item.icon ?? "⌘";
+            const icon = item.icon ?? defaultBrandIconMarkup();
             const itemColor = isDisabled ? runtime.theme.mutedColor : runtime.theme.textColor;
 
             return `<button
@@ -562,7 +678,7 @@ const payload = JSON.stringify({
     }
 
     if (caption instanceof HTMLElement) {
-      caption.textContent = `Press ${prettyShortcut(props.shortcut)} to toggle.`;
+      caption.textContent = `Press ${prettyShortcut(props.shortcut)} to open or close.`;
     }
 
     if (breadcrumbs instanceof HTMLElement) {
@@ -695,7 +811,49 @@ const payload = JSON.stringify({
   }
 
   closeButton?.addEventListener("click", () => setOpenState(false));
+  closeButton?.addEventListener("mouseenter", () => {
+    const runtime = buildRuntime();
+    const light = isLightTheme(runtime.theme.backgroundColor);
+    if (closeButton instanceof HTMLElement) {
+      closeButton.style.background = light
+        ? "rgba(15, 166, 216, 0.12)"
+        : "rgba(166, 191, 212, 0.18)";
+      closeButton.style.borderColor = light
+        ? "rgba(15, 166, 216, 0.26)"
+        : "rgba(146, 173, 194, 0.34)";
+      closeButton.style.transform = "translateY(-1px)";
+    }
+  });
+  closeButton?.addEventListener("mouseleave", () => {
+    const runtime = buildRuntime();
+    const light = isLightTheme(runtime.theme.backgroundColor);
+    if (closeButton instanceof HTMLElement) {
+      closeButton.style.background = light
+        ? "rgba(15, 166, 216, 0.05)"
+        : "rgba(166, 191, 212, 0.08)";
+      closeButton.style.borderColor = light
+        ? runtime.theme.borderColor
+        : "rgba(146, 173, 194, 0.22)";
+      closeButton.style.transform = "translateY(0)";
+    }
+  });
   backButton?.addEventListener("click", goBack);
+  backButton?.addEventListener("mouseenter", () => {
+    const runtime = buildRuntime();
+    if (backButton instanceof HTMLElement) {
+      backButton.style.transform = "translateY(-1px)";
+      backButton.style.color = runtime.theme.textColor;
+      backButton.style.opacity = "1";
+    }
+  });
+  backButton?.addEventListener("mouseleave", () => {
+    const runtime = buildRuntime();
+    if (backButton instanceof HTMLElement) {
+      backButton.style.transform = "translateY(0)";
+      backButton.style.color = runtime.theme.mutedColor;
+      backButton.style.opacity = "0.9";
+    }
+  });
 
   input?.addEventListener("input", (event) => {
     query = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value : "";
@@ -784,26 +942,32 @@ const payload = JSON.stringify({
     inset: 0;
     display: grid;
     place-items: center;
-    padding: 1rem;
+    padding: 1.5rem;
     z-index: 9999;
     backdrop-filter: blur(14px);
   }
 
+  .cmdkit-astro-overlay[hidden] {
+    display: none !important;
+  }
+
   .cmdkit-astro-dialog {
-    width: min(680px, calc(100vw - 2rem));
+    width: min(700px, calc(100vw - 4rem));
     max-height: min(720px, calc(100vh - 2rem));
     overflow: hidden;
-    padding: 1.25rem;
+    box-sizing: border-box;
+    padding: 1.6rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.15rem;
+    font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
   }
 
   .cmdkit-astro-header {
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
-    align-items: start;
+    gap: 1.1rem;
+    align-items: flex-start;
   }
 
   .cmdkit-astro-breadcrumbs {
@@ -813,12 +977,15 @@ const payload = JSON.stringify({
     margin: 0 0 0.45rem;
     color: #94a3b8;
     font-size: 0.78rem;
+    font-family: "IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace;
   }
 
   .cmdkit-astro-title {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1.24rem;
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    line-height: 1.2;
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
@@ -826,53 +993,68 @@ const payload = JSON.stringify({
   }
 
   .cmdkit-astro-title-back {
-    border-radius: 0.65rem;
-    width: 1.65rem;
-    height: 1.65rem;
+    border: none;
+    background: transparent;
+    width: auto;
+    height: auto;
+    min-width: auto;
+    min-height: auto;
     padding: 0;
-    display: inline-grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     line-height: 1;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
+    transition: transform 140ms ease, color 160ms ease, opacity 160ms ease;
+    opacity: 0.9;
+  }
+
+  .cmdkit-astro-title-back[hidden] {
+    display: none !important;
   }
 
   .cmdkit-astro-caption {
     margin: 0.35rem 0 0;
     color: #94a3b8;
     font-size: 0.92rem;
+    font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
   }
 
   .cmdkit-astro-header-actions {
     display: flex;
     gap: 0.5rem;
+    align-items: flex-start;
   }
 
   .cmdkit-astro-close {
     border-radius: 999px;
-    min-width: 2.15rem;
-    min-height: 2.15rem;
+    min-width: 2.4rem;
+    min-height: 2.4rem;
     padding: 0;
     display: inline-grid;
     place-items: center;
     line-height: 1;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0;
+    font-weight: 700;
     background: transparent;
     cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 140ms ease;
   }
 
   .cmdkit-astro-input {
     width: 100%;
+    box-sizing: border-box;
     border-radius: 18px;
-    padding: 1rem 1.1rem;
+    padding: 1.06rem 1.22rem;
     font-size: 1rem;
     outline: none;
   }
 
   .cmdkit-astro-list {
     overflow: auto;
+    box-sizing: border-box;
     scrollbar-width: none;
     -ms-overflow-style: none;
     display: flex;
@@ -888,7 +1070,7 @@ const payload = JSON.stringify({
   .cmdkit-astro-section {
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: 0.7rem;
   }
 
   .cmdkit-astro-section-title {
@@ -897,6 +1079,7 @@ const payload = JSON.stringify({
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    font-family: "IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace;
   }
 
   .cmdkit-astro-section-title:empty {
@@ -906,11 +1089,12 @@ const payload = JSON.stringify({
   .cmdkit-astro-section-items {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.32rem;
   }
 
   .cmdkit-astro-item {
     width: 100%;
+    box-sizing: border-box;
     border: 1px solid transparent;
     border-radius: 18px;
     text-align: left;
@@ -918,7 +1102,7 @@ const payload = JSON.stringify({
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.9rem 1rem;
+    padding: 0.64rem 0.86rem;
     background: transparent;
     cursor: pointer;
     color: inherit;
@@ -937,29 +1121,45 @@ const payload = JSON.stringify({
   .cmdkit-astro-item-title {
     display: block;
     font-weight: 600;
+    font-size: 0.98rem;
+    line-height: 1.16;
+    letter-spacing: -0.004em;
+    transform: scale(1);
+    transform-origin: left center;
+    transition: transform 160ms ease;
+    font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
   }
 
   .cmdkit-astro-leading {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0.9rem;
   }
 
   .cmdkit-astro-icon {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.78rem;
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.05rem;
+    height: 2.05rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+    transform: scale(1);
+    transition: transform 160ms ease, color 160ms ease;
     color: rgba(188, 208, 223, 0.88);
-    border: 1px solid rgba(129, 155, 174, 0.18);
-    background: rgba(180, 205, 221, 0.12);
   }
 
   .cmdkit-astro-icon[data-active="true"] {
     color: #eaf8ff;
-    border-color: rgba(53, 215, 255, 0.3);
-    background: rgba(53, 215, 255, 0.24);
+  }
+
+  .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-icon {
+    transform: scale(1.08);
+  }
+
+  .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
+    transform: scale(1.03);
   }
 
   .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[aria-selected="true"] {
@@ -967,29 +1167,39 @@ const payload = JSON.stringify({
     border-color: rgba(15, 166, 216, 0.22);
   }
 
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-title {
+    color: rgba(14, 23, 32, 0.78);
+  }
+
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-section-title {
+    color: rgba(49, 68, 84, 0.58);
+  }
+
   .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-icon {
     color: #2f546b;
-    border-color: rgba(83, 112, 136, 0.18);
-    background: rgba(83, 112, 136, 0.1);
   }
 
   .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-icon[data-active="true"] {
     color: #0b607f;
-    border-color: rgba(15, 166, 216, 0.28);
-    background: rgba(15, 166, 216, 0.2);
+  }
+
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
+    color: #0b607f;
   }
 
   .cmdkit-astro-subtitle {
     display: block;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     color: #94a3b8;
-    margin-top: 0.15rem;
+    margin-top: 0.12rem;
+    line-height: 1.2;
   }
 
   .cmdkit-astro-shortcut {
     color: #94a3b8;
     font-size: 0.82rem;
     white-space: nowrap;
+    font-family: "IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace;
   }
 
   .cmdkit-astro-empty {
