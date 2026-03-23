@@ -834,6 +834,13 @@ export function createCommandPalette(
       window.setTimeout(() => previousFocus?.focus(), 0);
     }
     render();
+    if (open) {
+      window.requestAnimationFrame(() => {
+        if (document.activeElement !== input) {
+          input.focus({ preventScroll: true });
+        }
+      });
+    }
   };
 
   const runItem = async (item: CommandItem | undefined) => {
