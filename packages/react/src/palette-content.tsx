@@ -452,6 +452,8 @@ function DefaultItem({
 }) {
   const hasCustomIcon =
     typeof item.icon === "string" && item.icon.trim().length > 0;
+  const hasCustomSvgIcon =
+    hasCustomIcon && isSvgMarkup(item.icon);
   const light = isLightTheme(theme);
   const itemColor = isActive
     ? light
@@ -465,7 +467,18 @@ function DefaultItem({
     <>
       <div style={itemLeadingStyle}>
         <span data-cmdkit-icon style={iconStyle(theme, isActive)}>
-          {hasCustomIcon ? item.icon : <DefaultBrandIcon />}
+          {hasCustomSvgIcon ? (
+            <span
+              aria-hidden="true"
+              // Icon markup is provided by app-level config. If it starts with
+              // <svg>, render it as markup instead of literal text.
+              dangerouslySetInnerHTML={{ __html: item.icon }}
+            />
+          ) : hasCustomIcon ? (
+            item.icon
+          ) : (
+            <DefaultBrandIcon />
+          )}
         </span>
         <div>
           <span
@@ -516,6 +529,10 @@ function prettyShortcut(shortcut: string): string {
   }
 
   return tokens.map((token) => formatToken(token)).join(" + ");
+}
+
+function isSvgMarkup(value: string): boolean {
+  return value.trimStart().startsWith("<svg");
 }
 
 function renderDefaultTitle(
