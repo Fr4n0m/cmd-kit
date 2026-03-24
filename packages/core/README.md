@@ -1,3 +1,7 @@
+<p>
+  <img src="../../apps/web/public/brand/cmd-kit-logo.png" alt="Cmd+kit" width="250" />
+</p>
+
 # @cmd-kit/core
 
 [![npm version](https://img.shields.io/npm/v/@cmd-kit/core?label=npm)](https://www.npmjs.com/package/@cmd-kit/core)
