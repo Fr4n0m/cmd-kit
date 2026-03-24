@@ -2,6 +2,7 @@ import arrowRight from "@tabler/icons/outline/arrow-right.svg?raw";
 import atom2 from "@tabler/icons/outline/atom-2.svg?raw";
 import brandAstro from "@tabler/icons/outline/brand-astro.svg?raw";
 import brandCss3 from "@tabler/icons/outline/brand-css3.svg?raw";
+import brandGithub from "@tabler/icons/outline/brand-github.svg?raw";
 import brandJavascript from "@tabler/icons/outline/brand-javascript.svg?raw";
 import brandReact from "@tabler/icons/outline/brand-react.svg?raw";
 import brandTailwind from "@tabler/icons/outline/brand-tailwind.svg?raw";
@@ -9,6 +10,7 @@ import brandVue from "@tabler/icons/outline/brand-vue.svg?raw";
 import caretDown from "@tabler/icons/outline/caret-down.svg?raw";
 import caretUp from "@tabler/icons/outline/caret-up.svg?raw";
 import checklist from "@tabler/icons/outline/checklist.svg?raw";
+import coffee from "@tabler/icons/outline/coffee.svg?raw";
 import code from "@tabler/icons/outline/code.svg?raw";
 import copy from "@tabler/icons/outline/copy.svg?raw";
 import fileCertificate from "@tabler/icons/outline/file-certificate.svg?raw";
@@ -34,6 +36,7 @@ const tablerIcons = {
   "atom-2": atom2,
   "brand-astro": brandAstro,
   "brand-css3": brandCss3,
+  "brand-github": brandGithub,
   "brand-javascript": brandJavascript,
   "brand-react": brandReact,
   "brand-tailwind": brandTailwind,
@@ -41,6 +44,7 @@ const tablerIcons = {
   "caret-down": caretDown,
   "caret-up": caretUp,
   checklist,
+  coffee,
   code,
   copy,
   "file-certificate": fileCertificate,

@@ -1,5 +1,6 @@
 ---
 import BrandLockup from "./BrandLockup.astro";
+import Icon from "./Icon.astro";
 import { layoutCopy, localizedPath, type Locale } from "@/i18n/site";
 
 interface Props {
@@ -27,34 +28,33 @@ const termsHref = localizedPath(locale, "/legal/terms");
       <div class="site-footer-group site-footer-group-featured">
         <p>{copy.footerCommunity}</p>
         <a
-          class="site-footer-link-card"
+          class="site-footer-link-inline"
           href="https://github.com/Fr4n0m/cmd-kit"
           rel="noreferrer"
           target="_blank"
         >
+          <Icon className="site-footer-link-icon" name="github" />
           <span class="site-footer-link-title">{copy.footerGithubCta}</span>
           <span class="site-footer-link-copy">{copy.footerGithubHint}</span>
         </a>
         <a
-          class="site-footer-link-card"
+          class="site-footer-link-inline"
           href="https://buymeacoffee.com/fran11799"
           rel="noreferrer"
           target="_blank"
         >
+          <Icon className="site-footer-link-icon" name="coffee" />
           <span class="site-footer-link-title">{copy.footerCoffeeCta}</span>
           <span class="site-footer-link-copy">{copy.footerCoffeeHint}</span>
         </a>
-        <a
-          class="site-footer-link-card"
-          href="https://codebyfran.es"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <span class="site-footer-link-title">{copy.footerPortfolioCta}</span>
-          <span class="site-footer-link-copy">{copy.footerPortfolioHint}</span>
-        </a>
       </div>
     </nav>
+    <p class="site-footer-inline-note">
+      Built for developers by{" "}
+      <a href="https://codebyfran.es" rel="noreferrer" target="_blank">
+        Fr4n0m
+      </a>
+    </p>
   </div>
 </footer>
 
