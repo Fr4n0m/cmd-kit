@@ -1,5 +1,4 @@
 ---
-import Icon from "./Icon.astro";
 import PlaygroundIsland from "./PlaygroundIsland";
 import type { PlaygroundPageCopy } from "@/i18n/pages";
 import type { Locale } from "@/i18n/site";
@@ -18,46 +17,33 @@ const { content, locale } = Astro.props;
       <span class="badge">{content.badge}</span>
       <h1>{content.heading}</h1>
       <p>{content.description}</p>
-      <div class="tech-strip" aria-label={content.stackAriaLabel}>
-        <span class="tech-chip"><Icon className="tech-icon" name="react" /> {content.stackNames[0]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="vue" /> {content.stackNames[1]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="preact" /> {content.stackNames[2]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="astro" /> {content.stackNames[3]}</span>
-        <span class="tech-chip"><Icon className="tech-icon" name="code" /> {content.stackCss}</span>
+      <div class="playground-page-flow">
+        {content.flowSteps.map((step) => (
+          <span class="playground-flow-pill">{step}</span>
+        ))}
       </div>
+      <a class="primary-button" href="#playground">{content.cta}</a>
     </div>
-    <aside class="playground-page-stage" aria-label={content.stackAriaLabel}>
-      <div class="playground-page-stage-card">
-        <div class="playground-page-stage-top">
-          <span class="stage-pill stage-pill-muted">Live preview</span>
-          <span class="playground-page-stage-note">Desktop-first, responsive by default</span>
-        </div>
-        <div class="playground-page-stage-grid">
-          <div class="playground-page-stage-item">
-            <span class="stage-preview-icon">
-              <Icon className="tech-icon" name="play" />
-            </span>
-            <div>
-              <strong>{content.metricExportsLabel}</strong>
-              <p>{content.metricExportsValue}</p>
-            </div>
-          </div>
-          <div class="playground-page-stage-item">
-            <span class="stage-preview-icon">
-              <Icon className="tech-icon" name="settings-automation" />
-            </span>
-            <div>
-              <strong>{content.metricCoverageLabel}</strong>
-              <p>{content.metricCoverageValue}</p>
-            </div>
-          </div>
-        </div>
-        <div class="tech-strip tech-strip-compact" aria-label={content.stackAriaLabel}>
-          <span class="tech-chip"><Icon className="tech-icon" name="react" /> {content.stackNames[0]}</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> {content.stackNames[1]}</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> {content.stackNames[2]}</span>
-          <span class="tech-chip"><Icon className="tech-icon" name="astro" /> {content.stackNames[3]}</span>
-        </div>
+    <aside class="playground-page-stage" aria-hidden="true">
+      <div class="playground-page-stage-card playground-page-stage-art">
+        <img
+          alt=""
+          class="playground-page-stage-image playground-page-stage-image-dark"
+          decoding="async"
+          height="920"
+          loading="eager"
+          src="/playground/playground-hero-dark.webp"
+          width="1200"
+        />
+        <img
+          alt=""
+          class="playground-page-stage-image playground-page-stage-image-light"
+          decoding="async"
+          height="920"
+          loading="eager"
+          src="/playground/playground-hero-light.webp"
+          width="1200"
+        />
       </div>
     </aside>
   </section>

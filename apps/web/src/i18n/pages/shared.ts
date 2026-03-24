@@ -64,16 +64,11 @@ export interface HomePageCopy {
 
 export interface PlaygroundPageCopy {
   badge: string;
+  cta: string;
   description: string;
+  flowSteps: string[];
   heading: string;
   metaDescription: string;
-  metricCoverageLabel: string;
-  metricCoverageValue: string;
-  metricExportsLabel: string;
-  metricExportsValue: string;
-  stackAriaLabel: string;
-  stackCss: string;
-  stackNames: string[];
   title: string;
 }
 

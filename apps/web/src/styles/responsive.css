@@ -90,6 +90,10 @@
     grid-template-columns: 1fr;
   }
 
+  .playground-config-overview {
+    grid-template-columns: 1fr;
+  }
+
   .editor-topbar,
   .item-footer {
     grid-template-columns: 1fr;
@@ -133,6 +137,16 @@
 
   .playground-page-copy {
     padding: 1rem;
+  }
+
+  .playground-page-stage-card.playground-page-stage-art {
+    min-height: 320px;
+  }
+
+  .config-accordion-summary,
+  .editor-summary,
+  .section-builder-toolbar {
+    padding-inline: 1rem;
   }
 
   .tech-strip {
@@ -326,7 +340,12 @@
     font-size: 1.65rem;
   }
 
-  .playground-header-badges,
+  .playground-page-copy > .primary-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .playground-page-flow,
   .preview-meta-row {
     flex-wrap: wrap;
   }

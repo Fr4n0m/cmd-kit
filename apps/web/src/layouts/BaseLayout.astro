@@ -3,6 +3,8 @@ import "@/styles.css";
 import BrandLockup from "@/components/BrandLockup.astro";
 import GlobalPalette from "@/components/GlobalPalette.astro";
 import Icon from "@/components/Icon.astro";
+import MoonIcon from "@/components/icons/MoonIcon.astro";
+import SunIcon from "@/components/icons/SunIcon.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
 import {
   defaultLocale,
@@ -183,13 +185,13 @@ function isCurrentPath(target: string) {
                 data-theme-toggle
                 type="button"
               >
-              <Icon className="button-icon theme-icon theme-icon-sun" name="sun" />
-              <Icon className="button-icon theme-icon theme-icon-moon" name="moon" />
-              <span class="theme-toggle-label">
-                <span class="theme-label-light">{copy.themeLight}</span>
-                <span class="theme-label-dark">{copy.themeDark}</span>
-              </span>
-            </button>
+                <SunIcon class="button-icon theme-icon theme-icon-sun" />
+                <MoonIcon class="button-icon theme-icon theme-icon-moon" />
+                <span class="theme-toggle-label">
+                  <span class="theme-label-light">{copy.themeLight}</span>
+                  <span class="theme-label-dark">{copy.themeDark}</span>
+                </span>
+              </button>
               <div class="locale-switcher">
                 <button
                   aria-controls="locale-menu"

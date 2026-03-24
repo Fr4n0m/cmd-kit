@@ -77,6 +77,39 @@ interface PlaygroundConfiguratorProps {
   ) => void;
 }
 
+function AccordionSection({
+  children,
+  defaultOpen = false,
+  description,
+  eyebrow,
+  heading,
+  step
+}: {
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+  description: string;
+  eyebrow: string;
+  heading: string;
+  step: string;
+}) {
+  return (
+    <details className="config-accordion" open={defaultOpen}>
+      <summary className="config-accordion-summary">
+        <div className="config-accordion-copy">
+          <span className="config-accordion-step">{step}</span>
+          <div>
+            <p className="eyebrow">{eyebrow}</p>
+            <h3>{heading}</h3>
+            <p>{description}</p>
+          </div>
+        </div>
+        <Icon className="config-accordion-icon" name="triangle-down" />
+      </summary>
+      <div className="config-accordion-body">{children}</div>
+    </details>
+  );
+}
+
 export function PlaygroundConfigurator({
   config,
   labels,
@@ -110,74 +143,86 @@ export function PlaygroundConfigurator({
         <p className="panel-copy">{labels.configuratorDescription}</p>
       </div>
 
-      <div className="playground-preview-card">
-        <div className="preview-meta-row">
-          <span className="preview-shortcut">{config.shortcut}</span>
-          <span className="preview-layout">{config.layout}</span>
+      <div className="playground-config-overview">
+        <div className="playground-preview-card">
+          <div className="preview-meta-row">
+            <span className="preview-shortcut">{config.shortcut}</span>
+            <span className="preview-layout">{config.layout}</span>
+          </div>
+          <span className="preview-title">{config.title}</span>
+          <span className="preview-subtitle">{config.placeholder}</span>
         </div>
-        <span className="preview-title">{config.title}</span>
-        <span className="preview-subtitle">{config.placeholder}</span>
-      </div>
 
-      <div className="playground-summary-grid">
-        <article className="summary-tile">
-          <span><Icon className="summary-icon" name="core" /> {labels.summarySections}</span>
-          <strong>{config.sections.length}</strong>
-        </article>
-        <article className="summary-tile">
-          <span><Icon className="summary-icon" name="spark" /> {labels.summaryCommands}</span>
-          <strong>{commandCount}</strong>
-        </article>
-        <article className="summary-tile">
-          <span><Icon className="summary-icon" name="play" /> {labels.summaryRecents}</span>
-          <strong>{config.recentsEnabled ? labels.recentsEnabled : labels.recentsDisabled}</strong>
-        </article>
-      </div>
-
-      <div className="panel-section panel-section-accent">
-        <div className="panel-section-heading">
-          <span className="eyebrow">{labels.basicsEyebrow}</span>
-          <h3>{labels.basicsHeading}</h3>
+        <div className="playground-summary-grid">
+          <article className="summary-tile">
+            <span><Icon className="summary-icon" name="core" /> {labels.summarySections}</span>
+            <strong>{config.sections.length}</strong>
+          </article>
+          <article className="summary-tile">
+            <span><Icon className="summary-icon" name="spark" /> {labels.summaryCommands}</span>
+            <strong>{commandCount}</strong>
+          </article>
+          <article className="summary-tile">
+            <span><Icon className="summary-icon" name="play" /> {labels.summaryRecents}</span>
+            <strong>{config.recentsEnabled ? labels.recentsEnabled : labels.recentsDisabled}</strong>
+          </article>
         </div>
-        <PlaygroundBasicsForm
-          config={config}
-          labels={labels}
-          onUpdateConfig={onUpdateConfig}
-        />
       </div>
 
-      <div className="panel-section panel-section-accent">
-        <div className="panel-section-heading">
-          <span className="eyebrow">{labels.themeEyebrow}</span>
-          <h3>{labels.themeHeading}</h3>
-        </div>
-        <PlaygroundThemeForm
-          config={config}
-          labels={labels}
-          onUpdateConfig={onUpdateConfig}
-        />
-      </div>
+      <div className="config-accordion-stack">
+        <AccordionSection
+          defaultOpen
+          description={labels.basicsDescription}
+          eyebrow={labels.basicsEyebrow}
+          heading={labels.basicsHeading}
+          step="01"
+        >
+          <PlaygroundBasicsForm
+            config={config}
+            labels={labels}
+            onUpdateConfig={onUpdateConfig}
+          />
+        </AccordionSection>
 
-      <div className="panel-section panel-section-accent">
-        <PlaygroundSectionsPanel
-          config={config}
-          labels={labels}
-          onAddItemToNestedSection={onAddItemToNestedSection}
-          onAddItemToSection={onAddItemToSection}
-          onAddNestedSection={onAddNestedSection}
-          onAddSection={onAddSection}
-          onMoveItem={onMoveItem}
-          onMoveNestedItem={onMoveNestedItem}
-          onMoveSection={onMoveSection}
-          onRemoveItem={onRemoveItem}
-          onRemoveNestedItem={onRemoveNestedItem}
-          onRemoveNestedSection={onRemoveNestedSection}
-          onRemoveSection={onRemoveSection}
-          onUpdateItem={onUpdateItem}
-          onUpdateNestedItem={onUpdateNestedItem}
-          onUpdateNestedSectionTitle={onUpdateNestedSectionTitle}
-          onUpdateSection={onUpdateSection}
-        />
+        <AccordionSection
+          description={labels.themeDescription}
+          eyebrow={labels.themeEyebrow}
+          heading={labels.themeHeading}
+          step="02"
+        >
+          <PlaygroundThemeForm
+            config={config}
+            labels={labels}
+            onUpdateConfig={onUpdateConfig}
+          />
+        </AccordionSection>
+
+        <AccordionSection
+          description={labels.sectionsDescription}
+          eyebrow={labels.sections}
+          heading={labels.sectionsHeading}
+          step="03"
+        >
+          <PlaygroundSectionsPanel
+            config={config}
+            labels={labels}
+            onAddItemToNestedSection={onAddItemToNestedSection}
+            onAddItemToSection={onAddItemToSection}
+            onAddNestedSection={onAddNestedSection}
+            onAddSection={onAddSection}
+            onMoveItem={onMoveItem}
+            onMoveNestedItem={onMoveNestedItem}
+            onMoveSection={onMoveSection}
+            onRemoveItem={onRemoveItem}
+            onRemoveNestedItem={onRemoveNestedItem}
+            onRemoveNestedSection={onRemoveNestedSection}
+            onRemoveSection={onRemoveSection}
+            onUpdateItem={onUpdateItem}
+            onUpdateNestedItem={onUpdateNestedItem}
+            onUpdateNestedSectionTitle={onUpdateNestedSectionTitle}
+            onUpdateSection={onUpdateSection}
+          />
+        </AccordionSection>
       </div>
     </section>
   );

@@ -9,7 +9,6 @@ import { Field } from "./Fields";
 
 interface NestedSectionEditorProps {
   childSection: CommandSection;
-  itemId: string;
   labels: PlaygroundLabels;
   onAddNestedItem: () => void;
   onMoveNestedItem: (
@@ -23,7 +22,6 @@ interface NestedSectionEditorProps {
     updater: (item: CommandItem) => CommandItem
   ) => void;
   onUpdateSectionTitle: (title: string) => void;
-  sectionId: string;
 }
 
 function ItemFields({
@@ -121,82 +119,105 @@ export function NestedSectionEditor({
   onUpdateSectionTitle
 }: NestedSectionEditorProps) {
   return (
-    <div className="nested-card">
-      <div className="editor-topbar">
-        <Field label={labels.nestedSectionTitle}>
-          <input
-            onChange={(event) => onUpdateSectionTitle(event.target.value)}
-            value={childSection.title}
-          />
-        </Field>
-        <div className="editor-actions">
-          <button className="inline-button" onClick={onRemove} type="button">
-            <Icon className="button-icon" name="trash" />
-            <span>{labels.remove}</span>
-          </button>
+    <details className="nested-card nested-accordion">
+      <summary className="editor-summary">
+        <div className="editor-summary-copy">
+          <strong>{childSection.title}</strong>
+          <span>{childSection.items.length} {labels.summaryCommands}</span>
         </div>
-      </div>
-      <div className="section-items">
-        {childSection.items.map((nestedItem) => (
-          <div className="item-card" key={nestedItem.id}>
-            <ItemFields
-              item={nestedItem}
-              labels={labels}
-              onUpdate={(updater) => onUpdateNestedItem(nestedItem.id, updater)}
+        <Icon className="editor-summary-icon" name="triangle-down" />
+      </summary>
+      <div className="editor-detail-body">
+        <div className="editor-topbar">
+          <Field label={labels.nestedSectionTitle}>
+            <input
+              onChange={(event) => onUpdateSectionTitle(event.target.value)}
+              value={childSection.title}
             />
-            <div className="item-footer">
-              <div className="editor-actions">
-                <button
-                  className="inline-button"
-                  onClick={() => onMoveNestedItem(nestedItem.id, "up")}
-                  type="button"
-                >
-                  <Icon className="button-icon" name="triangle-up" />
-                  <span>{labels.moveUp}</span>
-                </button>
-                <button
-                  className="inline-button"
-                  onClick={() => onMoveNestedItem(nestedItem.id, "down")}
-                  type="button"
-                >
-                  <Icon className="button-icon" name="triangle-down" />
-                  <span>{labels.moveDown}</span>
-                </button>
-              </div>
-              <label className="toggle-field">
-                <input
-                  checked={nestedItem.disabled ?? false}
-                  onChange={(event) =>
-                    onUpdateNestedItem(nestedItem.id, (current) => ({
-                      ...current,
-                      disabled: event.target.checked
-                    }))
-                  }
-                  type="checkbox"
-                />
-                <span>{labels.itemDisabled}</span>
-              </label>
-              <button
-                className="inline-button"
-                onClick={() => onRemoveNestedItem(nestedItem.id)}
-                type="button"
-              >
-                <Icon className="button-icon" name="trash" />
-                <span>{labels.remove}</span>
-              </button>
-            </div>
+          </Field>
+          <div className="editor-actions">
+            <button className="inline-button" onClick={onRemove} type="button">
+              <Icon className="button-icon" name="trash" />
+              <span>{labels.remove}</span>
+            </button>
           </div>
-        ))}
+        </div>
+        <div className="section-items">
+          {childSection.items.map((nestedItem, nestedIndex) => (
+            <details className="item-card item-accordion" key={nestedItem.id} open={nestedIndex === 0}>
+              <summary className="editor-summary">
+                <div className="editor-summary-copy">
+                  <strong>{nestedItem.title}</strong>
+                  <span>{nestedItem.subtitle ?? nestedItem.id}</span>
+                </div>
+                <div className="editor-summary-meta">
+                  {nestedItem.disabled ? (
+                    <span className="accordion-meta-pill">{labels.itemDisabled}</span>
+                  ) : null}
+                  <Icon className="editor-summary-icon" name="triangle-down" />
+                </div>
+              </summary>
+              <div className="editor-detail-body">
+                <ItemFields
+                  item={nestedItem}
+                  labels={labels}
+                  onUpdate={(updater) => onUpdateNestedItem(nestedItem.id, updater)}
+                />
+                <div className="item-footer">
+                  <div className="editor-actions">
+                    <button
+                      className="inline-button"
+                      onClick={() => onMoveNestedItem(nestedItem.id, "up")}
+                      type="button"
+                    >
+                      <Icon className="button-icon" name="triangle-up" />
+                      <span>{labels.moveUp}</span>
+                    </button>
+                    <button
+                      className="inline-button"
+                      onClick={() => onMoveNestedItem(nestedItem.id, "down")}
+                      type="button"
+                    >
+                      <Icon className="button-icon" name="triangle-down" />
+                      <span>{labels.moveDown}</span>
+                    </button>
+                  </div>
+                  <label className="toggle-field">
+                    <input
+                      checked={nestedItem.disabled ?? false}
+                      onChange={(event) =>
+                        onUpdateNestedItem(nestedItem.id, (current) => ({
+                          ...current,
+                          disabled: event.target.checked
+                        }))
+                      }
+                      type="checkbox"
+                    />
+                    <span>{labels.itemDisabled}</span>
+                  </label>
+                  <button
+                    className="inline-button"
+                    onClick={() => onRemoveNestedItem(nestedItem.id)}
+                    type="button"
+                  >
+                    <Icon className="button-icon" name="trash" />
+                    <span>{labels.remove}</span>
+                  </button>
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+        <button
+          className="ghost-button full-width"
+          onClick={onAddNestedItem}
+          type="button"
+        >
+          <Icon className="button-icon" name="plus" />
+          <span>{labels.addNestedItem}</span>
+        </button>
       </div>
-      <button
-        className="ghost-button full-width"
-        onClick={onAddNestedItem}
-        type="button"
-      >
-        <Icon className="button-icon" name="plus" />
-        <span>{labels.addNestedItem}</span>
-      </button>
-    </div>
+    </details>
   );
 }
 
@@ -239,6 +260,7 @@ interface SectionEditorProps {
   ) => void;
   onUpdateTitle: (title: string) => void;
   section: PlaygroundConfig["sections"][number];
+  defaultOpen?: boolean;
 }
 
 export function SectionEditor({
@@ -258,144 +280,166 @@ export function SectionEditor({
   onUpdateNestedItem,
   onUpdateNestedSectionTitle,
   onUpdateTitle,
-  section
+  section,
+  defaultOpen = false
 }: SectionEditorProps) {
   return (
-    <div className="section-card">
-      <div className="editor-topbar">
-        <Field label={labels.sectionTitle}>
-          <input
-            onChange={(event) => onUpdateTitle(event.target.value)}
-            value={section.title}
-          />
-        </Field>
-        <div className="editor-actions">
-          <button className="inline-button" onClick={onMoveUp} type="button">
-            <Icon className="button-icon" name="triangle-up" />
-            <span>{labels.moveUp}</span>
-          </button>
-          <button className="inline-button" onClick={onMoveDown} type="button">
-            <Icon className="button-icon" name="triangle-down" />
-            <span>{labels.moveDown}</span>
-          </button>
-          <button className="inline-button" onClick={onRemove} type="button">
-            <Icon className="button-icon" name="trash" />
-            <span>{labels.remove}</span>
-          </button>
+    <details className="section-card section-accordion" open={defaultOpen}>
+      <summary className="editor-summary">
+        <div className="editor-summary-copy">
+          <strong>{section.title}</strong>
+          <span>{section.items.length} {labels.summaryCommands}</span>
         </div>
-      </div>
-      <div className="section-items">
-        {section.items.map((item) => (
-          <div className="item-card" key={item.id}>
-            <ItemFields
-              item={item}
-              labels={labels}
-              onUpdate={(updater) => onUpdateItem(item.id, updater)}
+        <Icon className="editor-summary-icon" name="triangle-down" />
+      </summary>
+      <div className="editor-detail-body">
+        <div className="editor-topbar">
+          <Field label={labels.sectionTitle}>
+            <input
+              onChange={(event) => onUpdateTitle(event.target.value)}
+              value={section.title}
             />
-            <div className="item-footer">
-              <div className="editor-actions">
-                <button
-                  className="inline-button"
-                  onClick={() => onMoveItem(item.id, "up")}
-                  type="button"
-                >
-                  <Icon className="button-icon" name="triangle-up" />
-                  <span>{labels.moveUp}</span>
-                </button>
-                <button
-                  className="inline-button"
-                  onClick={() => onMoveItem(item.id, "down")}
-                  type="button"
-                >
-                  <Icon className="button-icon" name="triangle-down" />
-                  <span>{labels.moveDown}</span>
-                </button>
-              </div>
-              <label className="toggle-field">
-                <input
-                  checked={item.disabled ?? false}
-                  onChange={(event) =>
-                    onUpdateItem(item.id, (current) => ({
-                      ...current,
-                      disabled: event.target.checked
-                    }))
-                  }
-                  type="checkbox"
-                />
-                <span>{labels.itemDisabled}</span>
-              </label>
-              <button
-                className="inline-button"
-                onClick={() => onRemoveItem(item.id)}
-                type="button"
-              >
-                <Icon className="button-icon" name="trash" />
-                <span>{labels.remove}</span>
-              </button>
-            </div>
-            <div className="nested-builder">
-              <div className="row-between">
-                <span className="item-meta">{labels.nested}</span>
-                <button
-                  className="inline-button"
-                  onClick={() => onAddNestedSection(item.id)}
-                  type="button"
-                >
-                  <Icon className="button-icon" name="plus" />
-                  <span>{labels.addNestedSection}</span>
-                </button>
-              </div>
-              {(item.children ?? []).map((childSection) => (
-                <NestedSectionEditor
-                  childSection={childSection}
-                  itemId={item.id}
-                  key={childSection.id}
-                  labels={labels}
-                  onAddNestedItem={() =>
-                    onAddNestedItem(item.id, childSection.id)
-                  }
-                  onMoveNestedItem={(nestedItemId, direction) =>
-                    onMoveNestedItem(
-                      item.id,
-                      childSection.id,
-                      nestedItemId,
-                      direction
-                    )
-                  }
-                  onRemove={() =>
-                    onRemoveNestedSection(item.id, childSection.id)
-                  }
-                  onRemoveNestedItem={(nestedItemId) =>
-                    onRemoveNestedItem(item.id, childSection.id, nestedItemId)
-                  }
-                  onUpdateNestedItem={(nestedItemId, updater) =>
-                    onUpdateNestedItem(
-                      item.id,
-                      childSection.id,
-                      nestedItemId,
-                      updater
-                    )
-                  }
-                  onUpdateSectionTitle={(title) =>
-                    onUpdateNestedSectionTitle(item.id, childSection.id, title)
-                  }
-                  sectionId={section.id}
-                />
-              ))}
-            </div>
-            <div className="item-meta">{item.id}</div>
+          </Field>
+          <div className="editor-actions">
+            <button className="inline-button" onClick={onMoveUp} type="button">
+              <Icon className="button-icon" name="triangle-up" />
+              <span>{labels.moveUp}</span>
+            </button>
+            <button className="inline-button" onClick={onMoveDown} type="button">
+              <Icon className="button-icon" name="triangle-down" />
+              <span>{labels.moveDown}</span>
+            </button>
+            <button className="inline-button" onClick={onRemove} type="button">
+              <Icon className="button-icon" name="trash" />
+              <span>{labels.remove}</span>
+            </button>
           </div>
-        ))}
+        </div>
+        <div className="section-items">
+          {section.items.map((item, itemIndex) => (
+            <details className="item-card item-accordion" key={item.id} open={itemIndex === 0}>
+              <summary className="editor-summary">
+                <div className="editor-summary-copy">
+                  <strong>{item.title}</strong>
+                  <span>{item.subtitle ?? item.id}</span>
+                </div>
+                <div className="editor-summary-meta">
+                  {item.disabled ? (
+                    <span className="accordion-meta-pill">{labels.itemDisabled}</span>
+                  ) : null}
+                  <Icon className="editor-summary-icon" name="triangle-down" />
+                </div>
+              </summary>
+              <div className="editor-detail-body">
+                <ItemFields
+                  item={item}
+                  labels={labels}
+                  onUpdate={(updater) => onUpdateItem(item.id, updater)}
+                />
+                <div className="item-footer">
+                  <div className="editor-actions">
+                    <button
+                      className="inline-button"
+                      onClick={() => onMoveItem(item.id, "up")}
+                      type="button"
+                    >
+                      <Icon className="button-icon" name="triangle-up" />
+                      <span>{labels.moveUp}</span>
+                    </button>
+                    <button
+                      className="inline-button"
+                      onClick={() => onMoveItem(item.id, "down")}
+                      type="button"
+                    >
+                      <Icon className="button-icon" name="triangle-down" />
+                      <span>{labels.moveDown}</span>
+                    </button>
+                  </div>
+                  <label className="toggle-field">
+                    <input
+                      checked={item.disabled ?? false}
+                      onChange={(event) =>
+                        onUpdateItem(item.id, (current) => ({
+                          ...current,
+                          disabled: event.target.checked
+                        }))
+                      }
+                      type="checkbox"
+                    />
+                    <span>{labels.itemDisabled}</span>
+                  </label>
+                  <button
+                    className="inline-button"
+                    onClick={() => onRemoveItem(item.id)}
+                    type="button"
+                  >
+                    <Icon className="button-icon" name="trash" />
+                    <span>{labels.remove}</span>
+                  </button>
+                </div>
+                <div className="nested-builder">
+                  <div className="row-between">
+                    <span className="item-meta">{labels.nested}</span>
+                    <button
+                      className="inline-button"
+                      onClick={() => onAddNestedSection(item.id)}
+                      type="button"
+                    >
+                      <Icon className="button-icon" name="plus" />
+                      <span>{labels.addNestedSection}</span>
+                    </button>
+                  </div>
+                  {(item.children ?? []).map((childSection) => (
+                    <NestedSectionEditor
+                      childSection={childSection}
+                      key={childSection.id}
+                      labels={labels}
+                      onAddNestedItem={() =>
+                        onAddNestedItem(item.id, childSection.id)
+                      }
+                      onMoveNestedItem={(nestedItemId, direction) =>
+                        onMoveNestedItem(
+                          item.id,
+                          childSection.id,
+                          nestedItemId,
+                          direction
+                        )
+                      }
+                      onRemove={() =>
+                        onRemoveNestedSection(item.id, childSection.id)
+                      }
+                      onRemoveNestedItem={(nestedItemId) =>
+                        onRemoveNestedItem(item.id, childSection.id, nestedItemId)
+                      }
+                      onUpdateNestedItem={(nestedItemId, updater) =>
+                        onUpdateNestedItem(
+                          item.id,
+                          childSection.id,
+                          nestedItemId,
+                          updater
+                        )
+                      }
+                      onUpdateSectionTitle={(title) =>
+                        onUpdateNestedSectionTitle(item.id, childSection.id, title)
+                      }
+                    />
+                  ))}
+                </div>
+                <div className="item-meta">{item.id}</div>
+              </div>
+            </details>
+          ))}
+        </div>
+        <button
+          className="ghost-button full-width"
+          onClick={onAddItem}
+          type="button"
+        >
+          <Icon className="button-icon" name="plus" />
+          <span>{labels.addItem}</span>
+        </button>
       </div>
-      <button
-        className="ghost-button full-width"
-        onClick={onAddItem}
-        type="button"
-      >
-        <Icon className="button-icon" name="plus" />
-        <span>{labels.addItem}</span>
-      </button>
-    </div>
+    </details>
   );
 }
 

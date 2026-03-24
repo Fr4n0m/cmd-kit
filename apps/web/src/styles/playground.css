@@ -729,3 +729,333 @@ html[data-theme="light"] .code-block code {
   color: #183245;
 }
 
+.playground-page-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.84fr);
+  gap: clamp(1rem, 2.4vw, 1.4rem);
+  margin-bottom: 1.6rem;
+}
+
+.playground-page-copy {
+  justify-content: center;
+  padding: clamp(1.35rem, 2vw, 1.9rem);
+}
+
+.playground-page-copy h1 {
+  max-width: 9ch;
+  font-size: clamp(2.85rem, min(5vw, 7.8vh), 4.7rem);
+}
+
+.playground-page-copy p {
+  max-width: 56ch;
+}
+
+.playground-page-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.2rem;
+}
+
+.playground-flow-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.48rem 0.76rem;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 155, 174, 0.2);
+  background: rgba(129, 155, 174, 0.09);
+  color: var(--playground-ink);
+  font-size: 0.76rem;
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.04em;
+}
+
+html[data-theme="light"] .playground-flow-pill {
+  border-color: rgba(83, 112, 136, 0.2);
+  background: rgba(15, 166, 216, 0.08);
+}
+
+.playground-page-copy > .primary-button {
+  width: fit-content;
+  margin-top: 0.1rem;
+}
+
+.playground-page-stage {
+  display: flex;
+}
+
+.playground-page-stage-card.playground-page-stage-art {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  min-height: 100%;
+}
+
+.playground-page-stage-art::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 36%;
+  background: linear-gradient(180deg, transparent, rgba(8, 13, 17, 0.18));
+  pointer-events: none;
+}
+
+html[data-theme="light"] .playground-page-stage-art::after {
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.14));
+}
+
+.playground-page-stage-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playground-page-stage-image-light {
+  display: none;
+}
+
+html[data-theme="light"] .playground-page-stage-image-dark {
+  display: none;
+}
+
+html[data-theme="light"] .playground-page-stage-image-light {
+  display: block;
+}
+
+.playground-header {
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--playground-border);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="light"] .playground-header {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), transparent),
+    rgba(255, 255, 255, 0.72);
+}
+
+.playground-config-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+  gap: 0.8rem;
+  margin-top: 1.15rem;
+}
+
+.playground-preview-card {
+  margin-top: 0;
+  min-height: 0;
+}
+
+.playground-summary-grid {
+  margin-top: 0;
+  align-content: start;
+}
+
+.summary-tile strong {
+  font-size: 1.18rem;
+}
+
+.config-accordion-stack {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.config-accordion,
+.section-card,
+.item-card,
+.nested-card {
+  overflow: hidden;
+}
+
+.config-accordion {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
+    rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="light"] .config-accordion {
+  border-color: rgba(83, 112, 136, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), transparent),
+    rgba(255, 255, 255, 0.72);
+}
+
+.config-accordion-summary,
+.editor-summary {
+  list-style: none;
+}
+
+.config-accordion-summary::-webkit-details-marker,
+.editor-summary::-webkit-details-marker {
+  display: none;
+}
+
+.config-accordion-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.05rem;
+  cursor: pointer;
+}
+
+.config-accordion-copy {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.config-accordion-step {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(129, 155, 174, 0.2);
+  background: rgba(129, 155, 174, 0.1);
+  color: var(--playground-ink);
+  font-size: 0.74rem;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+html[data-theme="light"] .config-accordion-step {
+  border-color: rgba(83, 112, 136, 0.18);
+  background: rgba(15, 166, 216, 0.08);
+}
+
+.config-accordion-summary .eyebrow {
+  margin: 0 0 0.4rem;
+}
+
+.config-accordion-summary h3 {
+  margin: 0;
+  font-family: "Sora", sans-serif;
+  font-size: 1.16rem;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.config-accordion-summary .config-accordion-copy > div > p:last-child {
+  margin: 0.45rem 0 0;
+  color: var(--playground-muted);
+  line-height: 1.55;
+}
+
+.config-accordion-icon,
+.editor-summary-icon {
+  color: var(--playground-muted);
+  transition: transform 160ms ease;
+}
+
+.config-accordion-icon {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  margin-top: 0.25rem;
+}
+
+.config-accordion[open] .config-accordion-icon,
+details[open] > .editor-summary .editor-summary-icon {
+  transform: rotate(180deg);
+}
+
+.config-accordion-body,
+.editor-detail-body {
+  padding: 0.1rem 1.05rem 1.05rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="light"] .config-accordion-body,
+html[data-theme="light"] .editor-detail-body {
+  border-top-color: rgba(83, 112, 136, 0.12);
+}
+
+.section-builder-toolbar {
+  margin-bottom: 1rem;
+}
+
+.section-builder-toolbar .panel-copy {
+  max-width: 44ch;
+}
+
+.section-stack {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.section-card,
+.item-card,
+.nested-card {
+  padding: 0;
+}
+
+.editor-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 0.82rem 0.9rem;
+  cursor: pointer;
+}
+
+.editor-summary-copy {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.editor-summary-copy strong {
+  display: block;
+  font-size: 0.98rem;
+  line-height: 1.28;
+  overflow-wrap: anywhere;
+}
+
+.editor-summary-copy span {
+  color: var(--playground-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.editor-summary-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.editor-summary-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.accordion-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 155, 174, 0.18);
+  background: rgba(129, 155, 174, 0.09);
+  color: var(--playground-muted);
+  font-size: 0.68rem;
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-theme="light"] .accordion-meta-pill {
+  border-color: rgba(83, 112, 136, 0.16);
+  background: rgba(15, 166, 216, 0.08);
+}
+

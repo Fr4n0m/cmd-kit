@@ -5,6 +5,7 @@ export interface PlaygroundLabels {
   addNestedSection: string;
   addSection: string;
   asyncMode: string;
+  basicsDescription: string;
   basicsEyebrow: string;
   basicsHeading: string;
   border: string;
@@ -46,8 +47,6 @@ export interface PlaygroundLabels {
   placeholder: string;
   preactCode: string;
   preview: string;
-  previewBadgeExports: string;
-  previewBadgeFramework: string;
   previewDescription: string;
   previewHeading: string;
   radius: string;
@@ -73,6 +72,7 @@ export interface PlaygroundLabels {
   surface: string;
   tailwindCode: string;
   text: string;
+  themeDescription: string;
   themeEyebrow: string;
   themeHeading: string;
   title: string;
@@ -123,8 +123,9 @@ const playgroundCopy = {
       addNestedSection: "Add nested section",
       addSection: "Add section",
       asyncMode: "Async source",
+      basicsDescription: "Language, layout, messages, recents, and data mode.",
       basicsEyebrow: "Basics",
-      basicsHeading: "Message and behavior",
+      basicsHeading: "Essentials",
       border: "Border color",
       centered: "Centered",
       closeLabel: "Close label",
@@ -135,8 +136,8 @@ const playgroundCopy = {
       codeLiveOutput: "Live output from the current configurator state",
       config: "Configurator",
       configuratorDescription:
-        "Tune the visible product layer first, then export the code that matches it.",
-      configuratorHeading: "Command surface",
+        "Move from the essentials to structure without facing every control at once.",
+      configuratorHeading: "Set up the experience",
       copy: "Copy",
       copyFailed: "Copy failed",
       copyReady: "Copy ready",
@@ -166,11 +167,9 @@ const playgroundCopy = {
       placeholder: "Search placeholder",
       preactCode: "Preact",
       preview: "Live Preview",
-      previewBadgeExports: "Vue / Preact / Vanilla exports",
-      previewBadgeFramework: "React first",
       previewDescription:
-        "Edit content, theme, sections, nested commands, and exports in one place.",
-      previewHeading: "Shape the palette, then take the code with you.",
+        "Open the current palette at any point while content and exports keep updating.",
+      previewHeading: "Try the current version",
       radius: "Radius",
       reactCode: "React",
       recents: "Recent items",
@@ -195,8 +194,9 @@ const playgroundCopy = {
       surface: "Surface color",
       tailwindCode: "Tailwind",
       text: "Text color",
+      themeDescription: "Palette colors, overlay, radius, and shadow.",
       themeEyebrow: "Theme",
-      themeHeading: "Palette and feel",
+      themeHeading: "Look and feel",
       title: "Palette title",
       vanillaCode: "Vanilla JS",
       vueCode: "Vue",
@@ -238,8 +238,9 @@ const playgroundCopy = {
       addNestedSection: "Añadir sección anidada",
       addSection: "Añadir sección",
       asyncMode: "Source async",
+      basicsDescription: "Idioma, layout, mensajes, recientes y modo de datos.",
       basicsEyebrow: "Basics",
-      basicsHeading: "Mensajes y comportamiento",
+      basicsHeading: "Esenciales",
       border: "Color del borde",
       centered: "Centrado",
       closeLabel: "Etiqueta de cierre",
@@ -250,8 +251,8 @@ const playgroundCopy = {
       codeLiveOutput: "Salida viva desde el estado actual del configurador",
       config: "Configurador",
       configuratorDescription:
-        "Ajusta primero la capa visible del producto y luego exporta el código que la representa.",
-      configuratorHeading: "Superficie de comandos",
+        "Ve de lo esencial a la estructura sin tener todos los controles abiertos a la vez.",
+      configuratorHeading: "Configura la experiencia",
       copy: "Copiar",
       copyFailed: "Error al copiar",
       copyReady: "Copia lista",
@@ -281,11 +282,9 @@ const playgroundCopy = {
       placeholder: "Placeholder de búsqueda",
       preactCode: "Preact",
       preview: "Vista previa",
-      previewBadgeExports: "Exports para Vue / Preact / Vanilla",
-      previewBadgeFramework: "React first",
       previewDescription:
-        "Edita contenido, tema, secciones, comandos anidados y exports en un mismo sitio.",
-      previewHeading: "Da forma al palette y llévate luego el código.",
+        "Abre la palette actual en cualquier momento mientras contenido y código se actualizan.",
+      previewHeading: "Prueba la versión actual",
       radius: "Radio",
       reactCode: "React",
       recents: "Items recientes",
@@ -310,8 +309,9 @@ const playgroundCopy = {
       surface: "Color de fondo",
       tailwindCode: "Tailwind",
       text: "Color del texto",
+      themeDescription: "Colores, overlay, radio y sombra de la palette.",
       themeEyebrow: "Theme",
-      themeHeading: "Palette y sensación",
+      themeHeading: "Look and feel",
       title: "Título del palette",
       vanillaCode: "Vanilla JS",
       vueCode: "Vue",

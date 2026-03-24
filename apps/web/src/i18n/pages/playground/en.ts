@@ -2,19 +2,13 @@ import type { PlaygroundPageCopy } from "@/i18n/pages/shared";
 
 export const playgroundEn: PlaygroundPageCopy = {
   badge: "Configurator",
+  cta: "Start editing",
   description:
-    "Edit structure, theme, nested commands, messages, and exports with room to think. The preview stays interactive while the generated code tracks every change in real time.",
-  heading:
-    "Work in a dedicated playground that behaves like a focused configuration tool.",
+    "Set the essentials first, reveal advanced controls only when you need them, and keep the preview and exported code in sync.",
+  flowSteps: ["1. Basics", "2. Theme", "3. Export"],
+  heading: "Build your palette.",
   metaDescription:
-    "Dedicated playground for shaping the command palette, tuning sections and theme, and exporting real code.",
-  metricCoverageLabel: "Coverage",
-  metricCoverageValue: "Theme, messages, recents, nested commands, async source",
-  metricExportsLabel: "Exports",
-  metricExportsValue: "React, Vue, Preact, Vanilla, Tailwind, CSS, JSON",
-  stackAriaLabel: "Playground stack",
-  stackCss: "CSS / Tailwind",
-  stackNames: ["React", "Vue", "Preact", "Astro"],
+    "Focused playground for configuring the command palette, checking the live preview, and exporting production-ready code.",
   title: "Cmd+kit | Playground"
 };
 

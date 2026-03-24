@@ -93,9 +93,7 @@ export function PlaygroundSectionsPanel({
 }: PlaygroundSectionsPanelProps) {
   return (
     <>
-      <div className="panel-heading">
-        <p className="eyebrow">{labels.sections}</p>
-        <h3>{labels.sectionsHeading}</h3>
+      <div className="section-builder-toolbar row-between">
         <p className="panel-copy">{labels.sectionsDescription}</p>
         <button className="ghost-button" onClick={onAddSection} type="button">
           <Icon className="button-icon" name="plus" />
@@ -104,8 +102,9 @@ export function PlaygroundSectionsPanel({
       </div>
 
       <div className="section-stack">
-        {config.sections.map((section) => (
+        {config.sections.map((section, index) => (
           <SectionEditor
+            defaultOpen={index === 0}
             key={section.id}
             labels={labels}
             onAddItem={() => onAddItemToSection(section.id)}
