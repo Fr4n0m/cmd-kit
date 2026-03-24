@@ -542,3 +542,163 @@ html[data-theme="dark"] .theme-toggle .theme-label-light,
 html[data-theme="light"] .theme-toggle .theme-label-dark {
   display: inline;
 }
+
+@media (max-width: 960px) {
+  .topbar {
+    padding-top: 0.55rem;
+  }
+
+  .topbar-inner {
+    padding: 0.68rem;
+    border-radius: 18px;
+    gap: 0.55rem;
+  }
+
+  .topbar-nav,
+  .topbar-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .topbar-utilities {
+    flex-wrap: wrap;
+  }
+
+  .topbar-nav a {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .topbar-actions {
+    gap: 0.38rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar-inner {
+    grid-template-columns: 1fr;
+    width: min(100vw - 0.75rem, 1600px);
+    gap: 0.7rem;
+    padding: 0.75rem;
+    border-radius: 20px;
+  }
+
+  .topbar-primary {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.6rem;
+  }
+
+  .brand-link {
+    gap: 0.6rem;
+  }
+
+  .brand-mark {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .brand-copy {
+    gap: 0.06rem;
+  }
+
+  .brand-title {
+    font-size: 0.94rem;
+  }
+
+  .brand-subtitle {
+    display: inline;
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+  }
+
+  .topbar-mobile-actions {
+    display: inline-flex;
+  }
+
+  .nav-button-utility {
+    padding: 0.44rem 0.56rem;
+  }
+
+  .topbar-menu {
+    display: none;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding-top: 0.1rem;
+  }
+
+  html[data-menu-open="true"] .topbar-menu {
+    display: grid;
+  }
+
+  .topbar-nav {
+    width: 100%;
+    padding: 0.22rem;
+    border-radius: 14px;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .topbar-nav a {
+    justify-content: flex-start;
+    padding: 0.82rem 0.8rem;
+    font-size: 0.86rem;
+    text-align: left;
+  }
+
+  .mobile-docs-nav {
+    width: 100%;
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.22rem;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  html[data-theme="light"] .mobile-docs-nav {
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .topbar-utilities {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.42rem;
+  }
+
+  .theme-toggle-label,
+  .locale-toggle-label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .theme-toggle,
+  .locale-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .locale-toggle-desktop {
+    display: none;
+  }
+
+  .locale-toggle-mobile {
+    display: inline-flex;
+  }
+
+  .theme-toggle,
+  .locale-toggle,
+  .menu-toggle {
+    min-width: 2.5rem;
+    justify-content: center;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+}

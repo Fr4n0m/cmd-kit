@@ -111,3 +111,16 @@ html[data-theme="light"] .primary-button:active {
   box-shadow: 0 14px 26px rgba(0, 0, 0, 0.18);
 }
 
+@media (max-width: 640px) {
+  .launch-button {
+    justify-content: center;
+    width: 100%;
+    padding: 0.72rem 0.88rem;
+  }
+
+  .playground-page-copy > .primary-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
