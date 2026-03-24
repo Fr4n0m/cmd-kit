@@ -2,7 +2,7 @@ import type { HomeOverviewCopy } from "@/i18n/pages/home/shared";
 
 export const homeOverviewEs: HomeOverviewCopy = {
   metricOutputLabel: "Salida",
-  metricOutputValue: "React, Vue, Preact, CSS, Tailwind, JSON",
+  metricOutputValue: "React, Vue, Preact, Astro, CSS, Tailwind",
   metricSurfaceLabel: "Arquitectura",
   metricSurfaceValue: "Motor headless + adaptadores UI",
   overviewLargeBody:

@@ -659,6 +659,13 @@ html[data-theme="light"] .toggle-field {
   color: var(--playground-ink);
 }
 
+.tab .tech-icon-tailwind {
+  width: 1.02rem;
+  height: 1.02rem;
+  stroke-width: 2.05;
+  transform: translateY(0.01rem);
+}
+
 html[data-theme="light"] .tab {
   background: rgba(255, 255, 255, 0.82);
 }

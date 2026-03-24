@@ -28,13 +28,13 @@ export function PlaygroundCodePanel({
         ? labels.vueCode
         : activeTab === "preact"
           ? labels.preactCode
+          : activeTab === "astro"
+            ? labels.astroCode
           : activeTab === "vanilla"
             ? labels.vanillaCode
           : activeTab === "css"
             ? labels.cssCode
-            : activeTab === "tailwind"
-              ? labels.tailwindCode
-              : labels.jsonCode;
+            : labels.tailwindCode;
 
   async function handleCopy() {
     setCopyMessage((await onCopy()) ? labels.copyReady : labels.copyFailed);
@@ -95,6 +95,18 @@ export function PlaygroundCodePanel({
         </button>
         <button
           aria-controls={panelId}
+          aria-selected={activeTab === "astro"}
+          className={activeTab === "astro" ? "tab active" : "tab"}
+          onClick={() => onSelectTab("astro")}
+          role="tab"
+          tabIndex={activeTab === "astro" ? 0 : -1}
+          type="button"
+        >
+          <Icon className="tech-icon" name="astro" />
+          <span>{labels.astroCode}</span>
+        </button>
+        <button
+          aria-controls={panelId}
           aria-selected={activeTab === "vanilla"}
           className={activeTab === "vanilla" ? "tab active" : "tab"}
           onClick={() => onSelectTab("vanilla")}
@@ -126,20 +138,8 @@ export function PlaygroundCodePanel({
           tabIndex={activeTab === "tailwind" ? 0 : -1}
           type="button"
         >
-          <Icon className="tech-icon" name="spark" />
+          <Icon className="tech-icon tech-icon-tailwind" name="tailwind" />
           <span>{labels.tailwindCode}</span>
-        </button>
-        <button
-          aria-controls={panelId}
-          aria-selected={activeTab === "json"}
-          className={activeTab === "json" ? "tab active" : "tab"}
-          onClick={() => onSelectTab("json")}
-          role="tab"
-          tabIndex={activeTab === "json" ? 0 : -1}
-          type="button"
-        >
-          <Icon className="tech-icon" name="code" />
-          <span>{labels.jsonCode}</span>
         </button>
       </div>
       <div className="code-panel-meta">

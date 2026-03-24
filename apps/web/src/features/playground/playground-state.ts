@@ -9,8 +9,8 @@ import {
   type Language
 } from "./config";
 import {
+  buildAstroSnippet,
   buildCssSnippet,
-  buildJsonSnippet,
   buildPreactSnippet,
   buildReactSnippet,
   buildTailwindSnippet,
@@ -22,10 +22,10 @@ export type SnippetTab =
   | "react"
   | "vue"
   | "preact"
+  | "astro"
   | "vanilla"
   | "css"
-  | "tailwind"
-  | "json";
+  | "tailwind";
 
 export function usePlaygroundState(initialLanguage: Language = "en") {
   const [config, setConfig] = useState<PlaygroundConfig>(
@@ -43,16 +43,16 @@ export function usePlaygroundState(initialLanguage: Language = "en") {
       return buildTailwindSnippet(config);
     }
 
-    if (activeTab === "json") {
-      return buildJsonSnippet(config);
-    }
-
     if (activeTab === "vue") {
       return buildVueSnippet(config);
     }
 
     if (activeTab === "preact") {
       return buildPreactSnippet(config);
+    }
+
+    if (activeTab === "astro") {
+      return buildAstroSnippet(config);
     }
 
     if (activeTab === "vanilla") {

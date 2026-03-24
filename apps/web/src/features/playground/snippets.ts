@@ -52,46 +52,81 @@ export function buildPreactSnippet(config: PlaygroundConfig): string {
   return buildReactLikeSnippet("@cmd-kit/preact", config);
 }
 
+export function buildAstroSnippet(config: PlaygroundConfig): string {
+  const frontmatter = [
+    "---",
+    'import CommandPalette from "@cmd-kit/astro/component";',
+    "",
+    `const sections = ${toSectionsSnippet(config.sections)};`,
+    `const recents = ${toObjectLiteralSnippet(toRecentsValue(config))};`,
+    `const messages = ${toObjectLiteralSnippet(toMessagesValue(config))};`,
+    `const theme = ${toObjectLiteralSnippet(toThemeValue(config))};`
+  ];
+
+  if (config.sourceMode === "async") {
+    frontmatter.push("", "const source = {", "  sections", "};");
+  }
+
+  frontmatter.push("---", "", "<CommandPalette");
+
+  const componentLines = [
+    "  messages={messages}",
+    "  recents={recents}",
+    `  shortcut="${escapeString(config.shortcut)}"`,
+    "  theme={theme}",
+    `  title="${escapeString(config.title)}"`
+  ];
+
+  if (config.sourceMode === "static") {
+    componentLines.push("  sections={sections}");
+  } else {
+    componentLines.push("  source={source}");
+  }
+
+  if (config.defaultOpen) {
+    componentLines.push("  defaultOpen");
+  }
+
+  componentLines.push("/>");
+
+  return [...frontmatter, ...componentLines].join("\n");
+}
+
 export function buildVanillaSnippet(config: PlaygroundConfig): string {
-  return `import {
-  createCommandSnapshot,
-  createResolvedConfig,
-  dispatchCommandExecution
-} from "@cmd-kit/core";
+  const lines = ['import { createCommandPalette } from "@cmd-kit/core";', ""];
 
-const sections = ${toJsonSnippet(config.sections)};
-const config = createResolvedConfig({
-  messages: ${toJsonSnippet(toMessagesValue(config))},
-  recents: ${toJsonSnippet(toRecentsValue(config))},
-  sections,
-  shortcut: "${escapeString(config.shortcut)}",
-  theme: ${toJsonSnippet(toThemeValue(config))}
-});
+  if (config.sourceMode === "static") {
+    lines.push(`const sections = ${toJsonSnippet(config.sections)};`);
+  } else {
+    lines.push(
+      "const source = async () => {",
+      `  await new Promise((resolve) => setTimeout(resolve, ${config.sourceDelayMs}));`,
+      "",
+      `  return ${toJsonSnippet({ sections: config.sections })};`,
+      "};"
+    );
+  }
 
-let query = "";
-let activeIndex = 0;
+  lines.push(
+    "",
+    "const palette = createCommandPalette({",
+    `  defaultOpen: ${config.defaultOpen},`,
+    `  messages: ${toJsonSnippet(toMessagesValue(config))},`,
+    `  recents: ${toJsonSnippet(toRecentsValue(config))},`,
+    `  shortcut: "${escapeString(config.shortcut)}",`,
+    `  theme: ${toJsonSnippet(toThemeValue(config))},`,
+    `  title: "${escapeString(config.title)}",`
+  );
 
-function render() {
-  const snapshot = createCommandSnapshot(config, query);
-  const activeItem = snapshot.items[activeIndex];
+  if (config.sourceMode === "static") {
+    lines.push("  sections");
+  } else {
+    lines.push("  source");
+  }
 
-  console.log(snapshot.groups, activeItem);
-}
+  lines.push("});", "", "window.addEventListener('beforeunload', () => palette.destroy());");
 
-async function runActiveItem() {
-  const snapshot = createCommandSnapshot(config, query);
-
-  await dispatchCommandExecution({
-    item: snapshot.items[activeIndex],
-    port: {
-      navigate: ({ sections, title }) => console.log("navigate", title, sections),
-      openHref: ({ href }) => window.location.assign(href),
-      runCallback: async ({ callback }) => callback()
-    }
-  });
-}
-
-render();`;
+  return lines.join("\n");
 }
 
 export function buildCssSnippet(config: PlaygroundConfig): string {
@@ -134,10 +169,6 @@ const sections = ${toSectionsSnippet(config.sections)};
 ${sourceSnippet ? `\n${sourceSnippet}` : ""}
 
 ${componentLines.join("\n")}`;
-}
-
-export function buildJsonSnippet(config: PlaygroundConfig): string {
-  return JSON.stringify(toPortableConfig(config), null, 2);
 }
 
 function buildReactLikeSnippet(packageName: string, config: PlaygroundConfig): string {
@@ -228,22 +259,6 @@ function toRecentsValue(config: PlaygroundConfig) {
   return {
     limit: config.recentsLimit,
     sectionTitle: config.recentsTitle
-  };
-}
-
-function toPortableConfig(config: PlaygroundConfig) {
-  return {
-    title: config.title,
-    description: config.description,
-    shortcut: config.shortcut,
-    defaultOpen: config.defaultOpen,
-    sourceMode: config.sourceMode,
-    sourceDelayMs: config.sourceDelayMs,
-    layout: config.layout,
-    recents: toRecentsValue(config),
-    messages: toMessagesValue(config),
-    theme: toThemeValue(config),
-    sections: config.sections
   };
 }
 

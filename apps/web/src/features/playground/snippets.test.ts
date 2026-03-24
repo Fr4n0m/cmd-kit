@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import { defaultConfig } from "./config";
 import {
+  buildAstroSnippet,
   buildCssSnippet,
-  buildJsonSnippet,
   buildPreactSnippet,
   buildReactSnippet,
   buildTailwindSnippet,
@@ -15,6 +15,7 @@ describe("playground snippet builders", () => {
   it("builds a React snippet that maps the selected shortcut and sections", () => {
     const snippet = buildReactSnippet(defaultConfig);
 
+    expect(snippet).toContain('import { CommandPalette } from "@cmd-kit/react";');
     expect(snippet).toContain('shortcut="mod+k"');
     expect(snippet).toContain("const sections = [");
     expect(snippet).toContain("<CommandPalette");
@@ -83,27 +84,42 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain("<CommandPalette");
   });
 
+  it("builds an Astro snippet that uses the official component export", () => {
+    const snippet = buildAstroSnippet(defaultConfig);
+
+    expect(snippet).toContain('import CommandPalette from "@cmd-kit/astro/component";');
+    expect(snippet).toContain("const sections = [");
+    expect(snippet).toContain("<CommandPalette");
+    expect(snippet).toContain("sections={sections}");
+    expect(snippet).toContain('shortcut="mod+k"');
+  });
+
   it("builds a vanilla snippet from the same command config", () => {
     const snippet = buildVanillaSnippet(defaultConfig);
 
     expect(snippet).toContain('from "@cmd-kit/core"');
-    expect(snippet).toContain("createCommandSnapshot");
-    expect(snippet).toContain("dispatchCommandExecution");
+    expect(snippet).toContain("createCommandPalette");
+    expect(snippet).toContain("const palette = createCommandPalette({");
+    expect(snippet).toContain("window.addEventListener('beforeunload'");
   });
 
-  it("builds a JSON snippet for portable configuration export", () => {
-    const snippet = buildJsonSnippet({
+  it("builds source-based snippets when async mode is enabled", () => {
+    const vanillaSnippet = buildVanillaSnippet({
       ...defaultConfig,
       defaultOpen: true,
       sourceDelayMs: 320,
       sourceMode: "async"
     });
+    const astroSnippet = buildAstroSnippet({
+      ...defaultConfig,
+      sourceMode: "async"
+    });
 
-    expect(snippet).toContain('"shortcut": "mod+k"');
-    expect(snippet).toContain('"sections": [');
-    expect(snippet).toContain('"sectionTitle": "Recent"');
-    expect(snippet).toContain('"defaultOpen": true');
-    expect(snippet).toContain('"sourceMode": "async"');
-    expect(snippet).toContain('"sourceDelayMs": 320');
+    expect(vanillaSnippet).toContain("const source = async () => {");
+    expect(vanillaSnippet).toContain("setTimeout(resolve, 320)");
+    expect(vanillaSnippet).toContain("source");
+    expect(astroSnippet).toContain("const source = {");
+    expect(astroSnippet).toContain("source={source}");
+    expect(astroSnippet).not.toContain("sections={sections}");
   });
 });

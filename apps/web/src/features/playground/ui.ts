@@ -1,6 +1,7 @@
 export interface PlaygroundLabels {
   accent: string;
   addItem: string;
+  astroCode: string;
   addNestedItem: string;
   addNestedSection: string;
   addSection: string;
@@ -31,7 +32,6 @@ export interface PlaygroundLabels {
   itemShortcut: string;
   itemSubtitle: string;
   itemTitle: string;
-  jsonCode: string;
   language: string;
   languageEnglish: string;
   languageSpanish: string;
@@ -119,6 +119,7 @@ const playgroundCopy = {
     labels: {
       accent: "Accent color",
       addItem: "Add item",
+      astroCode: "Astro",
       addNestedItem: "Add nested item",
       addNestedSection: "Add nested section",
       addSection: "Add section",
@@ -151,7 +152,6 @@ const playgroundCopy = {
       itemShortcut: "Item shortcut",
       itemSubtitle: "Item subtitle",
       itemTitle: "Item title",
-      jsonCode: "JSON",
       language: "Language",
       languageEnglish: "English",
       languageSpanish: "Español",
@@ -198,7 +198,7 @@ const playgroundCopy = {
       themeEyebrow: "Theme",
       themeHeading: "Look and feel",
       title: "Palette title",
-      vanillaCode: "Vanilla JS",
+      vanillaCode: "Core (Vanilla JS)",
       vueCode: "Vue",
       wide: "Wide"
     },
@@ -234,6 +234,7 @@ const playgroundCopy = {
     labels: {
       accent: "Color de acento",
       addItem: "Añadir item",
+      astroCode: "Astro",
       addNestedItem: "Añadir item anidado",
       addNestedSection: "Añadir sección anidada",
       addSection: "Añadir sección",
@@ -266,7 +267,6 @@ const playgroundCopy = {
       itemShortcut: "Atajo del item",
       itemSubtitle: "Subtítulo del item",
       itemTitle: "Título del item",
-      jsonCode: "JSON",
       language: "Idioma",
       languageEnglish: "English",
       languageSpanish: "Español",
@@ -313,7 +313,7 @@ const playgroundCopy = {
       themeEyebrow: "Theme",
       themeHeading: "Look and feel",
       title: "Título del palette",
-      vanillaCode: "Vanilla JS",
+      vanillaCode: "Core (Vanilla JS)",
       vueCode: "Vue",
       wide: "Ancho"
     },
