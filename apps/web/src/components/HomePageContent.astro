@@ -25,6 +25,23 @@ const docsCoreHref = withLocale("/docs/core");
 const docsPlaygroundHref = withLocale("/docs/playground");
 const legalPrivacyHref = withLocale("/legal/privacy");
 const legalTermsHref = withLocale("/legal/terms");
+
+const homeVisuals = {
+  core: {
+    dark: "/home/core-dark.webp",
+    light: "/home/core-light.webp"
+  },
+  coreEngine: {
+    dark: "/home/core-engine-dark.webp",
+    light: "/home/core-engine-light.webp"
+  },
+  logicLayer: {
+    dark: "/home/logic-layer-dark.webp",
+    light: "/home/logic-layer-light.webp"
+  }
+} as const;
+
+const installSignals = [content.techCore, content.techReact, content.techAdapters];
 ---
 
 <main class="site-shell" id="main-content" tabindex="-1">
@@ -89,65 +106,144 @@ const legalTermsHref = withLocale("/legal/terms");
     </div>
   </section>
 
-  <section class="content-band content-band-overview">
-    <div class="overview-grid">
-      <article class="overview-card overview-card-large overview-card-primary">
-        <div class="card-topline">
-          <span class="card-icon-wrap">
-            <Icon className="card-icon" name="core" />
-          </span>
-          <p class="card-label">{content.overviewLargeEyebrow}</p>
+  <section class="content-band content-band-overview home-story-band">
+    <div class="home-storyboard">
+      <article class="home-spotlight">
+        <div class="home-spotlight-copy">
+          <div class="card-topline">
+            <span class="card-icon-wrap">
+              <Icon className="card-icon" name="core" />
+            </span>
+            <p class="card-label">{content.overviewLargeEyebrow}</p>
+          </div>
+          <h2>{content.overviewLargeHeading}</h2>
+          <p>{content.overviewLargeBody}</p>
+          <div class="card-meta-list">
+            <span class="card-meta-pill">
+              <strong>{content.metricSurfaceLabel}:</strong> {content.metricSurfaceValue}
+            </span>
+            <span class="card-meta-pill">
+              <strong>{content.metricOutputLabel}:</strong> {content.metricOutputValue}
+            </span>
+          </div>
         </div>
-        <h2>{content.overviewLargeHeading}</h2>
-        <p>{content.overviewLargeBody}</p>
-        <div class="card-meta-list">
-          <span class="card-meta-pill">
-            <strong>{content.metricSurfaceLabel}:</strong> {content.metricSurfaceValue}
-          </span>
-          <span class="card-meta-pill">
-            <strong>{content.metricOutputLabel}:</strong> {content.metricOutputValue}
-          </span>
+        <div class="home-spotlight-visual">
+          <div class="home-media-frame home-media-frame-logic" aria-hidden="true">
+            <img
+              alt=""
+              class="home-media home-media-dark"
+              decoding="async"
+              loading="lazy"
+              src={homeVisuals.logicLayer.dark}
+            />
+            <img
+              alt=""
+              class="home-media home-media-light"
+              decoding="async"
+              loading="lazy"
+              src={homeVisuals.logicLayer.light}
+            />
+            <div class="home-media-caption">{content.metricSurfaceValue}</div>
+          </div>
         </div>
       </article>
-      <article class="overview-card overview-card-search">
-        <div class="card-topline">
-          <span class="card-icon-wrap">
-            <Icon className="card-icon" name="spark" />
-          </span>
-          <p class="card-label">{content.overviewSearchEyebrow}</p>
-        </div>
-        <h2>{content.overviewSearchHeading}</h2>
-        <p>{content.overviewSearchBody}</p>
-      </article>
-      <article class="overview-card overview-card-react">
-        <div class="card-topline">
-          <span class="card-icon-wrap">
-            <Icon className="card-icon" name="react" />
-          </span>
-          <p class="card-label">{content.overviewReactEyebrow}</p>
-        </div>
-        <h2>{content.overviewReactHeading}</h2>
-        <p>{content.overviewReactBody}</p>
-      </article>
+
+      <div class="home-feature-grid">
+        <article class="home-feature-card home-feature-card-search">
+          <div class="home-feature-media">
+            <img
+              alt=""
+              class="home-feature-image home-feature-image-dark"
+              decoding="async"
+              loading="lazy"
+              src={homeVisuals.coreEngine.dark}
+            />
+            <img
+              alt=""
+              class="home-feature-image home-feature-image-light"
+              decoding="async"
+              loading="lazy"
+              src={homeVisuals.coreEngine.light}
+            />
+            <div class="home-feature-media-caption">
+              <Icon className="button-icon" name="spark" />
+              <span>{content.overviewSearchEyebrow}</span>
+            </div>
+          </div>
+          <div class="home-feature-copy">
+            <div class="card-topline">
+              <span class="card-icon-wrap">
+                <Icon className="card-icon" name="spark" />
+              </span>
+              <p class="card-label">{content.overviewSearchEyebrow}</p>
+            </div>
+            <h2>{content.overviewSearchHeading}</h2>
+            <p>{content.overviewSearchBody}</p>
+          </div>
+        </article>
+
+        <article class="home-feature-card home-feature-card-react">
+          <div class="home-feature-media">
+            <img
+              alt=""
+              class="home-feature-image home-feature-image-dark"
+              decoding="async"
+              loading="lazy"
+              src={homeVisuals.core.dark}
+            />
+            <img
+              alt=""
+              class="home-feature-image home-feature-image-light"
+              decoding="async"
+              loading="lazy"
+              src={homeVisuals.core.light}
+            />
+            <div class="home-feature-media-caption">
+              <Icon className="button-icon" name="react" />
+              <span>{content.overviewReactEyebrow}</span>
+            </div>
+          </div>
+          <div class="home-feature-copy">
+            <div class="card-topline">
+              <span class="card-icon-wrap">
+                <Icon className="card-icon" name="react" />
+              </span>
+              <p class="card-label">{content.overviewReactEyebrow}</p>
+            </div>
+            <h2>{content.overviewReactHeading}</h2>
+            <p>{content.overviewReactBody}</p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section class="content-band content-band-actions">
-    <div class="launch-band">
-      <article class="launch-card install-panel launch-card-install">
-        <div class="card-topline">
-          <span class="card-icon-wrap">
-            <Icon className="card-icon" name="play" />
-          </span>
-          <p class="card-label">{content.installEyebrow}</p>
+  <section class="content-band content-band-actions home-runway-band">
+    <div class="home-runway">
+      <article class="home-runway-card home-runway-install">
+        <div class="home-runway-install-copy">
+          <div class="card-topline">
+            <span class="card-icon-wrap">
+              <Icon className="card-icon" name="play" />
+            </span>
+            <p class="card-label">{content.installEyebrow}</p>
+          </div>
+          <h2>{content.installHeading}</h2>
+          <p>{content.installDescription}</p>
+          <div class="home-runway-signals" aria-label={content.installEyebrow}>
+            {installSignals.map((signal) => (
+              <span class="home-signal-pill">{signal}</span>
+            ))}
+          </div>
         </div>
-        <h2>{content.installHeading}</h2>
-        <p>{content.installDescription}</p>
-        {content.installCommands.map((command) => (
-          <pre class="inline-code-block"><code>{command}</code></pre>
-        ))}
+        <div class="home-runway-commands">
+          {content.installCommands.map((command) => (
+            <pre class="inline-code-block"><code>{command}</code></pre>
+          ))}
+        </div>
       </article>
-      <article class="launch-card launch-card-docs">
+
+      <article class="home-runway-card home-runway-docs">
         <div class="card-topline">
           <span class="card-icon-wrap">
             <Icon className="card-icon" name="code" />
@@ -161,7 +257,8 @@ const legalTermsHref = withLocale("/legal/terms");
           <a class="ghost-button" href={customizationHref}>{content.customizationCta}</a>
         </div>
       </article>
-      <article class="launch-card playground-callout launch-card-playground">
+
+      <article class="home-runway-card home-runway-playground">
         <div class="card-topline">
           <span class="card-icon-wrap">
             <Icon className="card-icon" name="arrow-right" />

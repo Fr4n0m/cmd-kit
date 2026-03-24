@@ -15,11 +15,17 @@ export interface LayoutCopy {
   docs: string;
   docsNavigationLabel: string;
   footerCoffee: string;
+  footerCoffeeCta: string;
+  footerCoffeeHint: string;
   footerCommunity: string;
   footerDescription: string;
   footerGithub: string;
+  footerGithubCta: string;
+  footerGithubHint: string;
   footerLegal: string;
   footerNavLabel: string;
+  footerPortfolioCta: string;
+  footerPortfolioHint: string;
   footerPrivacy: string;
   footerTerms: string;
   footerStudio: string;
@@ -54,12 +60,18 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     docs: "Docs",
     docsNavigationLabel: "Documentation navigation",
     footerCoffee: "Buy me a coffee",
+    footerCoffeeCta: "Support cmd+kit with a coffee",
+    footerCoffeeHint: "If this project helps your work, thanks for the support.",
     footerCommunity: "Community",
     footerDescription:
       "Cmd+kit is an open source command palette system for shipping searchable, configurable command flows.",
     footerGithub: "GitHub",
+    footerGithubCta: "Open PRs on GitHub",
+    footerGithubHint: "Review issues, discuss ideas, and contribute improvements.",
     footerLegal: "Legal",
     footerNavLabel: "Footer",
+    footerPortfolioCta: "Portfolio",
+    footerPortfolioHint: "Built for developers by Fr4n0m.",
     footerPrivacy: "Privacy",
     footerTerms: "Terms",
     footerStudio: "Fr4n0m",
@@ -87,12 +99,19 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     docs: "Docs",
     docsNavigationLabel: "Navegación de documentación",
     footerCoffee: "Buy me a coffee",
+    footerCoffeeCta: "Apoya cmd+kit con un café",
+    footerCoffeeHint:
+      "Si este proyecto te ayuda en tu trabajo, gracias por el apoyo.",
     footerCommunity: "Comunidad",
     footerDescription:
       "Cmd+kit es un sistema open source de command palette para crear flujos de comandos configurables y fáciles de buscar.",
     footerGithub: "GitHub",
+    footerGithubCta: "Abre PRs en GitHub",
+    footerGithubHint: "Revisa issues, comparte ideas y contribuye mejoras.",
     footerLegal: "Legal",
     footerNavLabel: "Footer",
+    footerPortfolioCta: "Portfolio",
+    footerPortfolioHint: "Built for developers by Fr4n0m.",
     footerPrivacy: "Privacidad",
     footerTerms: "Términos",
     footerStudio: "Fr4n0m",

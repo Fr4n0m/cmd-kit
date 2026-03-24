@@ -21,27 +21,37 @@ const termsHref = localizedPath(locale, "/legal/terms");
     <nav aria-label={copy.footerNavLabel} class="site-footer-links">
       <div class="site-footer-group">
         <p>{copy.footerLegal}</p>
-        <a href={privacyHref}>{copy.footerPrivacy}</a>
-        <a href={termsHref}>{copy.footerTerms}</a>
+        <a class="site-footer-legal-link" href={privacyHref}>{copy.footerPrivacy}</a>
+        <a class="site-footer-legal-link" href={termsHref}>{copy.footerTerms}</a>
       </div>
-      <div class="site-footer-group">
+      <div class="site-footer-group site-footer-group-featured">
         <p>{copy.footerCommunity}</p>
         <a
+          class="site-footer-link-card"
           href="https://github.com/Fr4n0m/cmd-kit"
           rel="noreferrer"
           target="_blank"
         >
-          {copy.footerGithub}
+          <span class="site-footer-link-title">{copy.footerGithubCta}</span>
+          <span class="site-footer-link-copy">{copy.footerGithubHint}</span>
         </a>
         <a
+          class="site-footer-link-card"
           href="https://buymeacoffee.com/fran11799"
           rel="noreferrer"
           target="_blank"
         >
-          {copy.footerCoffee}
+          <span class="site-footer-link-title">{copy.footerCoffeeCta}</span>
+          <span class="site-footer-link-copy">{copy.footerCoffeeHint}</span>
         </a>
-        <a href="https://codebyfran.es" rel="noreferrer" target="_blank">
-          {copy.footerStudio}
+        <a
+          class="site-footer-link-card"
+          href="https://codebyfran.es"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <span class="site-footer-link-title">{copy.footerPortfolioCta}</span>
+          <span class="site-footer-link-copy">{copy.footerPortfolioHint}</span>
         </a>
       </div>
     </nav>
