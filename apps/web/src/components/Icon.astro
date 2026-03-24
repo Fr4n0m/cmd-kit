@@ -1,27 +1,5 @@
 ---
-import ArrowRightIcon from "./icons/ArrowRightIcon.astro";
-import AstroIcon from "./icons/AstroIcon.astro";
-import CodeIcon from "./icons/CodeIcon.astro";
-import CopyIcon from "./icons/CopyIcon.astro";
-import CoreIcon from "./icons/CoreIcon.astro";
-import CSSIcon from "./icons/CSSIcon.astro";
-import GlobeIcon from "./icons/GlobeIcon.astro";
-import JSONIcon from "./icons/JSONIcon.astro";
-import MenuIcon from "./icons/MenuIcon.astro";
-import MoonIcon from "./icons/MoonIcon.astro";
-import PlayIcon from "./icons/PlayIcon.astro";
-import PlusIcon from "./icons/PlusIcon.astro";
-import PreactIcon from "./icons/PreactIcon.astro";
-import ReactIcon from "./icons/ReactIcon.astro";
-import SparkIcon from "./icons/SparkIcon.astro";
-import SunIcon from "./icons/SunIcon.astro";
-import TailwindIcon from "./icons/TailwindIcon.astro";
-import TrashIcon from "./icons/TrashIcon.astro";
-import TriangleDownIcon from "./icons/TriangleDownIcon.astro";
-import TriangleUpIcon from "./icons/TriangleUpIcon.astro";
-import VanillaJSIcon from "./icons/VanillaJSIcon.astro";
-import VueIcon from "./icons/VueIcon.astro";
-import XIcon from "./icons/XIcon.astro";
+import { renderTablerIcon, type TablerIconName } from "./icons/tabler";
 
 interface Props {
   className?: string;
@@ -37,6 +15,7 @@ interface Props {
     | "play"
     | "plus"
     | "preact"
+    | "settings-automation"
     | "react"
     | "moon"
     | "menu"
@@ -53,41 +32,33 @@ interface Props {
 }
 
 const { className, name, title } = Astro.props as Props;
-const labelled = Boolean(title);
-const iconProps = {
-  "aria-hidden": labelled ? undefined : "true",
-  "aria-label": title,
-  class: className,
-  role: labelled ? "img" : "presentation"
-};
 
-const icons = {
-  "arrow-right": ArrowRightIcon,
-  astro: AstroIcon,
-  code: CodeIcon,
-  copy: CopyIcon,
-  core: CoreIcon,
-  css: CSSIcon,
-  globe: GlobeIcon,
-  json: JSONIcon,
-  menu: MenuIcon,
-  moon: MoonIcon,
-  play: PlayIcon,
-  plus: PlusIcon,
-  preact: PreactIcon,
-  react: ReactIcon,
-  spark: SparkIcon,
-  sun: SunIcon,
-  tailwind: TailwindIcon,
-  trash: TrashIcon,
-  "triangle-down": TriangleDownIcon,
-  "triangle-up": TriangleUpIcon,
-  vanilla: VanillaJSIcon,
-  vue: VueIcon,
-  x: XIcon
-} as const;
-
-const SelectedIcon = icons[name];
+const tablerNameMap = {
+  "arrow-right": "arrow-right",
+  astro: "brand-astro",
+  code: "code",
+  copy: "copy",
+  core: "package",
+  css: "brand-css3",
+  globe: "world",
+  json: "json",
+  menu: "menu-2",
+  moon: "moon",
+  play: "player-play",
+  plus: "plus",
+  preact: "atom-2",
+  "settings-automation": "settings-automation",
+  react: "brand-react",
+  spark: "sparkles",
+  sun: "sun",
+  tailwind: "brand-tailwind",
+  trash: "trash",
+  "triangle-down": "caret-down",
+  "triangle-up": "caret-up",
+  vanilla: "brand-javascript",
+  vue: "brand-vue",
+  x: "x"
+} as const satisfies Record<Props["name"], TablerIconName>;
 ---
 
-<SelectedIcon {...iconProps} />
+<span set:html={renderTablerIcon(tablerNameMap[name], { className, title })}></span>

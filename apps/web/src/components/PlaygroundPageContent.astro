@@ -26,14 +26,38 @@ const { content, locale } = Astro.props;
         <span class="tech-chip"><Icon className="tech-icon" name="code" /> {content.stackCss}</span>
       </div>
     </div>
-    <aside class="playground-page-aside">
-      <div class="metric-card">
-        <span>{content.metricExportsLabel}</span>
-        <strong>{content.metricExportsValue}</strong>
-      </div>
-      <div class="metric-card">
-        <span>{content.metricCoverageLabel}</span>
-        <strong>{content.metricCoverageValue}</strong>
+    <aside class="playground-page-stage" aria-label={content.stackAriaLabel}>
+      <div class="playground-page-stage-card">
+        <div class="playground-page-stage-top">
+          <span class="stage-pill stage-pill-muted">Live preview</span>
+          <span class="playground-page-stage-note">Desktop-first, responsive by default</span>
+        </div>
+        <div class="playground-page-stage-grid">
+          <div class="playground-page-stage-item">
+            <span class="stage-preview-icon">
+              <Icon className="tech-icon" name="play" />
+            </span>
+            <div>
+              <strong>{content.metricExportsLabel}</strong>
+              <p>{content.metricExportsValue}</p>
+            </div>
+          </div>
+          <div class="playground-page-stage-item">
+            <span class="stage-preview-icon">
+              <Icon className="tech-icon" name="settings-automation" />
+            </span>
+            <div>
+              <strong>{content.metricCoverageLabel}</strong>
+              <p>{content.metricCoverageValue}</p>
+            </div>
+          </div>
+        </div>
+        <div class="tech-strip tech-strip-compact" aria-label={content.stackAriaLabel}>
+          <span class="tech-chip"><Icon className="tech-icon" name="react" /> {content.stackNames[0]}</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="vue" /> {content.stackNames[1]}</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="preact" /> {content.stackNames[2]}</span>
+          <span class="tech-chip"><Icon className="tech-icon" name="astro" /> {content.stackNames[3]}</span>
+        </div>
       </div>
     </aside>
   </section>
