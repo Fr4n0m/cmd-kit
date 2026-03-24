@@ -1,21 +1,37 @@
 # @cmd-kit/core
 
-Framework-agnostic command palette core for `cmd+kit`.
+[![npm version](https://img.shields.io/npm/v/@cmd-kit/core?label=npm)](https://www.npmjs.com/package/@cmd-kit/core)
+![Vanilla JS](https://img.shields.io/badge/Framework-agnostic-111827)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6)
+![License](https://img.shields.io/badge/license-MIT-1f2937)
 
-This package provides the headless model used by the React adapter and future framework integrations.
+Core engine for Cmd+kit. Includes headless primitives and framework-free browser runtime (`createCommandPalette`).
 
-## Scope
+## 🌐 Language
 
-- command items, groups, and sections
-- fuzzy search integration
-- snapshot building
-- command execution results
-- nested navigation modeling
-- async source loading primitives
-- recent command state primitives
-- theme helpers for resolved tokens and CSS variable generation
+- [Español](#-español)
+- [English](#-english)
 
-## Minimal Example
+---
+
+## 🇪🇸 Español
+
+### ⚡ Instalación
+
+```bash
+npm install @cmd-kit/core
+```
+
+### ✅ Qué incluye
+
+- Modelo de comandos (`items`, `sections`, `children`).
+- Snapshot + fuzzy filtering.
+- Ejecución de comandos (`href`, callback, navegación).
+- Recientes (`recordRecentCommand`, `resolveRecentCommands`).
+- Helpers de tema/mensajes.
+- Runtime vanilla completo: `createCommandPalette`.
+
+### 🚀 Opción 1: motor headless
 
 ```ts
 import {
@@ -44,4 +60,78 @@ await dispatchCommandExecution({
 });
 ```
 
-Use `@cmd-kit/react` if you want a ready-to-use UI.
+### 🧱 Opción 2: runtime vanilla (sin framework)
+
+```ts
+import { createCommandPalette } from "@cmd-kit/core";
+
+const palette = createCommandPalette({
+  title: "Command menu",
+  defaultOpen: false,
+  recents: { limit: 6, sectionTitle: "Recent commands" }
+});
+
+// API runtime
+palette.setOpen(true);
+palette.toggle();
+palette.reloadSource();
+```
+
+### 🛝 Integración desde Playground
+
+Si tu objetivo es `core`:
+
+1. Diseña estructura en playground.
+2. Exporta `JSON` o `Vanilla/Core`.
+3. Usa la salida para:
+   - `createResolvedConfig` (headless), o
+   - `createCommandPalette` (runtime vanilla).
+
+### 🧠 Cuándo usar core
+
+- Quieres construir tu propia UI.
+- Necesitas integración sin React/Vue/Preact/Astro.
+- Quieres reutilizar solo motor + ejecución + filtros.
+
+### 🤝 Contribuciones
+
+PRs bienvenidas, especialmente en rendimiento, estabilidad del motor y extensibilidad.
+
+---
+
+## 🇬🇧 English
+
+### ⚡ Install
+
+```bash
+npm install @cmd-kit/core
+```
+
+### ✅ What you get
+
+- Command model (`items`, `sections`, `children`).
+- Snapshot + fuzzy search pipeline.
+- Command execution primitives.
+- Recents helpers.
+- Theme/messages helpers.
+- Full framework-free runtime via `createCommandPalette`.
+
+### 🚀 Option 1: headless engine
+
+Use `createResolvedConfig` + `createCommandSnapshot` + `dispatchCommandExecution`.
+
+### 🧱 Option 2: vanilla runtime
+
+Use `createCommandPalette` to mount a ready runtime without framework dependencies.
+
+### 🛝 Playground integration
+
+Export `JSON` / `Vanilla/Core`, then map output into either headless config or `createCommandPalette`.
+
+### 🤝 Contributing
+
+PRs are welcome, especially around performance, core stability, and API extension points.
+
+---
+
+Portfolio: **Fr4n0m** → https://codebyfran.es
