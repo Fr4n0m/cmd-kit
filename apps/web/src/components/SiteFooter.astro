@@ -18,6 +18,12 @@ const termsHref = localizedPath(locale, "/legal/terms");
     <div class="site-footer-brand">
       <BrandLockup href={localizedPath(locale, "/")} locale={locale} />
       <p class="site-footer-copy">{copy.footerDescription}</p>
+      <p class="site-footer-inline-note">
+        Built for developers by{" "}
+        <a href="https://codebyfran.es" rel="noreferrer" target="_blank">
+          Fr4n0m
+        </a>
+      </p>
     </div>
     <nav aria-label={copy.footerNavLabel} class="site-footer-links">
       <div class="site-footer-group">
@@ -49,12 +55,6 @@ const termsHref = localizedPath(locale, "/legal/terms");
         </a>
       </div>
     </nav>
-    <p class="site-footer-inline-note">
-      Built for developers by{" "}
-      <a href="https://codebyfran.es" rel="noreferrer" target="_blank">
-        Fr4n0m
-      </a>
-    </p>
   </div>
 </footer>
 
