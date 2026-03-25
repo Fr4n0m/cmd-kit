@@ -103,7 +103,6 @@ html[data-theme="light"] .site-footer-inner {
   height: 1rem;
   color: var(--ink-muted);
   flex: 0 0 auto;
-  margin-top: 0.1rem;
 }
 
 .site-footer-link-inline:hover {
@@ -186,7 +185,7 @@ html[data-theme="light"] .site-footer-link-inline:hover {
     gap: 0.5rem;
   }
 
-  .site-footer-group-featured > p {
+  .site-footer-group-featured>p {
     grid-column: 1 / -1;
   }
 }
