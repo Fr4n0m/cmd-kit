@@ -14,6 +14,7 @@ import {
   IconCaretUp,
   IconCode,
   IconCopy,
+  IconInfoCircle,
   IconJson,
   IconMenu2,
   IconMoon,
@@ -36,6 +37,7 @@ export type PlaygroundIconName =
   | "core"
   | "css"
   | "globe"
+  | "info"
   | "json"
   | "menu"
   | "moon"
@@ -74,6 +76,7 @@ const iconMap: Record<PlaygroundIconName, TablerIconComponent> =
     core: IconPackage,
     css: IconBrandCss3,
     globe: IconWorld,
+    info: IconInfoCircle,
     json: IconJson,
     menu: IconMenu2,
     moon: IconMoon,
