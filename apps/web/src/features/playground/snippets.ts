@@ -1,4 +1,4 @@
-import type { CommandSection } from "@cmd-kit/react";
+import type { CommandSection } from "@cmd-kit/core";
 
 import type { PlaygroundConfig } from "./config";
 
@@ -141,9 +141,10 @@ const themeBlock = \`:root {
 
 export function buildTailwindSnippet(config: PlaygroundConfig): string {
   const sourceSnippet = toSourceSnippet(config);
+  const theme = toThemeValue(config);
   const componentLines = [
     "<div",
-    `  className="rounded-[${config.radius}] border border-[${config.borderColor}] bg-[${config.backgroundColor}] text-[${config.textColor}] shadow-[${config.shadow}]"`,
+    `  className="rounded-[${theme.radius}] border border-[${theme.borderColor}] bg-[${theme.backgroundColor}] text-[${theme.textColor}] shadow-[${theme.shadow}]"`,
     ">",
     "  <CommandPalette",
     `    recents={${toRecentsSnippet(config)}}`,
@@ -239,15 +240,23 @@ function toMessagesValue(config: PlaygroundConfig) {
 }
 
 function toThemeValue(config: PlaygroundConfig) {
+  const mode = config.activeThemeMode;
+  const isDark = mode === "dark";
   return {
-    accentColor: config.accentColor,
-    backgroundColor: config.backgroundColor,
-    textColor: config.textColor,
-    mutedColor: config.mutedColor,
-    borderColor: config.borderColor,
-    overlayColor: config.overlayColor,
-    radius: config.radius,
-    shadow: config.shadow
+    accentColor: isDark ? config.darkAccentColor : config.accentColor,
+    backgroundColor: isDark ? config.darkBackgroundColor : config.backgroundColor,
+    textColor: isDark ? config.darkTextColor : config.textColor,
+    titleColor: isDark ? config.darkTitleColor : config.titleColor,
+    descriptionColor: isDark ? config.darkDescriptionColor : config.descriptionColor,
+    mutedColor: isDark ? config.darkMutedColor : config.mutedColor,
+    sectionTitleColor: isDark ? config.darkSectionTitleColor : config.sectionTitleColor,
+    itemTitleColor: isDark ? config.darkItemTitleColor : config.itemTitleColor,
+    itemSubtitleColor: isDark ? config.darkItemSubtitleColor : config.itemSubtitleColor,
+    shortcutColor: isDark ? config.darkShortcutColor : config.shortcutColor,
+    borderColor: isDark ? config.darkBorderColor : config.borderColor,
+    overlayColor: isDark ? config.darkOverlayColor : config.overlayColor,
+    radius: isDark ? config.darkRadius : config.radius,
+    shadow: isDark ? config.darkShadow : config.shadow
   };
 }
 

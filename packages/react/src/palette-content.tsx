@@ -8,6 +8,7 @@ import {
   captionStyle,
   closeButtonStyle,
   emptyStateStyle,
+  getInteractiveThemeTokens,
   headerActionsStyle,
   headerStyle,
   iconStyle,
@@ -61,22 +62,20 @@ export function PaletteHeader({
   theme,
   titleId
 }: PaletteHeaderProps) {
-  const light = isLightTheme(theme);
+  const interactionTokens = getInteractiveThemeTokens(theme);
 
   return (
     <div className={classNames?.header} style={headerStyle}>
       <div>
         {breadcrumbs.length > 1 ? (
-          <p className={classNames?.breadcrumbs} style={breadcrumbsStyle}>
+          <p className={classNames?.breadcrumbs} style={breadcrumbsStyle(theme)}>
             {breadcrumbs.join(" / ")}
           </p>
         ) : null}
         <p
           className={classNames?.title}
           id={titleId}
-          style={
-            light ? { ...titleStyle, color: "rgba(14, 23, 32, 0.78)" } : titleStyle
-          }
+          style={{ ...titleStyle, color: theme.titleColor }}
         >
           {renderers?.title
             ? renderers.title(renderContext)
@@ -88,7 +87,7 @@ export function PaletteHeader({
                 theme
               )}
         </p>
-        <p className={classNames?.caption} id={captionId} style={captionStyle}>
+        <p className={classNames?.caption} id={captionId} style={captionStyle(theme)}>
           Press {prettyShortcut(shortcut)} to open or close.
         </p>
       </div>
@@ -98,21 +97,14 @@ export function PaletteHeader({
           className={classNames?.closeButton}
           onClick={onClose}
           onMouseEnter={(event) => {
-            event.currentTarget.style.background = light
-              ? "rgba(15, 166, 216, 0.12)"
-              : "rgba(166, 191, 212, 0.18)";
-            event.currentTarget.style.borderColor = light
-              ? "rgba(15, 166, 216, 0.26)"
-              : "rgba(146, 173, 194, 0.34)";
+            event.currentTarget.style.background =
+              interactionTokens.closeHoverBackground;
+            event.currentTarget.style.borderColor = interactionTokens.closeHoverBorder;
             event.currentTarget.style.transform = "translateY(-1px)";
           }}
           onMouseLeave={(event) => {
-            event.currentTarget.style.background = light
-              ? "rgba(15, 166, 216, 0.05)"
-              : "rgba(166, 191, 212, 0.08)";
-            event.currentTarget.style.borderColor = light
-              ? theme.borderColor
-              : "rgba(146, 173, 194, 0.22)";
+            event.currentTarget.style.background = interactionTokens.closeBackground;
+            event.currentTarget.style.borderColor = interactionTokens.closeBorder;
             event.currentTarget.style.transform = "translateY(0)";
           }}
           style={closeButtonStyle(theme)}
@@ -137,52 +129,6 @@ export function PaletteHeader({
       </div>
     </div>
   );
-}
-
-function isLightTheme(theme: Required<CommandTheme>): boolean {
-  const rgb = parseColorToRgb(theme.backgroundColor);
-  if (!rgb) {
-    return false;
-  }
-
-  const [r, g, b] = rgb;
-  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-  return luminance > 0.72;
-}
-
-function parseColorToRgb(color: string): [number, number, number] | null {
-  const value = color.trim();
-
-  if (value.startsWith("#")) {
-    const hex = value.slice(1);
-
-    if (hex.length === 3) {
-      return [
-        Number.parseInt(hex[0] + hex[0], 16),
-        Number.parseInt(hex[1] + hex[1], 16),
-        Number.parseInt(hex[2] + hex[2], 16)
-      ];
-    }
-
-    if (hex.length >= 6) {
-      return [
-        Number.parseInt(hex.slice(0, 2), 16),
-        Number.parseInt(hex.slice(2, 4), 16),
-        Number.parseInt(hex.slice(4, 6), 16)
-      ];
-    }
-  }
-
-  const rgbMatch = value.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
-  if (rgbMatch) {
-    return [
-      Number.parseInt(rgbMatch[1], 10),
-      Number.parseInt(rgbMatch[2], 10),
-      Number.parseInt(rgbMatch[3], 10)
-    ];
-  }
-
-  return null;
 }
 
 interface PaletteInputProps {
@@ -454,14 +400,10 @@ function DefaultItem({
     typeof item.icon === "string" && item.icon.trim().length > 0;
   const hasCustomSvgIcon =
     hasCustomIcon && isSvgMarkup(item.icon);
-  const light = isLightTheme(theme);
+  const interactionTokens = getInteractiveThemeTokens(theme);
   const itemColor = isActive
-    ? light
-      ? "#0b607f"
-      : "#eaf8ff"
-    : light
-      ? "rgba(47, 84, 107, 0.86)"
-      : "rgba(188, 208, 223, 0.88)";
+    ? interactionTokens.itemTitleActiveColor
+    : interactionTokens.itemTitleInactiveColor;
 
   return (
     <>
@@ -488,15 +430,15 @@ function DefaultItem({
             {item.title}
           </span>
           {item.subtitle ? (
-            <span style={itemSubtitleStyle}>{item.subtitle}</span>
+            <span style={itemSubtitleStyle(theme)}>{item.subtitle}</span>
           ) : null}
         </div>
       </div>
       {item.shortcut ? (
-        <span style={shortcutStyle}>{prettyShortcut(item.shortcut)}</span>
+        <span style={shortcutStyle(theme)}>{prettyShortcut(item.shortcut)}</span>
       ) : null}
       {!item.shortcut && item.children?.length ? (
-        <span style={shortcutStyle}>Enter</span>
+        <span style={shortcutStyle(theme)}>Enter</span>
       ) : null}
     </>
   );

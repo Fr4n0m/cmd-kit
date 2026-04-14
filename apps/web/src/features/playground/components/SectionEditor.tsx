@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Icon } from "@/components/icons/PlaygroundIcon";
-import type { CommandItem, CommandSection } from "@cmd-kit/react";
+import type { CommandItem, CommandSection } from "@cmd-kit/core";
 
 import type { PlaygroundConfig } from "@/features/playground/config";
 import type { PlaygroundLabels } from "@/features/playground/ui";

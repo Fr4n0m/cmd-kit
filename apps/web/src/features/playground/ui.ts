@@ -10,6 +10,7 @@ export interface PlaygroundLabels {
   basicsEyebrow: string;
   basicsHeading: string;
   border: string;
+  captionColor: string;
   centered: string;
   closeLabel: string;
   code: string;
@@ -22,6 +23,7 @@ export interface PlaygroundLabels {
   copy: string;
   copyFailed: string;
   copyReady: string;
+  hideCode: string;
   cssCode: string;
   defaultOpen: string;
   description: string;
@@ -29,13 +31,17 @@ export interface PlaygroundLabels {
   itemHref: string;
   itemIcon: string;
   itemKeywords: string;
+  itemSubtitleColor: string;
   itemShortcut: string;
+  itemTitleColor: string;
   itemSubtitle: string;
   itemTitle: string;
   language: string;
   languageEnglish: string;
   languageSpanish: string;
   launch: string;
+  mobileDesktopNotice: string;
+  mobileDesktopTitle: string;
   layout: string;
   moveDown: string;
   moveUp: string;
@@ -58,23 +64,34 @@ export interface PlaygroundLabels {
   recentsTitle: string;
   remove: string;
   sectionTitle: string;
+  sectionTitleColor: string;
   sections: string;
   sectionsDescription: string;
   sectionsHeading: string;
   shadow: string;
   shortcut: string;
+  shortcutColor: string;
   sourceDelay: string;
   sourceMode: string;
   staticMode: string;
+  showCode: string;
   summaryCommands: string;
   summaryRecents: string;
   summarySections: string;
   surface: string;
   tailwindCode: string;
   text: string;
+  titleColor: string;
+  themeModeDark: string;
+  themeModeField: string;
+  themeModeLight: string;
   themeDescription: string;
+  themeEditorHint: string;
   themeEyebrow: string;
   themeHeading: string;
+  themeLightSection: string;
+  themeDarkSection: string;
+  themePreviewModeField: string;
   title: string;
   vanillaCode: string;
   vueCode: string;
@@ -124,10 +141,11 @@ const playgroundCopy = {
       addNestedSection: "Add nested section",
       addSection: "Add section",
       asyncMode: "Async source",
-      basicsDescription: "Language, layout, messages, recents, and data mode.",
+      basicsDescription: "Language, layout, title, search text, shortcut, and recents.",
       basicsEyebrow: "Basics",
       basicsHeading: "Essentials",
       border: "Border color",
+      captionColor: "Description color",
       centered: "Centered",
       closeLabel: "Close label",
       code: "Generated Code",
@@ -142,6 +160,7 @@ const playgroundCopy = {
       copy: "Copy",
       copyFailed: "Copy failed",
       copyReady: "Copy ready",
+      hideCode: "Hide code",
       cssCode: "CSS Variables",
       defaultOpen: "Open on load",
       description: "Preview description",
@@ -149,13 +168,18 @@ const playgroundCopy = {
       itemHref: "Item href",
       itemIcon: "Item icon",
       itemKeywords: "Item keywords",
+      itemSubtitleColor: "Item subtitle color",
       itemShortcut: "Item shortcut",
+      itemTitleColor: "Item title color",
       itemSubtitle: "Item subtitle",
       itemTitle: "Item title",
       language: "Language",
       languageEnglish: "English",
       languageSpanish: "Español",
-      launch: "Open preview",
+      launch: "Preview",
+      mobileDesktopNotice:
+        "This playground is optimized for desktop for full editing and preview controls.",
+      mobileDesktopTitle: "Better on desktop",
       layout: "Layout",
       moveDown: "Move down",
       moveUp: "Move up",
@@ -179,24 +203,36 @@ const playgroundCopy = {
       recentsTitle: "Recent title",
       remove: "Remove",
       sectionTitle: "Section title",
+      sectionTitleColor: "Section title color",
       sections: "Sections",
       sectionsDescription:
         "Define sections, commands, nested flows, and the order users move through.",
       sectionsHeading: "Information architecture",
       shadow: "Shadow",
       shortcut: "Shortcut",
+      shortcutColor: "Shortcut color",
       sourceDelay: "Async delay",
       sourceMode: "Data mode",
       staticMode: "Static",
+      showCode: "Show code",
       summaryCommands: "Commands",
       summaryRecents: "Recents",
       summarySections: "Sections",
       surface: "Surface color",
       tailwindCode: "Tailwind",
       text: "Text color",
+      titleColor: "Title color",
+      themeModeDark: "Dark mode",
+      themeModeField: "Theme target",
+      themeModeLight: "Light mode",
       themeDescription: "Palette colors, overlay, radius, and shadow.",
+      themeEditorHint:
+        "Edit each mode separately. Hover and active states are derived automatically from the accent color.",
       themeEyebrow: "Theme",
       themeHeading: "Look and feel",
+      themeLightSection: "Light mode palette",
+      themeDarkSection: "Dark mode palette",
+      themePreviewModeField: "Preview mode",
       title: "Palette title",
       vanillaCode: "Core (Vanilla JS)",
       vueCode: "Vue",
@@ -221,6 +257,7 @@ const playgroundCopy = {
       placeholder: "Search commands...",
       preferencesSection: "Preferences",
       previewDescription: "Describe this command",
+      previewTitle: "Preview command",
       recentTitle: "Recent",
       searchKeywords: ["finder", "jump"],
       searchSubtitle: "Jump across the whole workspace",
@@ -233,22 +270,23 @@ const playgroundCopy = {
   es: {
     labels: {
       accent: "Color de acento",
-      addItem: "Añadir item",
+      addItem: "Añadir elemento",
       astroCode: "Astro",
-      addNestedItem: "Añadir item anidado",
+      addNestedItem: "Añadir elemento anidado",
       addNestedSection: "Añadir sección anidada",
       addSection: "Añadir sección",
-      asyncMode: "Source async",
-      basicsDescription: "Idioma, layout, mensajes, recientes y modo de datos.",
-      basicsEyebrow: "Basics",
+      asyncMode: "Fuente asíncrona",
+      basicsDescription: "Idioma, layout, título, texto de búsqueda, atajo y recientes.",
+      basicsEyebrow: "Básicos",
       basicsHeading: "Esenciales",
       border: "Color del borde",
+      captionColor: "Color de descripción",
       centered: "Centrado",
       closeLabel: "Etiqueta de cierre",
       code: "Código generado",
       codeDescription:
         "Cambia de framework, copia el snippet y mantén la misma estructura de comandos.",
-      codeExportLabel: "Export",
+      codeExportLabel: "Exportar",
       codeLiveOutput: "Salida viva desde el estado actual del configurador",
       config: "Configurador",
       configuratorDescription:
@@ -257,20 +295,26 @@ const playgroundCopy = {
       copy: "Copiar",
       copyFailed: "Error al copiar",
       copyReady: "Copia lista",
+      hideCode: "Ocultar código",
       cssCode: "Variables CSS",
       defaultOpen: "Abrir al cargar",
-      description: "Descripción de preview",
+      description: "Descripción de vista previa",
       itemDisabled: "Deshabilitado",
-      itemHref: "Href del item",
-      itemIcon: "Icono del item",
-      itemKeywords: "Keywords del item",
-      itemShortcut: "Atajo del item",
-      itemSubtitle: "Subtítulo del item",
-      itemTitle: "Título del item",
+      itemHref: "Enlace del elemento",
+      itemIcon: "Icono del elemento",
+      itemKeywords: "Palabras clave",
+      itemSubtitleColor: "Color subtítulo del elemento",
+      itemShortcut: "Atajo del elemento",
+      itemTitleColor: "Color título del elemento",
+      itemSubtitle: "Subtítulo del elemento",
+      itemTitle: "Título del elemento",
       language: "Idioma",
       languageEnglish: "English",
       languageSpanish: "Español",
-      launch: "Abrir preview",
+      launch: "Vista",
+      mobileDesktopNotice:
+        "Este playground está optimizado para escritorio para editar y previsualizar con todos los controles.",
+      mobileDesktopTitle: "Mejor en escritorio",
       layout: "Layout",
       moveDown: "Bajar",
       moveUp: "Subir",
@@ -283,36 +327,48 @@ const playgroundCopy = {
       preactCode: "Preact",
       preview: "Vista previa",
       previewDescription:
-        "Abre la palette actual en cualquier momento mientras contenido y código se actualizan.",
+        "Abre la paleta actual en cualquier momento mientras contenido y código se actualizan.",
       previewHeading: "Prueba la versión actual",
       radius: "Radio",
       reactCode: "React",
-      recents: "Items recientes",
-      recentsDisabled: "Off",
-      recentsEnabled: "On",
+      recents: "Elementos recientes",
+      recentsDisabled: "Desactivado",
+      recentsEnabled: "Activado",
       recentsLimit: "Límite de recientes",
       recentsTitle: "Título de recientes",
       remove: "Eliminar",
       sectionTitle: "Título de sección",
+      sectionTitleColor: "Color título de sección",
       sections: "Secciones",
       sectionsDescription:
         "Define secciones, comandos, flujos anidados y el orden por el que se mueve el usuario.",
       sectionsHeading: "Arquitectura de información",
       shadow: "Sombra",
       shortcut: "Atajo",
+      shortcutColor: "Color de atajo",
       sourceDelay: "Delay async",
       sourceMode: "Modo de datos",
       staticMode: "Estático",
+      showCode: "Mostrar código",
       summaryCommands: "Comandos",
       summaryRecents: "Recientes",
       summarySections: "Secciones",
       surface: "Color de fondo",
       tailwindCode: "Tailwind",
       text: "Color del texto",
-      themeDescription: "Colores, overlay, radio y sombra de la palette.",
-      themeEyebrow: "Theme",
-      themeHeading: "Look and feel",
-      title: "Título del palette",
+      titleColor: "Color del título",
+      themeModeDark: "Modo oscuro",
+      themeModeField: "Tema a editar",
+      themeModeLight: "Modo claro",
+      themeDescription: "Colores, overlay, radio y sombra de la paleta.",
+      themeEditorHint:
+        "Edita cada modo por separado. Los estados hover y activos se calculan automáticamente desde el color de acento.",
+      themeEyebrow: "Tema",
+      themeHeading: "Apariencia",
+      themeLightSection: "Paleta modo claro",
+      themeDarkSection: "Paleta modo oscuro",
+      themePreviewModeField: "Modo de vista previa",
+      title: "Título de la paleta",
       vanillaCode: "Core (Vanilla JS)",
       vueCode: "Vue",
       wide: "Ancho"
@@ -322,26 +378,27 @@ const playgroundCopy = {
       childComponents: "Componentes",
       childDocs: "Documentación",
       childScope: "Ámbito de búsqueda",
-      closeLabel: "Cerrar command palette",
+      closeLabel: "Cerrar menú de comandos",
       commandDescription:
         "Ajusta colores, secciones y comandos mientras exportas el código exacto que necesita tu proyecto.",
-      commandTitle: "Construye tu command palette en vivo",
+      commandTitle: "Construye tu menú de comandos en vivo",
       dashboardKeywords: ["inicio", "resumen"],
       dashboardSubtitle: "Abre la vista principal de la aplicación",
       dashboardTitle: "Ir al dashboard",
-      newItemTitle: "Nuevo item",
+      newItemTitle: "Nuevo elemento",
       newSectionTitle: "Nueva sección",
       newNestedSectionTitle: "Sección anidada",
       noResults: "No se han encontrado resultados.",
       placeholder: "Buscar comandos...",
       preferencesSection: "Preferencias",
       previewDescription: "Describe este comando",
+      previewTitle: "Comando de vista previa",
       recentTitle: "Recientes",
       searchKeywords: ["buscador", "salto"],
       searchSubtitle: "Salta por todo el workspace",
       searchTitle: "Buscar en todo",
       sectionNavigation: "Navegación",
-      switchThemeSubtitle: "Previsualiza presets visuales alternativos",
+      switchThemeSubtitle: "Previsualiza preajustes visuales alternativos",
       switchThemeTitle: "Cambiar tema"
     }
   }

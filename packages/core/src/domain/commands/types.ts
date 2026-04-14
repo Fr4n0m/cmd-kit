@@ -39,7 +39,13 @@ export interface CommandTheme {
   accentColor?: string;
   backgroundColor?: string;
   textColor?: string;
+  titleColor?: string;
+  descriptionColor?: string;
   mutedColor?: string;
+  sectionTitleColor?: string;
+  itemTitleColor?: string;
+  itemSubtitleColor?: string;
+  shortcutColor?: string;
   borderColor?: string;
   overlayColor?: string;
   radius?: string;

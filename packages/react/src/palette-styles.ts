@@ -1,6 +1,20 @@
 import type { CommandTheme } from "@cmd-kit/core";
 import type { CSSProperties } from "react";
 
+interface InteractiveThemeTokens {
+  closeBackground: string;
+  closeBorder: string;
+  closeColor: string;
+  closeHoverBackground: string;
+  closeHoverBorder: string;
+  iconActiveColor: string;
+  iconInactiveColor: string;
+  itemActiveBackground: string;
+  itemActiveBorder: string;
+  itemTitleActiveColor: string;
+  itemTitleInactiveColor: string;
+}
+
 export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
   return {
     width: "min(700px, calc(100vw - 4rem))",
@@ -35,14 +49,12 @@ export function overlayStyle(color: string): CSSProperties {
 }
 
 export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
-  const light = isLightTheme(theme);
+  const tokens = getInteractiveThemeTokens(theme);
   return {
     borderRadius: "999px",
-    border: light
-      ? `1px solid ${theme.borderColor}`
-      : "1px solid rgba(146, 173, 194, 0.22)",
-    background: light ? "rgba(15, 166, 216, 0.05)" : "rgba(166, 191, 212, 0.08)",
-    color: light ? theme.mutedColor : "rgba(216, 232, 244, 0.92)",
+    border: `1px solid ${tokens.closeBorder}`,
+    background: tokens.closeBackground,
+    color: tokens.closeColor,
     appearance: "none",
     width: "2.4rem",
     height: "2.4rem",
@@ -104,7 +116,7 @@ export function itemStyle(
   active: boolean,
   disabled?: boolean
 ): CSSProperties {
-  const light = isLightTheme(theme);
+  const tokens = getInteractiveThemeTokens(theme);
   return {
     width: "100%",
     boxSizing: "border-box",
@@ -114,14 +126,12 @@ export function itemStyle(
     gap: "1rem",
     textAlign: "left",
     border: active
-      ? `1px solid ${light ? "rgba(15, 166, 216, 0.22)" : "rgba(53, 215, 255, 0.26)"}`
+      ? `1px solid ${tokens.itemActiveBorder}`
       : "1px solid transparent",
     borderRadius: "18px",
     padding: "0.64rem 0.86rem",
     background: active
-      ? light
-        ? "rgba(15, 166, 216, 0.13)"
-        : "rgba(53, 215, 255, 0.14)"
+      ? tokens.itemActiveBackground
       : "transparent",
     transition:
       "background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease",
@@ -134,10 +144,9 @@ export function itemStyle(
 export function sectionTitleStyle(
   theme: Required<CommandTheme>
 ): CSSProperties {
-  const light = isLightTheme(theme);
   return {
     margin: 0,
-    color: light ? "rgba(49, 68, 84, 0.58)" : theme.mutedColor,
+    color: theme.sectionTitleColor,
     fontSize: "0.78rem",
     textTransform: "uppercase",
     letterSpacing: "0.08em",
@@ -160,7 +169,7 @@ export function iconStyle(
   theme: Required<CommandTheme>,
   active: boolean
 ): CSSProperties {
-  const light = isLightTheme(theme);
+  const tokens = getInteractiveThemeTokens(theme);
   return {
     display: "inline-flex",
     alignItems: "center",
@@ -172,13 +181,41 @@ export function iconStyle(
     flexShrink: 0,
     transform: "scale(1)",
     transition: "transform 160ms ease, color 160ms ease",
-    color: active
-      ? light
-        ? "#0b607f"
-        : "#eaf8ff"
-      : light
-        ? "rgba(47, 84, 107, 0.86)"
-        : "rgba(188, 208, 223, 0.88)"
+    color: active ? tokens.iconActiveColor : tokens.iconInactiveColor
+  };
+}
+
+export function getInteractiveThemeTokens(
+  theme: Required<CommandTheme>
+): InteractiveThemeTokens {
+  const light = isLightTheme(theme);
+  const accent = parseColorToRgb(theme.accentColor);
+  const text = parseColorToRgb(theme.textColor);
+  const itemTitleBase = parseColorToRgb(theme.itemTitleColor) ?? text;
+  const muted = parseColorToRgb(theme.mutedColor) ?? text;
+
+  return {
+    closeBackground: toAlphaColor(accent, light ? 0.06 : 0.12),
+    closeBorder: toAlphaColor(accent, light ? 0.22 : 0.3, theme.borderColor),
+    closeColor: mixRgbAsColor(muted, text, light ? 0.35 : 0.5, theme.mutedColor),
+    closeHoverBackground: toAlphaColor(accent, light ? 0.14 : 0.2),
+    closeHoverBorder: toAlphaColor(accent, light ? 0.34 : 0.44, theme.borderColor),
+    iconActiveColor: mixRgbAsColor(text, accent, light ? 0.2 : 0.14, theme.textColor),
+    iconInactiveColor: mixRgbAsColor(muted, text, 0.22, theme.mutedColor),
+    itemActiveBackground: toAlphaColor(accent, light ? 0.13 : 0.18),
+    itemActiveBorder: toAlphaColor(accent, light ? 0.3 : 0.4, theme.borderColor),
+    itemTitleActiveColor: mixRgbAsColor(
+      itemTitleBase,
+      accent,
+      light ? 0.16 : 0.12,
+      theme.itemTitleColor
+    ),
+    itemTitleInactiveColor: mixRgbAsColor(
+      itemTitleBase,
+      muted,
+      0.16,
+      theme.itemTitleColor
+    )
   };
 }
 
@@ -189,16 +226,18 @@ export const headerStyle: CSSProperties = {
   alignItems: "flex-start"
 };
 
-export const breadcrumbsStyle: CSSProperties = {
-  display: "flex",
-  flexWrap: "wrap",
-  gap: "0.35rem",
-  marginBottom: "0.45rem",
-  color: "#94a3b8",
-  fontSize: "0.78rem",
-  fontFamily:
-    '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
-};
+export function breadcrumbsStyle(theme: Required<CommandTheme>): CSSProperties {
+  return {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "0.35rem",
+    marginBottom: "0.45rem",
+    color: theme.descriptionColor,
+    fontSize: "0.78rem",
+    fontFamily:
+      '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
+  };
+}
 
 export const headerActionsStyle: CSSProperties = {
   display: "flex",
@@ -223,13 +262,15 @@ export const titleRowStyle: CSSProperties = {
   minWidth: 0
 };
 
-export const captionStyle: CSSProperties = {
-  margin: "0.35rem 0 0",
-  color: "#94a3b8",
-  fontSize: "0.92rem",
-  fontFamily:
-    'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
-};
+export function captionStyle(theme: Required<CommandTheme>): CSSProperties {
+  return {
+    margin: "0.35rem 0 0",
+    color: theme.descriptionColor,
+    fontSize: "0.92rem",
+    fontFamily:
+      'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
+  };
+}
 
 export const listStyle: CSSProperties = {
   overflow: "auto",
@@ -272,20 +313,24 @@ export const itemTitleStyle: CSSProperties = {
     'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
 };
 
-export const itemSubtitleStyle: CSSProperties = {
-  display: "block",
-  fontSize: "0.86rem",
-  color: "#94a3b8",
-  marginTop: "0.12rem",
-  lineHeight: 1.2
-};
+export function itemSubtitleStyle(theme: Required<CommandTheme>): CSSProperties {
+  return {
+    display: "block",
+    fontSize: "0.86rem",
+    color: theme.itemSubtitleColor,
+    marginTop: "0.12rem",
+    lineHeight: 1.2
+  };
+}
 
-export const shortcutStyle: CSSProperties = {
-  color: "#94a3b8",
-  fontSize: "0.82rem",
-  fontFamily:
-    '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
-};
+export function shortcutStyle(theme: Required<CommandTheme>): CSSProperties {
+  return {
+    color: theme.shortcutColor,
+    fontSize: "0.82rem",
+    fontFamily:
+      '"IBM Plex Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace'
+  };
+}
 
 function isLightTheme(theme: Required<CommandTheme>): boolean {
   const rgb = parseColorToRgb(theme.backgroundColor);
@@ -331,4 +376,42 @@ function parseColorToRgb(color: string): [number, number, number] | null {
   }
 
   return null;
+}
+
+function toAlphaColor(
+  rgb: [number, number, number] | null,
+  alpha: number,
+  fallback = "transparent"
+): string {
+  if (!rgb) {
+    return fallback;
+  }
+
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+}
+
+function mixRgbAsColor(
+  a: [number, number, number] | null,
+  b: [number, number, number] | null,
+  ratioOfB: number,
+  fallback: string
+): string {
+  if (!a && !b) {
+    return fallback;
+  }
+
+  if (!a) {
+    return `rgb(${b![0]}, ${b![1]}, ${b![2]})`;
+  }
+
+  if (!b) {
+    return `rgb(${a[0]}, ${a[1]}, ${a[2]})`;
+  }
+
+  const ratio = Math.min(Math.max(ratioOfB, 0), 1);
+  const inv = 1 - ratio;
+  const r = Math.round(a[0] * inv + b[0] * ratio);
+  const g = Math.round(a[1] * inv + b[1] * ratio);
+  const bChannel = Math.round(a[2] * inv + b[2] * ratio);
+  return `rgb(${r}, ${g}, ${bChannel})`;
 }

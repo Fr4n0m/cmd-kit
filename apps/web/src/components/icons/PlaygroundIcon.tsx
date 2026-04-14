@@ -1,3 +1,4 @@
+import React from "react";
 import type { ComponentType, SVGProps } from "react";
 
 import {
@@ -60,7 +61,11 @@ interface IconProps {
   title?: string;
 }
 
-const iconMap: Record<PlaygroundIconName, ComponentType<SVGProps<SVGSVGElement>>> =
+type TablerIconComponent = ComponentType<
+  SVGProps<SVGSVGElement> & { size?: number | string; title?: string }
+>;
+
+const iconMap: Record<PlaygroundIconName, TablerIconComponent> =
   {
     "arrow-right": IconArrowRight,
     astro: IconBrandAstro,

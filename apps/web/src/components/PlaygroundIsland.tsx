@@ -2,10 +2,9 @@ import React from "react";
 
 import { CommandPalette } from "@cmd-kit/react";
 
-import { toTheme } from "@/features/playground/config";
+import { getThemeForMode, toTheme } from "@/features/playground/config";
 import { PlaygroundCodePanel } from "@/features/playground/components/PlaygroundCodePanel";
 import { PlaygroundConfigurator } from "@/features/playground/components/PlaygroundConfigurator";
-import { PlaygroundHeader } from "@/features/playground/components/PlaygroundHeader";
 import { usePlaygroundState } from "@/features/playground/playground-state";
 import { getPlaygroundCopy } from "@/features/playground/ui";
 import type { Language } from "@/features/playground/config";
@@ -60,6 +59,134 @@ export default function PlaygroundIsland({
         : undefined,
     [config.sections, config.sourceDelayMs, config.sourceMode]
   );
+  React.useEffect(() => {
+    const updateThemeModeFromRoot = () => {
+      const isLight = document.documentElement.dataset.theme === "light";
+      const nextMode = isLight ? "light" : "dark";
+
+      setConfig((current) =>
+        current.activeThemeMode === nextMode
+          ? current
+          : {
+              ...current,
+              activeThemeMode: nextMode
+            }
+      );
+    };
+
+    updateThemeModeFromRoot();
+    const observer = new MutationObserver(updateThemeModeFromRoot);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"]
+    });
+
+    return () => observer.disconnect();
+  }, [setConfig]);
+  const activeTheme = React.useMemo(
+    () => getThemeForMode(config, config.activeThemeMode),
+    [config]
+  );
+
+  React.useEffect(() => {
+    const root = document.getElementById("playground");
+    if (!(root instanceof HTMLElement)) {
+      return;
+    }
+
+    const detailsNodes = root.querySelectorAll<HTMLDetailsElement>(
+      "details.config-accordion, details.section-accordion, details.item-accordion, details.nested-accordion"
+    );
+    const cleanups: Array<() => void> = [];
+
+    for (const details of detailsNodes) {
+      const summary = details.querySelector(":scope > summary");
+
+      if (!(summary instanceof HTMLElement)) {
+        continue;
+      }
+
+      let animation: Animation | null = null;
+      let isClosing = false;
+      let isExpanding = false;
+
+      const onAnimationFinish = (open: boolean) => {
+        details.open = open;
+        animation = null;
+        isClosing = false;
+        isExpanding = false;
+        details.style.height = "";
+        details.style.overflow = "";
+      };
+
+      const onAnimationCancel = () => {
+        isClosing = false;
+        isExpanding = false;
+      };
+
+      const close = () => {
+        isClosing = true;
+        const startHeight = `${details.offsetHeight}px`;
+        const endHeight = `${summary.offsetHeight}px`;
+
+        animation?.cancel();
+        animation = details.animate(
+          {
+            height: [startHeight, endHeight]
+          },
+          {
+            duration: 220,
+            easing: "ease"
+          }
+        );
+        animation.onfinish = () => onAnimationFinish(false);
+        animation.oncancel = onAnimationCancel;
+      };
+
+      const expand = () => {
+        isExpanding = true;
+        const startHeight = `${details.offsetHeight}px`;
+        details.open = true;
+        const endHeight = `${details.offsetHeight}px`;
+
+        animation?.cancel();
+        animation = details.animate(
+          {
+            height: [startHeight, endHeight]
+          },
+          {
+            duration: 220,
+            easing: "ease"
+          }
+        );
+        animation.onfinish = () => onAnimationFinish(true);
+        animation.oncancel = onAnimationCancel;
+      };
+
+      const handleSummaryClick = (event: Event) => {
+        event.preventDefault();
+        details.style.overflow = "hidden";
+
+        if (isClosing || !details.open) {
+          expand();
+        } else if (isExpanding || details.open) {
+          close();
+        }
+      };
+
+      summary.addEventListener("click", handleSummaryClick);
+      cleanups.push(() => {
+        summary.removeEventListener("click", handleSummaryClick);
+        animation?.cancel();
+      });
+    }
+
+    return () => {
+      for (const cleanup of cleanups) {
+        cleanup();
+      }
+    };
+  }, [config]);
 
   return (
     <section
@@ -90,13 +217,16 @@ export default function PlaygroundIsland({
         title={config.title}
       />
 
-      <PlaygroundHeader
-        labels={labels}
-        onLaunch={() => setIsOpen(true)}
-      />
+      {mode === "page" ? (
+        <div className="playground-mobile-desktop-notice" role="status">
+          <strong>{labels.mobileDesktopTitle}</strong>
+          <p>{labels.mobileDesktopNotice}</p>
+        </div>
+      ) : null}
 
       <div className="workspace-grid">
         <PlaygroundConfigurator
+          activeTheme={activeTheme}
           config={config}
           labels={labels}
           onAddItemToNestedSection={addItemToNestedSection}
@@ -140,6 +270,19 @@ export default function PlaygroundIsland({
           onSelectTab={setActiveTab}
         />
       </div>
+
+      {mode === "page" ? (
+        <button
+          aria-label={`${labels.launch} (${config.shortcut})`}
+          className="primary-button playground-quick-preview"
+          onClick={() => setIsOpen(true)}
+          title={`${labels.launch} (${config.shortcut})`}
+          type="button"
+        >
+          <span>{labels.launch}</span>
+          <kbd>{config.shortcut}</kbd>
+        </button>
+      ) : null}
     </section>
   );
 }

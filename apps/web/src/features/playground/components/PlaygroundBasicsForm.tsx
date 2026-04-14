@@ -2,7 +2,8 @@ import React from "react";
 
 import type { PlaygroundConfig } from "@/features/playground/config";
 import type { PlaygroundLabels } from "@/features/playground/ui";
-import { Field } from "./Fields";
+import { ColorField, Field } from "./Fields";
+import { PlaygroundSelectField } from "./PlaygroundSelectField";
 
 interface PlaygroundBasicsFormProps {
   config: PlaygroundConfig;
@@ -17,68 +18,58 @@ export function PlaygroundBasicsForm({
   labels,
   onUpdateConfig
 }: PlaygroundBasicsFormProps) {
+  function updateActiveThemeField(
+    field: "titleColor" | "descriptionColor" | "shortcutColor",
+    value: string
+  ) {
+    onUpdateConfig((current) => {
+      if (current.activeThemeMode === "dark") {
+        const darkFieldMap = {
+          titleColor: "darkTitleColor",
+          descriptionColor: "darkDescriptionColor",
+          shortcutColor: "darkShortcutColor"
+        } as const;
+
+        return {
+          ...current,
+          [darkFieldMap[field]]: value
+        };
+      }
+
+      return {
+        ...current,
+        [field]: value
+      };
+    });
+  }
+
+  const activeTitleColor =
+    config.activeThemeMode === "dark" ? config.darkTitleColor : config.titleColor;
+  const activeDescriptionColor =
+    config.activeThemeMode === "dark"
+      ? config.darkDescriptionColor
+      : config.descriptionColor;
+  const activeShortcutColor =
+    config.activeThemeMode === "dark"
+      ? config.darkShortcutColor
+      : config.shortcutColor;
+
   return (
     <div className="form-grid">
-      <Field label={labels.language}>
-        <select
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              language: event.target.value as PlaygroundConfig["language"]
-            }))
-          }
-          value={config.language}
-        >
-          <option value="en">{labels.languageEnglish}</option>
-          <option value="es">{labels.languageSpanish}</option>
-        </select>
-      </Field>
-
-      <Field label={labels.layout}>
-        <select
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              layout: event.target.value as PlaygroundConfig["layout"]
-            }))
-          }
-          value={config.layout}
-        >
-          <option value="centered">{labels.centered}</option>
-          <option value="wide">{labels.wide}</option>
-        </select>
-      </Field>
-
-      <Field label={labels.sourceMode}>
-        <select
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              sourceMode: event.target.value as PlaygroundConfig["sourceMode"]
-            }))
-          }
-          value={config.sourceMode}
-        >
-          <option value="static">{labels.staticMode}</option>
-          <option value="async">{labels.asyncMode}</option>
-        </select>
-      </Field>
-
-      <Field label={labels.defaultOpen}>
-        <label className="toggle-field">
-          <input
-            checked={config.defaultOpen}
-            onChange={(event) =>
-              onUpdateConfig((current) => ({
-                ...current,
-                defaultOpen: event.target.checked
-              }))
-            }
-            type="checkbox"
-          />
-          <span>{labels.defaultOpen}</span>
-        </label>
-      </Field>
+      <PlaygroundSelectField
+        label={labels.language}
+        onChange={(value) =>
+          onUpdateConfig((current) => ({
+            ...current,
+            language: value as PlaygroundConfig["language"]
+          }))
+        }
+        options={[
+          { label: labels.languageEnglish, value: "en" },
+          { label: labels.languageSpanish, value: "es" }
+        ]}
+        value={config.language}
+      />
 
       <Field label={labels.title}>
         <input
@@ -91,18 +82,11 @@ export function PlaygroundBasicsForm({
           value={config.title}
         />
       </Field>
-
-      <Field label={labels.description}>
-        <textarea
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              description: event.target.value
-            }))
-          }
-          value={config.description}
-        />
-      </Field>
+      <ColorField
+        label={labels.titleColor}
+        onChange={(value) => updateActiveThemeField("titleColor", value)}
+        value={activeTitleColor}
+      />
 
       <Field label={labels.placeholder}>
         <input
@@ -115,30 +99,11 @@ export function PlaygroundBasicsForm({
           value={config.placeholder}
         />
       </Field>
-
-      <Field label={labels.noResults}>
-        <input
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              noResults: event.target.value
-            }))
-          }
-          value={config.noResults}
-        />
-      </Field>
-
-      <Field label={labels.closeLabel}>
-        <input
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              closeLabel: event.target.value
-            }))
-          }
-          value={config.closeLabel}
-        />
-      </Field>
+      <ColorField
+        label={labels.captionColor}
+        onChange={(value) => updateActiveThemeField("descriptionColor", value)}
+        value={activeDescriptionColor}
+      />
 
       <Field label={labels.shortcut}>
         <input
@@ -151,21 +116,11 @@ export function PlaygroundBasicsForm({
           value={config.shortcut}
         />
       </Field>
-
-      <Field label={labels.sourceDelay}>
-        <input
-          disabled={config.sourceMode !== "async"}
-          min={0}
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              sourceDelayMs: Number(event.target.value) || 0
-            }))
-          }
-          type="number"
-          value={config.sourceDelayMs}
-        />
-      </Field>
+      <ColorField
+        label={labels.shortcutColor}
+        onChange={(value) => updateActiveThemeField("shortcutColor", value)}
+        value={activeShortcutColor}
+      />
 
       <Field label={labels.recents}>
         <label className="toggle-field">
@@ -181,34 +136,6 @@ export function PlaygroundBasicsForm({
           />
           <span>{labels.recents}</span>
         </label>
-      </Field>
-
-      <Field label={labels.recentsTitle}>
-        <input
-          disabled={!config.recentsEnabled}
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              recentsTitle: event.target.value
-            }))
-          }
-          value={config.recentsTitle}
-        />
-      </Field>
-
-      <Field label={labels.recentsLimit}>
-        <input
-          disabled={!config.recentsEnabled}
-          min={1}
-          onChange={(event) =>
-            onUpdateConfig((current) => ({
-              ...current,
-              recentsLimit: Number(event.target.value) || 1
-            }))
-          }
-          type="number"
-          value={config.recentsLimit}
-        />
       </Field>
     </div>
   );

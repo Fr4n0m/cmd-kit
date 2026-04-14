@@ -19,10 +19,10 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain('shortcut="mod+k"');
     expect(snippet).toContain("const sections = [");
     expect(snippet).toContain("<CommandPalette");
-    expect(snippet).toContain("href: '/dashboard'");
+    expect(snippet).toContain("id: 'open-dashboard'");
     expect(snippet).toContain('closeLabel: "Close command palette"');
-    expect(snippet).toContain("limit: 5");
-    expect(snippet).toContain("children:");
+    expect(snippet).toContain("recents={false}");
+    expect(snippet).toContain("href: '/dashboard'");
   });
 
   it("builds async source and defaultOpen into React snippets when enabled", () => {
@@ -44,7 +44,7 @@ describe("playground snippet builders", () => {
     const snippet = buildCssSnippet(defaultConfig);
 
     expect(snippet).toContain('import { createThemeCssText } from "@cmd-kit/core";');
-    expect(snippet).toContain('accentColor: "#ff6b35"');
+    expect(snippet).toContain('accentColor: "#35d7ff"');
     expect(snippet).toContain("const themeBlock = `:root {");
   });
 

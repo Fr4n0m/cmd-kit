@@ -1,13 +1,16 @@
 import React from "react";
 
 import { Icon } from "@/components/icons/PlaygroundIcon";
+import type { CommandTheme } from "@cmd-kit/core";
 import type { PlaygroundConfig } from "@/features/playground/config";
 import type { PlaygroundLabels } from "@/features/playground/ui";
 import { PlaygroundBasicsForm } from "./PlaygroundBasicsForm";
 import { PlaygroundSectionsPanel } from "./PlaygroundSectionsPanel";
 import { PlaygroundThemeForm } from "./PlaygroundThemeForm";
+import { ThemePillSwitch } from "./ThemePillSwitch";
 
 interface PlaygroundConfiguratorProps {
+  activeTheme: CommandTheme;
   config: PlaygroundConfig;
   labels: PlaygroundLabels;
   onAddItemToNestedSection: (
@@ -111,6 +114,7 @@ function AccordionSection({
 }
 
 export function PlaygroundConfigurator({
+  activeTheme,
   config,
   labels,
   onAddItemToNestedSection,
@@ -134,38 +138,101 @@ export function PlaygroundConfigurator({
     (total, section) => total + section.items.length,
     0
   );
+  const previewCardStyle: React.CSSProperties = {
+    background: activeTheme.backgroundColor,
+    borderColor: activeTheme.borderColor,
+    borderRadius: activeTheme.radius,
+    boxShadow: activeTheme.shadow,
+    color: activeTheme.textColor
+  };
+  const shortcutStyle: React.CSSProperties = {
+    background: `${activeTheme.accentColor ?? "#35d7ff"}22`,
+    border: `1px solid ${activeTheme.accentColor ?? "#35d7ff"}44`,
+    color: activeTheme.textColor
+  };
+  const subtitleStyle: React.CSSProperties = {
+    color: activeTheme.descriptionColor ?? activeTheme.mutedColor
+  };
+  const previewTitleStyle: React.CSSProperties = {
+    color: activeTheme.titleColor ?? activeTheme.textColor
+  };
+  const summaryCards = [
+    {
+      icon: "core" as const,
+      label: labels.summarySections,
+      value: config.sections.length
+    },
+    {
+      icon: "spark" as const,
+      label: labels.summaryCommands,
+      value: commandCount
+    },
+    {
+      icon: "play" as const,
+      label: labels.summaryRecents,
+      value: config.recentsEnabled ? labels.recentsEnabled : labels.recentsDisabled
+    }
+  ];
 
   return (
     <section className="panel configurator-panel">
-      <div className="panel-heading">
-        <p className="eyebrow">{labels.config}</p>
-        <h2>{labels.configuratorHeading}</h2>
-        <p className="panel-copy">{labels.configuratorDescription}</p>
+      <div className="panel-heading panel-heading-with-tools">
+        <div className="panel-heading-copy">
+          <p className="eyebrow">{labels.config}</p>
+          <h2>{labels.configuratorHeading}</h2>
+          <p className="panel-copy">{labels.configuratorDescription}</p>
+        </div>
+        <div className="panel-heading-tools">
+          <span className="visually-hidden">{labels.themePreviewModeField}</span>
+          <ThemePillSwitch
+            ariaLabel={labels.themePreviewModeField}
+            buttonClassName="summary-theme-tab"
+            iconClassName="summary-theme-icon summary-theme-icon-image"
+            indicatorClassName="summary-theme-tabs-indicator"
+            onChange={(nextMode) =>
+              onUpdateConfig((current) => ({
+                ...current,
+                activeThemeMode: nextMode
+              }))
+            }
+            options={[
+              {
+                iconSrc: "/icons/theme-sun.svg",
+                label: labels.themeModeLight,
+                value: "light"
+              },
+              {
+                iconSrc: "/icons/theme-moon.svg",
+                label: labels.themeModeDark,
+                value: "dark"
+              }
+            ]}
+            rootClassName="summary-theme-tabs"
+            value={config.activeThemeMode}
+          />
+        </div>
       </div>
 
       <div className="playground-config-overview">
-        <div className="playground-preview-card">
+        <div className="playground-preview-card" style={previewCardStyle}>
           <div className="preview-meta-row">
-            <span className="preview-shortcut">{config.shortcut}</span>
-            <span className="preview-layout">{config.layout}</span>
+            <span className="preview-shortcut" style={shortcutStyle}>
+              {config.shortcut}
+            </span>
           </div>
-          <span className="preview-title">{config.title}</span>
-          <span className="preview-subtitle">{config.placeholder}</span>
+          <span className="preview-title" style={previewTitleStyle}>{config.title}</span>
+          <span className="preview-subtitle" style={subtitleStyle}>
+            {config.placeholder}
+          </span>
         </div>
 
         <div className="playground-summary-grid">
-          <article className="summary-tile">
-            <span><Icon className="summary-icon" name="core" /> {labels.summarySections}</span>
-            <strong>{config.sections.length}</strong>
-          </article>
-          <article className="summary-tile">
-            <span><Icon className="summary-icon" name="spark" /> {labels.summaryCommands}</span>
-            <strong>{commandCount}</strong>
-          </article>
-          <article className="summary-tile">
-            <span><Icon className="summary-icon" name="play" /> {labels.summaryRecents}</span>
-            <strong>{config.recentsEnabled ? labels.recentsEnabled : labels.recentsDisabled}</strong>
-          </article>
+          {summaryCards.map((card) => (
+            <article className="summary-tile" key={card.label}>
+              <span><Icon className="summary-icon" name={card.icon} /> {card.label}</span>
+              <strong>{card.value}</strong>
+            </article>
+          ))}
         </div>
       </div>
 
