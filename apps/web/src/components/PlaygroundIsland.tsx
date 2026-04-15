@@ -87,6 +87,39 @@ export default function PlaygroundIsland({
     () => getThemeForMode(config, config.activeThemeMode),
     [config]
   );
+  const livePreviewPalette = React.useMemo(
+    () => (
+      <CommandPalette
+        classNames={{
+          caption: "playground-live-preview-caption",
+          headerActions: "playground-live-preview-header-actions",
+          overlay: "playground-live-preview-overlay",
+          dialog: "playground-live-preview-dialog"
+        }}
+        defaultOpen={false}
+        messages={{
+          closeLabel: config.closeLabel,
+          noResults: config.noResults,
+          searchPlaceholder: config.placeholder
+        }}
+        open={true}
+        recents={
+          config.recentsEnabled
+            ? {
+                limit: config.recentsLimit,
+                sectionTitle: config.recentsTitle
+              }
+            : false
+        }
+        sections={config.sourceMode === "static" ? config.sections : undefined}
+        shortcut={config.shortcut}
+        source={asyncSource}
+        theme={toTheme(config)}
+        title={config.title}
+      />
+    ),
+    [asyncSource, config]
+  );
 
   React.useEffect(() => {
     const root = document.getElementById("playground");
@@ -195,7 +228,6 @@ export default function PlaygroundIsland({
     >
       <CommandPalette
         defaultOpen={config.defaultOpen}
-        source={asyncSource}
         messages={{
           closeLabel: config.closeLabel,
           noResults: config.noResults,
@@ -213,6 +245,7 @@ export default function PlaygroundIsland({
         }
         sections={config.sourceMode === "static" ? config.sections : undefined}
         shortcut={config.shortcut}
+        source={asyncSource}
         theme={toTheme(config)}
         title={config.title}
       />
@@ -229,6 +262,7 @@ export default function PlaygroundIsland({
           activeTheme={activeTheme}
           config={config}
           labels={labels}
+          preview={livePreviewPalette}
           onAddItemToNestedSection={addItemToNestedSection}
           onAddItemToSection={addItemToSection}
           onAddNestedSection={addNestedSection}

@@ -95,7 +95,11 @@ export function PlaygroundSectionsPanel({
     <>
       <div className="section-builder-toolbar row-between">
         <p className="panel-copy">{labels.sectionsDescription}</p>
-        <button className="ghost-button" onClick={onAddSection} type="button">
+        <button
+          className="ghost-button section-add-button"
+          onClick={onAddSection}
+          type="button"
+        >
           <Icon className="button-icon" name="plus" />
           <span>{labels.addSection}</span>
         </button>

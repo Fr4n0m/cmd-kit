@@ -7,22 +7,40 @@ interface BaseFieldProps {
   label: string;
 }
 
+export function FieldHelpTrigger({
+  helpText,
+  label
+}: BaseFieldProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  if (!helpText) {
+    return null;
+  }
+
+  return (
+    <button
+      aria-expanded={isOpen}
+      aria-label={`${label}: info`}
+      className={isOpen ? "field-help-trigger is-open" : "field-help-trigger"}
+      onBlur={() => setIsOpen(false)}
+      onFocus={() => setIsOpen(true)}
+      onPointerEnter={() => setIsOpen(true)}
+      onPointerLeave={() => setIsOpen(false)}
+      type="button"
+    >
+      <Icon className="field-help-icon" name="info" size={14} />
+      <span className="field-help-tooltip" role="tooltip">
+        {helpText}
+      </span>
+    </button>
+  );
+}
+
 function FieldLabel({ helpText, label }: BaseFieldProps) {
   return (
     <span className="field-label-row">
       <span className="field-label-text">{label}</span>
-      {helpText ? (
-        <button
-          aria-label={`${label}: info`}
-          className="field-help-trigger"
-          type="button"
-        >
-          <Icon className="field-help-icon" name="info" size={14} />
-          <span className="field-help-tooltip" role="tooltip">
-            {helpText}
-          </span>
-        </button>
-      ) : null}
+      <FieldHelpTrigger helpText={helpText} label={label} />
     </span>
   );
 }
@@ -110,6 +128,19 @@ export function RadiusField({
           <span className="radius-field-suffix">px</span>
         </div>
       </div>
+      <div className="radius-preview" aria-hidden="true">
+        <div
+          className="radius-preview-card"
+          style={{ borderRadius: `${numericRadius}px` }}
+        >
+          <span
+            className="radius-preview-pill"
+            style={{ borderRadius: `${Math.max(8, Math.round(numericRadius * 0.72))}px` }}
+          >
+            {numericRadius}px
+          </span>
+        </div>
+      </div>
     </label>
   );
 }
@@ -121,53 +152,82 @@ const shadowPresets = {
 } as const;
 
 export function ShadowField({
+  advancedHideLabel,
+  advancedShowLabel,
   helpText,
   label,
   onChange,
   value
 }: {
+  advancedHideLabel: string;
+  advancedShowLabel: string;
   helpText?: string;
   label: string;
   onChange: (value: string) => void;
   value: string;
 }) {
+  const normalizedValue = value.trim();
+  const isPresetSelected = Object.values(shadowPresets).includes(
+    normalizedValue as (typeof shadowPresets)[keyof typeof shadowPresets]
+  );
+  const [showAdvanced, setShowAdvanced] = React.useState(!isPresetSelected);
+
+  React.useEffect(() => {
+    if (!Object.values(shadowPresets).includes(normalizedValue as (typeof shadowPresets)[keyof typeof shadowPresets])) {
+      setShowAdvanced(true);
+    }
+  }, [normalizedValue]);
+
   return (
     <label className="field">
       <FieldLabel helpText={helpText} label={label} />
       <div className="shadow-field">
-        <div className="shadow-field-presets" role="radiogroup">
-          {[
-            { key: "soft", label: "Soft" },
-            { key: "deep", label: "Deep" },
-            { key: "none", label: "None" }
-          ].map((preset) => {
-            const presetValue = shadowPresets[preset.key as keyof typeof shadowPresets];
-            const isActive = value.trim() === presetValue;
+        <div className="shadow-field-topbar">
+          <div className="shadow-field-presets" role="radiogroup">
+            {[
+              { key: "soft", label: "Soft" },
+              { key: "deep", label: "Deep" },
+              { key: "none", label: "None" }
+            ].map((preset) => {
+              const presetValue =
+                shadowPresets[preset.key as keyof typeof shadowPresets];
+              const isActive = value.trim() === presetValue;
 
-            return (
-              <button
-                aria-checked={isActive}
-                className={
-                  isActive
-                    ? "shadow-preset-button is-active"
-                    : "shadow-preset-button"
-                }
-                key={preset.key}
-                onClick={() => onChange(presetValue)}
-                role="radio"
-                type="button"
-              >
-                {preset.label}
-              </button>
-            );
-          })}
+              return (
+                <button
+                  aria-checked={isActive}
+                  className={
+                    isActive
+                      ? "shadow-preset-button is-active"
+                      : "shadow-preset-button"
+                  }
+                  key={preset.key}
+                  onClick={() => onChange(presetValue)}
+                  role="radio"
+                  type="button"
+                >
+                  {preset.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            className="inline-button shadow-advanced-toggle"
+            onClick={() => setShowAdvanced((current) => !current)}
+            type="button"
+          >
+            {showAdvanced ? advancedHideLabel : advancedShowLabel}
+          </button>
         </div>
 
         <div className="shadow-field-preview" style={{ boxShadow: value }}>
           Aa
         </div>
 
-        <input onChange={(event) => onChange(event.target.value)} value={value} />
+        {showAdvanced ? (
+          <input onChange={(event) => onChange(event.target.value)} value={value} />
+        ) : null}
       </div>
     </label>
   );

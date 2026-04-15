@@ -68,6 +68,8 @@ export interface PlaygroundLabels {
   sections: string;
   sectionsDescription: string;
   sectionsHeading: string;
+  shadowAdvancedHide: string;
+  shadowAdvancedShow: string;
   shadow: string;
   shortcut: string;
   shortcutColor: string;
@@ -208,6 +210,8 @@ const playgroundCopy = {
       sectionsDescription:
         "Define sections, commands, nested flows, and the order users move through.",
       sectionsHeading: "Information architecture",
+      shadowAdvancedHide: "Hide advanced",
+      shadowAdvancedShow: "Advanced",
       shadow: "Shadow",
       shortcut: "Shortcut",
       shortcutColor: "Shortcut color",
@@ -343,6 +347,8 @@ const playgroundCopy = {
       sectionsDescription:
         "Define secciones, comandos, flujos anidados y el orden por el que se mueve el usuario.",
       sectionsHeading: "Arquitectura de información",
+      shadowAdvancedHide: "Ocultar avanzado",
+      shadowAdvancedShow: "Avanzado",
       shadow: "Sombra",
       shortcut: "Atajo",
       shortcutColor: "Color de atajo",

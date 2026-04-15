@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { Icon } from "@/components/icons/PlaygroundIcon";
+import { FieldHelpTrigger } from "./Fields";
 
 interface SelectOption {
   label: string;
@@ -63,18 +64,7 @@ export function PlaygroundSelectField({
     <div className="field">
       <span className="field-label-row">
         <span className="field-label-text">{label}</span>
-        {helpText ? (
-          <button
-            aria-label={`${label}: info`}
-            className="field-help-trigger"
-            type="button"
-          >
-            <Icon className="field-help-icon" name="info" size={14} />
-            <span className="field-help-tooltip" role="tooltip">
-              {helpText}
-            </span>
-          </button>
-        ) : null}
+        <FieldHelpTrigger helpText={helpText} label={label} />
       </span>
       <div className="playground-select-field install-selector-dropdown" ref={rootRef}>
         <button

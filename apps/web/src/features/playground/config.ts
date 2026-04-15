@@ -92,14 +92,13 @@ export function getDefaultSections(language: Language): CommandSection[] {
       title: language === "es" ? "Comandos" : "Commands",
       items: [
         {
-          id: "open-dashboard",
-          title: language === "es" ? "Abrir dashboard" : "Open dashboard",
+          id: "toggle-theme",
+          title: language === "es" ? "Cambiar tema" : "Toggle theme",
           subtitle:
             language === "es"
-              ? "Ir al panel principal"
-              : "Go to the main dashboard",
-          href: "/dashboard",
-          shortcut: "mod+o"
+              ? "Alternar entre modo claro y oscuro"
+              : "Switch between light and dark mode",
+          shortcut: "mod+t"
         },
         {
           id: "search-workspace",

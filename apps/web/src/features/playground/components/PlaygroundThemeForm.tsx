@@ -197,6 +197,8 @@ export function PlaygroundThemeForm({
             value={currentTheme.radius}
           />
           <ShadowField
+            advancedHideLabel={labels.shadowAdvancedHide}
+            advancedShowLabel={labels.shadowAdvancedShow}
             helpText={help.shadow}
             label={labels.shadow}
             onChange={(value) => updateThemeField("shadow", value)}

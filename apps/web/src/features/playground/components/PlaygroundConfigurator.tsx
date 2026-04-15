@@ -13,6 +13,7 @@ interface PlaygroundConfiguratorProps {
   activeTheme: CommandTheme;
   config: PlaygroundConfig;
   labels: PlaygroundLabels;
+  preview: React.ReactNode;
   onAddItemToNestedSection: (
     sectionId: string,
     itemId: string,
@@ -117,6 +118,7 @@ export function PlaygroundConfigurator({
   activeTheme,
   config,
   labels,
+  preview,
   onAddItemToNestedSection,
   onAddItemToSection,
   onAddNestedSection,
@@ -145,16 +147,8 @@ export function PlaygroundConfigurator({
     boxShadow: activeTheme.shadow,
     color: activeTheme.textColor
   };
-  const shortcutStyle: React.CSSProperties = {
-    background: `${activeTheme.accentColor ?? "#35d7ff"}22`,
-    border: `1px solid ${activeTheme.accentColor ?? "#35d7ff"}44`,
-    color: activeTheme.textColor
-  };
   const subtitleStyle: React.CSSProperties = {
     color: activeTheme.descriptionColor ?? activeTheme.mutedColor
-  };
-  const previewTitleStyle: React.CSSProperties = {
-    color: activeTheme.titleColor ?? activeTheme.textColor
   };
   const summaryCards = [
     {
@@ -215,15 +209,10 @@ export function PlaygroundConfigurator({
 
       <div className="playground-config-overview">
         <div className="playground-preview-card" style={previewCardStyle}>
-          <div className="preview-meta-row">
-            <span className="preview-shortcut" style={shortcutStyle}>
-              {config.shortcut}
-            </span>
-          </div>
-          <span className="preview-title" style={previewTitleStyle}>{config.title}</span>
-          <span className="preview-subtitle" style={subtitleStyle}>
-            {config.placeholder}
-          </span>
+          <h3 className="preview-heading" style={subtitleStyle}>
+            {labels.preview}
+          </h3>
+          <div className="playground-live-preview-shell">{preview}</div>
         </div>
 
         <div className="playground-summary-grid">
