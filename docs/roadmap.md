@@ -185,6 +185,7 @@ Hecho (última tanda):
 - Tooltips de ayuda restringidos al icono de información (hover/focus explícito), evitando activación accidental al pasar por todo el campo.
 - UX del configurador refinada: botón `Añadir sección` destacado y sin wrap, nuevos espaciados en bloques de sección/anidados, y numeración de acordeones reajustada.
 - Controles avanzados simplificados: sombra en modo básico con toggle `Avanzado`, y radio con preview visual en vivo del redondeado.
+- Pulido visual final de controles de apariencia: selectores de color redondos y compactos, ajuste de escala/posición en numeración de secciones, y alineación de altura entre previews de `Radio` y `Sombra`.
 
 Bloqueado:
 
