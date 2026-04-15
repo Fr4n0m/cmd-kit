@@ -9,6 +9,7 @@ import { Field } from "./Fields";
 
 interface NestedSectionEditorProps {
   childSection: CommandSection;
+  language: PlaygroundConfig["language"];
   labels: PlaygroundLabels;
   onAddNestedItem: () => void;
   onMoveNestedItem: (
@@ -25,17 +26,19 @@ interface NestedSectionEditorProps {
 }
 
 function ItemFields({
+  help,
   item,
   labels,
   onUpdate
 }: {
+  help: ReturnType<typeof getSectionsHelp>;
   item: CommandItem;
   labels: PlaygroundLabels;
   onUpdate: (updater: (item: CommandItem) => CommandItem) => void;
 }) {
   return (
     <div className="item-grid">
-      <Field label={labels.itemTitle}>
+      <Field helpText={help.itemTitle} label={labels.itemTitle}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -46,7 +49,7 @@ function ItemFields({
           value={item.title}
         />
       </Field>
-      <Field label={labels.itemIcon}>
+      <Field helpText={help.itemIcon} label={labels.itemIcon}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -57,7 +60,7 @@ function ItemFields({
           value={item.icon ?? ""}
         />
       </Field>
-      <Field label={labels.itemSubtitle}>
+      <Field helpText={help.itemSubtitle} label={labels.itemSubtitle}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -68,7 +71,7 @@ function ItemFields({
           value={item.subtitle ?? ""}
         />
       </Field>
-      <Field label={labels.itemShortcut}>
+      <Field helpText={help.itemShortcut} label={labels.itemShortcut}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -79,7 +82,7 @@ function ItemFields({
           value={item.shortcut ?? ""}
         />
       </Field>
-      <Field label={labels.itemHref}>
+      <Field helpText={help.itemHref} label={labels.itemHref}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -90,7 +93,7 @@ function ItemFields({
           value={item.href ?? ""}
         />
       </Field>
-      <Field label={labels.itemKeywords}>
+      <Field helpText={help.itemKeywords} label={labels.itemKeywords}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -110,6 +113,7 @@ function ItemFields({
 
 export function NestedSectionEditor({
   childSection,
+  language,
   labels,
   onAddNestedItem,
   onMoveNestedItem,
@@ -118,6 +122,8 @@ export function NestedSectionEditor({
   onUpdateNestedItem,
   onUpdateSectionTitle
 }: NestedSectionEditorProps) {
+  const help = getSectionsHelp(language);
+
   return (
     <details className="nested-card nested-accordion">
       <summary className="editor-summary">
@@ -129,7 +135,7 @@ export function NestedSectionEditor({
       </summary>
       <div className="editor-detail-body">
         <div className="editor-topbar">
-          <Field label={labels.nestedSectionTitle}>
+          <Field helpText={help.nestedSectionTitle} label={labels.nestedSectionTitle}>
             <input
               onChange={(event) => onUpdateSectionTitle(event.target.value)}
               value={childSection.title}
@@ -159,6 +165,7 @@ export function NestedSectionEditor({
               </summary>
               <div className="editor-detail-body">
                 <ItemFields
+                  help={help}
                   item={nestedItem}
                   labels={labels}
                   onUpdate={(updater) => onUpdateNestedItem(nestedItem.id, updater)}
@@ -222,6 +229,7 @@ export function NestedSectionEditor({
 }
 
 interface SectionEditorProps {
+  language: PlaygroundConfig["language"];
   labels: PlaygroundLabels;
   onAddItem: () => void;
   onMoveDown: () => void;
@@ -264,6 +272,7 @@ interface SectionEditorProps {
 }
 
 export function SectionEditor({
+  language,
   labels,
   onAddItem,
   onMoveDown,
@@ -283,6 +292,8 @@ export function SectionEditor({
   section,
   defaultOpen = false
 }: SectionEditorProps) {
+  const help = getSectionsHelp(language);
+
   return (
     <details className="section-card section-accordion" open={defaultOpen}>
       <summary className="editor-summary">
@@ -294,7 +305,7 @@ export function SectionEditor({
       </summary>
       <div className="editor-detail-body">
         <div className="editor-topbar">
-          <Field label={labels.sectionTitle}>
+          <Field helpText={help.sectionTitle} label={labels.sectionTitle}>
             <input
               onChange={(event) => onUpdateTitle(event.target.value)}
               value={section.title}
@@ -332,6 +343,7 @@ export function SectionEditor({
               </summary>
               <div className="editor-detail-body">
                 <ItemFields
+                  help={help}
                   item={item}
                   labels={labels}
                   onUpdate={(updater) => onUpdateItem(item.id, updater)}
@@ -393,6 +405,7 @@ export function SectionEditor({
                     <NestedSectionEditor
                       childSection={childSection}
                       key={childSection.id}
+                      language={language}
                       labels={labels}
                       onAddNestedItem={() =>
                         onAddNestedItem(item.id, childSection.id)
@@ -441,5 +454,31 @@ export function SectionEditor({
       </div>
     </details>
   );
+}
+
+function getSectionsHelp(language: PlaygroundConfig["language"]) {
+  if (language === "es") {
+    return {
+      itemHref: "Ruta o URL a la que navegar cuando se ejecuta este comando.",
+      itemIcon: "Icono del comando. Puedes usar emoji o SVG inline.",
+      itemKeywords: "Palabras clave separadas por comas para mejorar la búsqueda.",
+      itemShortcut: "Atajo específico para este comando dentro de la paleta.",
+      itemSubtitle: "Texto secundario que describe la acción del comando.",
+      itemTitle: "Nombre principal del comando en la lista.",
+      nestedSectionTitle: "Título del grupo anidado que se abre desde este comando.",
+      sectionTitle: "Nombre visible de la sección principal de comandos."
+    };
+  }
+
+  return {
+    itemHref: "Path or URL to navigate to when this command runs.",
+    itemIcon: "Command icon. You can use emoji or inline SVG markup.",
+    itemKeywords: "Search keywords separated by commas for better matching.",
+    itemShortcut: "Item-specific shortcut available inside the palette.",
+    itemSubtitle: "Secondary line that describes what this command does.",
+    itemTitle: "Main command label shown in the command list.",
+    nestedSectionTitle: "Title of the nested group opened by this command.",
+    sectionTitle: "Visible name for the top-level command section."
+  };
 }
 

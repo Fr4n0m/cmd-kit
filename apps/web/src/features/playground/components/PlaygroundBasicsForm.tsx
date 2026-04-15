@@ -18,6 +18,8 @@ export function PlaygroundBasicsForm({
   labels,
   onUpdateConfig
 }: PlaygroundBasicsFormProps) {
+  const help = getBasicsHelp(config.language);
+
   function updateActiveThemeField(
     field: "titleColor" | "descriptionColor" | "shortcutColor",
     value: string
@@ -57,6 +59,7 @@ export function PlaygroundBasicsForm({
   return (
     <div className="form-grid">
       <PlaygroundSelectField
+        helpText={help.language}
         label={labels.language}
         onChange={(value) =>
           onUpdateConfig((current) => ({
@@ -71,7 +74,7 @@ export function PlaygroundBasicsForm({
         value={config.language}
       />
 
-      <Field label={labels.title}>
+      <Field helpText={help.title} label={labels.title}>
         <input
           onChange={(event) =>
             onUpdateConfig((current) => ({
@@ -83,12 +86,13 @@ export function PlaygroundBasicsForm({
         />
       </Field>
       <ColorField
+        helpText={help.titleColor}
         label={labels.titleColor}
         onChange={(value) => updateActiveThemeField("titleColor", value)}
         value={activeTitleColor}
       />
 
-      <Field label={labels.placeholder}>
+      <Field helpText={help.placeholder} label={labels.placeholder}>
         <input
           onChange={(event) =>
             onUpdateConfig((current) => ({
@@ -100,12 +104,13 @@ export function PlaygroundBasicsForm({
         />
       </Field>
       <ColorField
+        helpText={help.descriptionColor}
         label={labels.captionColor}
         onChange={(value) => updateActiveThemeField("descriptionColor", value)}
         value={activeDescriptionColor}
       />
 
-      <Field label={labels.shortcut}>
+      <Field helpText={help.shortcut} label={labels.shortcut}>
         <input
           onChange={(event) =>
             onUpdateConfig((current) => ({
@@ -117,12 +122,13 @@ export function PlaygroundBasicsForm({
         />
       </Field>
       <ColorField
+        helpText={help.shortcutColor}
         label={labels.shortcutColor}
         onChange={(value) => updateActiveThemeField("shortcutColor", value)}
         value={activeShortcutColor}
       />
 
-      <Field label={labels.recents}>
+      <Field helpText={help.recents} label={labels.recents}>
         <label className="toggle-field">
           <input
             checked={config.recentsEnabled}
@@ -139,5 +145,31 @@ export function PlaygroundBasicsForm({
       </Field>
     </div>
   );
+}
+
+function getBasicsHelp(language: PlaygroundConfig["language"]) {
+  if (language === "es") {
+    return {
+      descriptionColor: "Color del texto secundario que acompaña al título en la vista previa.",
+      language: "Idioma del configurador y de los textos por defecto generados en el snippet.",
+      placeholder: "Texto de búsqueda visible dentro del input de la command palette.",
+      recents: "Activa una sección de elementos recientes ejecutados por el usuario.",
+      shortcut: "Atajo global para abrir/cerrar la paleta (ejemplo: mod+k).",
+      shortcutColor: "Color de la etiqueta del atajo en la vista previa y en la paleta.",
+      title: "Título principal que aparece en la cabecera de la command palette.",
+      titleColor: "Color del título principal de la paleta."
+    };
+  }
+
+  return {
+    descriptionColor: "Secondary helper text color shown under the palette title in preview.",
+    language: "Configurator language and default generated copy in exported snippets.",
+    placeholder: "Search prompt text displayed inside the command palette input.",
+    recents: "Enable a recent-commands section based on executed items.",
+    shortcut: "Global keybinding used to open/close the palette (example: mod+k).",
+    shortcutColor: "Color used by keyboard shortcut labels in preview and palette.",
+    title: "Main heading shown at the top of the command palette.",
+    titleColor: "Main title color for the palette header."
+  };
 }
 

@@ -34,6 +34,7 @@ npm install @cmd-kit/core
 - Recientes (`recordRecentCommand`, `resolveRecentCommands`).
 - Helpers de tema/mensajes.
 - Runtime vanilla completo: `createCommandPalette`.
+- Opción `reducedMotion` para desactivar animaciones de hover/movimiento.
 
 ### 🚀 Opción 1: motor headless
 
@@ -72,6 +73,7 @@ import { createCommandPalette } from "@cmd-kit/core";
 const palette = createCommandPalette({
   title: "Command menu",
   defaultOpen: false,
+  reducedMotion: false,
   recents: { limit: 6, sectionTitle: "Recent commands" }
 });
 
@@ -119,6 +121,7 @@ npm install @cmd-kit/core
 - Recents helpers.
 - Theme/messages helpers.
 - Full framework-free runtime via `createCommandPalette`.
+- `reducedMotion` option to disable hover/motion animations.
 
 ### 🚀 Option 1: headless engine
 

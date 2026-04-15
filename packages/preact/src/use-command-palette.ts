@@ -34,6 +34,7 @@ export interface UseCommandPaletteOptions {
   theme?: CommandTheme;
   title?: string;
   shortcut?: string;
+  reducedMotion?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -178,6 +179,7 @@ export function useCommandPalette({
   theme,
   title = "Command menu",
   shortcut = "mod+k",
+  reducedMotion = false,
   open,
   defaultOpen = false,
   onOpenChange,
@@ -215,9 +217,10 @@ export function useCommandPalette({
         sections: rootSections,
         messages,
         theme: resolvedTheme,
-        shortcut
+        shortcut,
+        reducedMotion
       }),
-    [messages, resolvedTheme, rootItems, rootSections, shortcut]
+    [messages, reducedMotion, resolvedTheme, rootItems, rootSections, shortcut]
   );
   const recentItems = useMemo(() => {
     if (!recents) {
@@ -238,7 +241,8 @@ export function useCommandPalette({
         ),
         messages,
         theme: resolvedTheme,
-        shortcut
+        shortcut,
+        reducedMotion
       }),
     [
       activeSections,
@@ -246,6 +250,7 @@ export function useCommandPalette({
       navigationStack.length,
       recentItems,
       recents,
+      reducedMotion,
       rootItems,
       shortcut,
       resolvedTheme

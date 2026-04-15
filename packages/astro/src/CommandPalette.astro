@@ -11,6 +11,7 @@ const payload = JSON.stringify({
   messages: props.messages,
   open: props.open,
   recents: props.recents ?? false,
+  reducedMotion: props.reducedMotion ?? false,
   sections: props.sections,
   shortcut: props.shortcut ?? "mod+k",
   source: props.source,
@@ -55,23 +56,32 @@ const payload = JSON.stringify({
     resolveRecentCommands
   } from "@cmd-kit/core";
 
-  const root = document.querySelector(".cmdkit-astro-root:not([data-cmdkit-initialized='true'])");
-  if (!(root instanceof HTMLElement)) {
-    throw new Error("Cmd+kit Astro component root not found.");
-  }
-  root.dataset.cmdkitInitialized = "true";
-  const payloadNode = document.getElementById(`${root.id}-payload`);
+  const payloadNodes = document.querySelectorAll(
+    'script[type="application/json"][id$="-payload"]:not([data-cmdkit-consumed="true"])'
+  );
 
-  if (!payloadNode?.textContent) {
-    throw new Error("Cmd+kit Astro component initialization failed.");
-  }
+  for (const payloadNode of payloadNodes) {
+    if (!(payloadNode instanceof HTMLScriptElement) || !payloadNode.id.endsWith("-payload")) {
+      continue;
+    }
 
-  const props = JSON.parse(payloadNode.textContent);
-  const classNames = props.classNames ?? {};
-  const recents = props.recents ?? false;
-  const neutralInputBackground = "rgba(255, 255, 255, 0.03)";
-  const neutralLightInputBackground = "rgba(171, 189, 205, 0.16)";
-  const defaultLightTheme = {
+    const rootId = payloadNode.id.slice(0, -"-payload".length);
+    const root = document.getElementById(rootId);
+
+    if (!(root instanceof HTMLElement) || !payloadNode.textContent) {
+      continue;
+    }
+
+    payloadNode.dataset.cmdkitConsumed = "true";
+    root.dataset.cmdkitInitialized = "true";
+
+    const props = JSON.parse(payloadNode.textContent);
+    const classNames = props.classNames ?? {};
+    const recents = props.recents ?? false;
+    const reducedMotion = Boolean(props.reducedMotion);
+    const neutralInputBackground = "rgba(255, 255, 255, 0.03)";
+    const neutralLightInputBackground = "rgba(171, 189, 205, 0.16)";
+    const defaultLightTheme = {
     accentColor: "#0fa6d8",
     backgroundColor: "#ffffff",
     textColor: "#0e1720",
@@ -227,6 +237,7 @@ const payload = JSON.stringify({
     sections: rootSections,
     messages: props.messages,
     shortcut: props.shortcut,
+    reducedMotion,
     theme: resolveAdaptiveTheme(props.theme)
   });
 
@@ -451,6 +462,7 @@ const payload = JSON.stringify({
       sections: withRecentSection(activeSections, recentItems, recents, rootItems),
       messages: props.messages,
       shortcut: props.shortcut,
+      reducedMotion,
       theme: resolveAdaptiveTheme(props.theme)
     });
 
@@ -484,6 +496,7 @@ const payload = JSON.stringify({
     const light = isLightTheme(theme.backgroundColor);
     dialog.style.borderRadius = theme.radius;
     dialog.dataset.mode = light ? "light" : "dark";
+    dialog.dataset.reducedMotion = reducedMotion ? "true" : "false";
     dialog.style.border = `1px solid ${theme.borderColor}`;
     dialog.style.background = theme.backgroundColor;
     dialog.style.color = theme.textColor;
@@ -614,6 +627,52 @@ const payload = JSON.stringify({
     list.innerHTML = sectionsHtml;
   };
 
+  const applyItemTransform = (item, mode) => {
+    if (!(item instanceof HTMLElement)) {
+      return;
+    }
+
+    const icon = item.querySelector(".cmdkit-astro-icon");
+    const title = item.querySelector(".cmdkit-astro-item-title");
+
+    if (icon instanceof HTMLElement) {
+      if (mode === "hover") {
+        icon.style.transform = "scale(1.2)";
+      } else if (mode === "active") {
+        icon.style.transform = "scale(1.14)";
+      } else {
+        icon.style.transform = "scale(1)";
+      }
+    }
+
+    if (title instanceof HTMLElement) {
+      if (mode === "hover") {
+        title.style.transform = "scale(1.09)";
+      } else if (mode === "active") {
+        title.style.transform = "scale(1.06)";
+      } else {
+        title.style.transform = "scale(1)";
+      }
+    }
+  };
+
+  const syncListItemTransforms = () => {
+    if (!(list instanceof HTMLElement) || reducedMotion) {
+      return;
+    }
+
+    const items = list.querySelectorAll("[data-item-id]");
+    for (const item of items) {
+      if (!(item instanceof HTMLElement)) {
+        continue;
+      }
+
+      const hovered = item.dataset.hovered === "true";
+      const active = item.getAttribute("aria-selected") === "true";
+      applyItemTransform(item, hovered ? "hover" : active ? "active" : "rest");
+    }
+  };
+
   const syncListMask = () => {
     if (!(list instanceof HTMLElement)) {
       return;
@@ -697,6 +756,7 @@ const payload = JSON.stringify({
     }
 
     renderList(runtime);
+    syncListItemTransforms();
     syncListMask();
   };
 
@@ -870,6 +930,9 @@ const payload = JSON.stringify({
 
   closeButton?.addEventListener("click", () => setOpenState(false));
   closeButton?.addEventListener("mouseenter", () => {
+    if (reducedMotion) {
+      return;
+    }
     const runtime = buildRuntime();
     const light = isLightTheme(runtime.theme.backgroundColor);
     if (closeButton instanceof HTMLElement) {
@@ -897,6 +960,9 @@ const payload = JSON.stringify({
   });
   backButton?.addEventListener("click", goBack);
   backButton?.addEventListener("mouseenter", () => {
+    if (reducedMotion) {
+      return;
+    }
     const runtime = buildRuntime();
     if (backButton instanceof HTMLElement) {
       backButton.style.transform = "translateY(-1px)";
@@ -949,10 +1015,51 @@ const payload = JSON.stringify({
     }
   });
 
+  list?.addEventListener("mouseover", (event) => {
+    if (reducedMotion) {
+      return;
+    }
+
+    const target =
+      event.target instanceof Element ? event.target.closest("[data-item-id]") : null;
+
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    target.dataset.hovered = "true";
+    applyItemTransform(target, "hover");
+  });
+
+  list?.addEventListener("mouseout", (event) => {
+    if (reducedMotion) {
+      return;
+    }
+
+    const target =
+      event.target instanceof Element ? event.target.closest("[data-item-id]") : null;
+
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    if (
+      event.relatedTarget instanceof Node &&
+      target.contains(event.relatedTarget)
+    ) {
+      return;
+    }
+
+    target.dataset.hovered = "false";
+    const active = target.getAttribute("aria-selected") === "true";
+    applyItemTransform(target, active ? "active" : "rest");
+  });
+
   list?.addEventListener("scroll", syncListMask, { passive: true });
   window.addEventListener("resize", syncListMask);
 
-  render();
+    render();
+  }
 </script>
 
 <style is:global>
@@ -1158,7 +1265,8 @@ const payload = JSON.stringify({
     letter-spacing: -0.004em;
     transform: scale(1);
     transform-origin: left center;
-    transition: transform 160ms ease, color 160ms ease;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), color 180ms ease;
+    will-change: transform;
     font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
     color: rgba(188, 208, 223, 0.88);
   }
@@ -1179,7 +1287,8 @@ const payload = JSON.stringify({
     line-height: 1;
     flex-shrink: 0;
     transform: scale(1);
-    transition: transform 160ms ease, color 160ms ease;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), color 180ms ease;
+    will-change: transform;
     color: rgba(188, 208, 223, 0.88);
   }
 
@@ -1188,11 +1297,21 @@ const payload = JSON.stringify({
   }
 
   .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-icon {
-    transform: scale(1.08);
+    transform: scale(1.12);
+  }
+
+  .cmdkit-astro-item:hover .cmdkit-astro-icon {
+    transform: scale(1.12);
+    color: #eaf8ff;
   }
 
   .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
-    transform: scale(1.03);
+    transform: scale(1.05);
+    color: #eaf8ff;
+  }
+
+  .cmdkit-astro-item:hover .cmdkit-astro-item-title {
+    transform: scale(1.05);
     color: #eaf8ff;
   }
 
@@ -1217,12 +1336,35 @@ const payload = JSON.stringify({
     color: #0b607f;
   }
 
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item:hover .cmdkit-astro-icon {
+    color: #0b607f;
+  }
+
   .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item-title {
     color: rgba(47, 84, 107, 0.86);
   }
 
   .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
     color: #0b607f;
+  }
+
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item:hover .cmdkit-astro-item-title {
+    color: #0b607f;
+  }
+
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-close,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-title-back,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item-title,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-icon {
+    transition: none !important;
+  }
+
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item:hover .cmdkit-astro-icon,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item:hover .cmdkit-astro-item-title,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-icon,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
+    transform: none !important;
   }
 
   .cmdkit-astro-subtitle {

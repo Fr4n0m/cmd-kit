@@ -23,7 +23,7 @@ const sections = [
 <template>
   <CommandPalette :sections="sections" title="Comandos del proyecto" />
 </template>` }] },
-      { id: "que-puedes-configurar", label: "Qué puedes configurar", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy localizado o del producto", "<code>theme</code> para colores y superficies", "<code>classNames</code> para hooks de estilo", "<code>recents</code> para recientes automáticos"] }] },
+      { id: "que-puedes-configurar", label: "Qué puedes configurar", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy localizado o del producto", "<code>theme</code> para colores y superficies", "<code>classNames</code> para hooks de estilo", "<code>recents</code> para recientes automáticos", "<code>reducedMotion</code> para desactivar animaciones de hover/movimiento"] }] },
       { id: "slots-e-iconos", label: "Slots e iconos", blocks: [{ type: "paragraph", html: "La personalización en Vue se hace con slots. Usa el slot <code>item</code> cuando quieras cambiar iconos o la estructura de la fila." }, { type: "code", lang: "vue", label: "vue", code: `<CommandPalette :sections="sections" title="Comandos del proyecto">
   <template #item="{ item, active }">
     <div :class="['palette-row', { 'is-active': active }]">

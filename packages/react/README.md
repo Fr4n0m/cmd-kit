@@ -36,6 +36,7 @@ npm install @cmd-kit/react react react-dom
 - Soporte de `source` async.
 - Recientes opcionales con deduplicación.
 - Estilos por defecto + overrides (`theme`, `classNames`, `renderers`).
+- `reducedMotion` para desactivar animaciones de hover/movimiento.
 
 ### 🚀 Uso rápido
 
@@ -135,7 +136,7 @@ Flujo recomendado:
 
 1. Configura comandos en el playground.
 2. Exporta para `React`.
-3. Copia `sections`/`items` y opcionalmente `messages`, `theme`, `recents`.
+3. Copia `sections`/`items` y opcionalmente `messages`, `theme`, `recents`, `reducedMotion`.
 4. Pégalos en tu componente que renderiza `<CommandPalette />`.
 
 Si exportas modo async, conecta el resultado al prop `source`.
@@ -171,6 +172,7 @@ npm install @cmd-kit/react react react-dom
 - Async `source` support.
 - Optional recents with dedupe.
 - Built-in defaults + overrides (`theme`, `classNames`, `renderers`).
+- `reducedMotion` prop to disable hover/motion animations.
 
 ### 🚀 Quick start
 
@@ -220,6 +222,7 @@ export function App() {
 Use:
 
 - `theme` for palette tokens.
+- `reducedMotion` to disable hover/motion animations.
 - `classNames` for slot-level CSS hooks.
 - `renderers` / `renderItem` for render overrides.
 
@@ -233,7 +236,7 @@ Recommended flow:
 
 1. Shape your data in the playground.
 2. Export `React`.
-3. Copy `sections`/`items` (+ optional `messages`, `theme`, `recents`).
+3. Copy `sections`/`items` (+ optional `messages`, `theme`, `recents`, `reducedMotion`).
 4. Paste into your `<CommandPalette />` integration.
 
 For async mode, wire exported payload to `source`.

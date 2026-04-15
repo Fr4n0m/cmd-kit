@@ -154,6 +154,7 @@ export interface VanillaCommandPaletteOptions {
   theme?: CommandTheme;
   title?: string;
   shortcut?: string;
+  reducedMotion?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -349,14 +350,19 @@ const CSS_TEXT = `
   line-height: 1;
   flex-shrink: 0;
   transform: scale(1);
-  transition: transform 160ms ease, color 160ms ease;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), color 180ms ease;
+  will-change: transform;
   color: rgba(188, 208, 223, 0.88);
 }
 .cmdkit-icon[data-active="true"] {
   color: #eaf8ff;
 }
 .cmdkit-item[aria-selected="true"] .cmdkit-icon {
-  transform: scale(1.08);
+  transform: scale(1.12);
+}
+.cmdkit-item:hover .cmdkit-icon {
+  transform: scale(1.12);
+  color: #eaf8ff;
 }
 .cmdkit-item-title {
   display: block;
@@ -366,12 +372,17 @@ const CSS_TEXT = `
   letter-spacing: -0.004em;
   transform: scale(1);
   transform-origin: left center;
-  transition: transform 160ms ease, color 160ms ease;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), color 180ms ease;
+  will-change: transform;
   font-family: Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
   color: rgba(188, 208, 223, 0.88);
 }
 .cmdkit-item[aria-selected="true"] .cmdkit-item-title {
-  transform: scale(1.03);
+  transform: scale(1.05);
+  color: #eaf8ff;
+}
+.cmdkit-item:hover .cmdkit-item-title {
+  transform: scale(1.05);
   color: #eaf8ff;
 }
 .cmdkit-subtitle {
@@ -410,11 +421,30 @@ const CSS_TEXT = `
 .cmdkit-dialog[data-mode="light"] .cmdkit-icon[data-active="true"] {
   color: #0b607f;
 }
+.cmdkit-dialog[data-mode="light"] .cmdkit-item:hover .cmdkit-icon {
+  color: #0b607f;
+}
 .cmdkit-dialog[data-mode="light"] .cmdkit-item-title {
   color: rgba(47, 84, 107, 0.86);
 }
 .cmdkit-dialog[data-mode="light"] .cmdkit-item[aria-selected="true"] .cmdkit-item-title {
   color: #0b607f;
+}
+.cmdkit-dialog[data-mode="light"] .cmdkit-item:hover .cmdkit-item-title {
+  color: #0b607f;
+}
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-close,
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-back,
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-item,
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-item-title,
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-icon {
+  transition: none !important;
+}
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-item:hover .cmdkit-icon,
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-item:hover .cmdkit-item-title,
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-item[aria-selected="true"] .cmdkit-icon,
+.cmdkit-dialog[data-reduced-motion="true"] .cmdkit-item[aria-selected="true"] .cmdkit-item-title {
+  transform: none !important;
 }
 `;
 
@@ -661,6 +691,7 @@ export function createCommandPalette(
       sections: rootSections(),
       messages: options.messages,
       shortcut: options.shortcut ?? "mod+k",
+      reducedMotion: options.reducedMotion ?? false,
       theme: resolveAdaptiveTheme(options.theme)
     });
 
@@ -677,6 +708,7 @@ export function createCommandPalette(
       sections: withRecentSection(activeSections, recentItems, recents, rootItems()),
       messages: options.messages,
       shortcut: options.shortcut ?? "mod+k",
+      reducedMotion: options.reducedMotion ?? false,
       theme: resolveAdaptiveTheme(options.theme)
     });
 
@@ -734,6 +766,7 @@ export function createCommandPalette(
     const light = isLightTheme(theme.backgroundColor);
     dialog.style.borderRadius = theme.radius ?? "22px";
     dialog.dataset.mode = light ? "light" : "dark";
+    dialog.dataset.reducedMotion = options.reducedMotion ? "true" : "false";
     dialog.style.border = `1px solid ${theme.borderColor}`;
     dialog.style.background = theme.backgroundColor ?? "";
     dialog.style.color = theme.textColor ?? "";
@@ -1040,6 +1073,9 @@ export function createCommandPalette(
   backButton.addEventListener("click", goBack);
 
   closeButton.addEventListener("mouseenter", () => {
+    if (options.reducedMotion) {
+      return;
+    }
     const runtime = buildRuntime();
     const light = isLightTheme(runtime.theme.backgroundColor);
     closeButton.style.background = light ? "rgba(15, 166, 216, 0.12)" : "rgba(166, 191, 212, 0.18)";
@@ -1058,6 +1094,9 @@ export function createCommandPalette(
   });
 
   backButton.addEventListener("mouseenter", () => {
+    if (options.reducedMotion) {
+      return;
+    }
     const runtime = buildRuntime();
     backButton.style.transform = "translateY(-1px)";
     backButton.style.color = runtime.theme.textColor ?? "";

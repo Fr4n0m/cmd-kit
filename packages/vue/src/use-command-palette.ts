@@ -37,6 +37,7 @@ export interface UseCommandPaletteOptions {
   theme?: MaybeRefOrGetter<CommandTheme | undefined>;
   title?: MaybeRefOrGetter<string | undefined>;
   shortcut?: MaybeRefOrGetter<string | undefined>;
+  reducedMotion?: MaybeRefOrGetter<boolean | undefined>;
   open?: MaybeRefOrGetter<boolean | undefined>;
   defaultOpen?: MaybeRefOrGetter<boolean | undefined>;
   onOpenChange?: (open: boolean) => void;
@@ -201,6 +202,7 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
     () => toValue(options.title) ?? "Command menu"
   );
   const resolvedShortcut = computed(() => toValue(options.shortcut) ?? "mod+k");
+  const reducedMotion = computed(() => toValue(options.reducedMotion) ?? false);
   const rootItems = computed(() => loadedItems.value ?? toValue(options.items));
   const rootSections = computed(
     () =>
@@ -224,7 +226,8 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
       sections: rootSections.value,
       messages: toValue(options.messages),
       theme: effectiveTheme.value,
-      shortcut: resolvedShortcut.value
+      shortcut: resolvedShortcut.value,
+      reducedMotion: reducedMotion.value
     })
   );
   const recentItems = computed(() =>
@@ -245,7 +248,8 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
       ),
       messages: toValue(options.messages),
       theme: effectiveTheme.value,
-      shortcut: resolvedShortcut.value
+      shortcut: resolvedShortcut.value,
+      reducedMotion: reducedMotion.value
     })
   );
   const snapshot = computed(() =>

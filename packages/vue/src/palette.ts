@@ -56,6 +56,10 @@ export const CommandPalette = defineComponent({
       type: String,
       default: "mod+k"
     },
+    reducedMotion: {
+      type: Boolean,
+      default: false
+    },
     open: {
       type: Boolean,
       default: undefined
@@ -86,6 +90,7 @@ export const CommandPalette = defineComponent({
       theme: computed(() => props.theme),
       title: computed(() => props.title),
       shortcut: computed(() => props.shortcut),
+      reducedMotion: computed(() => props.reducedMotion),
       open: computed(() => props.open),
       defaultOpen: computed(() => props.defaultOpen),
       recents: computed(() => props.recents),
@@ -286,7 +291,8 @@ export const CommandPalette = defineComponent({
                           canGoBack: palette.canGoBack.value,
                           classNames: props.classNames,
                           onGoBack: palette.goBack,
-                          theme: palette.resolvedConfig.value.theme
+                          theme: palette.resolvedConfig.value.theme,
+                          reducedMotion: palette.resolvedConfig.value.reducedMotion
                         })
                     ),
                     h(
@@ -313,6 +319,9 @@ export const CommandPalette = defineComponent({
                           class: props.classNames?.closeButton,
                           onClick: () => palette.setOpenState(false),
                           onMouseenter: (event: MouseEvent) => {
+                            if (palette.resolvedConfig.value.reducedMotion) {
+                              return;
+                            }
                             const target = event.currentTarget as HTMLElement;
                             const light = isLightTheme(palette.resolvedConfig.value.theme);
                             target.style.background = light
@@ -324,6 +333,11 @@ export const CommandPalette = defineComponent({
                             target.style.transform = "translateY(-1px)";
                           },
                           onMouseleave: (event: MouseEvent) => {
+                            if (palette.resolvedConfig.value.reducedMotion) {
+                              (event.currentTarget as HTMLElement).style.transform =
+                                "translateY(0)";
+                              return;
+                            }
                             const target = event.currentTarget as HTMLElement;
                             const light = isLightTheme(palette.resolvedConfig.value.theme);
                             target.style.background = light
@@ -335,7 +349,8 @@ export const CommandPalette = defineComponent({
                             target.style.transform = "translateY(0)";
                           },
                           style: closeButtonStyle(
-                            palette.resolvedConfig.value.theme
+                            palette.resolvedConfig.value.theme,
+                            palette.resolvedConfig.value.reducedMotion
                           ),
                           type: "button"
                         },
@@ -461,7 +476,8 @@ export const CommandPalette = defineComponent({
                                   style: itemStyle(
                                     palette.resolvedConfig.value.theme,
                                     isActive,
-                                    item.disabled
+                                    item.disabled,
+                                    palette.resolvedConfig.value.reducedMotion
                                   ),
                                   type: "button"
                                 },
@@ -470,7 +486,8 @@ export const CommandPalette = defineComponent({
                                   : defaultItem(
                                       item,
                                       isActive,
-                                      palette.resolvedConfig.value.theme
+                                      palette.resolvedConfig.value.theme,
+                                      palette.resolvedConfig.value.reducedMotion
                                     )
                               );
                             })
@@ -504,7 +521,8 @@ export const CommandPalette = defineComponent({
 function defaultItem(
   item: CommandItem,
   isActive: boolean,
-  theme: Required<CommandTheme>
+  theme: Required<CommandTheme>,
+  reducedMotion = false
 ) {
   const light = isLightTheme(theme);
   const itemColor = isActive
@@ -523,7 +541,7 @@ function defaultItem(
         style: itemLeadingStyle
       },
       [
-        h("span", { "data-cmdkit-icon": "", style: iconStyle(theme, isActive) }, [
+        h("span", { "data-cmdkit-icon": "", style: iconStyle(theme, isActive, reducedMotion) }, [
           hasCustomIcon ? item.icon : defaultBrandIcon()
         ]),
         h("div", [
@@ -531,7 +549,7 @@ function defaultItem(
             "span",
             {
               "data-cmdkit-title": "",
-              style: { ...itemTitleStyle(isActive), color: itemColor }
+              style: { ...itemTitleStyle(isActive, reducedMotion), color: itemColor }
             },
             item.title
           ),
@@ -604,13 +622,15 @@ function renderDefaultTitle({
   canGoBack,
   classNames,
   onGoBack,
-  theme
+  theme,
+  reducedMotion = false
 }: {
   activeTitle: string;
   canGoBack: boolean;
   classNames: CommandPaletteClassNames | undefined;
   onGoBack: () => void;
   theme: Required<CommandTheme>;
+  reducedMotion?: boolean;
 }) {
   return h(
     "span",
@@ -626,18 +646,26 @@ function renderDefaultTitle({
               class: classNames?.backButton,
               onClick: onGoBack,
               onMouseenter: (event: MouseEvent) => {
+                if (reducedMotion) {
+                  return;
+                }
                 const target = event.currentTarget as HTMLElement;
                 target.style.transform = "translateY(-1px)";
                 target.style.color = theme.textColor;
                 target.style.opacity = "1";
               },
               onMouseleave: (event: MouseEvent) => {
+                if (reducedMotion) {
+                  (event.currentTarget as HTMLElement).style.transform =
+                    "translateY(0)";
+                  return;
+                }
                 const target = event.currentTarget as HTMLElement;
                 target.style.transform = "translateY(0)";
                 target.style.color = theme.mutedColor;
                 target.style.opacity = "0.9";
               },
-              style: backButtonStyle(theme),
+              style: backButtonStyle(theme, reducedMotion),
               title: "Go back",
               type: "button"
             },
@@ -682,7 +710,10 @@ function overlayStyle(color: string): CSSProperties {
   };
 }
 
-function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
+function closeButtonStyle(
+  theme: Required<CommandTheme>,
+  reducedMotion = false
+): CSSProperties {
   const light = isLightTheme(theme);
   return {
     borderRadius: "999px",
@@ -705,12 +736,16 @@ function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     textAlign: "center",
     fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
     cursor: "pointer",
-    transition:
-      "background-color 160ms ease, border-color 160ms ease, transform 140ms ease"
+    transition: reducedMotion
+      ? "none"
+      : "background-color 160ms ease, border-color 160ms ease, transform 140ms ease"
   };
 }
 
-function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
+function backButtonStyle(
+  theme: Required<CommandTheme>,
+  reducedMotion = false
+): CSSProperties {
   return {
     border: "none",
     background: "transparent",
@@ -728,7 +763,9 @@ function backButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     fontWeight: 600
     ,
     cursor: "pointer",
-    transition: "transform 140ms ease, color 160ms ease, opacity 160ms ease",
+    transition: reducedMotion
+      ? "none"
+      : "transform 140ms ease, color 160ms ease, opacity 160ms ease",
     opacity: 0.9
   };
 }
@@ -751,7 +788,8 @@ function inputStyle(theme: Required<CommandTheme>): CSSProperties {
 function itemStyle(
   theme: Required<CommandTheme>,
   active: boolean,
-  disabled?: boolean
+  disabled?: boolean,
+  reducedMotion = false
 ): CSSProperties {
   const light = isLightTheme(theme);
   return {
@@ -772,8 +810,9 @@ function itemStyle(
         ? "rgba(15, 166, 216, 0.13)"
         : "rgba(53, 215, 255, 0.14)"
       : "transparent",
-    transition:
-      "background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease",
+    transition: reducedMotion
+      ? "none"
+      : "background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease",
     color: disabled ? theme.mutedColor : theme.textColor,
     opacity: disabled ? 0.55 : 1,
     cursor: disabled ? "not-allowed" : "pointer"
@@ -880,7 +919,11 @@ const itemLeadingStyle: CSSProperties = {
   gap: "0.9rem"
 };
 
-function iconStyle(theme: Required<CommandTheme>, active: boolean): CSSProperties {
+function iconStyle(
+  theme: Required<CommandTheme>,
+  active: boolean,
+  reducedMotion = false
+): CSSProperties {
   const light = isLightTheme(theme);
   return {
     display: "inline-flex",
@@ -892,7 +935,7 @@ function iconStyle(theme: Required<CommandTheme>, active: boolean): CSSPropertie
     lineHeight: 1,
     flexShrink: 0,
     transform: active ? "scale(1.08)" : "scale(1)",
-    transition: "transform 160ms ease, color 160ms ease",
+    transition: reducedMotion ? "none" : "transform 160ms ease, color 160ms ease",
     color: active
       ? light
         ? "#0b607f"
@@ -903,7 +946,7 @@ function iconStyle(theme: Required<CommandTheme>, active: boolean): CSSPropertie
   };
 }
 
-function itemTitleStyle(active: boolean): CSSProperties {
+function itemTitleStyle(active: boolean, reducedMotion = false): CSSProperties {
   return {
     display: "block",
     fontWeight: 600,
@@ -912,7 +955,7 @@ function itemTitleStyle(active: boolean): CSSProperties {
     letterSpacing: "-0.004em",
     transform: active ? "scale(1.03)" : "scale(1)",
     transformOrigin: "left center",
-    transition: "transform 160ms ease, color 160ms ease",
+    transition: reducedMotion ? "none" : "transform 160ms ease, color 160ms ease",
     fontFamily:
       'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif'
   };

@@ -68,6 +68,7 @@ export interface CommandKitConfig {
   messages?: Partial<CommandMessages>;
   theme?: CommandTheme;
   shortcut?: string;
+  reducedMotion?: boolean;
 }
 
 export interface CommandSnapshot {

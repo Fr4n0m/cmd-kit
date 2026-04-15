@@ -23,6 +23,7 @@ export function CommandPalette({
   theme,
   title = "Command menu",
   shortcut = "mod+k",
+  reducedMotion = false,
   open,
   defaultOpen = false,
   onOpenChange,
@@ -64,6 +65,7 @@ export function CommandPalette({
     theme,
     title,
     shortcut,
+    reducedMotion,
     open,
     defaultOpen,
     onOpenChange,
@@ -118,6 +120,7 @@ export function CommandPalette({
           renderContext={renderContext}
           renderers={renderers}
           shortcut={shortcut}
+          reducedMotion={reducedMotion}
           theme={resolvedConfig.theme}
           titleId={titleId}
         />
@@ -167,6 +170,7 @@ export function CommandPalette({
           snapshot={snapshot}
           theme={resolvedConfig.theme}
           titleId={titleId}
+          reducedMotion={reducedMotion}
         />
       </div>
     </div>

@@ -106,6 +106,7 @@ export function PlaygroundSectionsPanel({
           <SectionEditor
             defaultOpen={index === 0}
             key={section.id}
+            language={config.language}
             labels={labels}
             onAddItem={() => onAddItemToSection(section.id)}
             onAddNestedItem={(itemId, childSectionId) =>

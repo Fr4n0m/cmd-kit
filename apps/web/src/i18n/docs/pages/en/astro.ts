@@ -23,7 +23,7 @@ const sections = [
 
 <CommandPalette sections={sections} title="Project commands" />` }] },
       { id: "astro-runtime", label: "Runtime requirements", blocks: [{ type: "paragraph", html: "No React integration is required. Install <code>@cmd-kit/astro</code> in your Astro project and use the component directly." }] },
-      { id: "customization", label: "Customization", blocks: [{ type: "paragraph", html: "The customization surface is the same one you already use in other adapters: <code>sections</code>, <code>messages</code>, <code>theme</code>, and recent-command settings." }, { type: "code", lang: "astro", label: "astro", code: `---
+      { id: "customization", label: "Customization", blocks: [{ type: "paragraph", html: "The customization surface is the same one you already use in other adapters: <code>sections</code>, <code>messages</code>, <code>theme</code>, <code>recents</code>, and <code>reducedMotion</code>." }, { type: "code", lang: "astro", label: "astro", code: `---
 import CommandPalette from "@cmd-kit/astro/component";
 
 const sections = [

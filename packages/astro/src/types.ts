@@ -34,6 +34,7 @@ export interface CommandPaletteProps {
   theme?: CommandTheme;
   title?: string;
   shortcut?: string;
+  reducedMotion?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
   className?: string;

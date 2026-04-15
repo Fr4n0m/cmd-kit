@@ -44,6 +44,7 @@ import CommandPalette from "@cmd-kit/astro/component";
 - Secciones anidadas con `children`.
 - Recientes opcionales con deduplicación.
 - Tema adaptable (oscuro/claro) por defecto.
+- `reducedMotion` para desactivar animaciones de hover/movimiento.
 
 ### 🧩 Configuración de comandos
 
@@ -89,7 +90,7 @@ const sections = [
 
 1. Configura en playground.
 2. Exporta target `Astro`.
-3. Copia `sections` (o `items`) y props opcionales (`messages`, `theme`, `recents`, `shortcut`).
+3. Copia `sections` (o `items`) y props opcionales (`messages`, `theme`, `recents`, `shortcut`, `reducedMotion`).
 4. Pégalos en tu página/componente Astro.
 
 Nota: en Astro, el prop `source` es un `CommandSourcePayload` serializable (no función runtime).
@@ -107,6 +108,7 @@ Nota: en Astro, el prop `source` es un `CommandSourcePayload` serializable (no f
 - `className`
 - `classNames`
 - `recents`
+- `reducedMotion`
 
 ### 🤝 Contribuciones
 
@@ -140,6 +142,7 @@ import CommandPalette from "@cmd-kit/astro/component";
 - Nested sections.
 - Optional recents with dedupe.
 - Default adaptive light/dark theme.
+- `reducedMotion` prop to disable hover/motion animations.
 
 ### 🛝 Playground integration
 

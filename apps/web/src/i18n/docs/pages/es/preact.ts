@@ -19,7 +19,7 @@ const sections = [
 export function Example() {
   return <CommandPalette sections={sections} title="Comandos del proyecto" />;
 }` }] },
-      { id: "superficie-de-configuracion", label: "Superficie de configuración", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy específico del producto", "<code>theme</code> para tokens visuales", "<code>classNames</code> para estilos por slot", "<code>renderers</code> para overrides de renderizado", "<code>recents</code> para comandos recientes"] }] },
+      { id: "superficie-de-configuracion", label: "Superficie de configuración", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code> y <code>source</code>", "<code>messages</code> para copy específico del producto", "<code>theme</code> para tokens visuales", "<code>classNames</code> para estilos por slot", "<code>renderers</code> para overrides de renderizado", "<code>recents</code> para comandos recientes", "<code>reducedMotion</code> para desactivar animaciones de hover/movimiento"] }] },
       { id: "iconos-y-layout", label: "Iconos y layout", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   renderItem={(item, active) => (

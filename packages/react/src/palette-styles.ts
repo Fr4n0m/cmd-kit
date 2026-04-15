@@ -200,8 +200,18 @@ export function getInteractiveThemeTokens(
     closeColor: mixRgbAsColor(muted, text, light ? 0.35 : 0.5, theme.mutedColor),
     closeHoverBackground: toAlphaColor(accent, light ? 0.14 : 0.2),
     closeHoverBorder: toAlphaColor(accent, light ? 0.34 : 0.44, theme.borderColor),
-    iconActiveColor: mixRgbAsColor(text, accent, light ? 0.2 : 0.14, theme.textColor),
-    iconInactiveColor: mixRgbAsColor(muted, text, 0.22, theme.mutedColor),
+    iconActiveColor: mixRgbAsColor(
+      itemTitleBase,
+      accent,
+      light ? 0.2 : 0.14,
+      theme.itemTitleColor
+    ),
+    iconInactiveColor: mixRgbAsColor(
+      itemTitleBase,
+      muted,
+      0.1,
+      theme.itemTitleColor
+    ),
     itemActiveBackground: toAlphaColor(accent, light ? 0.13 : 0.18),
     itemActiveBorder: toAlphaColor(accent, light ? 0.3 : 0.4, theme.borderColor),
     itemTitleActiveColor: mixRgbAsColor(

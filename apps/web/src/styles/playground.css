@@ -1728,22 +1728,25 @@ html[data-theme="light"] .config-accordion {
 
 .config-accordion-step {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: flex-start;
   width: auto;
   height: auto;
-  padding: 0.08rem 0.12rem 0;
+  padding: 0;
   border: 0;
   background: transparent;
-  color: var(--playground-muted);
-  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--accent) 74%, #eff7fb 26%);
+  font-size: 1.22rem;
+  font-weight: 700;
   font-family: "IBM Plex Mono", monospace;
-  letter-spacing: 0.08em;
-  line-height: 1.1;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 html[data-theme="light"] .config-accordion-step {
-  color: rgba(66, 92, 112, 0.76);
+  color: color-mix(in srgb, var(--accent-strong) 72%, #102130 28%);
+  text-shadow: none;
 }
 
 .config-accordion-summary .eyebrow {

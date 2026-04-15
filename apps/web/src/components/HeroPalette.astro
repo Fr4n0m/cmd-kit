@@ -1,10 +1,8 @@
 ---
-import { CommandPalette } from "@cmd-kit/react";
+import CommandPalette from "@cmd-kit/astro/component";
 
-import {
-  buildSitePaletteSections,
-  type SitePaletteHrefs
-} from "./site-palette-data";
+import { type SitePaletteHrefs } from "./site-palette-data";
+import { buildSitePaletteSections } from "./site-palette-data";
 
 interface Props extends SitePaletteHrefs {
   locale: "en" | "es";
@@ -25,7 +23,6 @@ const sections = buildSitePaletteSections(locale, hrefs);
 
 <div class="hero-stage-card hero-palette-shell">
   <CommandPalette
-    client:load
     classNames={{
       caption: "hero-palette-caption",
       headerActions: "hero-palette-header-actions",

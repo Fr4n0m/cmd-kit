@@ -69,6 +69,7 @@ export function App() {
 Igual que React:
 
 - `theme`
+- `reducedMotion` (disable hover/motion animations)
 - `classNames`
 - `renderers`
 - `renderItem`
@@ -77,7 +78,7 @@ Igual que React:
 
 1. Configura en playground.
 2. Exporta target `Preact`.
-3. Copia estructura (`sections`/`items`) y opcionales (`messages`, `theme`, `recents`).
+3. Copia estructura (`sections`/`items`) y opcionales (`messages`, `theme`, `recents`, `reducedMotion`).
 4. Integra en `<CommandPalette />`.
 
 ### 🤝 Contribuciones
@@ -113,7 +114,7 @@ export function App() {
 
 ### 🛝 Playground integration
 
-Use the `Preact` export target, then paste `sections`/`items` (+ optional `messages`, `theme`, `recents`) into your integration.
+Use the `Preact` export target, then paste `sections`/`items` (+ optional `messages`, `theme`, `recents`, `reducedMotion`) into your integration.
 
 ### 🤝 Contributing
 

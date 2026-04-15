@@ -35,6 +35,7 @@ npm install @cmd-kit/vue vue
 - Soporte async (`source`).
 - Recientes opcionales con deduplicación.
 - Personalización por `slots`, `theme` y `classNames`.
+- `reducedMotion` para desactivar animaciones de hover/movimiento.
 
 ### 🚀 Uso rápido
 
@@ -118,6 +119,7 @@ npm install @cmd-kit/vue vue
 - Async source support.
 - Optional recents with dedupe.
 - Slot-based customization + `theme` + `classNames`.
+- `reducedMotion` prop to disable hover/motion animations.
 
 ### 🚀 Quick start
 

@@ -9,6 +9,7 @@ interface SelectOption {
 }
 
 interface PlaygroundSelectFieldProps {
+  helpText?: string;
   label: string;
   onChange: (value: string) => void;
   options: SelectOption[];
@@ -16,6 +17,7 @@ interface PlaygroundSelectFieldProps {
 }
 
 export function PlaygroundSelectField({
+  helpText,
   label,
   onChange,
   options,
@@ -59,7 +61,21 @@ export function PlaygroundSelectField({
 
   return (
     <div className="field">
-      <span>{label}</span>
+      <span className="field-label-row">
+        <span className="field-label-text">{label}</span>
+        {helpText ? (
+          <button
+            aria-label={`${label}: info`}
+            className="field-help-trigger"
+            type="button"
+          >
+            <Icon className="field-help-icon" name="info" size={14} />
+            <span className="field-help-tooltip" role="tooltip">
+              {helpText}
+            </span>
+          </button>
+        ) : null}
+      </span>
       <div className="playground-select-field install-selector-dropdown" ref={rootRef}>
         <button
           aria-controls={listboxId}

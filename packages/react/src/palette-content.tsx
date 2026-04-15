@@ -45,6 +45,7 @@ interface PaletteHeaderProps {
   shortcut: string;
   theme: Required<CommandTheme>;
   titleId: string;
+  reducedMotion?: boolean;
 }
 
 export function PaletteHeader({
@@ -60,7 +61,8 @@ export function PaletteHeader({
   renderers,
   shortcut,
   theme,
-  titleId
+  titleId,
+  reducedMotion = false
 }: PaletteHeaderProps) {
   const interactionTokens = getInteractiveThemeTokens(theme);
 
@@ -84,7 +86,8 @@ export function PaletteHeader({
                 canGoBack,
                 onGoBack,
                 classNames,
-                theme
+                theme,
+                reducedMotion
               )}
         </p>
         <p className={classNames?.caption} id={captionId} style={captionStyle(theme)}>
@@ -97,12 +100,19 @@ export function PaletteHeader({
           className={classNames?.closeButton}
           onClick={onClose}
           onMouseEnter={(event) => {
+            if (reducedMotion) {
+              return;
+            }
             event.currentTarget.style.background =
               interactionTokens.closeHoverBackground;
             event.currentTarget.style.borderColor = interactionTokens.closeHoverBorder;
             event.currentTarget.style.transform = "translateY(-1px)";
           }}
           onMouseLeave={(event) => {
+            if (reducedMotion) {
+              event.currentTarget.style.transform = "translateY(0)";
+              return;
+            }
             event.currentTarget.style.background = interactionTokens.closeBackground;
             event.currentTarget.style.borderColor = interactionTokens.closeBorder;
             event.currentTarget.style.transform = "translateY(0)";
@@ -206,6 +216,7 @@ interface PaletteResultsProps {
   };
   theme: Required<CommandTheme>;
   titleId: string;
+  reducedMotion?: boolean;
 }
 
 export function PaletteResults({
@@ -223,7 +234,8 @@ export function PaletteResults({
   renderers,
   snapshot,
   theme,
-  titleId
+  titleId,
+  reducedMotion = false
 }: PaletteResultsProps) {
   const listRef = useRef<HTMLDivElement | null>(null);
 
@@ -333,6 +345,9 @@ export function PaletteResults({
                       if (itemIndex >= 0) {
                         onSetActiveIndex(itemIndex);
                       }
+                      if (reducedMotion) {
+                        return;
+                      }
                       const iconElement = event.currentTarget.querySelector(
                         "[data-cmdkit-icon]"
                       ) as HTMLElement | null;
@@ -347,6 +362,9 @@ export function PaletteResults({
                       }
                     }}
                     onMouseLeave={(event) => {
+                      if (reducedMotion) {
+                        return;
+                      }
                       const iconElement = event.currentTarget.querySelector(
                         "[data-cmdkit-icon]"
                       ) as HTMLElement | null;
@@ -482,7 +500,8 @@ function renderDefaultTitle(
   canGoBack: boolean,
   onGoBack: () => void,
   classNames: CommandPaletteClassNames | undefined,
-  theme: Required<CommandTheme>
+  theme: Required<CommandTheme>,
+  reducedMotion = false
 ) {
   return (
     <span style={titleRowStyle}>
@@ -492,11 +511,18 @@ function renderDefaultTitle(
           className={classNames?.backButton}
           onClick={onGoBack}
           onMouseEnter={(event) => {
+            if (reducedMotion) {
+              return;
+            }
             event.currentTarget.style.transform = "translateY(-1px)";
             event.currentTarget.style.color = theme.textColor;
             event.currentTarget.style.opacity = "1";
           }}
           onMouseLeave={(event) => {
+            if (reducedMotion) {
+              event.currentTarget.style.transform = "translateY(0)";
+              return;
+            }
             event.currentTarget.style.transform = "translateY(0)";
             event.currentTarget.style.color = theme.mutedColor;
             event.currentTarget.style.opacity = "0.9";
