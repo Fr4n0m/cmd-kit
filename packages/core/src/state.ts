@@ -10,3 +10,13 @@ export { loadCommandSource } from "./application/commands/load-command-source";
 export { recordRecentCommand } from "./application/commands/record-recent-command";
 export { resolveRecentCommands } from "./application/commands/resolve-recent-commands";
 export { dispatchCommandExecution } from "./application/commands/dispatch-command-execution";
+export {
+  createNavigationState,
+  pushNavigationEntry,
+  popNavigationEntry,
+  resetNavigationState,
+  resolveNavigationContext,
+  type CommandNavigationContext,
+  type CommandNavigationEntry,
+  type CommandNavigationState
+} from "./application/commands/navigation-state";

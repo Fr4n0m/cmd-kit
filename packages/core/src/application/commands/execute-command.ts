@@ -25,10 +25,12 @@ export function executeCommand(
     };
   }
 
-  if (item.href) {
+  const normalizedHref = item.href?.trim();
+
+  if (normalizedHref) {
     return {
       type: "href",
-      href: item.href
+      href: normalizedHref
     };
   }
 

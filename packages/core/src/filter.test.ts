@@ -161,6 +161,29 @@ describe("executeCommand", () => {
       ]
     });
   });
+
+  it("ignores href values that are only whitespace", () => {
+    expect(
+      executeCommand({
+        id: "docs",
+        title: "Docs",
+        href: "   "
+      })
+    ).toEqual({ type: "noop" });
+  });
+
+  it("trims href values before dispatching", () => {
+    expect(
+      executeCommand({
+        id: "docs",
+        title: "Docs",
+        href: "   /docs/getting-started   "
+      })
+    ).toEqual({
+      type: "href",
+      href: "/docs/getting-started"
+    });
+  });
 });
 
 describe("loadCommandSource", () => {

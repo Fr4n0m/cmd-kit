@@ -70,4 +70,19 @@ describe("dispatchCommandExecution", () => {
       callback
     });
   });
+
+  it("returns a valid execution result even when port handlers are not provided", async () => {
+    await expect(
+      dispatchCommandExecution({
+        item: {
+          id: "docs",
+          title: "Docs",
+          href: "/docs"
+        }
+      })
+    ).resolves.toEqual({
+      type: "href",
+      href: "/docs"
+    });
+  });
 });
