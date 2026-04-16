@@ -6,4 +6,4 @@ dist
 coverage
 .artifacts
 *.log
-docs/
+docs/roadmap.md
