@@ -1,4 +1,4 @@
-import type { CommandTheme } from "./types";
+import type { CommandTheme, CommandThemeInput, CommandThemeModes } from "./types";
 
 export const defaultTheme: Required<CommandTheme> = {
   accentColor: "#35d7ff",
@@ -36,15 +36,29 @@ const themeVariableMap = {
 
 export type CommandThemeVariableKey = keyof typeof themeVariableMap;
 
-export function resolveTheme(theme?: CommandTheme): Required<CommandTheme> {
+export function resolveThemeMode(): "light" | "dark" {
+  if (typeof window === "undefined") {
+    return "dark";
+  }
+
+  const rootTheme = document.documentElement.dataset.theme;
+  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  return rootTheme === "light" || (!rootTheme && prefersLight) ? "light" : "dark";
+}
+
+export function resolveTheme(
+  theme?: CommandThemeInput,
+  mode: "light" | "dark" = resolveThemeMode()
+): Required<CommandTheme> {
+  const selectedTheme = isThemeModes(theme) ? theme[mode] : theme;
   return {
     ...defaultTheme,
-    ...theme
+    ...selectedTheme
   };
 }
 
 export function createThemeCssVariables(
-  theme?: CommandTheme,
+  theme?: CommandThemeInput,
   prefix = "--cmdkit"
 ): Record<string, string> {
   const resolvedTheme = resolveTheme(theme);
@@ -58,10 +72,20 @@ export function createThemeCssVariables(
 }
 
 export function createThemeCssText(
-  theme?: CommandTheme,
+  theme?: CommandThemeInput,
   prefix = "--cmdkit"
 ): string {
   return Object.entries(createThemeCssVariables(theme, prefix))
     .map(([name, value]) => `${name}: ${value};`)
     .join("\n");
+}
+
+export function isThemeModes(
+  theme: CommandThemeInput | undefined
+): theme is CommandThemeModes {
+  if (!theme || typeof theme !== "object" || Array.isArray(theme)) {
+    return false;
+  }
+
+  return "light" in theme && "dark" in theme;
 }

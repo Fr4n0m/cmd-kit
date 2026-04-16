@@ -2,15 +2,18 @@ import {
   createCommandSnapshot,
   createResolvedConfig,
   dispatchCommandExecution,
+  isThemeModes,
   loadCommandSource,
   recordRecentCommand,
+  resolveTheme,
   resolveRecentCommands,
   type CommandItem,
   type CommandItemRecord,
   type CommandMessages,
   type CommandSection,
   type CommandSource,
-  type CommandTheme
+  type CommandTheme,
+  type CommandThemeInput
 } from "@cmd-kit/core";
 import {
   type Dispatch,
@@ -31,7 +34,7 @@ export interface UseCommandPaletteOptions {
   sections?: CommandSection[];
   source?: CommandSource;
   messages?: Partial<CommandMessages>;
-  theme?: CommandTheme;
+  theme?: CommandThemeInput;
   title?: string;
   shortcut?: string;
   reducedMotion?: boolean;
@@ -201,7 +204,18 @@ export function useCommandPalette({
     resolveAdaptiveTheme()
   );
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const resolvedTheme = theme ?? autoTheme;
+  const resolvedTheme = useMemo(() => {
+    if (!theme) {
+      return autoTheme;
+    }
+
+    if (!isThemeModes(theme)) {
+      return theme;
+    }
+
+    const mode = autoTheme === defaultLightTheme ? "light" : "dark";
+    return resolveTheme(theme, mode);
+  }, [autoTheme, theme]);
 
   const resolvedOpen = open ?? internalOpen;
   const rootItems = loadedItems ?? items;
@@ -258,7 +272,7 @@ export function useCommandPalette({
   );
 
   useEffect(() => {
-    if (theme) {
+    if (theme && !isThemeModes(theme)) {
       return;
     }
 
@@ -266,19 +280,22 @@ export function useCommandPalette({
       setAutoTheme(resolveAdaptiveTheme());
     };
 
-    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-color-scheme: light)")
+        : null;
     const observer = new MutationObserver(handleThemeUpdate);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"]
     });
 
-    media.addEventListener("change", handleThemeUpdate);
+    media?.addEventListener("change", handleThemeUpdate);
     window.addEventListener("cmd-kit-theme-change", handleThemeUpdate);
 
     return () => {
       observer.disconnect();
-      media.removeEventListener("change", handleThemeUpdate);
+      media?.removeEventListener("change", handleThemeUpdate);
       window.removeEventListener("cmd-kit-theme-change", handleThemeUpdate);
     };
   }, [theme]);
@@ -679,7 +696,9 @@ function resolveAdaptiveTheme(): CommandTheme {
   }
 
   const themeFromRoot = document.documentElement.dataset.theme;
-  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  const prefersLight =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
   const isLight = themeFromRoot === "light" || (!themeFromRoot && prefersLight);
   return isLight ? defaultLightTheme : defaultDarkTheme;
 }

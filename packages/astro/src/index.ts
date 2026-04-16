@@ -5,6 +5,8 @@ export type {
   CommandMessages,
   CommandSection,
   CommandSourcePayload,
-  CommandTheme
+  CommandTheme,
+  CommandThemeInput,
+  CommandThemeModes
 } from "@cmd-kit/core";
 export type { CommandPaletteClassNames, CommandPaletteProps } from "./types";

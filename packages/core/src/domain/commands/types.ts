@@ -52,6 +52,13 @@ export interface CommandTheme {
   shadow?: string;
 }
 
+export interface CommandThemeModes {
+  light: CommandTheme;
+  dark: CommandTheme;
+}
+
+export type CommandThemeInput = CommandTheme | CommandThemeModes;
+
 export interface CommandSourcePayload {
   items?: CommandItem[];
   sections?: CommandSection[];
@@ -66,7 +73,7 @@ export interface CommandKitConfig {
   sections?: CommandSection[];
   source?: CommandSource;
   messages?: Partial<CommandMessages>;
-  theme?: CommandTheme;
+  theme?: CommandThemeInput;
   shortcut?: string;
   reducedMotion?: boolean;
 }

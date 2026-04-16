@@ -3,7 +3,8 @@ import {
   type CommandMessages,
   type CommandSection,
   type CommandSource,
-  type CommandTheme
+  type CommandTheme,
+  type CommandThemeInput
 } from "@cmd-kit/core";
 import {
   computed,
@@ -47,7 +48,7 @@ export const CommandPalette = defineComponent({
     sections: Array as PropType<CommandSection[]>,
     source: [Object, Function] as PropType<CommandSource>,
     messages: Object as PropType<Partial<CommandMessages>>,
-    theme: Object as PropType<CommandTheme>,
+    theme: Object as PropType<CommandThemeInput>,
     title: {
       type: String,
       default: "Command menu"

@@ -9,7 +9,9 @@ export type {
   CommandSection,
   CommandSource,
   CommandSourcePayload,
-  CommandTheme
+  CommandTheme,
+  CommandThemeInput,
+  CommandThemeModes
 } from "@cmd-kit/core";
 
 export { CommandPalette } from "./palette";

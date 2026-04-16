@@ -3,7 +3,7 @@ import type {
   CommandMessages,
   CommandSection,
   CommandSourcePayload,
-  CommandTheme
+  CommandThemeInput
 } from "@cmd-kit/core";
 
 export type SlotName =
@@ -31,7 +31,7 @@ export interface CommandPaletteProps {
   sections?: CommandSection[];
   source?: CommandSourcePayload;
   messages?: Partial<CommandMessages>;
-  theme?: CommandTheme;
+  theme?: CommandThemeInput;
   title?: string;
   shortcut?: string;
   reducedMotion?: boolean;

@@ -52,7 +52,9 @@ const payload = JSON.stringify({
     createCommandSnapshot,
     createResolvedConfig,
     executeCommand,
+    isThemeModes,
     recordRecentCommand,
+    resolveThemeMode,
     resolveRecentCommands
   } from "@cmd-kit/core";
 
@@ -378,6 +380,9 @@ const payload = JSON.stringify({
 
   function resolveAdaptiveTheme(theme) {
     if (theme) {
+      if (isThemeModes(theme)) {
+        return theme[resolveThemeMode()];
+      }
       return theme;
     }
 
@@ -907,7 +912,7 @@ const payload = JSON.stringify({
     setOpenState(!open);
   });
 
-  if (!props.theme) {
+  if (!props.theme || isThemeModes(props.theme)) {
     const media = window.matchMedia("(prefers-color-scheme: light)");
     const rerender = () => render();
     const observer = new MutationObserver(rerender);

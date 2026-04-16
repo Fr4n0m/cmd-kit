@@ -4,6 +4,7 @@ import {
   createThemeCssText,
   createThemeCssVariables,
   defaultTheme,
+  resolveThemeMode,
   resolveTheme
 } from "./theme";
 
@@ -52,5 +53,31 @@ describe("theme helpers", () => {
         "--palette"
       )
     ).toContain("--palette-accent: #ff6b35;");
+  });
+
+  it("resolves theme modes by explicit mode", () => {
+    expect(
+      resolveTheme(
+        {
+          light: { accentColor: "#0fa6d8" },
+          dark: { accentColor: "#35d7ff" }
+        },
+        "light"
+      ).accentColor
+    ).toBe("#0fa6d8");
+
+    expect(
+      resolveTheme(
+        {
+          light: { accentColor: "#0fa6d8" },
+          dark: { accentColor: "#35d7ff" }
+        },
+        "dark"
+      ).accentColor
+    ).toBe("#35d7ff");
+  });
+
+  it("resolves dark mode by default when no browser runtime exists", () => {
+    expect(resolveThemeMode()).toBe("dark");
   });
 });

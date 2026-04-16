@@ -11,5 +11,7 @@ export type {
   CommandSource,
   CommandSourcePayload,
   CommandSnapshot,
-  CommandTheme
+  CommandTheme,
+  CommandThemeInput,
+  CommandThemeModes
 } from "./domain/commands/types";

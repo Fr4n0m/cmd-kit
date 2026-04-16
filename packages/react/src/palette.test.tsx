@@ -102,7 +102,11 @@ describe("CommandPalette", () => {
 
     expect(screen.getByText("Appearance")).toBeInTheDocument();
     expect(screen.getByText("Theme")).toBeInTheDocument();
-    expect(screen.getByText("Back")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: /go back/i
+      })
+    ).toBeInTheDocument();
     expect(
       screen.getByText("Command menu / Settings")
     ).toBeInTheDocument();

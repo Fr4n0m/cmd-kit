@@ -3,7 +3,7 @@ import type {
   CommandMessages,
   CommandSection,
   CommandSource,
-  CommandTheme
+  CommandThemeInput
 } from "@cmd-kit/core";
 import type { ReactNode } from "react";
 
@@ -63,7 +63,7 @@ export interface CommandPaletteProps {
   sections?: CommandSection[];
   source?: CommandSource;
   messages?: Partial<CommandMessages>;
-  theme?: CommandTheme;
+  theme?: CommandThemeInput;
   title?: string;
   shortcut?: string;
   reducedMotion?: boolean;

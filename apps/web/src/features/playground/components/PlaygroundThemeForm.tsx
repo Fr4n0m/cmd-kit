@@ -204,6 +204,29 @@ export function PlaygroundThemeForm({
             onChange={(value) => updateThemeField("shadow", value)}
             value={currentTheme.shadow}
           />
+          <div className="theme-shape-preview" aria-hidden="true">
+            <div
+              className="theme-shape-preview-surface"
+              style={{
+                backgroundColor: currentTheme.backgroundColor,
+                borderColor: currentTheme.borderColor,
+                borderRadius: currentTheme.radius,
+                boxShadow: currentTheme.shadow
+              }}
+            >
+              <span
+                className="theme-shape-preview-badge"
+                style={{
+                  borderColor: currentTheme.borderColor,
+                  borderRadius: `calc(${currentTheme.radius} * 0.72)`,
+                  color: currentTheme.mutedColor
+                }}
+              >
+                {currentTheme.radius}
+              </span>
+              <strong style={{ color: currentTheme.textColor }}>Aa</strong>
+            </div>
+          </div>
         </div>
       </div>
     </div>

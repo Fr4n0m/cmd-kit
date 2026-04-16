@@ -2,13 +2,16 @@ import {
   createCommandSnapshot,
   createResolvedConfig,
   dispatchCommandExecution,
+  isThemeModes,
   loadCommandSource,
+  resolveTheme,
   type CommandItem,
   type CommandItemRecord,
   type CommandMessages,
   type CommandSection,
   type CommandSource,
-  type CommandTheme
+  type CommandTheme,
+  type CommandThemeInput
 } from "@cmd-kit/core";
 import { computed, onBeforeUnmount, onMounted, ref, toValue, watch } from "vue";
 import type { MaybeRefOrGetter, Ref } from "vue";
@@ -34,7 +37,7 @@ export interface UseCommandPaletteOptions {
   sections?: MaybeRefOrGetter<CommandSection[] | undefined>;
   source?: MaybeRefOrGetter<CommandSource | undefined>;
   messages?: MaybeRefOrGetter<Partial<CommandMessages> | undefined>;
-  theme?: MaybeRefOrGetter<CommandTheme | undefined>;
+  theme?: MaybeRefOrGetter<CommandThemeInput | undefined>;
   title?: MaybeRefOrGetter<string | undefined>;
   shortcut?: MaybeRefOrGetter<string | undefined>;
   reducedMotion?: MaybeRefOrGetter<boolean | undefined>;
@@ -191,9 +194,20 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   const recentRecords = ref<CommandItemRecord[]>([]);
   const autoTheme = ref<CommandTheme>(resolveAdaptiveTheme());
   const previousFocus = ref<HTMLElement | null>(null);
-  const effectiveTheme = computed(
-    () => toValue(options.theme) ?? autoTheme.value
-  );
+  const effectiveTheme = computed(() => {
+    const theme = toValue(options.theme);
+
+    if (!theme) {
+      return autoTheme.value;
+    }
+
+    if (!isThemeModes(theme)) {
+      return theme;
+    }
+
+    const mode = autoTheme.value === defaultLightTheme ? "light" : "dark";
+    return resolveTheme(theme, mode);
+  });
 
   const resolvedOpen = computed(
     () => toValue(options.open) ?? internalOpen.value
@@ -463,7 +477,8 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   onMounted(() => {
     window.addEventListener("keydown", handleWindowKeyDown);
 
-    if (toValue(options.theme) !== undefined) {
+    const providedTheme = toValue(options.theme);
+    if (providedTheme !== undefined && !isThemeModes(providedTheme)) {
       return;
     }
 
@@ -471,18 +486,21 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
       autoTheme.value = resolveAdaptiveTheme();
     };
 
-    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const media =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-color-scheme: light)")
+        : null;
     const observer = new MutationObserver(handleThemeUpdate);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"]
     });
 
-    media.addEventListener("change", handleThemeUpdate);
+    media?.addEventListener("change", handleThemeUpdate);
     window.addEventListener("cmd-kit-theme-change", handleThemeUpdate);
     cleanupThemeWatchers = () => {
       observer.disconnect();
-      media.removeEventListener("change", handleThemeUpdate);
+      media?.removeEventListener("change", handleThemeUpdate);
       window.removeEventListener("cmd-kit-theme-change", handleThemeUpdate);
     };
   });
@@ -530,7 +548,9 @@ function resolveAdaptiveTheme(): CommandTheme {
   }
 
   const themeFromRoot = document.documentElement.dataset.theme;
-  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  const prefersLight =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
   const isLight = themeFromRoot === "light" || (!themeFromRoot && prefersLight);
   return isLight ? defaultLightTheme : defaultDarkTheme;
 }

@@ -108,6 +108,7 @@ En curso:
 
 - Final adapter docs/README alignment to reflect current API/features (`core` includes vanilla UI runtime, `reducedMotion` + motion defaults).
 - Final behavior QA pass for hover/motion parity between React/Preact/Vue/Astro/core runtime.
+- [x] ~~Theme API nativa con soporte dual (`theme.light` / `theme.dark`) en core + adaptadores, eliminando la necesidad de resolver ambos temas manualmente en snippets.~~
 
 Bloqueado:
 
@@ -186,6 +187,7 @@ Hecho (última tanda):
 - UX del configurador refinada: botón `Añadir sección` destacado y sin wrap, nuevos espaciados en bloques de sección/anidados, y numeración de acordeones reajustada.
 - Controles avanzados simplificados: sombra en modo básico con toggle `Avanzado`, y radio con preview visual en vivo del redondeado.
 - Pulido visual final de controles de apariencia: selectores de color redondos y compactos, ajuste de escala/posición en numeración de secciones, y alineación de altura entre previews de `Radio` y `Sombra`.
+- Snippets del playground alineados a API nativa de tema dual: exportan `theme` con `light`+`dark` directamente, sin helpers manuales de resolución por snippet.
 
 Bloqueado:
 

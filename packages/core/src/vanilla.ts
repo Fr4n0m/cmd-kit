@@ -3,13 +3,15 @@ import { dispatchCommandExecution } from "./application/commands/dispatch-comman
 import { loadCommandSource } from "./application/commands/load-command-source";
 import { recordRecentCommand } from "./application/commands/record-recent-command";
 import { resolveRecentCommands } from "./application/commands/resolve-recent-commands";
+import { isThemeModes, resolveThemeMode } from "./domain/commands/theme";
 import type {
   CommandItem,
   CommandItemRecord,
   CommandMessages,
   CommandSection,
   CommandSource,
-  CommandTheme
+  CommandTheme,
+  CommandThemeInput
 } from "./types";
 
 const STYLE_ID = "cmdkit-vanilla-styles";
@@ -151,7 +153,7 @@ export interface VanillaCommandPaletteOptions {
   sections?: CommandSection[];
   source?: CommandSource;
   messages?: Partial<CommandMessages>;
-  theme?: CommandTheme;
+  theme?: CommandThemeInput;
   title?: string;
   shortcut?: string;
   reducedMotion?: boolean;
@@ -494,8 +496,13 @@ function isLightTheme(backgroundColor: string | undefined) {
   return luminance > 0.72;
 }
 
-function resolveAdaptiveTheme(theme: CommandTheme | undefined) {
-  if (theme) return theme;
+function resolveAdaptiveTheme(theme: CommandThemeInput | undefined) {
+  if (theme) {
+    if (isThemeModes(theme)) {
+      return theme[resolveThemeMode()];
+    }
+    return theme;
+  }
   const rootTheme = document.documentElement.dataset.theme;
   const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
   const light = rootTheme === "light" || (!rootTheme && prefersLight);

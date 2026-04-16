@@ -128,19 +128,6 @@ export function RadiusField({
           <span className="radius-field-suffix">px</span>
         </div>
       </div>
-      <div className="radius-preview" aria-hidden="true">
-        <div
-          className="radius-preview-card"
-          style={{ borderRadius: `${numericRadius}px` }}
-        >
-          <span
-            className="radius-preview-pill"
-            style={{ borderRadius: `${Math.max(8, Math.round(numericRadius * 0.72))}px` }}
-          >
-            {numericRadius}px
-          </span>
-        </div>
-      </div>
     </label>
   );
 }
@@ -219,10 +206,6 @@ export function ShadowField({
           >
             {showAdvanced ? advancedHideLabel : advancedShowLabel}
           </button>
-        </div>
-
-        <div className="shadow-field-preview" style={{ boxShadow: value }}>
-          Aa
         </div>
 
         {showAdvanced ? (

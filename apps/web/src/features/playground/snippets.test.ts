@@ -19,10 +19,13 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain('shortcut="mod+k"');
     expect(snippet).toContain("const sections = [");
     expect(snippet).toContain("<CommandPalette");
-    expect(snippet).toContain("id: 'open-dashboard'");
+    expect(snippet).toContain("id: 'toggle-theme'");
     expect(snippet).toContain('closeLabel: "Close command palette"');
     expect(snippet).toContain("recents={false}");
-    expect(snippet).toContain("href: '/dashboard'");
+    expect(snippet).toContain("const theme = {");
+    expect(snippet).toContain("light:");
+    expect(snippet).toContain("dark:");
+    expect(snippet).not.toContain("href: '/dashboard'");
   });
 
   it("builds async source and defaultOpen into React snippets when enabled", () => {
@@ -44,8 +47,11 @@ describe("playground snippet builders", () => {
     const snippet = buildCssSnippet(defaultConfig);
 
     expect(snippet).toContain('import { createThemeCssText } from "@cmd-kit/core";');
-    expect(snippet).toContain('accentColor: "#35d7ff"');
+    expect(snippet).toContain("const themes = {");
+    expect(snippet).toContain("const darkCss = createThemeCssText(themes.dark);");
+    expect(snippet).toContain("const lightCss = createThemeCssText(themes.light);");
     expect(snippet).toContain("const themeBlock = `:root {");
+    expect(snippet).toContain('html[data-theme="light"] {');
   });
 
   it("builds a Tailwind-oriented wrapper snippet", () => {
@@ -53,6 +59,8 @@ describe("playground snippet builders", () => {
 
     expect(snippet).toContain("CommandPalette");
     expect(snippet).toContain("sections={sections}");
+    expect(snippet).toContain("theme={theme}");
+    expect(snippet).toContain("const theme = {");
   });
 
   it("builds a Vue snippet with async source bindings when selected", () => {
@@ -73,6 +81,7 @@ describe("playground snippet builders", () => {
 
     expect(snippet).toContain('import { CommandPalette } from "@cmd-kit/vue";');
     expect(snippet).toContain("const sections = [");
+    expect(snippet).toContain("const theme = {");
     expect(snippet).toContain(':sections="sections"');
   });
 
