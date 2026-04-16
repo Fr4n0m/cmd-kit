@@ -27,12 +27,25 @@ interface Props {
 const { description, docsHeadings = [], image, locale = defaultLocale, structuredData, title } =
   Astro.props;
 const pathname = Astro.url.pathname;
-const canonicalUrl = new URL(pathname, Astro.site ?? Astro.url).toString();
+const hasPublicSite = Boolean(Astro.site);
+const canonicalUrl = hasPublicSite
+  ? new URL(pathname, Astro.site).toString()
+  : null;
 const socialImageUrl = image
   ? new URL(image, Astro.site ?? Astro.url).toString()
   : undefined;
-const englishUrl = new URL(localizedPath("en", pathname === "/es" ? "/" : pathname.startsWith("/es/") ? pathname.slice(3) : pathname), Astro.site ?? Astro.url).toString();
-const spanishUrl = new URL(swapLocalePath(pathname, "es"), Astro.site ?? Astro.url).toString();
+const englishUrl = hasPublicSite
+  ? new URL(
+      localizedPath(
+        "en",
+        pathname === "/es" ? "/" : pathname.startsWith("/es/") ? pathname.slice(3) : pathname
+      ),
+      Astro.site
+    ).toString()
+  : null;
+const spanishUrl = hasPublicSite
+  ? new URL(swapLocalePath(pathname, "es"), Astro.site).toString()
+  : null;
 const copy = layoutCopy[locale];
 const docsHref = localizedPath(locale, "/docs/getting-started");
 const homeHref = localizedPath(locale, "/");
@@ -72,7 +85,14 @@ function isCurrentPath(target: string) {
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content={description} name="description" />
-    <meta content="index, follow" name="robots" />
+    <meta
+      content={
+        hasPublicSite
+          ? "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+          : "noindex, nofollow"
+      }
+      name="robots"
+    />
     <meta content="#07111f" name="theme-color" />
     <meta content="summary_large_image" name="twitter:card" />
     <meta content={title} name="twitter:title" />
@@ -81,7 +101,7 @@ function isCurrentPath(target: string) {
     <meta content={title} property="og:title" />
     <meta content={description} property="og:description" />
     <meta content="website" property="og:type" />
-    <meta content={canonicalUrl} property="og:url" />
+    {canonicalUrl ? <meta content={canonicalUrl} property="og:url" /> : null}
     {socialImageUrl ? <meta content={socialImageUrl} property="og:image" /> : null}
     <meta content={copy.brandAlt} property="og:site_name" />
     <link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
@@ -90,10 +110,10 @@ function isCurrentPath(target: string) {
     <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
     <meta content={copy.brandAlt} name="apple-mobile-web-app-title" />
     <link href="/site.webmanifest" rel="manifest" />
-    <link href={canonicalUrl} rel="canonical" />
-    <link href={englishUrl} hreflang="en" rel="alternate" />
-    <link href={spanishUrl} hreflang="es" rel="alternate" />
-    <link href={englishUrl} hreflang="x-default" rel="alternate" />
+    {canonicalUrl ? <link href={canonicalUrl} rel="canonical" /> : null}
+    {englishUrl ? <link href={englishUrl} hreflang="en" rel="alternate" /> : null}
+    {spanishUrl ? <link href={spanishUrl} hreflang="es" rel="alternate" /> : null}
+    {englishUrl ? <link href={englishUrl} hreflang="x-default" rel="alternate" /> : null}
     {
       structuredData ? (
         <script

@@ -5,6 +5,7 @@
 - confirm the target package name or npm scope
 - review [roadmap.md](./roadmap.md) for remaining production blockers
 - add the final repository, homepage, and issue tracker URLs to package metadata
+- set `PUBLIC_SITE_URL` for the web deployment target (required to enable indexing/canonical/sitemap on final origin)
 - review dependency health and decide whether any vulnerabilities are acceptable
 - review [dependency-health.md](./dependency-health.md) and refresh the audit result
 - create and commit the required Changeset entries
