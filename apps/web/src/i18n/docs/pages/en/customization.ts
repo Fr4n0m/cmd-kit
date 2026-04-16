@@ -44,14 +44,21 @@ export const customizationENDoc: DocPageData = {
       { id: "theme-tokens", label: "Theme tokens", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   theme={{
-    accentColor: "#12b5e5",
-    backgroundColor: "#0f1720",
-    textColor: "#f5fbff",
-    mutedColor: "#9fb4c4",
-    borderColor: "#264152",
-    overlayColor: "rgba(4, 9, 13, 0.64)",
-    radius: "22px",
-    shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
+    light: {
+      accentColor: "#0fa6d8",
+      backgroundColor: "#ffffff",
+      textColor: "#0e1720"
+    },
+    dark: {
+      accentColor: "#12b5e5",
+      backgroundColor: "#0f1720",
+      textColor: "#f5fbff",
+      mutedColor: "#9fb4c4",
+      borderColor: "#264152",
+      overlayColor: "rgba(4, 9, 13, 0.64)",
+      radius: "22px",
+      shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
+    }
   }}
 />` }] },
       { id: "icons", label: "Icons", blocks: [{ type: "paragraph", html: "Icons are usually customized in the render layer. In React and Preact use <code>renderItem</code> or <code>renderers.item</code>. In Vue use the <code>item</code> slot." }, { type: "code", lang: "tsx", label: "tsx", code: `renderItem={(item, active) => (
@@ -96,14 +103,20 @@ export const customizationENDoc: DocPageData = {
 />` }] },
       { id: "generate-css-variables", label: "Generate CSS variables", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import { createThemeCssText } from "@cmd-kit/core";
 
-const css = createThemeCssText({
-  accentColor: "#12b5e5",
-  backgroundColor: "#0f1720",
-  textColor: "#f5fbff"
-});
+const themes = {
+  light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+  dark: { accentColor: "#12b5e5", backgroundColor: "#0f1720" }
+};
+
+const darkCss = createThemeCssText(themes.dark);
+const lightCss = createThemeCssText(themes.light);
 
 const themeBlock = \`:root {
-\${css}
+\${darkCss}
+}
+
+html[data-theme="light"] {
+\${lightCss}
 }\`;` }] },
       { id: "faq", label: "FAQ", blocks: [{ type: "list", items: ["<strong>Should icon components live in the command data model?</strong> Usually no. Keep data framework-agnostic and map icons in renderers/slots.", "<strong>What is the cleanest styling strategy?</strong> Use <code>theme</code> for shared design tokens and <code>classNames</code> for slot-level CSS control.", "<strong>Can I use both nested navigation and async source data?</strong> Yes, as long as async payloads keep the same section/item shape including nested <code>children</code>.", "<strong>How should I localize placeholder and empty-state text?</strong> Override <code>messages</code> from your app-level i18n layer instead of hard-coding strings in command data.", "<strong>How do I keep custom renderers maintainable?</strong> Keep renderer functions focused on presentation and avoid embedding business logic that belongs in command generation."] }] }
     ]

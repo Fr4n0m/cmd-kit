@@ -21,7 +21,7 @@ const sections = [
 export function Example() {
   return <CommandPalette sections={sections} title="Comandos del proyecto" />;
 }` }] },
-      { id: "props-principales", label: "Props principales", blocks: [{ type: "list", items: ["<code>sections</code> o <code>items</code>: datos estáticos", "<code>source</code>: comandos calculados o asíncronos", "<code>messages</code>: placeholder, estado vacío y cierre", "<code>theme</code>: colores, borde, radio y sombra", "<code>classNames</code> y <code>renderers</code>: overrides visuales y estructurales", "<code>recents</code>: sección de comandos recientes (apagado por defecto)", "<code>reducedMotion</code>: desactiva animaciones de hover y movimiento", "<code>open</code>, <code>defaultOpen</code>, <code>onOpenChange</code>: control de estado"] }] },
+      { id: "props-principales", label: "Props principales", blocks: [{ type: "list", items: ["<code>sections</code> o <code>items</code>: datos estáticos", "<code>source</code>: comandos calculados o asíncronos", "<code>messages</code>: placeholder, estado vacío y cierre", "<code>theme</code>: tokens en modo simple o dual (<code>{ light, dark }</code>)", "<code>classNames</code> y <code>renderers</code>: overrides visuales y estructurales", "<code>recents</code>: sección de comandos recientes (apagado por defecto)", "<code>reducedMotion</code>: desactiva animaciones de hover y movimiento", "<code>open</code>, <code>defaultOpen</code>, <code>onOpenChange</code>: control de estado"] }] },
       { id: "iconos-y-layout-de-item", label: "Iconos y layout de ítem", blocks: [{ type: "paragraph", html: "Usa <code>renderItem</code> cuando quieras controlar completamente la fila del ítem, incluyendo iconos, espaciado y metadatos." }, { type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   renderItem={(item, active) => (
@@ -45,9 +45,16 @@ export function Example() {
     noResults: "No hay comandos para esta búsqueda."
   }}
   theme={{
-    accentColor: "#12b5e5",
-    backgroundColor: "#0f1720",
-    textColor: "#f5fbff"
+    light: {
+      accentColor: "#0fa6d8",
+      backgroundColor: "#ffffff",
+      textColor: "#0e1720"
+    },
+    dark: {
+      accentColor: "#12b5e5",
+      backgroundColor: "#0f1720",
+      textColor: "#f5fbff"
+    }
   }}
   sections={sections}
   title="Comandos del workspace"

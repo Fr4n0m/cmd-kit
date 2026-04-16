@@ -31,6 +31,7 @@ npm install @cmd-kit/preact preact
 - `CommandPalette` para Preact.
 - `useCommandPalette` con API equivalente a React.
 - Mismos defaults visuales/comportamiento que React.
+- Soporte de `theme` simple o dual (`light`/`dark`).
 - Atajos, navegación por teclado, anidado, async y recientes.
 
 ### 🚀 Uso rápido
@@ -74,6 +75,19 @@ Igual que React:
 - `renderers`
 - `renderItem`
 
+Ejemplo de tema dual:
+
+```tsx
+<CommandPalette
+  sections={sections}
+  theme={{
+    light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+    dark: { accentColor: "#35d7ff", backgroundColor: "#0b1116" }
+  }}
+  title="Command menu"
+/>
+```
+
 ### 🛝 Integración desde Playground
 
 1. Configura en playground.
@@ -100,6 +114,7 @@ npm install @cmd-kit/preact preact
 - `CommandPalette` for Preact.
 - `useCommandPalette` with React-like API.
 - Same visual/behavior defaults as React.
+- Supports single or dual `theme` mode (`light`/`dark`).
 - Shortcuts, keyboard navigation, nested flows, async source, and recents.
 
 ### 🚀 Quick start
@@ -110,6 +125,23 @@ import { CommandPalette } from "@cmd-kit/preact";
 export function App() {
   return <CommandPalette />;
 }
+```
+
+### 🎨 Customization
+
+Same customization surface as React (`theme`, `classNames`, `renderers`, `renderItem`, `reducedMotion`).
+
+Dual-theme example:
+
+```tsx
+<CommandPalette
+  sections={sections}
+  theme={{
+    light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+    dark: { accentColor: "#35d7ff", backgroundColor: "#0b1116" }
+  }}
+  title="Command menu"
+/>
 ```
 
 ### 🛝 Playground integration

@@ -100,21 +100,6 @@ const languageKeywords: Record<SnippetTab, string[]> = {
     "true",
     "false",
     "new"
-  ],
-  css: ["import", "from", "const", "return", "export"],
-  tailwind: [
-    "import",
-    "from",
-    "const",
-    "return",
-    "export",
-    "function",
-    "async",
-    "await",
-    "if",
-    "else",
-    "true",
-    "false"
   ]
 };
 
@@ -198,7 +183,9 @@ export function PlaygroundCodePanel({
 }: PlaygroundCodePanelProps) {
   const panelId = useId();
   const [copyMessage, setCopyMessage] = useState("");
+  const [copyState, setCopyState] = useState<"idle" | "success" | "error">("idle");
   const [isExpanded, setIsExpanded] = useState(false);
+  const copyResetTimeoutRef = React.useRef<number | null>(null);
   const tokenizedLines = React.useMemo(() => tokenizeCode(code, activeTab), [code, activeTab]);
   const heading =
     activeTab === "react"
@@ -209,14 +196,31 @@ export function PlaygroundCodePanel({
           ? labels.preactCode
           : activeTab === "astro"
             ? labels.astroCode
-          : activeTab === "vanilla"
-            ? labels.vanillaCode
-          : activeTab === "css"
-            ? labels.cssCode
-            : labels.tailwindCode;
+            : labels.vanillaCode;
+
+  React.useEffect(
+    () => () => {
+      if (copyResetTimeoutRef.current !== null) {
+        window.clearTimeout(copyResetTimeoutRef.current);
+      }
+    },
+    []
+  );
 
   async function handleCopy() {
-    setCopyMessage((await onCopy()) ? labels.copyReady : labels.copyFailed);
+    const copied = await onCopy();
+    setCopyMessage(copied ? labels.copyReady : labels.copyFailed);
+    setCopyState(copied ? "success" : "error");
+
+    if (copyResetTimeoutRef.current !== null) {
+      window.clearTimeout(copyResetTimeoutRef.current);
+    }
+
+    copyResetTimeoutRef.current = window.setTimeout(() => {
+      setCopyState("idle");
+      setCopyMessage("");
+      copyResetTimeoutRef.current = null;
+    }, 1600);
   }
 
   const editorClassName = `code-editor-shell tech-${activeTab} ${
@@ -231,10 +235,6 @@ export function PlaygroundCodePanel({
           <h2>{heading}</h2>
           <p className="panel-copy">{labels.codeDescription}</p>
         </div>
-        <button className="ghost-button compact-button" onClick={() => void handleCopy()} type="button">
-          <Icon className="button-icon" name="copy" />
-          <span>{labels.copy}</span>
-        </button>
       </div>
       <p aria-live="polite" className="visually-hidden">
         {copyMessage}
@@ -300,30 +300,6 @@ export function PlaygroundCodePanel({
           <Icon className="tech-icon" name="vanilla" />
           <span>{labels.vanillaCode}</span>
         </button>
-        <button
-          aria-controls={panelId}
-          aria-selected={activeTab === "css"}
-          className={activeTab === "css" ? "tab active" : "tab"}
-          onClick={() => onSelectTab("css")}
-          role="tab"
-          tabIndex={activeTab === "css" ? 0 : -1}
-          type="button"
-        >
-          <Icon className="tech-icon" name="code" />
-          <span>{labels.cssCode}</span>
-        </button>
-        <button
-          aria-controls={panelId}
-          aria-selected={activeTab === "tailwind"}
-          className={activeTab === "tailwind" ? "tab active" : "tab"}
-          onClick={() => onSelectTab("tailwind")}
-          role="tab"
-          tabIndex={activeTab === "tailwind" ? 0 : -1}
-          type="button"
-        >
-          <Icon className="tech-icon tech-icon-tailwind" name="tailwind" />
-          <span>{labels.tailwindCode}</span>
-        </button>
       </div>
       <div className="code-panel-meta">
         <span className="code-chip">{labels.codeExportLabel}</span>
@@ -333,6 +309,33 @@ export function PlaygroundCodePanel({
       <div className={editorClassName}>
         <div className="code-collapse is-open">
           <div className="code-collapse-inner">
+            <button
+              className={`ghost-button compact-button code-copy-button ${
+                copyState === "success"
+                  ? "is-success"
+                  : copyState === "error"
+                    ? "is-error"
+                    : ""
+              }`}
+              onClick={() => void handleCopy()}
+              type="button"
+            >
+              <Icon
+                className={
+                  copyState === "success"
+                    ? "button-icon copy-icon copy-icon-success"
+                    : "button-icon copy-icon"
+                }
+                name={copyState === "success" ? "check" : "copy"}
+              />
+              <span>
+                {copyState === "success"
+                  ? labels.copyReady
+                  : copyState === "error"
+                    ? labels.copyFailed
+                    : labels.copy}
+              </span>
+            </button>
             <pre
               className={isExpanded ? "code-block is-expanded" : "code-block is-collapsed"}
               id={panelId}

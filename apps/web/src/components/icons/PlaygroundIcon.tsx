@@ -12,6 +12,7 @@ import {
   IconBrandVue,
   IconCaretDown,
   IconCaretUp,
+  IconCheck,
   IconCode,
   IconCopy,
   IconInfoCircle,
@@ -32,6 +33,7 @@ import {
 export type PlaygroundIconName =
   | "arrow-right"
   | "astro"
+  | "check"
   | "code"
   | "copy"
   | "core"
@@ -71,6 +73,7 @@ const iconMap: Record<PlaygroundIconName, TablerIconComponent> =
   {
     "arrow-right": IconArrowRight,
     astro: IconBrandAstro,
+    check: IconCheck,
     code: IconCode,
     copy: IconCopy,
     core: IconPackage,

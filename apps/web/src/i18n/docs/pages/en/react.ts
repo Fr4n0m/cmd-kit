@@ -25,7 +25,7 @@ const sections = [
 export function Example() {
   return <CommandPalette sections={sections} title="Project commands" />;
 }` }] },
-      { id: "core-props", label: "Core props", blocks: [{ type: "list", items: ["<code>sections</code> or <code>items</code>: static data", "<code>source</code>: computed or async commands", "<code>messages</code>: placeholder, empty state, close label", "<code>theme</code>: colors, border, radius, shadow", "<code>classNames</code> and <code>renderers</code>: visual and structural overrides", "<code>recents</code>: recent commands section (off by default)", "<code>reducedMotion</code>: disable hover and motion animations", "<code>open</code>, <code>defaultOpen</code>, <code>onOpenChange</code>: controlled state"] }] },
+      { id: "core-props", label: "Core props", blocks: [{ type: "list", items: ["<code>sections</code> or <code>items</code>: static data", "<code>source</code>: computed or async commands", "<code>messages</code>: placeholder, empty state, close label", "<code>theme</code>: single mode or dual mode (<code>{ light, dark }</code>) tokens", "<code>classNames</code> and <code>renderers</code>: visual and structural overrides", "<code>recents</code>: recent commands section (off by default)", "<code>reducedMotion</code>: disable hover and motion animations", "<code>open</code>, <code>defaultOpen</code>, <code>onOpenChange</code>: controlled state"] }] },
       { id: "icons-and-custom-item-layout", label: "Icons and custom item layout", blocks: [{ type: "paragraph", html: "Use <code>renderItem</code> when you want to control the item row completely, including icons, spacing, and extra metadata." }, { type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   renderItem={(item, active) => (
@@ -49,9 +49,16 @@ export function Example() {
     noResults: "No commands match your query."
   }}
   theme={{
-    accentColor: "#12b5e5",
-    backgroundColor: "#0f1720",
-    textColor: "#f5fbff"
+    light: {
+      accentColor: "#0fa6d8",
+      backgroundColor: "#ffffff",
+      textColor: "#0e1720"
+    },
+    dark: {
+      accentColor: "#12b5e5",
+      backgroundColor: "#0f1720",
+      textColor: "#f5fbff"
+    }
   }}
   sections={sections}
   title="Workspace commands"

@@ -44,16 +44,40 @@ export const customizationESDoc: DocPageData = {
       { id: "tokens-de-tema", label: "Tokens de tema", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   theme={{
-    accentColor: "#12b5e5",
-    backgroundColor: "#0f1720",
-    textColor: "#f5fbff",
-    mutedColor: "#9fb4c4",
-    borderColor: "#264152",
-    overlayColor: "rgba(4, 9, 13, 0.64)",
-    radius: "22px",
-    shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
+    light: {
+      accentColor: "#0fa6d8",
+      backgroundColor: "#ffffff",
+      textColor: "#0e1720"
+    },
+    dark: {
+      accentColor: "#12b5e5",
+      backgroundColor: "#0f1720",
+      textColor: "#f5fbff",
+      mutedColor: "#9fb4c4",
+      borderColor: "#264152",
+      overlayColor: "rgba(4, 9, 13, 0.64)",
+      radius: "22px",
+      shadow: "0 24px 80px rgba(0, 0, 0, 0.42)"
+    }
   }}
 />` }] },
+      { id: "variables-css", label: "Variables CSS", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import { createThemeCssText } from "@cmd-kit/core";
+
+const themes = {
+  light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+  dark: { accentColor: "#12b5e5", backgroundColor: "#0f1720" }
+};
+
+const darkCss = createThemeCssText(themes.dark);
+const lightCss = createThemeCssText(themes.light);
+
+const themeBlock = \`:root {
+\${darkCss}
+}
+
+html[data-theme="light"] {
+\${lightCss}
+}\`;` }] },
       { id: "mensajes", label: "Mensajes", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   messages={{

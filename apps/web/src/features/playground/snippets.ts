@@ -1,5 +1,3 @@
-import type { CommandSection } from "@cmd-kit/core";
-
 import type { PlaygroundConfig } from "./config";
 
 export function buildReactSnippet(config: PlaygroundConfig): string {
@@ -11,10 +9,10 @@ export function buildVueSnippet(config: PlaygroundConfig): string {
     '<script setup lang="ts">',
     'import { CommandPalette } from "@cmd-kit/vue";',
     "",
-    `const sections = ${toJsonSnippet(config.sections)};`,
-    `const recents = ${toJsonSnippet(toRecentsValue(config))};`,
-    `const messages = ${toJsonSnippet(toMessagesValue(config))};`,
-    `const theme = ${toJsonSnippet(toThemeModesValue(config))};`
+    `const sections = ${toObjectLiteralSnippet(config.sections)};`,
+    `const recents = ${toObjectLiteralSnippet(toRecentsValue(config))};`,
+    `const messages = ${toObjectLiteralSnippet(toMessagesValue(config))};`,
+    `const theme = ${toObjectLiteralSnippet(toThemeModesValue(config))};`
   ];
 
   const sourceSnippet = toSourceSnippet(config);
@@ -57,7 +55,7 @@ export function buildAstroSnippet(config: PlaygroundConfig): string {
     "---",
     'import CommandPalette from "@cmd-kit/astro/component";',
     "",
-    `const sections = ${toSectionsSnippet(config.sections)};`,
+    `const sections = ${toObjectLiteralSnippet(config.sections)};`,
     `const recents = ${toObjectLiteralSnippet(toRecentsValue(config))};`,
     `const messages = ${toObjectLiteralSnippet(toMessagesValue(config))};`,
     `const theme = ${toObjectLiteralSnippet(toThemeModesValue(config))};`
@@ -96,26 +94,26 @@ export function buildVanillaSnippet(config: PlaygroundConfig): string {
   const lines = ['import { createCommandPalette } from "@cmd-kit/core";', ""];
 
   if (config.sourceMode === "static") {
-    lines.push(`const sections = ${toJsonSnippet(config.sections)};`);
+    lines.push(`const sections = ${toObjectLiteralSnippet(config.sections)};`);
   } else {
     lines.push(
       "const source = async () => {",
       `  await new Promise((resolve) => setTimeout(resolve, ${config.sourceDelayMs}));`,
       "",
-      `  return ${toJsonSnippet({ sections: config.sections })};`,
+      `  return ${toObjectLiteralSnippet({ sections: config.sections })};`,
       "};"
     );
   }
 
   lines.push(
     "",
-    `const theme = ${toJsonSnippet(toThemeModesValue(config))};`,
+    `const theme = ${toObjectLiteralSnippet(toThemeModesValue(config))};`,
     "",
     "",
     "const palette = createCommandPalette({",
     `  defaultOpen: ${config.defaultOpen},`,
-    `  messages: ${toJsonSnippet(toMessagesValue(config))},`,
-    `  recents: ${toJsonSnippet(toRecentsValue(config))},`,
+    ...toObjectPropertyLines("messages", toObjectLiteralSnippet(toMessagesValue(config)), "  "),
+    ...toObjectPropertyLines("recents", toObjectLiteralSnippet(toRecentsValue(config)), "  "),
     `  shortcut: "${escapeString(config.shortcut)}",`,
     "  theme,",
     `  title: "${escapeString(config.title)}",`
@@ -132,62 +130,11 @@ export function buildVanillaSnippet(config: PlaygroundConfig): string {
   return lines.join("\n");
 }
 
-export function buildCssSnippet(config: PlaygroundConfig): string {
-  return `import { createThemeCssText } from "@cmd-kit/core";
-
-const themes = ${toJsonSnippet(toThemeModesValue(config))};
-const darkCss = createThemeCssText(themes.dark);
-const lightCss = createThemeCssText(themes.light);
-
-const themeBlock = \`:root {
-\${darkCss}
-}
-
-html[data-theme="light"] {
-\${lightCss}
-}\`;`;
-}
-
-export function buildTailwindSnippet(config: PlaygroundConfig): string {
-  const sourceSnippet = toSourceSnippet(config);
-  const darkTheme = toThemeModeValue(config, "dark");
-  const componentLines = [
-    "<div",
-    `  className="rounded-[${darkTheme.radius}] border border-[${darkTheme.borderColor}] bg-[${darkTheme.backgroundColor}] text-[${darkTheme.textColor}] shadow-[${darkTheme.shadow}]"`,
-    ">",
-    "  <CommandPalette",
-    `    recents={${toRecentsSnippet(config)}}`,
-    `    shortcut="${escapeString(config.shortcut)}"`,
-    `    title="${escapeString(config.title)}"`,
-    "    theme={theme}"
-  ];
-
-  if (config.sourceMode === "static") {
-    componentLines.push("    sections={sections}");
-  } else {
-    componentLines.push("    source={source}");
-  }
-
-  if (config.defaultOpen) {
-    componentLines.push("    defaultOpen");
-  }
-
-  componentLines.push("  />", "</div>");
-
-  return `import { CommandPalette } from "@cmd-kit/react";
-
-const sections = ${toSectionsSnippet(config.sections)};
-const theme = ${toObjectLiteralSnippet(toThemeModesValue(config))};
-${sourceSnippet ? `\n${sourceSnippet}` : ""}
-
-${componentLines.join("\n")}`;
-}
-
 function buildReactLikeSnippet(packageName: string, config: PlaygroundConfig): string {
   const lines = [
     `import { CommandPalette } from "${packageName}";`,
     "",
-    `const sections = ${toSectionsSnippet(config.sections)};`,
+    `const sections = ${toObjectLiteralSnippet(config.sections)};`,
     `const theme = ${toObjectLiteralSnippet(toThemeModesValue(config))};`
   ];
 
@@ -199,11 +146,11 @@ function buildReactLikeSnippet(packageName: string, config: PlaygroundConfig): s
   lines.push("", "export function Demo() {", "  return (", "    <CommandPalette");
 
   const propLines = [
-    `      recents={${toRecentsSnippet(config)}}`,
+    ...toJsxExpressionPropLines("recents", toRecentsSnippet(config), "      "),
     `      shortcut="${escapeString(config.shortcut)}"`,
     `      title="${escapeString(config.title)}"`,
-    `      messages={${toMessagesSnippet(config)}}`,
-      "      theme={theme}"
+    ...toJsxExpressionPropLines("messages", toMessagesSnippet(config), "      "),
+    "      theme={theme}"
   ];
 
   if (config.sourceMode === "static") {
@@ -219,12 +166,6 @@ function buildReactLikeSnippet(packageName: string, config: PlaygroundConfig): s
   lines.push(...propLines, "    />", "  );", "}");
 
   return lines.join("\n");
-}
-
-function toSectionsSnippet(sections: CommandSection[]): string {
-  return JSON.stringify(sections, null, 2)
-    .replace(/"([^"]+)":/g, "$1:")
-    .replace(/"/g, "'");
 }
 
 function escapeString(value: string): string {
@@ -289,10 +230,6 @@ function toObjectLiteralSnippet(value: unknown): string {
   return JSON.stringify(value, null, 2).replace(/"([^"]+)":/g, "$1:");
 }
 
-function toJsonSnippet(value: unknown): string {
-  return JSON.stringify(value, null, 2);
-}
-
 function toSourceSnippet(config: PlaygroundConfig): string {
   if (config.sourceMode !== "async") {
     return "";
@@ -305,4 +242,38 @@ function toSourceSnippet(config: PlaygroundConfig): string {
     sections
   };
 };`;
+}
+
+function toJsxExpressionPropLines(
+  name: string,
+  expression: string,
+  indent: string
+): string[] {
+  if (!expression.includes("\n")) {
+    return [`${indent}${name}={${expression}}`];
+  }
+
+  const lines = expression.split("\n");
+  if (lines.length < 2) {
+    return [`${indent}${name}={${expression}}`];
+  }
+
+  return [
+    `${indent}${name}={${lines[0]}`,
+    ...lines.slice(1, -1).map((line) => `${indent}${line}`),
+    `${indent}${lines.at(-1)!}}`
+  ];
+}
+
+function toObjectPropertyLines(name: string, expression: string, indent: string): string[] {
+  if (!expression.includes("\n")) {
+    return [`${indent}${name}: ${expression},`];
+  }
+
+  const lines = expression.split("\n");
+  return [
+    `${indent}${name}: ${lines[0]}`,
+    ...lines.slice(1, -1).map((line) => `${indent}${line}`),
+    `${indent}${lines.at(-1)!},`
+  ];
 }

@@ -3,10 +3,8 @@ import { describe, expect, it } from "vitest";
 import { defaultConfig } from "./config";
 import {
   buildAstroSnippet,
-  buildCssSnippet,
   buildPreactSnippet,
   buildReactSnippet,
-  buildTailwindSnippet,
   buildVanillaSnippet,
   buildVueSnippet
 } from "./snippets";
@@ -19,7 +17,7 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain('shortcut="mod+k"');
     expect(snippet).toContain("const sections = [");
     expect(snippet).toContain("<CommandPalette");
-    expect(snippet).toContain("id: 'toggle-theme'");
+    expect(snippet).toContain('id: "toggle-theme"');
     expect(snippet).toContain('closeLabel: "Close command palette"');
     expect(snippet).toContain("recents={false}");
     expect(snippet).toContain("const theme = {");
@@ -41,26 +39,6 @@ describe("playground snippet builders", () => {
     expect(snippet).toContain("source={source}");
     expect(snippet).toContain("defaultOpen");
     expect(snippet).not.toContain("sections={sections}");
-  });
-
-  it("builds CSS variables for the theme tokens", () => {
-    const snippet = buildCssSnippet(defaultConfig);
-
-    expect(snippet).toContain('import { createThemeCssText } from "@cmd-kit/core";');
-    expect(snippet).toContain("const themes = {");
-    expect(snippet).toContain("const darkCss = createThemeCssText(themes.dark);");
-    expect(snippet).toContain("const lightCss = createThemeCssText(themes.light);");
-    expect(snippet).toContain("const themeBlock = `:root {");
-    expect(snippet).toContain('html[data-theme="light"] {');
-  });
-
-  it("builds a Tailwind-oriented wrapper snippet", () => {
-    const snippet = buildTailwindSnippet(defaultConfig);
-
-    expect(snippet).toContain("CommandPalette");
-    expect(snippet).toContain("sections={sections}");
-    expect(snippet).toContain("theme={theme}");
-    expect(snippet).toContain("const theme = {");
   });
 
   it("builds a Vue snippet with async source bindings when selected", () => {

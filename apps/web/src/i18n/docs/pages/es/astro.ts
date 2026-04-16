@@ -23,7 +23,7 @@ const sections = [
 
 <CommandPalette sections={sections} title="Comandos del proyecto" />` }] },
       { id: "requisitos-runtime", label: "Requisitos de runtime", blocks: [{ type: "paragraph", html: "No necesitas integración de React. Instala <code>@cmd-kit/astro</code> en tu proyecto Astro y usa el componente directamente." }] },
-      { id: "personalizacion", label: "Personalización", blocks: [{ type: "paragraph", html: "La superficie de personalización es la misma que en el resto de adaptadores: <code>sections</code>, <code>messages</code>, <code>theme</code>, <code>recents</code> y <code>reducedMotion</code>." }, { type: "code", lang: "astro", label: "astro", code: `---
+      { id: "personalizacion", label: "Personalización", blocks: [{ type: "paragraph", html: "La superficie de personalización es la misma que en el resto de adaptadores: <code>sections</code>, <code>messages</code>, <code>theme</code> (modo simple o dual), <code>recents</code> y <code>reducedMotion</code>." }, { type: "code", lang: "astro", label: "astro", code: `---
 import CommandPalette from "@cmd-kit/astro/component";
 
 const sections = [
@@ -44,9 +44,8 @@ const sections = [
     noResults: "No hay ningún comando para esta búsqueda."
   }}
   theme={{
-    accentColor: "#12b5e5",
-    backgroundColor: "#0f1720",
-    textColor: "#f5fbff"
+    light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+    dark: { accentColor: "#12b5e5", backgroundColor: "#0f1720" }
   }}
   title="Comandos del proyecto"
 />` }] },

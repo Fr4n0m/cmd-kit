@@ -33,6 +33,7 @@ npm install @cmd-kit/core
 - Ejecución de comandos (`href`, callback, navegación).
 - Recientes (`recordRecentCommand`, `resolveRecentCommands`).
 - Helpers de tema/mensajes.
+- Soporte de tema simple o dual (`theme.light` / `theme.dark`).
 - Runtime vanilla completo: `createCommandPalette`.
 - Opción `reducedMotion` para desactivar animaciones de hover/movimiento.
 
@@ -74,7 +75,11 @@ const palette = createCommandPalette({
   title: "Command menu",
   defaultOpen: false,
   reducedMotion: false,
-  recents: { limit: 6, sectionTitle: "Recent commands" }
+  recents: { limit: 6, sectionTitle: "Recent commands" },
+  theme: {
+    light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+    dark: { accentColor: "#35d7ff", backgroundColor: "#0b1116" }
+  }
 });
 
 // API runtime
@@ -88,7 +93,7 @@ palette.reloadSource();
 Si tu objetivo es `core`:
 
 1. Diseña estructura en playground.
-2. Exporta `JSON` o `Vanilla/Core`.
+2. Exporta `Core (Vanilla JS)`.
 3. Usa la salida para:
    - `createResolvedConfig` (headless), o
    - `createCommandPalette` (runtime vanilla).
@@ -120,6 +125,7 @@ npm install @cmd-kit/core
 - Command execution primitives.
 - Recents helpers.
 - Theme/messages helpers.
+- Single or dual theme mode support (`theme.light` / `theme.dark`).
 - Full framework-free runtime via `createCommandPalette`.
 - `reducedMotion` option to disable hover/motion animations.
 
@@ -133,7 +139,7 @@ Use `createCommandPalette` to mount a ready runtime without framework dependenci
 
 ### 🛝 Playground integration
 
-Export `JSON` / `Vanilla/Core`, then map output into either headless config or `createCommandPalette`.
+Export `Core (Vanilla JS)`, then map output into either headless config or `createCommandPalette`.
 
 ### 🤝 Contributing
 

@@ -75,14 +75,17 @@ recentRecords = recordRecentCommand({
 const recentItems = resolveRecentCommands(config.items, recentRecords);` }] },
       { id: "theme-and-message-helpers", label: "Theme and message helpers", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import {
   createThemeCssText,
-  defaultMessages,
   resolveMessages,
-  resolveTheme
+  resolveTheme,
+  resolveThemeMode
 } from "@cmd-kit/core";
 
-const theme = resolveTheme({
-  accentColor: "#12b5e5"
-});
+const themeModes = {
+  light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+  dark: { accentColor: "#12b5e5", backgroundColor: "#0f1720" }
+};
+
+const theme = resolveTheme(themeModes, resolveThemeMode());
 
 const messages = resolveMessages({
   searchPlaceholder: "Search commands"

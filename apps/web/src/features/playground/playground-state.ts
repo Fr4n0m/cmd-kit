@@ -10,10 +10,8 @@ import {
 } from "./config";
 import {
   buildAstroSnippet,
-  buildCssSnippet,
   buildPreactSnippet,
   buildReactSnippet,
-  buildTailwindSnippet,
   buildVanillaSnippet,
   buildVueSnippet
 } from "./snippets";
@@ -23,9 +21,7 @@ export type SnippetTab =
   | "vue"
   | "preact"
   | "astro"
-  | "vanilla"
-  | "css"
-  | "tailwind";
+  | "vanilla";
 
 export function usePlaygroundState(initialLanguage: Language = "en") {
   const [config, setConfig] = useState<PlaygroundConfig>(
@@ -35,14 +31,6 @@ export function usePlaygroundState(initialLanguage: Language = "en") {
   const [activeTab, setActiveTab] = useState<SnippetTab>("react");
 
   const code = useMemo(() => {
-    if (activeTab === "css") {
-      return buildCssSnippet(config);
-    }
-
-    if (activeTab === "tailwind") {
-      return buildTailwindSnippet(config);
-    }
-
     if (activeTab === "vue") {
       return buildVueSnippet(config);
     }

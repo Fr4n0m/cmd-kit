@@ -36,6 +36,7 @@ npm install @cmd-kit/react react react-dom
 - Soporte de `source` async.
 - Recientes opcionales con deduplicación.
 - Estilos por defecto + overrides (`theme`, `classNames`, `renderers`).
+- `theme` admite modo simple o modo dual (`light`/`dark`).
 - `reducedMotion` para desactivar animaciones de hover/movimiento.
 
 ### 🚀 Uso rápido
@@ -109,9 +110,16 @@ export function App() {
     )
   }}
   theme={{
-    accentColor: "#35d7ff",
-    backgroundColor: "#0b1116",
-    textColor: "#eff7fb"
+    light: {
+      accentColor: "#0fa6d8",
+      backgroundColor: "#ffffff",
+      textColor: "#0e1720"
+    },
+    dark: {
+      accentColor: "#35d7ff",
+      backgroundColor: "#0b1116",
+      textColor: "#eff7fb"
+    }
   }}
 />
 ```
@@ -172,6 +180,7 @@ npm install @cmd-kit/react react react-dom
 - Async `source` support.
 - Optional recents with dedupe.
 - Built-in defaults + overrides (`theme`, `classNames`, `renderers`).
+- `theme` supports single mode or dual mode (`light`/`dark`).
 - `reducedMotion` prop to disable hover/motion animations.
 
 ### 🚀 Quick start

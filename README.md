@@ -43,6 +43,10 @@ Cmd+kit es un sistema open source de command palette para crear experiencias de 
 
 Nota: no existe paquete `@cmd-kit/vanilla`; la integración vanilla vive en `@cmd-kit/core`.
 
+### 📚 Documentación web
+- Español: `apps/web` -> `/es/docs`
+- English: `apps/web` -> `/docs`
+
 ### 🚀 Instalación rápida
 ```bash
 npm install @cmd-kit/react react react-dom
@@ -94,6 +98,10 @@ Cmd+kit is an open source command palette system for shipping real command exper
 | `@cmd-kit/astro` | Official Astro component adapter | [README](./packages/astro/README.md) |
 
 Note: there is no `@cmd-kit/vanilla` package; the vanilla runtime lives in `@cmd-kit/core`.
+
+### 📚 Web docs
+- Spanish: `apps/web` -> `/es/docs`
+- English: `apps/web` -> `/docs`
 
 ### 🚀 Quick install
 ```bash

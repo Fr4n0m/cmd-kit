@@ -35,6 +35,7 @@ npm install @cmd-kit/vue vue
 - Soporte async (`source`).
 - Recientes opcionales con deduplicación.
 - Personalización por `slots`, `theme` y `classNames`.
+- `theme` en modo simple o dual (`light`/`dark`).
 - `reducedMotion` para desactivar animaciones de hover/movimiento.
 
 ### 🚀 Uso rápido
@@ -89,6 +90,19 @@ Ejemplo:
 </CommandPalette>
 ```
 
+Tema dual (claro/oscuro):
+
+```vue
+<CommandPalette
+  :sections="sections"
+  :theme="{
+    light: { accentColor: '#0fa6d8', backgroundColor: '#ffffff' },
+    dark: { accentColor: '#35d7ff', backgroundColor: '#0b1116' }
+  }"
+  title="Command menu"
+/>
+```
+
 ### 🛝 Integración desde Playground
 
 1. Configura comandos en playground.
@@ -119,6 +133,7 @@ npm install @cmd-kit/vue vue
 - Async source support.
 - Optional recents with dedupe.
 - Slot-based customization + `theme` + `classNames`.
+- `theme` in single mode or dual mode (`light`/`dark`).
 - `reducedMotion` prop to disable hover/motion animations.
 
 ### 🚀 Quick start
@@ -139,6 +154,19 @@ import { CommandPalette } from "@cmd-kit/vue";
 - `section-title`
 - `item`
 - `empty-state`
+
+Dual theme example:
+
+```vue
+<CommandPalette
+  :sections="sections"
+  :theme="{
+    light: { accentColor: '#0fa6d8', backgroundColor: '#ffffff' },
+    dark: { accentColor: '#35d7ff', backgroundColor: '#0b1116' }
+  }"
+  title="Command menu"
+/>
+```
 
 ### 🛝 Playground integration
 

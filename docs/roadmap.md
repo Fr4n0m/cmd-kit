@@ -6,26 +6,23 @@ Current status: `active development`
 
 Progress (approximate):
 
-- Docs: `82%`
+- Docs: `100%`
 - Legal: `30%`
-- Playground (UI + exports + UX): `70%`
+- Playground (UI + exports + UX): `95%`
 - Quality and release readiness: `85%`
 
 ## Active Debt
 
-- Playground docs guide is currently provisional and will be finalized after playground UX and exports are closed.
 - Legal and privacy pages are publishable as generic baseline text, but still require final legal review before "final production legal" status.
 - Manual QA across desktop and mobile remains pending as a release blocker.
 - Adapter validation is in final phase: React/Preact/Vue/Astro baseline is aligned; framework-free runtime now lives in `@cmd-kit/core` (package `@cmd-kit/vanilla` removed).
 - Motion/interaction parity still needs final verification pass across adapters after introducing shared `reducedMotion` API and hover-animation defaults.
-- Landing scope is incomplete outside hero: remaining home sections, full playground review, and footer (desktop/mobile) still pending.
+- Landing scope is incomplete outside hero: remaining home sections and footer (desktop/mobile) still pending.
 - Mobile review is still pending for the full landing (except current header baseline).
 - Repository docs hygiene is pending: `/docs` currently contains private development notes that should not live in the public GitHub repository.
 - Final release confidence still requires clean-room validation outside this monorepo (fresh projects from zero per package).
-- Final docs information architecture is pending and must be normalized between root README, `/docs`, and package-level READMEs.
-- Package READMEs rewrite is in progress (professional bilingual ES/EN format with playground integration guidance per adapter).
-- Long-form docs overhaul is pending for the public web docs: full adapter parity update (React/Preact/Vue/Astro/Core), complete coverage of newly shipped features (`reducedMotion`, motion defaults, visual/behavior parity notes), and deep end-to-end playground documentation (all panels, controls, exports, states, caveats, and guided workflows in EN/ES).
-- Playground documentation is still incomplete at product level: each configurable control needs explicit explanation, examples, and mapping to generated output (UI preview + exported snippets).
+- Long-form docs overhaul for public web docs is complete at content level (EN/ES adapters, core, customization, playground).
+- Playground documentation content is complete at product level (controls map, examples, guided flows EN/ES).
 
 ## Phase 0 - Definition
 
@@ -106,7 +103,6 @@ Hecho:
 
 En curso:
 
-- Final adapter docs/README alignment to reflect current API/features (`core` includes vanilla UI runtime, `reducedMotion` + motion defaults).
 - Final behavior QA pass for hover/motion parity between React/Preact/Vue/Astro/core runtime.
 - [x] ~~Theme API nativa con soporte dual (`theme.light` / `theme.dark`) en core + adaptadores, eliminando la necesidad de resolver ambos temas manualmente en snippets.~~
 
@@ -143,25 +139,23 @@ Hecho:
 
 En curso:
 
-- Final consistency pass for beginner-friendly tone and depth equalization across technologies.
-- Playground guide is kept provisional until final playground UX/export work is complete.
 - Structural cleanup of i18n content now completed for docs + landing/legal/playground pages (modular files by locale/section).
-- Adapter docs pages (web EN/ES) are being updated to include newly shipped API details (`reducedMotion`, animation behavior expectations).
 - Home page remains in progress outside hero: content cards/layout and footer need final pass.
 - Mobile pass is pending for the landing content blocks and footer.
-- Package-level README refresh is now active (React, Preact, Vue, Astro, Core), aligned with the publishing strategy.
+- Package-level README parity pass completed for latest shipped behavior (dual-theme support, reducedMotion, and playground-aligned guidance).
+- Full cross-doc editorial and technical review completed (web docs EN/ES + package READMEs + root README + `/docs` process docs).
 
 Bloqueado:
 
-- Final playground screenshots depend on playground UI/UX closure.
+- None.
 
 Siguiente:
 
-- Add screenshot blocks to playground docs once final UI is approved and capture set is ready.
+- Keep docs aligned with shipped API changes.
 
 ## Phase 5 - Playground Product Surface
 
-Status: `en curso`
+Status: `casi cerrado`
 
 Hecho:
 
@@ -170,9 +164,6 @@ Hecho:
 
 En curso:
 
-- Full UX pass: navigation clarity, configurator flow, export quality, responsive behavior, and interaction consistency.
-- Configurator simplification pass is active (reduce non-essential controls, improve field hierarchy and spacing consistency, unify controls with shared design patterns).
-- Accessibility and edge-case hardening in real usage flows.
 - Landing integration of playground behavior is still pending full functional review.
 
 Hecho (última tanda):
@@ -188,6 +179,10 @@ Hecho (última tanda):
 - Controles avanzados simplificados: sombra en modo básico con toggle `Avanzado`, y radio con preview visual en vivo del redondeado.
 - Pulido visual final de controles de apariencia: selectores de color redondos y compactos, ajuste de escala/posición en numeración de secciones, y alineación de altura entre previews de `Radio` y `Sombra`.
 - Snippets del playground alineados a API nativa de tema dual: exportan `theme` con `light`+`dark` directamente, sin helpers manuales de resolución por snippet.
+- Snippets del playground limpiados y normalizados: parseo/sangrías revisados en React, Preact, Vue, Astro y Core (Vanilla), evitando formatos ambiguos en props y objetos exportados.
+- Superficies de export del playground simplificadas: eliminadas salidas redundantes de `Variables CSS` y `Tailwind` para dejar foco en adaptadores oficiales.
+- UX final de acciones de código: botón de copiar integrado en el bloque de código con feedback visual (éxito/error) e icono animado (`copy` -> `check` -> `copy`).
+- Ajuste final de consistencia visual en configurador: alturas de botones de edición (subir/bajar/eliminar/añadir) alineadas con inputs y espaciado corregido en acciones de sección.
 
 Bloqueado:
 
@@ -195,7 +190,7 @@ Bloqueado:
 
 Siguiente:
 
-- Close playground UX/export acceptance criteria, then finalize playground docs with real screenshots and guided flows.
+- Close landing integration review for playground behavior.
 
 ## Phase 6 - Legal and Compliance
 
@@ -248,19 +243,16 @@ Siguiente:
 
 ## Next Milestones
 
-1. Finish adapter README/docs parity review (React, Preact, Vue, Astro, Core), including `reducedMotion` and motion defaults.
-2. Execute a full public-docs rewrite sprint for the web docs (EN/ES): align every adapter page with shipped API/features and complete the playground documentation end-to-end (all controls, behaviors, exports, and practical workflows).
-3. Close playground hardening sprint (UX + exports + accessibility + responsive) and validate landing integration.
-4. Finish landing home sections outside hero + footer (desktop/mobile) and run full mobile QA pass.
-5. Finalize legal/privacy pages for production scope.
-6. Split private development docs from public product docs and keep only npm/package-facing documentation in the repository.
-7. Run clean-room package validation in brand-new external projects (one per package) instead of relying only on in-repo examples.
-8. Remove `apps/example-*` from the repository once package parity and external validation are complete.
-9. Run full release gate and prepare first public npm release.
+1. Finish landing home sections outside hero + footer (desktop/mobile) and run full mobile QA pass.
+2. Finalize legal/privacy pages for production scope.
+3. Split private development docs from public product docs and keep only npm/package-facing documentation in the repository.
+4. Run clean-room package validation in brand-new external projects (one per package) instead of relying only on in-repo examples.
+5. Remove `apps/example-*` from the repository once package parity and external validation are complete.
+6. Run full release gate and prepare first public npm release.
 
 ## Documentation Publishing Strategy (Target State)
 
-Status: `en curso`
+Status: `hecho`
 
 Objetivo:
 
@@ -280,3 +272,4 @@ Regla operativa:
 Progreso actual:
 
 - Primera pasada completa de READMEs por paquete completada con formato bilingüe profesional y guía de integración desde playground.
+- Segunda pasada completa de documentación completada: coherencia técnica/editorial entre README raíz, READMEs de paquetes, docs web EN/ES y documentación operativa en `/docs`.

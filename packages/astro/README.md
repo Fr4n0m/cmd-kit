@@ -44,6 +44,7 @@ import CommandPalette from "@cmd-kit/astro/component";
 - Secciones anidadas con `children`.
 - Recientes opcionales con deduplicación.
 - Tema adaptable (oscuro/claro) por defecto.
+- `theme` en modo simple o dual (`light`/`dark`).
 - `reducedMotion` para desactivar animaciones de hover/movimiento.
 
 ### 🧩 Configuración de comandos
@@ -82,6 +83,10 @@ const sections = [
 <CommandPalette
   recents={{ limit: 6, sectionTitle: "Recent commands" }}
   sections={sections}
+  theme={{
+    light: { accentColor: "#0fa6d8", backgroundColor: "#ffffff" },
+    dark: { accentColor: "#35d7ff", backgroundColor: "#0b1116" }
+  }}
   title="Command menu"
 />
 ```
@@ -142,6 +147,7 @@ import CommandPalette from "@cmd-kit/astro/component";
 - Nested sections.
 - Optional recents with dedupe.
 - Default adaptive light/dark theme.
+- `theme` supports single mode or dual mode (`light`/`dark`).
 - `reducedMotion` prop to disable hover/motion animations.
 
 ### 🛝 Playground integration
