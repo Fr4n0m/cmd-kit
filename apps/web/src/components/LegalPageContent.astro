@@ -12,7 +12,24 @@ const { content } = Astro.props;
   <article class="docs-panel legal-panel">
     <p class="eyebrow">{content.eyebrow}</p>
     <h1>{content.heading}</h1>
-    {content.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    <p class="legal-updated">
+      <strong>{content.lastUpdatedLabel}:</strong> {content.lastUpdatedValue}
+    </p>
+    {
+      content.sections.map((section, index) => (
+        <section aria-labelledby={`${section.id}-title`} class="legal-section">
+          <h2 id={`${section.id}-title`}>
+            {index + 1}. {section.title}
+          </h2>
+          {section.paragraphs.map((paragraph) => <p set:html={paragraph} />)}
+          {section.items?.length ? (
+            <ul>
+              {section.items.map((item) => <li set:html={item} />)}
+            </ul>
+          ) : null}
+        </section>
+      ))
+    }
   </article>
 </main>
 

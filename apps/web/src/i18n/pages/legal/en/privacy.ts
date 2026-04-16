@@ -1,16 +1,88 @@
 import type { LegalPageCopy } from "@/i18n/pages/shared";
 
 export const legalPrivacyEn: LegalPageCopy = {
-  description: "Privacy information for the Cmd+kit site.",
+  description: "Privacy Policy for Cmd+kit.",
   eyebrow: "Legal",
-  heading: "Privacy",
-  paragraphs: [
-    "Controller: `Fr4n0m` (project and site owner). Public profile: `https://codebyfran.es`. Contact: `fran11799@outlook.com`.",
-    "This site provides public information, documentation, and interactive examples for Cmd+kit. It does not provide user accounts or a private application area.",
-    "Current status: this site does not use analytics tools and does not use non-essential cookies. Only technical behavior required for normal site operation may be used.",
-    "If analytics, contact forms, or additional third-party integrations are enabled in the future, this policy will be updated with collected data categories, processing purpose, retention period, and rights request process.",
-    "External links (for example GitHub, Buy Me a Coffee, or personal portfolio pages) are governed by their own privacy policies once you leave this site."
+  heading: "Privacy Policy",
+  lastUpdatedLabel: "Last updated",
+  lastUpdatedValue: "April 16, 2026",
+  sections: [
+    {
+      id: "controller",
+      title: "Data controller",
+      paragraphs: [
+        "Controller: <code>Fr4n0m</code> (owner of the Cmd+kit project and website).",
+        "Privacy and site-usage contact: <code>fran11799@outlook.com</code>."
+      ]
+    },
+    {
+      id: "data-we-process",
+      title: "What data we process",
+      paragraphs: ["In the current state of the site, we process the minimum technical information needed to operate it."],
+      items: [
+        "<strong>Basic technical data:</strong> connection-level and infrastructure logs (for example IP address, user agent, and error traces), handled by hosting/CDN providers for security and operations.",
+        "<strong>Local preferences:</strong> we store light/dark theme preference in browser <code>localStorage</code> (<code>cmd-kit-theme</code>).",
+        "<strong>No user accounts:</strong> there is currently no sign-up/login or private app area.",
+        "<strong>No active forms:</strong> the site does not currently collect data through contact or support forms."
+      ]
+    },
+    {
+      id: "purposes-legal-basis",
+      title: "Purposes and legal basis",
+      paragraphs: ["We process this information to:"],
+      items: [
+        "provide the website and public documentation;",
+        "maintain security, stability, and technical diagnostics;",
+        "remember interface preferences.",
+        "The legal basis may include legitimate interest (security/operations), pre-contractual measures, or consent where applicable."
+      ]
+    },
+    {
+      id: "cookies-storage",
+      title: "Cookies and local storage",
+      paragraphs: [
+        "Cmd+kit does not set first-party marketing or profiling cookies from its own code.",
+        "The site uses browser local storage for interface preferences (theme).",
+        "Infrastructure providers may set strictly necessary technical cookies required for delivery and security."
+      ]
+    },
+    {
+      id: "processors-third-parties",
+      title: "Providers and third-party links",
+      paragraphs: [
+        "The site may rely on technical infrastructure providers (hosting, CDN, security, and code hosting).",
+        "It also links to external services (for example GitHub, Buy Me a Coffee, or portfolio pages). Once you leave this site, each third party's own privacy policy applies."
+      ]
+    },
+    {
+      id: "retention",
+      title: "Data retention",
+      paragraphs: [
+        "Technical information is retained only for as long as needed for operations, security, diagnostics, and applicable legal obligations."
+      ]
+    },
+    {
+      id: "your-rights",
+      title: "Your rights",
+      paragraphs: ["Where applicable under data-protection law, you may request:"],
+      items: [
+        "access to your personal data;",
+        "rectification of inaccurate data;",
+        "erasure;",
+        "restriction of processing or objection;",
+        "data portability;",
+        "to lodge a complaint with the relevant supervisory authority."
+      ]
+    },
+    {
+      id: "policy-updates",
+      title: "Policy updates",
+      paragraphs: [
+        "We may update this policy to reflect legal, technical, or product changes. The current version and update date are published on this page."
+      ]
+    }
   ],
-  title: "Cmd+kit | Privacy"
+  title: "Cmd+kit | Privacy Policy"
 };
+
 

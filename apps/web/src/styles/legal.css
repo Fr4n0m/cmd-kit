@@ -3,6 +3,34 @@
 }
 
 .legal-panel {
-  max-width: 920px;
+  max-width: none;
+  width: 100%;
+}
+
+.legal-updated {
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1.1rem;
+}
+
+.legal-section {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+
+.legal-section h2 {
+  font-size: clamp(1.08rem, 0.96rem + 0.35vw, 1.34rem);
+  margin-bottom: 0.6rem;
+}
+
+.legal-section ul {
+  margin: 0.55rem 0 0.95rem 1.15rem;
+  padding: 0;
+}
+
+.legal-section li {
+  color: var(--ink-muted);
+  line-height: 1.7;
+  margin: 0.42rem 0;
 }
 

@@ -41,7 +41,7 @@ const homeVisuals = {
   }
 } as const;
 
-const installSignals = [content.techCore, content.techReact, content.techAdapters];
+const installSignals = [content.techCore, content.techAdapters, content.techNestedFlows];
 ---
 
 <main class="site-shell" id="main-content" tabindex="-1">
@@ -57,12 +57,12 @@ const installSignals = [content.techCore, content.techReact, content.techAdapter
         <div class="hero-output-card" aria-label={content.playgroundAriaLabel}>
           <p class="hero-output-title">{content.heroStackCardTitle}</p>
           <div class="hero-output-list">
+            <span class="tech-chip"><Icon className="tech-icon" name="core" /> Core</span>
             <span class="tech-chip"><Icon className="tech-icon" name="react" /> React</span>
             <span class="tech-chip"><Icon className="tech-icon" name="vue" /> Vue</span>
             <span class="tech-chip"><Icon className="tech-icon" name="preact" /> Preact</span>
             <span class="tech-chip tech-chip-astro"><Icon className="tech-icon" name="astro" /> Astro</span>
-            <span class="tech-chip"><Icon className="tech-icon" name="css" /> CSS</span>
-            <span class="tech-chip"><Icon className="tech-icon" name="tailwind" /> Tailwind</span>
+            <span class="tech-chip"><Icon className="tech-icon" name="vanilla" /> Vanilla</span>
           </div>
         </div>
         <HeroInstallSelector locale={locale} />

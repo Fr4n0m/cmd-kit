@@ -22,10 +22,10 @@ export const homeLaunchEs: HomeLaunchCopy = {
     "Diseña el UX del comando, valida el comportamiento en preview viva y exporta una base limpia adaptada a restricciones reales de producto.",
   playgroundEyebrow: "Playground",
   playgroundHeading: "Un workspace dedicado para diseñar el UX del comando",
-  techAdapters: "Flujos anidados",
+  techAdapters: "Adaptadores oficiales",
   techCore: "Core tipado",
   techNestedFlows: "Flujos anidados",
-  techReact: "React first",
+  techReact: "Paridad entre adaptadores",
   technologyNames: ["React", "Vue", "Preact", "Astro", "Vanilla"],
   title: "Cmd+kit"
 };

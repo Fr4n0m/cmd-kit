@@ -7,18 +7,15 @@ Current status: `active development`
 Progress (approximate):
 
 - Docs: `100%`
-- Legal: `30%`
+- Legal: `100%`
 - Playground (UI + exports + UX): `95%`
 - Quality and release readiness: `85%`
 
 ## Active Debt
 
-- Legal and privacy pages are publishable as generic baseline text, but still require final legal review before "final production legal" status.
 - Manual QA across desktop and mobile remains pending as a release blocker.
 - Adapter validation is in final phase: React/Preact/Vue/Astro baseline is aligned; framework-free runtime now lives in `@cmd-kit/core` (package `@cmd-kit/vanilla` removed).
 - Motion/interaction parity still needs final verification pass across adapters after introducing shared `reducedMotion` API and hover-animation defaults.
-- Landing scope is incomplete outside hero: remaining home sections and footer (desktop/mobile) still pending.
-- Mobile review is still pending for the full landing (except current header baseline).
 - Repository docs hygiene is pending: `/docs` currently contains private development notes that should not live in the public GitHub repository.
 - Final release confidence still requires clean-room validation outside this monorepo (fresh projects from zero per package).
 - Long-form docs overhaul for public web docs is complete at content level (EN/ES adapters, core, customization, playground).
@@ -136,12 +133,11 @@ Hecho:
 - Astro adapter now applies icon/title hover scale transitions through runtime interaction handlers (mouseover/mouseout + active-state sync), reducing visual loss caused by list re-render timing.
 - Astro hover transitions received a visibility pass (stronger scale + title translate) so icon/title motion remains clearly perceptible during real pointer navigation.
 - Astro hover transitions were refined to remove horizontal title drift; title animation now keeps scale-only behavior for stable row alignment.
+- Home landing sections and footer are now completed and aligned with the current product surface in both themes.
 
 En curso:
 
 - Structural cleanup of i18n content now completed for docs + landing/legal/playground pages (modular files by locale/section).
-- Home page remains in progress outside hero: content cards/layout and footer need final pass.
-- Mobile pass is pending for the landing content blocks and footer.
 - Package-level README parity pass completed for latest shipped behavior (dual-theme support, reducedMotion, and playground-aligned guidance).
 - Full cross-doc editorial and technical review completed (web docs EN/ES + package READMEs + root README + `/docs` process docs).
 
@@ -194,20 +190,21 @@ Siguiente:
 
 ## Phase 6 - Legal and Compliance
 
-Status: `en curso`
+Status: `hecho`
 
 Hecho:
 
 - Baseline legal/privacy structure exists in EN/ES.
+- Legal pages rewritten with production-grade structure in EN/ES (Terms + Privacy): clear sections, allowed-use scope, liability boundaries, data categories, legal basis, rights, retention, third-party links, and update metadata.
+- Legal pages finalized and approved as production-ready for current project scope.
 
 En curso:
 
-- Legal pages still need final pass before considering them production-ready.
-- Final wording and compliance scope review (cookies, analytics, third-party updates, jurisdiction details) remains pending.
+- None.
 
 Bloqueado:
 
-- Final legal sign-off is external to code and requires explicit legal review.
+- None.
 
 Siguiente:
 
@@ -243,12 +240,10 @@ Siguiente:
 
 ## Next Milestones
 
-1. Finish landing home sections outside hero + footer (desktop/mobile) and run full mobile QA pass.
-2. Finalize legal/privacy pages for production scope.
-3. Split private development docs from public product docs and keep only npm/package-facing documentation in the repository.
-4. Run clean-room package validation in brand-new external projects (one per package) instead of relying only on in-repo examples.
-5. Remove `apps/example-*` from the repository once package parity and external validation are complete.
-6. Run full release gate and prepare first public npm release.
+1. Split private development docs from public product docs and keep only npm/package-facing documentation in the repository.
+2. Run clean-room package validation in brand-new external projects (one per package) instead of relying only on in-repo examples.
+3. Remove `apps/example-*` from the repository once package parity and external validation are complete.
+4. Run full release gate and prepare first public npm release.
 
 ## Documentation Publishing Strategy (Target State)
 

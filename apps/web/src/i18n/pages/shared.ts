@@ -76,7 +76,14 @@ export interface LegalPageCopy {
   description: string;
   eyebrow: string;
   heading: string;
-  paragraphs: string[];
+  lastUpdatedLabel: string;
+  lastUpdatedValue: string;
+  sections: Array<{
+    id: string;
+    title: string;
+    paragraphs: string[];
+    items?: string[];
+  }>;
   title: string;
 }
 
