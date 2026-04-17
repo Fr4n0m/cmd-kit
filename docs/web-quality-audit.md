@@ -37,14 +37,30 @@ What is already in place:
   - localized route coverage (`en` + `es`)
   - alternate language links (`hreflang`)
 
+Deployed Lighthouse evidence captured:
+
+- URL: `https://cmd-kit.vercel.app/es`
+- Context: production deploy, mobile profile, light mode
+- Scores:
+  - Performance: `100`
+  - Accessibility: `96`
+  - Best Practices: `96`
+  - SEO: `100`
+- Context: production deploy, mobile profile, dark mode
+- Scores:
+  - Performance: `100`
+  - Accessibility: `100`
+  - Best Practices: `96`
+  - SEO: `100`
+
 ## Findings
 
 ### Medium
 
 - `apps/web`
-  No deployed Lighthouse or Core Web Vitals measurements have been captured yet.
-  Impact: performance and page-experience status is still assumed from architecture rather than verified from runtime.
-  Action: run Lighthouse and Core Web Vitals checks on the deployed site before release.
+  Core Web Vitals field data capture and tracking has not been documented yet.
+  Impact: release quality is strong in synthetic audits, but real-user trend validation is still pending.
+  Action: capture CWV baseline (LCP/INP/CLS) from production telemetry and keep a short historical record.
 
 ### Low
 
@@ -61,7 +77,6 @@ What is already in place:
 ## Follow-Up Checklist
 
 - keep the configurator split by feature as new public API surface is added
-- run a deployed Lighthouse audit
 - run a deployed Core Web Vitals review
 - keep `PUBLIC_SITE_URL` aligned with deployment origin (`https://cmd-kit.vercel.app`)
 - verify `sitemap.xml` and `robots.txt` after any domain change
