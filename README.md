@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://cmd-kit.vercel.app/brand/cmd-kit-logo-readme.webp" alt="Cmd+kit logo" width="243" />
+  <img src="https://raw.githubusercontent.com/Fr4n0m/cmd-kit/main/apps/web/public/brand/cmd-kit-logo-readme.webp" alt="Cmd+kit logo" width="243" />
 </p>
 
 <p align="center">
