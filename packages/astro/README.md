@@ -11,6 +11,9 @@
 
 Astro adapter for Cmd+kit. Import the component with `@cmd-kit/astro/component`.
 
+**Website:** https://cmd-kit.vercel.app/  
+**Docs:** https://cmd-kit.vercel.app/docs/astro
+
 ## 🌐 Language
 
 - [Español](#-español)

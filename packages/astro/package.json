@@ -1,8 +1,17 @@
 {
   "name": "@cmd-kit/astro",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Astro bindings for cmd+kit",
   "license": "MIT",
+  "homepage": "https://cmd-kit.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fr4n0m/cmd-kit.git",
+    "directory": "packages/astro"
+  },
+  "bugs": {
+    "url": "https://github.com/Fr4n0m/cmd-kit/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -38,7 +47,7 @@
     "typecheck": "npm run build --workspace @cmd-kit/core && tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@cmd-kit/core": "^0.1.0"
+    "@cmd-kit/core": "^0.1.1"
   },
   "peerDependencies": {
     "astro": "^5.5.2"

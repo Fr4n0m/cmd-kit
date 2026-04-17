@@ -11,6 +11,9 @@
 
 Vue adapter for Cmd+kit with default UI, keyboard navigation, nested sections, async source, and slot customization.
 
+**Website:** https://cmd-kit.vercel.app/  
+**Docs:** https://cmd-kit.vercel.app/docs/vue
+
 ## 🌐 Language
 
 - [Español](#-español)

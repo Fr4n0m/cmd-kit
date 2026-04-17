@@ -11,6 +11,9 @@
 
 Core engine for Cmd+kit. Includes headless primitives and framework-free browser runtime (`createCommandPalette`).
 
+**Website:** https://cmd-kit.vercel.app/  
+**Docs:** https://cmd-kit.vercel.app/docs/getting-started
+
 ## 🌐 Language
 
 - [Español](#-español)

@@ -11,6 +11,9 @@
 
 Preact adapter for Cmd+kit with the same UI and behavior baseline as `@cmd-kit/react`.
 
+**Website:** https://cmd-kit.vercel.app/  
+**Docs:** https://cmd-kit.vercel.app/docs/preact
+
 ## 🌐 Language
 
 - [Español](#-español)

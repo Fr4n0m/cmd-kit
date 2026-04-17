@@ -11,6 +11,9 @@
 
 React adapter for Cmd+kit with default UI, keyboard navigation, nested sections, recents, and render customization.
 
+**Website:** https://cmd-kit.vercel.app/  
+**Docs:** https://cmd-kit.vercel.app/docs/react
+
 ## 🌐 Language
 
 - [Español](#-español)
