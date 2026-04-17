@@ -8,7 +8,8 @@
     "apps/*"
   ],
   "scripts": {
-    "audit": "npm audit --audit-level=moderate",
+    "audit": "npm run audit:packages",
+    "audit:packages": "npm audit --workspace @cmd-kit/core --omit=dev --audit-level=moderate && npm audit --workspace @cmd-kit/react --omit=dev --audit-level=moderate && npm audit --workspace @cmd-kit/vue --omit=dev --audit-level=moderate && npm audit --workspace @cmd-kit/preact --omit=dev --audit-level=moderate && npm audit --workspace @cmd-kit/astro --omit=dev --audit-level=moderate",
     "build": "npm run build --workspaces --if-present",
     "changeset": "changeset",
     "dev:web": "npm run dev --workspace @cmd-kit/web",
