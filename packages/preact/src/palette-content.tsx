@@ -77,7 +77,9 @@ export function PaletteHeader({
           className={classNames?.title}
           id={titleId}
           style={
-            light ? { ...titleStyle, color: "rgba(14, 23, 32, 0.78)" } : titleStyle
+            light
+              ? { ...titleStyle, color: "rgba(14, 23, 32, 0.78)" }
+              : titleStyle
           }
         >
           {renderers?.title
@@ -362,96 +364,110 @@ export function PaletteResults({
       >
         {snapshot.groups.length ? (
           snapshot.groups.map((group) => (
-          <div
-            aria-labelledby={`${listboxId}-${group.id}-label`}
-            className={classNames?.section}
-            key={group.id}
-            role="group"
-            style={sectionStyle}
-          >
-            {!(snapshot.groups.length === 1 && group.title === activeTitle) ? (
-              <p
-                className={classNames?.sectionTitle}
-                id={`${listboxId}-${group.id}-label`}
-                style={sectionTitleStyle(theme)}
+            <div
+              aria-labelledby={`${listboxId}-${group.id}-label`}
+              className={classNames?.section}
+              key={group.id}
+              role="group"
+              style={sectionStyle}
+            >
+              {!(
+                snapshot.groups.length === 1 && group.title === activeTitle
+              ) ? (
+                <p
+                  className={classNames?.sectionTitle}
+                  id={`${listboxId}-${group.id}-label`}
+                  style={sectionTitleStyle(theme)}
+                >
+                  {renderers?.sectionTitle
+                    ? renderers.sectionTitle({ title: group.title })
+                    : group.title}
+                </p>
+              ) : null}
+              <div
+                className={classNames?.sectionItems}
+                style={sectionItemsStyle}
               >
-                {renderers?.sectionTitle
-                  ? renderers.sectionTitle({ title: group.title })
-                  : group.title}
-              </p>
-            ) : null}
-            <div className={classNames?.sectionItems} style={sectionItemsStyle}>
-              {group.items.map((item) => {
-                const itemIndex = flatItems.findIndex(
-                  (entry) => entry.id === item.id
-                );
-                const isActive = itemIndex === activeIndex;
+                {group.items.map((item) => {
+                  const itemIndex = flatItems.findIndex(
+                    (entry) => entry.id === item.id
+                  );
+                  const isActive = itemIndex === activeIndex;
 
-                return (
-                  <button
-                    aria-selected={isActive}
-                    className={classNames?.item}
-                    disabled={item.disabled}
-                    id={`${listboxId}-${item.id}`}
-                    key={item.id}
-                    onClick={() => onRunItem(item)}
-                    onMouseEnter={(event) => {
-                      if (itemIndex >= 0) {
-                        onSetActiveIndex(itemIndex);
-                      }
-                      if (reducedMotion) {
-                        return;
-                      }
-                      const iconElement = event.currentTarget.querySelector(
-                        "[data-cmdkit-icon]"
-                      ) as HTMLElement | null;
-                      const titleElement = event.currentTarget.querySelector(
-                        "[data-cmdkit-title]"
-                      ) as HTMLElement | null;
-                      if (iconElement) {
-                        iconElement.style.transform = "scale(1.08)";
-                      }
-                      if (titleElement) {
-                        titleElement.style.transform = "scale(1.03)";
-                      }
-                    }}
-                    onMouseLeave={(event) => {
-                      if (reducedMotion) {
-                        return;
-                      }
-                      const iconElement = event.currentTarget.querySelector(
-                        "[data-cmdkit-icon]"
-                      ) as HTMLElement | null;
-                      const titleElement = event.currentTarget.querySelector(
-                        "[data-cmdkit-title]"
-                      ) as HTMLElement | null;
-                      if (iconElement) {
-                        iconElement.style.transform = "scale(1)";
-                      }
-                      if (titleElement) {
-                        titleElement.style.transform = "scale(1)";
-                      }
-                    }}
-                    role="option"
-                    style={itemStyle(theme, isActive, item.disabled)}
-                    type="button"
-                  >
-                    {renderItem ? (
-                      renderItem(item, isActive)
-                    ) : renderers?.item ? (
-                      renderers.item(item, { active: isActive })
-                    ) : (
-                      <DefaultItem item={item} isActive={isActive} theme={theme} />
-                    )}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      aria-selected={isActive}
+                      className={classNames?.item}
+                      disabled={item.disabled}
+                      id={`${listboxId}-${item.id}`}
+                      key={item.id}
+                      onClick={() => onRunItem(item)}
+                      onMouseEnter={(event) => {
+                        if (itemIndex >= 0) {
+                          onSetActiveIndex(itemIndex);
+                        }
+                        if (reducedMotion) {
+                          return;
+                        }
+                        const iconElement = event.currentTarget.querySelector(
+                          "[data-cmdkit-icon]"
+                        ) as HTMLElement | null;
+                        const titleElement = event.currentTarget.querySelector(
+                          "[data-cmdkit-title]"
+                        ) as HTMLElement | null;
+                        if (iconElement) {
+                          iconElement.style.transform = "scale(1.08)";
+                        }
+                        if (titleElement) {
+                          titleElement.style.transform = "scale(1.03)";
+                        }
+                      }}
+                      onMouseLeave={(event) => {
+                        if (reducedMotion) {
+                          return;
+                        }
+                        const iconElement = event.currentTarget.querySelector(
+                          "[data-cmdkit-icon]"
+                        ) as HTMLElement | null;
+                        const titleElement = event.currentTarget.querySelector(
+                          "[data-cmdkit-title]"
+                        ) as HTMLElement | null;
+                        if (iconElement) {
+                          iconElement.style.transform = "scale(1)";
+                        }
+                        if (titleElement) {
+                          titleElement.style.transform = "scale(1)";
+                        }
+                      }}
+                      role="option"
+                      style={itemStyle(theme, isActive, item.disabled)}
+                      type="button"
+                    >
+                      {renderItem ? (
+                        renderItem(item, isActive)
+                      ) : renderers?.item ? (
+                        renderers.item(item, { active: isActive })
+                      ) : (
+                        <DefaultItem
+                          item={item}
+                          isActive={isActive}
+                          theme={theme}
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
           ))
         ) : (
-          <div className={classNames?.emptyState} style={emptyStateStyle(theme)}>
-            {renderers?.emptyState ? renderers.emptyState({ query }) : noResults}
+          <div
+            className={classNames?.emptyState}
+            style={emptyStateStyle(theme)}
+          >
+            {renderers?.emptyState
+              ? renderers.emptyState({ query })
+              : noResults}
           </div>
         )}
       </div>
@@ -544,40 +560,41 @@ function renderDefaultTitle(
   theme: Required<CommandTheme>,
   reducedMotion = false
 ) {
-  return (
-    <span style={titleRowStyle}>
-      {canGoBack ? (
-        <button
-          aria-label="Go back"
-          className={classNames?.backButton}
-          onClick={onGoBack}
-          onMouseEnter={(event) => {
-            if (reducedMotion) {
-              return;
-            }
-            event.currentTarget.style.transform = "translateY(-1px)";
-            event.currentTarget.style.color = theme.textColor;
-            event.currentTarget.style.opacity = "1";
-          }}
-          onMouseLeave={(event) => {
-            if (reducedMotion) {
-              event.currentTarget.style.transform = "translateY(0)";
-              return;
-            }
+  const titleChildren = [
+    canGoBack ? (
+      <button
+        key="back-button"
+        aria-label="Go back"
+        className={classNames?.backButton}
+        onClick={onGoBack}
+        onMouseEnter={(event) => {
+          if (reducedMotion) {
+            return;
+          }
+          event.currentTarget.style.transform = "translateY(-1px)";
+          event.currentTarget.style.color = theme.textColor;
+          event.currentTarget.style.opacity = "1";
+        }}
+        onMouseLeave={(event) => {
+          if (reducedMotion) {
             event.currentTarget.style.transform = "translateY(0)";
-            event.currentTarget.style.color = theme.mutedColor;
-            event.currentTarget.style.opacity = "0.9";
-          }}
-          style={backButtonStyle(theme)}
-          title="Go back"
-          type="button"
-        >
-          ←
-        </button>
-      ) : null}
-      <span>{activeTitle}</span>
-    </span>
-  );
+            return;
+          }
+          event.currentTarget.style.transform = "translateY(0)";
+          event.currentTarget.style.color = theme.mutedColor;
+          event.currentTarget.style.opacity = "0.9";
+        }}
+        style={backButtonStyle(theme)}
+        title="Go back"
+        type="button"
+      >
+        ←
+      </button>
+    ) : null,
+    <span key="title-text">{activeTitle}</span>
+  ];
+
+  return <span style={titleRowStyle}>{titleChildren}</span>;
 }
 
 function DefaultBrandIcon() {
@@ -613,4 +630,3 @@ function DefaultBrandIcon() {
     </svg>
   );
 }
-

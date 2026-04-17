@@ -33,10 +33,7 @@ const payload = JSON.stringify({
       <div class="cmdkit-astro-header" data-slot="header">
         <div>
           <p class="cmdkit-astro-breadcrumbs" data-slot="breadcrumbs"></p>
-          <p class="cmdkit-astro-title" data-slot="title">
-            <button aria-label="Go back" class="cmdkit-astro-title-back" data-slot="backButton" title="Go back" type="button">←</button>
-            <span data-slot="titleText"></span>
-          </p>
+          <p class="cmdkit-astro-title" data-slot="title"><button aria-label="Go back" class="cmdkit-astro-title-back" data-slot="backButton" title="Go back" type="button" hidden>←</button><span data-slot="titleText"></span></p>
           <p class="cmdkit-astro-caption" data-slot="caption"></p>
         </div>
         <div class="cmdkit-astro-header-actions" data-slot="headerActions">
@@ -218,6 +215,14 @@ const payload = JSON.stringify({
   const backButton = root.querySelector("[data-slot='backButton']");
   const input = root.querySelector("[data-slot='input']");
   const list = root.querySelector("[data-slot='list']");
+
+  if (title instanceof HTMLElement) {
+    for (const node of Array.from(title.childNodes)) {
+      if (node.nodeType === Node.TEXT_NODE && !node.textContent?.trim()) {
+        node.remove();
+      }
+    }
+  }
 
   const previousFocus = { current: null };
   let query = "";
