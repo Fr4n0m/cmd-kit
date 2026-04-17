@@ -504,7 +504,10 @@ function resolveAdaptiveTheme(theme: CommandThemeInput | undefined) {
     return theme;
   }
   const rootTheme = document.documentElement.dataset.theme;
-  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  const prefersLight =
+    typeof window.matchMedia === "function"
+      ? window.matchMedia("(prefers-color-scheme: light)").matches
+      : false;
   const light = rootTheme === "light" || (!rootTheme && prefersLight);
   return light ? defaultLightTheme : defaultDarkTheme;
 }
@@ -1041,6 +1044,20 @@ export function createCommandPalette(
 
   const installThemeListeners = () => {
     if (options.theme) return;
+    if (typeof window.matchMedia !== "function") {
+      const observer = new MutationObserver(onThemeRefresh);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"]
+      });
+      window.addEventListener("cmd-kit-theme-change", onThemeRefresh);
+      cleanupThemeListeners = () => {
+        observer.disconnect();
+        window.removeEventListener("cmd-kit-theme-change", onThemeRefresh);
+      };
+      return;
+    }
+
     const media = window.matchMedia("(prefers-color-scheme: light)");
     media.addEventListener("change", onThemeRefresh);
     const observer = new MutationObserver(onThemeRefresh);

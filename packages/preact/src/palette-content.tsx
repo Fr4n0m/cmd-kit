@@ -200,7 +200,7 @@ interface PaletteInputProps {
   captionId: string;
   classNames?: CommandPaletteClassNames;
   inputId: string;
-  inputRef: RefObject<HTMLInputElement | null>;
+  inputRef: RefObject<HTMLInputElement>;
   listboxId: string;
   onChange: (value: string) => void;
   onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
@@ -237,7 +237,7 @@ export function PaletteInput({
       autoCorrect="off"
       className={classNames?.input}
       id={inputId}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={(event) => onChange(event.currentTarget.value)}
       onKeyDown={onKeyDown}
       placeholder={placeholder}
       ref={inputRef}
@@ -614,9 +614,3 @@ function DefaultBrandIcon() {
   );
 }
 
-function joinClassNames(
-  ...values: Array<string | undefined>
-): string | undefined {
-  const nextValue = values.filter(Boolean).join(" ");
-  return nextValue || undefined;
-}

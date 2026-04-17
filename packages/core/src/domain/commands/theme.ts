@@ -37,7 +37,10 @@ const themeVariableMap = {
 export type CommandThemeVariableKey = keyof typeof themeVariableMap;
 
 export function resolveThemeMode(): "light" | "dark" {
-  if (typeof window === "undefined") {
+  if (
+    typeof window === "undefined" ||
+    typeof window.matchMedia !== "function"
+  ) {
     return "dark";
   }
 

@@ -7,3 +7,5 @@ coverage
 .artifacts
 *.log
 docs/roadmap.md
+.env
+.env.*

@@ -414,10 +414,9 @@ function DefaultItem({
   isActive: boolean;
   theme: Required<CommandTheme>;
 }) {
-  const hasCustomIcon =
-    typeof item.icon === "string" && item.icon.trim().length > 0;
-  const hasCustomSvgIcon =
-    hasCustomIcon && isSvgMarkup(item.icon);
+  const iconValue = typeof item.icon === "string" ? item.icon : "";
+  const hasCustomIcon = iconValue.trim().length > 0;
+  const hasCustomSvgIcon = hasCustomIcon && isSvgMarkup(iconValue);
   const interactionTokens = getInteractiveThemeTokens(theme);
   const itemColor = isActive
     ? interactionTokens.itemTitleActiveColor
@@ -432,10 +431,10 @@ function DefaultItem({
               aria-hidden="true"
               // Icon markup is provided by app-level config. If it starts with
               // <svg>, render it as markup instead of literal text.
-              dangerouslySetInnerHTML={{ __html: item.icon }}
+              dangerouslySetInnerHTML={{ __html: iconValue }}
             />
           ) : hasCustomIcon ? (
-            item.icon
+            iconValue
           ) : (
             <DefaultBrandIcon />
           )}
@@ -573,9 +572,3 @@ function DefaultBrandIcon() {
   );
 }
 
-function joinClassNames(
-  ...values: Array<string | undefined>
-): string | undefined {
-  const nextValue = values.filter(Boolean).join(" ");
-  return nextValue || undefined;
-}

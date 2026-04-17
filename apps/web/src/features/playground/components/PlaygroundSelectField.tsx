@@ -91,7 +91,7 @@ export function PlaygroundSelectField({
         >
           {options.map((option) => (
             <button
-              aria-current={String(option.value === value)}
+              aria-selected={option.value === value}
               className="dropdown-item install-selector-item playground-select-item"
               key={option.value}
               onClick={() => {
