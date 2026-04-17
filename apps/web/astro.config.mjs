@@ -2,12 +2,14 @@ import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
 import react from "@astrojs/react";
 
-const site = process.env.PUBLIC_SITE_URL || undefined;
+const productionSite = "https://cmd-kit.vercel.app";
+const envSite = process.env.PUBLIC_SITE_URL?.trim();
+const site = (envSite || productionSite).replace(/\/$/, "");
 const isProductionBuild = process.env.NODE_ENV === "production";
 
-if (isProductionBuild && !site) {
+if (isProductionBuild && !envSite) {
   console.warn(
-    "[apps/web] PUBLIC_SITE_URL is not set. Build will remain non-indexable (noindex + robots disallow + empty sitemap). Set PUBLIC_SITE_URL for production indexing."
+    `[apps/web] PUBLIC_SITE_URL is not set. Falling back to ${productionSite} for production indexing.`
   );
 }
 

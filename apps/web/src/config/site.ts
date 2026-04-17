@@ -1,4 +1,8 @@
-const rawSiteUrl = import.meta.env.PUBLIC_SITE_URL?.trim() || "";
+const fallbackProductionSiteUrl = "https://cmd-kit.vercel.app";
+const rawSiteUrl =
+  import.meta.env.PUBLIC_SITE_URL?.trim() ||
+  import.meta.env.SITE?.toString().trim() ||
+  fallbackProductionSiteUrl;
 
 export const siteUrl = rawSiteUrl.endsWith("/")
   ? rawSiteUrl.slice(0, -1)

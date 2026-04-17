@@ -15,7 +15,7 @@ This pass is code-first. It does not replace a deployed Lighthouse run against t
 
 ## Current Baseline
 
-Reviewed: April 16, 2026
+Reviewed: April 17, 2026
 
 What is already in place:
 
@@ -30,11 +30,9 @@ What is already in place:
 - `react-doctor` cleared to `100/100` for both `apps/web` and `packages/react`
 - semantic tab and live-region behavior in the snippet panel
 - static docs pages for React, Vue, Preact, and Astro usage
-- SEO safety fallback implemented when `PUBLIC_SITE_URL` is missing:
-  - pages emit `noindex, nofollow`
-  - `robots.txt` returns `Disallow: /`
-  - `sitemap.xml` is intentionally empty and sends `X-Robots-Tag: noindex, nofollow`
-- production-ready sitemap format is in place when `PUBLIC_SITE_URL` is configured:
+- production sitemap/robots setup is active for `https://cmd-kit.vercel.app`:
+  - `robots.txt` allows crawl and exposes sitemap URL
+  - canonical + `hreflang` tags resolve to final public origin
   - absolute URLs
   - localized route coverage (`en` + `es`)
   - alternate language links (`hreflang`)
@@ -42,16 +40,6 @@ What is already in place:
 ## Findings
 
 ### Medium
-
-- `apps/web/astro.config.mjs`
-  Final `site` URL is still pending in environment configuration.
-  Impact: the app is intentionally non-indexable until `PUBLIC_SITE_URL` is set.
-  Action: set `PUBLIC_SITE_URL` on the production deployment target before indexing.
-
-- `apps/web`
-  `robots.txt` and `sitemap.xml` are production-ready, but full SEO activation is gated by final public origin.
-  Impact: indexing remains blocked by design until final URL setup.
-  Action: configure final production origin and re-run deployed validation checks.
 
 - `apps/web`
   No deployed Lighthouse or Core Web Vitals measurements have been captured yet.
@@ -61,9 +49,9 @@ What is already in place:
 ### Low
 
 - `apps/web/src/layouts/BaseLayout.astro`
-  Metadata is still intentionally conservative because the public domain and branded social assets do not exist yet.
-  Impact: acceptable for local validation, but launch quality will still need final Open Graph image, URL, and sharing metadata.
-  Action: add final brand-linked social metadata once the public site URL and assets exist.
+  Metadata is production-safe, but social sharing can still be improved with a dedicated branded Open Graph image.
+  Impact: indexing is ready, but social preview quality can be improved.
+  Action: add a final branded OG image asset and map it per page type.
 
 - `apps/web`
   Security headers and CSP are not enforced from inside the app code.
@@ -75,7 +63,7 @@ What is already in place:
 - keep the configurator split by feature as new public API surface is added
 - run a deployed Lighthouse audit
 - run a deployed Core Web Vitals review
-- configure final `PUBLIC_SITE_URL` in deployment
-- verify `sitemap.xml` and `robots.txt` against the final production origin
+- keep `PUBLIC_SITE_URL` aligned with deployment origin (`https://cmd-kit.vercel.app`)
+- verify `sitemap.xml` and `robots.txt` after any domain change
 - add richer SEO metadata and structured data
 - verify production headers and CSP at deployment time

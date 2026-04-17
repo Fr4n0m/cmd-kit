@@ -1,5 +1,9 @@
 # Manual QA
 
+Status: `100% completed`
+
+Validated production origin: `https://cmd-kit.vercel.app/`
+
 ## Scope
 
 Manual checks to run before a public release after local automated checks already pass.
@@ -13,16 +17,15 @@ Manual checks to run before a public release after local automated checks alread
 - copy snippets for `React`, `Vue`, `Preact`, `Astro`, and `Core (Vanilla JS)`
 - verify copy feedback state (`copy` -> `check` -> `copy`) in the code panel
 - verify dual-theme exports include both `theme.light` and `theme.dark`
-- verify `robots.txt` behavior in both scenarios:
-  - without `PUBLIC_SITE_URL`: must return `Disallow: /`
-  - with `PUBLIC_SITE_URL`: must return `Allow: /` and `Sitemap: <public-origin>/sitemap.xml`
-- verify `sitemap.xml` in production mode with final `PUBLIC_SITE_URL`:
-  - contains absolute URLs on the final public origin
+- verify `robots.txt` on production origin:
+  - returns `Allow: /`
+  - returns `Sitemap: https://cmd-kit.vercel.app/sitemap.xml`
+- verify `sitemap.xml` on production origin:
+  - contains absolute URLs on `https://cmd-kit.vercel.app`
   - contains both `en` and `es` routes
   - contains alternate language links (`hreflang`) for each localized URL
-- verify page metadata behavior:
-  - without `PUBLIC_SITE_URL`: pages emit `noindex, nofollow`
-  - with `PUBLIC_SITE_URL`: pages emit canonical + `hreflang` alternates + indexable robots directives
+- verify page metadata behavior on production origin:
+  - pages emit canonical + `hreflang` alternates + indexable robots directives
 
 ## React
 
