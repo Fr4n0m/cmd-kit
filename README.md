@@ -1,14 +1,6 @@
-<table align="center">
-  <tr>
-    <td>
-      <img src="./apps/web/public/brand/cmd-kit-logo.png" alt="Cmd+kit logo" width="44" />
-    </td>
-    <td>
-      <strong>+ Kit</strong><br />
-      <sub>command palette system</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="https://cmd-kit.vercel.app/brand/cmd-kit-logo-readme.svg" alt="Cmd+kit logo" width="243" />
+</p>
 
 <p align="center">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-Ready-3178C6" />
