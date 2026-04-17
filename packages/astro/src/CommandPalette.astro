@@ -3,6 +3,7 @@ import type { CommandPaletteProps } from "./types";
 
 const props = Astro.props as CommandPaletteProps;
 const rootId = `cmdkit-astro-${Math.random().toString(36).slice(2, 10)}`;
+const dialogLabel = props.title ?? "Command menu";
 const payload = JSON.stringify({
   className: props.className ?? "",
   classNames: props.classNames ?? {},
@@ -22,7 +23,13 @@ const payload = JSON.stringify({
 
 <div class="cmdkit-astro-root" id={rootId}>
   <div class="cmdkit-astro-overlay" data-slot="overlay" hidden>
-    <div class="cmdkit-astro-dialog" data-slot="dialog" role="dialog" aria-modal="true">
+    <div
+      class="cmdkit-astro-dialog"
+      data-slot="dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label={dialogLabel}
+    >
       <div class="cmdkit-astro-header" data-slot="header">
         <div>
           <p class="cmdkit-astro-breadcrumbs" data-slot="breadcrumbs"></p>
@@ -602,10 +609,9 @@ const payload = JSON.stringify({
             const itemColor = isDisabled ? runtime.theme.mutedColor : runtime.theme.textColor;
 
             return `<button
-              aria-selected="${isActive ? "true" : "false"}"
               class="${itemClass}"
               data-item-id="${item.id}"
-              role="option"
+              data-active="${isActive ? "true" : "false"}"
               style="color: ${itemColor};"
               type="button"
               ${isDisabled ? "disabled" : ""}
@@ -673,7 +679,7 @@ const payload = JSON.stringify({
       }
 
       const hovered = item.dataset.hovered === "true";
-      const active = item.getAttribute("aria-selected") === "true";
+      const active = item.dataset.active === "true";
       applyItemTransform(item, hovered ? "hover" : active ? "active" : "rest");
     }
   };
@@ -743,6 +749,10 @@ const payload = JSON.stringify({
 
     if (caption instanceof HTMLElement) {
       caption.textContent = `Press ${prettyShortcut(props.shortcut)} to open or close.`;
+    }
+
+    if (dialog instanceof HTMLElement) {
+      dialog.setAttribute("aria-label", runtime.activeTitle || dialogLabel);
     }
 
     if (breadcrumbs instanceof HTMLElement) {
@@ -1056,7 +1066,7 @@ const payload = JSON.stringify({
     }
 
     target.dataset.hovered = "false";
-    const active = target.getAttribute("aria-selected") === "true";
+    const active = target.dataset.active === "true";
     applyItemTransform(target, active ? "active" : "rest");
   });
 
@@ -1252,7 +1262,7 @@ const payload = JSON.stringify({
       transform 160ms ease;
   }
 
-  .cmdkit-astro-item[aria-selected="true"] {
+  .cmdkit-astro-item[data-active="true"] {
     background: rgba(53, 215, 255, 0.14);
     border-color: rgba(53, 215, 255, 0.26);
   }
@@ -1301,7 +1311,7 @@ const payload = JSON.stringify({
     color: #eaf8ff;
   }
 
-  .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-icon {
+  .cmdkit-astro-item[data-active="true"] .cmdkit-astro-icon {
     transform: scale(1.12);
   }
 
@@ -1310,7 +1320,7 @@ const payload = JSON.stringify({
     color: #eaf8ff;
   }
 
-  .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
+  .cmdkit-astro-item[data-active="true"] .cmdkit-astro-item-title {
     transform: scale(1.05);
     color: #eaf8ff;
   }
@@ -1320,7 +1330,7 @@ const payload = JSON.stringify({
     color: #eaf8ff;
   }
 
-  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[aria-selected="true"] {
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[data-active="true"] {
     background: rgba(15, 166, 216, 0.13);
     border-color: rgba(15, 166, 216, 0.22);
   }
@@ -1349,7 +1359,7 @@ const payload = JSON.stringify({
     color: rgba(47, 84, 107, 0.86);
   }
 
-  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
+  .cmdkit-astro-dialog[data-mode="light"] .cmdkit-astro-item[data-active="true"] .cmdkit-astro-item-title {
     color: #0b607f;
   }
 
@@ -1367,8 +1377,8 @@ const payload = JSON.stringify({
 
   .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item:hover .cmdkit-astro-icon,
   .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item:hover .cmdkit-astro-item-title,
-  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-icon,
-  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item[aria-selected="true"] .cmdkit-astro-item-title {
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item[data-active="true"] .cmdkit-astro-icon,
+  .cmdkit-astro-dialog[data-reduced-motion="true"] .cmdkit-astro-item[data-active="true"] .cmdkit-astro-item-title {
     transform: none !important;
   }
 
