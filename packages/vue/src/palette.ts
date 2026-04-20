@@ -153,7 +153,10 @@ export const CommandPalette = defineComponent({
       if (!document.getElementById(styleId)) {
         const style = document.createElement("style");
         style.id = styleId;
-        style.textContent = ".cmdkit-vue-list::-webkit-scrollbar{width:0;height:0}";
+        style.textContent = `
+.cmdkit-vue-list::-webkit-scrollbar{width:0;height:0}
+.cmdkit-vue-input::placeholder{color:var(--cmdkit-placeholder-color);opacity:1}
+`;
         document.head.append(style);
       }
 
@@ -396,7 +399,7 @@ export const CommandPalette = defineComponent({
                 autoComplete: "off",
                 autoCorrect: "off",
                 autofocus: true,
-                class: props.classNames?.input,
+                class: joinClassNames("cmdkit-vue-input", props.classNames?.input),
                 onInput: (event: Event) => {
                   palette.setQuery((event.target as HTMLInputElement).value);
                 },
@@ -404,7 +407,11 @@ export const CommandPalette = defineComponent({
                 placeholder:
                   palette.resolvedConfig.value.messages.searchPlaceholder,
                 role: "combobox",
-                style: inputStyle(palette.resolvedConfig.value.theme),
+                style: {
+                  ...inputStyle(palette.resolvedConfig.value.theme),
+                  "--cmdkit-placeholder-color":
+                    palette.resolvedConfig.value.theme.mutedColor
+                } as CSSProperties,
                 value: palette.query.value
               }),
               h(

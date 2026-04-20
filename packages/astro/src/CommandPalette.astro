@@ -522,6 +522,7 @@ const payload = JSON.stringify({
     input.style.border = `1px solid ${theme.borderColor}`;
     input.style.background = light ? neutralLightInputBackground : neutralInputBackground;
     input.style.color = theme.textColor;
+    input.style.setProperty("--cmdkit-placeholder-color", theme.mutedColor ?? "");
 
     for (const button of root.querySelectorAll(".cmdkit-astro-close")) {
       if (button instanceof HTMLElement) {
@@ -1196,6 +1197,11 @@ const payload = JSON.stringify({
     padding: 1.06rem 1.22rem;
     font-size: 1rem;
     outline: none;
+  }
+
+  .cmdkit-astro-input::placeholder {
+    color: var(--cmdkit-placeholder-color);
+    opacity: 1;
   }
 
   .cmdkit-astro-input:focus,
