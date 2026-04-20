@@ -1,6 +1,6 @@
 {
   "name": "@cmd-kit/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Framework-agnostic command palette core for cmd+kit",
   "license": "MIT",
   "homepage": "https://cmd-kit.vercel.app/",
