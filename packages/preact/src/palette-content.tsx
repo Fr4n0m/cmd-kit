@@ -1,5 +1,10 @@
 import type { CommandItem, CommandTheme } from "@cmd-kit/core";
-import type { KeyboardEvent, ReactNode, RefObject } from "preact/compat";
+import type {
+  CSSProperties,
+  KeyboardEvent,
+  ReactNode,
+  RefObject
+} from "preact/compat";
 import { useEffect, useRef } from "preact/compat";
 
 import {
@@ -212,6 +217,13 @@ interface PaletteInputProps {
   theme: Required<CommandTheme>;
 }
 
+const PLACEHOLDER_STYLE_TEXT = `
+.cmdkit-input::placeholder {
+  color: var(--cmdkit-placeholder-color);
+  opacity: 1;
+}
+`;
+
 export function PaletteInput({
   activeDescendant,
   captionId,
@@ -226,27 +238,38 @@ export function PaletteInput({
   resolvedOpen,
   theme
 }: PaletteInputProps) {
+  const resolvedInputClassName = classNames?.input
+    ? `cmdkit-input ${classNames.input}`
+    : "cmdkit-input";
+  const resolvedInputStyle: CSSProperties = {
+    ...inputStyle(theme),
+    "--cmdkit-placeholder-color": theme.mutedColor
+  } as CSSProperties;
+
   return (
-    <input
-      aria-activedescendant={activeDescendant}
-      aria-autocomplete="list"
-      aria-controls={listboxId}
-      aria-describedby={captionId}
-      aria-expanded={resolvedOpen}
-      aria-label={placeholder}
-      autoCapitalize="off"
-      autoComplete="off"
-      autoCorrect="off"
-      className={classNames?.input}
-      id={inputId}
-      onChange={(event) => onChange(event.currentTarget.value)}
-      onKeyDown={onKeyDown}
-      placeholder={placeholder}
-      ref={inputRef}
-      role="combobox"
-      style={inputStyle(theme)}
-      value={query}
-    />
+    <>
+      <style>{PLACEHOLDER_STYLE_TEXT}</style>
+      <input
+        aria-activedescendant={activeDescendant}
+        aria-autocomplete="list"
+        aria-controls={listboxId}
+        aria-describedby={captionId}
+        aria-expanded={resolvedOpen}
+        aria-label={placeholder}
+        autoCapitalize="off"
+        autoComplete="off"
+        autoCorrect="off"
+        className={resolvedInputClassName}
+        id={inputId}
+        onChange={(event) => onChange(event.currentTarget.value)}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        ref={inputRef}
+        role="combobox"
+        style={resolvedInputStyle}
+        value={query}
+      />
+    </>
   );
 }
 

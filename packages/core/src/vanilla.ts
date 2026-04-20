@@ -275,6 +275,10 @@ const CSS_TEXT = `
   font-size: 1rem;
   outline: none;
 }
+.cmdkit-input::placeholder {
+  color: var(--cmdkit-placeholder-color);
+  opacity: 1;
+}
 .cmdkit-list {
   overflow: auto;
   box-sizing: border-box;
@@ -785,6 +789,7 @@ export function createCommandPalette(
     input.style.border = `1px solid ${theme.borderColor}`;
     input.style.background = light ? "rgba(171, 189, 205, 0.16)" : "rgba(255, 255, 255, 0.03)";
     input.style.color = theme.textColor ?? "";
+    input.style.setProperty("--cmdkit-placeholder-color", theme.mutedColor ?? "");
     closeButton.style.width = "2.4rem";
     closeButton.style.height = "2.4rem";
     closeButton.style.minWidth = "2.4rem";

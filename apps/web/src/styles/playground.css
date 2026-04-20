@@ -383,6 +383,11 @@ html[data-theme="light"] .playground-preview-card {
     rgba(8, 13, 17, 0.86);
 }
 
+.playground-live-preview-frame {
+  position: relative;
+  overflow: visible;
+}
+
 html[data-theme="light"] .playground-live-preview-shell {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.84), transparent),
@@ -414,6 +419,97 @@ html[data-theme="light"] .playground-live-preview-shell {
 .playground-live-preview-header-actions,
 .playground-live-preview-caption {
   display: none !important;
+}
+
+.playground-preview-hotspots {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.playground-preview-hotspot {
+  position: absolute;
+  left: var(--hotspot-left);
+  top: var(--hotspot-top);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.playground-preview-hotspot-dot {
+  display: block;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 999px;
+  border: 1px solid rgba(53, 215, 255, 0.58);
+  background: rgba(53, 215, 255, 0.28);
+  box-shadow: 0 0 0 0 rgba(53, 215, 255, 0.34);
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 220ms ease;
+}
+
+.playground-preview-hotspot-tooltip {
+  position: absolute;
+  left: calc(100% + 0.45rem);
+  top: 50%;
+  transform: translateY(-50%) scale(0.98);
+  transform-origin: left center;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  padding: 0.24rem 0.42rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(53, 215, 255, 0.24);
+  background: rgba(4, 10, 15, 0.92);
+  color: rgba(225, 239, 248, 0.96);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+  z-index: 30;
+  transition:
+    opacity 140ms ease,
+    transform 160ms ease;
+}
+
+.playground-preview-hotspot:hover .playground-preview-hotspot-dot {
+  transform: scale(1.14);
+  border-color: rgba(53, 215, 255, 0.94);
+  background: rgba(53, 215, 255, 0.64);
+  box-shadow: 0 0 0 0.36rem rgba(53, 215, 255, 0.15);
+}
+
+.playground-preview-hotspot:hover .playground-preview-hotspot-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+html[data-theme="light"] .playground-preview-hotspot-dot {
+  border-color: rgba(15, 166, 216, 0.5);
+  background: rgba(15, 166, 216, 0.22);
+  box-shadow: 0 0 0 0 rgba(15, 166, 216, 0.28);
+}
+
+html[data-theme="light"] .playground-preview-hotspot-tooltip {
+  border-color: rgba(15, 166, 216, 0.24);
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(20, 47, 67, 0.94);
+}
+
+html[data-theme="light"] .playground-preview-hotspot:hover .playground-preview-hotspot-dot {
+  border-color: rgba(15, 166, 216, 0.84);
+  background: rgba(15, 166, 216, 0.58);
+  box-shadow: 0 0 0 0.34rem rgba(15, 166, 216, 0.12);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .playground-preview-hotspots {
+    display: none;
+  }
 }
 
 .playground-summary-grid {

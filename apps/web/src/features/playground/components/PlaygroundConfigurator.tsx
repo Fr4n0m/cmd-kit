@@ -167,6 +167,59 @@ export function PlaygroundConfigurator({
       value: config.recentsEnabled ? labels.recentsEnabled : labels.recentsDisabled
     }
   ];
+  const previewHotspots = React.useMemo(
+    () => [
+      {
+        id: "title",
+        left: 10,
+        top: 11,
+        label: `${labels.basicsEyebrow}: ${labels.title}`
+      },
+      {
+        id: "placeholder",
+        left: 12,
+        top: 22,
+        label: `${labels.basicsEyebrow}: ${labels.placeholder}`
+      },
+      {
+        id: "surface",
+        left: 94,
+        top: 10,
+        label: `${labels.themeEyebrow}: ${labels.surface}`
+      },
+      {
+        id: "section",
+        left: 9,
+        top: 34,
+        label: `${labels.sections}: ${labels.sectionTitle}`
+      },
+      {
+        id: "item-title",
+        left: 18,
+        top: 45,
+        label: `${labels.sections}: ${labels.itemTitle}`
+      },
+      {
+        id: "item-subtitle",
+        left: 19,
+        top: 50,
+        label: `${labels.sections}: ${labels.itemSubtitle}`
+      },
+      {
+        id: "shortcut",
+        left: 90,
+        top: 47,
+        label: `${labels.sections}: ${labels.itemShortcut}`
+      },
+      {
+        id: "accent",
+        left: 94,
+        top: 61,
+        label: `${labels.themeEyebrow}: ${labels.accent}`
+      }
+    ],
+    [labels]
+  );
 
   return (
     <section className="panel configurator-panel">
@@ -212,7 +265,28 @@ export function PlaygroundConfigurator({
           <h3 className="preview-heading" style={subtitleStyle}>
             {labels.preview}
           </h3>
-          <div className="playground-live-preview-shell">{preview}</div>
+          <div className="playground-live-preview-frame">
+            <div className="playground-live-preview-shell">{preview}</div>
+            <div className="playground-preview-hotspots" aria-hidden="true">
+              {previewHotspots.map((hotspot) => (
+                <span
+                  className="playground-preview-hotspot"
+                  key={hotspot.id}
+                  style={
+                    {
+                      "--hotspot-left": `${hotspot.left}%`,
+                      "--hotspot-top": `${hotspot.top}%`
+                    } as React.CSSProperties
+                  }
+                >
+                  <span className="playground-preview-hotspot-dot" />
+                  <span className="playground-preview-hotspot-tooltip">
+                    {hotspot.label}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="playground-summary-grid">
