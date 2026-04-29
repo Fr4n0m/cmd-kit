@@ -31,6 +31,33 @@ const termsHref = localizedPath(locale, "/legal/terms");
         <a class="site-footer-legal-link" href={privacyHref}>{copy.footerPrivacy}</a>
         <a class="site-footer-legal-link" href={termsHref}>{copy.footerTerms}</a>
       </div>
+      <div class="site-footer-group">
+        <p>{copy.footerProjects}</p>
+        <a
+          class="site-footer-legal-link"
+          href="https://dev-crate-kappa.vercel.app/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Dev Crate
+        </a>
+        <a
+          class="site-footer-legal-link"
+          href="https://ngx-contract-kit-docs.vercel.app/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Contract Kit Docs
+        </a>
+        <a
+          class="site-footer-legal-link"
+          href="https://local-tools-omega.vercel.app/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Local Tools
+        </a>
+      </div>
       <div class="site-footer-group site-footer-group-featured">
         <p>{copy.footerCommunity}</p>
         <a

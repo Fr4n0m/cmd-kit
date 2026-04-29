@@ -26,6 +26,7 @@ export interface LayoutCopy {
   footerNavLabel: string;
   footerPortfolioCta: string;
   footerPortfolioHint: string;
+  footerProjects: string;
   footerPrivacy: string;
   footerTerms: string;
   footerStudio: string;
@@ -72,6 +73,7 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     footerNavLabel: "Footer",
     footerPortfolioCta: "Portfolio",
     footerPortfolioHint: "Built for developers by Fr4n0m.",
+    footerProjects: "Other projects",
     footerPrivacy: "Privacy",
     footerTerms: "Terms",
     footerStudio: "Fr4n0m",
@@ -112,6 +114,7 @@ export const layoutCopy: Record<Locale, LayoutCopy> = {
     footerNavLabel: "Footer",
     footerPortfolioCta: "Portfolio",
     footerPortfolioHint: "Built for developers by Fr4n0m.",
+    footerProjects: "Otros proyectos",
     footerPrivacy: "Privacidad",
     footerTerms: "Términos",
     footerStudio: "Fr4n0m",
