@@ -171,7 +171,7 @@ html[data-theme="light"] .site-footer-link-inline:hover {
 
 @media (max-width: 960px) {
   .site-footer-inner {
-    width: min(100vw - 1rem, 1280px);
+    width: min(100vw - 2rem, 1280px);
     grid-template-columns: 1fr;
   }
 
@@ -192,7 +192,7 @@ html[data-theme="light"] .site-footer-link-inline:hover {
 
 @media (max-width: 640px) {
   .site-footer-inner {
-    width: min(100vw - 0.75rem, 1600px);
+    width: min(100vw - 1.5rem, 1600px);
     padding: 1rem;
     gap: 1rem;
   }

@@ -203,15 +203,32 @@ html[data-theme="light"] .brand-logo-dark {
 
 .menu-toggle {
   display: none;
+  align-items: center;
+  justify-content: center;
 }
 
-.menu-toggle .menu-icon-close,
+.menu-toggle .menu-icon-wrap {
+  display: inline-grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+}
+
+.menu-toggle .menu-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.menu-toggle .menu-icon-close {
+  display: none !important;
+}
+
 html[data-menu-open="true"] .menu-toggle .menu-icon-open {
-  display: none;
+  display: none !important;
 }
 
 html[data-menu-open="true"] .menu-toggle .menu-icon-close {
-  display: block;
+  display: inline-grid !important;
 }
 
 .nav-button {
@@ -577,10 +594,11 @@ html[data-theme="light"] .theme-toggle .theme-label-dark {
 @media (max-width: 640px) {
   .topbar-inner {
     grid-template-columns: 1fr;
-    width: min(100vw - 0.75rem, 1600px);
+    width: min(100vw - 1.5rem, 1600px);
     gap: 0.7rem;
-    padding: 0.75rem;
+    padding: 0.8rem;
     border-radius: 20px;
+    position: relative;
   }
 
   .topbar-primary {
@@ -620,14 +638,67 @@ html[data-theme="light"] .theme-toggle .theme-label-dark {
   }
 
   .topbar-menu {
-    display: none;
+    display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
-    padding-top: 0.1rem;
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    right: 0;
+    z-index: 65;
+    padding: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+      rgba(6, 10, 14, 0.94);
+    backdrop-filter: blur(18px);
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    max-height: calc(100svh - 6.25rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-0.45rem) scale(0.98);
+    transform-origin: top center;
+    transition:
+      opacity 190ms ease,
+      transform 220ms var(--motion-ease-standard),
+      visibility 0s linear 220ms;
+  }
+
+  .topbar-menu::-webkit-scrollbar {
+    width: 0.42rem;
+  }
+
+  .topbar-menu::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(129, 155, 174, 0.42);
   }
 
   html[data-menu-open="true"] .topbar-menu {
-    display: grid;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 190ms ease,
+      transform 220ms var(--motion-ease-standard),
+      visibility 0s linear 0s;
+  }
+
+  html[data-theme="light"] .topbar-menu {
+    border-color: rgba(83, 112, 136, 0.14);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 251, 254, 0.96)),
+      rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 24px 40px rgba(40, 64, 81, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
   }
 
   .topbar-nav {

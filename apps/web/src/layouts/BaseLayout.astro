@@ -142,8 +142,12 @@ function isCurrentPath(target: string) {
               data-menu-toggle
               type="button"
             >
-              <Icon className="button-icon menu-icon menu-icon-open" name="menu" />
-              <Icon className="button-icon menu-icon menu-icon-close" name="x" />
+              <span class="menu-icon-wrap menu-icon-open" aria-hidden="true">
+                <Icon className="button-icon menu-icon" name="menu" />
+              </span>
+              <span class="menu-icon-wrap menu-icon-close" aria-hidden="true">
+                <Icon className="button-icon menu-icon" name="x" />
+              </span>
             </button>
           </div>
         </div>

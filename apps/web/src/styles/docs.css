@@ -494,6 +494,12 @@ html[data-theme="light"] .mobile-docs-subnav-link.is-active {
   display: none;
 }
 
+@media (max-width: 640px) {
+  .mobile-docs-nav {
+    display: grid;
+  }
+}
+
 .mobile-docs-nav-label {
   margin: 0;
   padding: 0 0.2rem 0.1rem;

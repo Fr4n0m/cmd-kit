@@ -66,7 +66,7 @@
 
   .page-shell,
   .site-shell {
-    width: min(100vw - 1rem, 1280px);
+    width: min(100vw - 2rem, 1280px);
   }
 
   .playground-header {
@@ -182,11 +182,15 @@
   }
 
   .playground-page {
-    width: min(100vw - 1rem, 1600px);
+    width: min(100vw - 2rem, 1600px);
   }
 
   .code-block {
-    min-height: 420px;
+    min-height: 0;
+  }
+
+  .code-editor-shell .code-block.is-collapsed {
+    max-height: min(65svh, 24rem);
   }
 
   .docs-sidebar {
@@ -199,7 +203,7 @@
   .site-shell,
   .page-shell,
   .playground-page {
-    width: min(100vw - 0.75rem, 1600px);
+    width: min(100vw - 1.5rem, 1600px);
   }
 
   .home-spotlight {
@@ -235,6 +239,31 @@
   .playground-page-flow,
   .preview-meta-row {
     flex-wrap: wrap;
+  }
+
+  .docs-code-block .astro-code,
+  .install-code-pre,
+  .code-block {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .docs-code-block .astro-code code,
+  .install-code-pre code {
+    min-width: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .docs-code-block .astro-code .line {
+    white-space: pre-wrap;
+  }
+
+  .code-line-content {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }
 
