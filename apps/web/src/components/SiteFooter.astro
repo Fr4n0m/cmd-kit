@@ -20,7 +20,16 @@ const termsHref = localizedPath(locale, "/legal/terms");
       <p class="site-footer-copy">{copy.footerDescription}</p>
       <p class="site-footer-inline-note">
         Built for developers by{" "}
-        <a href="https://codebyfran.es" rel="noreferrer" target="_blank">
+        <a href="https://codebyfran.es" rel="noreferrer" target="_blank" class="site-footer-author-link">
+          <img
+            src="https://gravatar.com/festoptimistic65d53ae83c/avatar?s=40&d=mp"
+            alt="Fr4n0m"
+            width="18"
+            height="18"
+            class="site-footer-avatar"
+            data-gravatar-hash="festoptimistic65d53ae83c"
+            loading="lazy"
+          />
           Fr4n0m
         </a>
       </p>
@@ -47,7 +56,7 @@ const termsHref = localizedPath(locale, "/legal/terms");
           rel="noreferrer"
           target="_blank"
         >
-          Contract Kit Docs
+          Contract Kit
         </a>
         <a
           class="site-footer-legal-link"
@@ -85,3 +94,20 @@ const termsHref = localizedPath(locale, "/legal/terms");
   </div>
 </footer>
 
+<script>
+  import { Hovercards } from "@gravatar-com/hovercards";
+  import "@gravatar-com/hovercards/dist/style.css";
+
+  const GRAVATAR_HASH = "festoptimistic65d53ae83c";
+
+  fetch(`https://api.gravatar.com/v3/profiles/${GRAVATAR_HASH}?source=hovercard`)
+    .then((r) => r.json())
+    .then((data) => {
+      const img = document.querySelector<HTMLImageElement>(".site-footer-avatar");
+      if (img && data.avatar_url) img.src = `${data.avatar_url}?s=40`;
+    })
+    .catch(() => {});
+
+  const hc = new Hovercards({ placement: "top" });
+  hc.attach(document.body);
+</script>

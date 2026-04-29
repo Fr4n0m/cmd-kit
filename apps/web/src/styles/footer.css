@@ -156,6 +156,24 @@ html[data-theme="light"] .site-footer-inner {
   text-decoration-color: var(--accent);
 }
 
+.site-footer-author-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  vertical-align: middle;
+}
+
+.site-footer-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  border: 1px solid rgba(129, 155, 174, 0.3);
+  flex-shrink: 0;
+  margin-left: 0.3rem;
+}
+
 html[data-theme="light"] .site-footer-link-inline {
   border-color: rgba(83, 112, 136, 0.16);
   background:
