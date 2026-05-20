@@ -10,10 +10,10 @@ export function GlobalToaster() {
       fill: isDark ? "#f3f7fb" : "#171717",
       roundness: 16,
       styles: {
-        title: isDark ? "text-black!" : "text-white!",
-        description: isDark ? "text-black/80!" : "text-white/80!",
-        badge: "bg-white/10! rounded-full!",
-        button: "bg-white/10! hover:bg-white/20!"
+        title: isDark ? "sileo-title-on-light" : "sileo-title-on-dark",
+        description: isDark ? "sileo-desc-on-light" : "sileo-desc-on-dark",
+        badge: isDark ? "sileo-badge-on-light" : "sileo-badge-on-dark",
+        button: isDark ? "sileo-button-on-light" : "sileo-button-on-dark"
       }
     }),
     [isDark]

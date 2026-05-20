@@ -186,6 +186,50 @@ button {
   cursor: pointer;
 }
 
+.sileo-title-on-dark {
+  color: #f8fbff !important;
+}
+
+.sileo-desc-on-dark {
+  color: rgba(238, 246, 255, 0.88) !important;
+}
+
+.sileo-title-on-light {
+  color: #0f1720 !important;
+}
+
+.sileo-desc-on-light {
+  color: rgba(15, 23, 32, 0.86) !important;
+}
+
+.sileo-badge-on-dark {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 999px !important;
+}
+
+.sileo-badge-on-light {
+  background: rgba(15, 23, 32, 0.12) !important;
+  border-radius: 999px !important;
+}
+
+.sileo-button-on-dark {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #f8fbff !important;
+}
+
+.sileo-button-on-dark:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+
+.sileo-button-on-light {
+  background: rgba(15, 23, 32, 0.12) !important;
+  color: #0f1720 !important;
+}
+
+.sileo-button-on-light:hover {
+  background: rgba(15, 23, 32, 0.2) !important;
+}
+
 .page-shell {
   width: min(1280px, calc(100vw - 2.5rem));
   margin: 0 auto;
