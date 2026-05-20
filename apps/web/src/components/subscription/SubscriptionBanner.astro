@@ -60,8 +60,26 @@ const copy =
     </div>
     <div class="subscribe-banner-form-wrap">
       <div class="subscribe-banner-form-head">
-        <p>{copy.sideTitle}</p>
-        <span>{copy.sideHint}</span>
+        <div class="subscribe-banner-form-head-copy">
+          <p>{copy.sideTitle}</p>
+          <span>{copy.sideHint}</span>
+        </div>
+        <span class="subscribe-banner-form-brand" aria-hidden="true">
+          <img
+            class="subscribe-banner-form-brand-logo subscribe-banner-form-brand-logo-light"
+            src="/brand/cmd-kit-logo-light.png"
+            width="28"
+            height="28"
+            alt=""
+          />
+          <img
+            class="subscribe-banner-form-brand-logo subscribe-banner-form-brand-logo-dark"
+            src="/brand/cmd-kit-logo-dark.png"
+            width="28"
+            height="28"
+            alt=""
+          />
+        </span>
       </div>
       <SubscriptionForm client:load locale={locale} source="banner" />
     </div>
