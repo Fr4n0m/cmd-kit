@@ -18,5 +18,5 @@ export function GlobalToaster() {
     [isDark]
   );
 
-  return <Toaster position="top-right" options={options} />;
+  return <Toaster position="bottom-left" options={options} />;
 }
