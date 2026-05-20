@@ -19,5 +19,5 @@ export function GlobalToaster() {
     [isDark]
   );
 
-  return <Toaster position="top-right" options={options} />;
+  return <Toaster position="top-right" offset={{ top: 96, right: 16 }} options={options} />;
 }
