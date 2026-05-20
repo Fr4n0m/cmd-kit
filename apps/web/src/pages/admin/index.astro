@@ -1,8 +1,14 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { AdminSubscriptionsPanel } from "@/components/admin/AdminSubscriptionsPanel";
+import { guardAdmin } from "@/pages/api/admin/auth";
 
 export const prerender = false;
+
+const isAdmin = await guardAdmin(Astro.request);
+if (isAdmin) {
+  return Astro.redirect("/admin/subscriptions");
+}
 ---
 
 <BaseLayout locale="en" title="Cmd+kit | Admin access" description="Admin access via email magic link" showFooter={false}>

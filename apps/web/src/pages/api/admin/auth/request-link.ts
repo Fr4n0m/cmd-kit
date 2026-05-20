@@ -19,11 +19,14 @@ export const POST: APIRoute = async ({ request }) => {
     const requestUrl = new URL(request.url);
     const redirectBase = env.appBaseUrl || requestUrl.origin;
 
+    const callbackUrl = new URL("/api/admin/auth/callback", redirectBase);
+    callbackUrl.searchParams.set("next", "/admin/subscriptions");
+
     const { error } = await supabasePublic.auth.signInWithOtp({
       email,
       options: {
         shouldCreateUser: true,
-        emailRedirectTo: `${redirectBase}/admin`
+        emailRedirectTo: callbackUrl.toString()
       }
     });
 
