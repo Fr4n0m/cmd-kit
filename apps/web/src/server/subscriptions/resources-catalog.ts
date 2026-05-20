@@ -1,5 +1,4 @@
 import type { Locale } from "@/i18n/site";
-import { readFileSync } from "node:fs";
 
 export type CatalogResource = {
   id: string;
@@ -8,53 +7,55 @@ export type CatalogResource = {
   summary: string;
 };
 
-type PackageMeta = {
-  pkg: string;
-  version: string;
-};
+const trackedPackages = [
+  "@cmd-kit/core",
+  "@cmd-kit/react",
+  "@cmd-kit/vue",
+  "@cmd-kit/preact",
+  "@cmd-kit/astro"
+] as const;
 
-function readPackageMeta(relativePath: string, pkg: string): PackageMeta {
+export const TRACKED_NPM_PACKAGE_IDS = new Set(trackedPackages.map((pkg) => `npm:${pkg}`));
+
+const versionCache = new Map<string, { version: string; expiresAt: number }>();
+const VERSION_TTL_MS = 10 * 60 * 1000;
+
+async function fetchNpmVersion(pkg: string): Promise<string> {
+  const now = Date.now();
+  const cached = versionCache.get(pkg);
+  if (cached && cached.expiresAt > now) {
+    return cached.version;
+  }
+
   try {
-    const raw = readFileSync(new URL(relativePath, import.meta.url), "utf8");
-    const parsed = JSON.parse(raw) as { version?: string };
-    return { pkg, version: parsed.version ?? "latest" };
+    const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(pkg)}/latest`, {
+      headers: { accept: "application/json" }
+    });
+    if (!response.ok) {
+      throw new Error("npm_lookup_failed");
+    }
+    const payload = (await response.json()) as { version?: string };
+    const version = payload.version ?? "unknown";
+    versionCache.set(pkg, { version, expiresAt: now + VERSION_TTL_MS });
+    return version;
   } catch {
-    return { pkg, version: "latest" };
+    return cached?.version ?? "unknown";
   }
 }
 
-const packageMeta = [
-  readPackageMeta("../../../../../packages/core/package.json", "@cmd-kit/core"),
-  readPackageMeta("../../../../../packages/react/package.json", "@cmd-kit/react"),
-  readPackageMeta("../../../../../packages/vue/package.json", "@cmd-kit/vue"),
-  readPackageMeta("../../../../../packages/preact/package.json", "@cmd-kit/preact"),
-  readPackageMeta("../../../../../packages/astro/package.json", "@cmd-kit/astro")
-];
-
-export const TRACKED_NPM_PACKAGE_IDS = new Set(packageMeta.map((item) => `npm:${item.pkg}`));
-
-const resourcesByLocale: Record<Locale, CatalogResource[]> = {
-  es: packageMeta.map((item) => ({
-    id: `npm:${item.pkg}`,
-    title: `${item.pkg} v${item.version}`,
-    url: `https://www.npmjs.com/package/${encodeURIComponent(item.pkg)}`,
-    summary: "Nueva versión publicada en npm."
-  })),
-  en: packageMeta.map((item) => ({
-    id: `npm:${item.pkg}`,
-    title: `${item.pkg} v${item.version}`,
-    url: `https://www.npmjs.com/package/${encodeURIComponent(item.pkg)}`,
-    summary: "New version published on npm."
-  }))
-};
-
-export function getResourcesCatalog(locale: Locale): CatalogResource[] {
-  return resourcesByLocale[locale];
+export async function getResourcesCatalog(locale: Locale): Promise<CatalogResource[]> {
+  const versions = await Promise.all(trackedPackages.map((pkg) => fetchNpmVersion(pkg)));
+  return trackedPackages.map((pkg, index) => ({
+    id: `npm:${pkg}`,
+    title: `${pkg} v${versions[index]}`,
+    url: `https://www.npmjs.com/package/${encodeURIComponent(pkg)}`,
+    summary: locale === "es" ? "Nueva versión publicada en npm." : "New version published on npm."
+  }));
 }
 
-export function searchResources(query: string, locale: Locale): CatalogResource[] {
+export async function searchResources(query: string, locale: Locale): Promise<CatalogResource[]> {
   const normalized = query.trim().toLowerCase();
-  const items = getResourcesCatalog(locale);
+  const items = await getResourcesCatalog(locale);
   if (!normalized) return items.slice(0, 12);
 
   return items

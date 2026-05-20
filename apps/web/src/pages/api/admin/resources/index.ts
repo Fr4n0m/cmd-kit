@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ request, url }) => {
   const query = url.searchParams.get("query") ?? "";
   const localeParam = (url.searchParams.get("locale") ?? "en").toLowerCase();
   const locale = localeParam === "es" ? "es" : "en";
-  const items = searchResources(query, locale);
+  const items = await searchResources(query, locale);
 
   return new Response(JSON.stringify({ ok: true, items }), {
     status: 200,
