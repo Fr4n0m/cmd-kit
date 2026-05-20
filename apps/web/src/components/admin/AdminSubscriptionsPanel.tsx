@@ -107,7 +107,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         success: { title: "Revisa email", description: "Abre el magic link para entrar al panel." },
         error: () => ({
           title: "Error enlace",
-          description: "No se pudo enviar. Revisa ADMIN_ALLOWED_EMAILS y Redirect URLs en Supabase."
+          description: "No se pudo enviar el enlace de acceso. Inténtalo de nuevo en unos minutos."
         })
       }
     );
