@@ -13,7 +13,7 @@ import {
   sendResourcePublishedEmail,
   sendVerificationEmail,
   sendWelcomeEmail
-} from "./mailer";
+} from "./subscriptions";
 
 function nowIso() {
   return new Date().toISOString();
@@ -57,7 +57,12 @@ export async function subscribe(input: unknown, meta: { ip: string; userAgent: s
   };
 
   await repo.upsert(next);
-  await sendVerificationEmail({ email, locale: payload.locale, verifyUrl: buildVerifyUrl(verifyRaw) });
+  await sendVerificationEmail({
+    email,
+    locale: payload.locale,
+    verifyUrl: buildVerifyUrl(verifyRaw),
+    unsubscribeUrl: buildUnsubscribeUrl(unsubscribeRaw)
+  });
 
   return { ok: true };
 }

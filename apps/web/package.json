@@ -11,6 +11,8 @@
     "typecheck": "astro check"
   },
   "dependencies": {
+    "@react-email/components": "^0.5.7",
+    "@react-email/render": "^1.4.0",
     "@astrojs/check": "^0.9.8",
     "@astrojs/node": "^9.3.0",
     "@astrojs/react": "^4.4.1",
