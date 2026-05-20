@@ -10,7 +10,6 @@ export function GlobalToaster() {
       fill: isDark ? "#f3f7fb" : "#171717",
       roundness: 16,
       styles: {
-        title: isDark ? "sileo-title-on-light" : "sileo-title-on-dark",
         description: isDark ? "sileo-desc-on-light" : "sileo-desc-on-dark",
         badge: isDark ? "sileo-badge-on-light" : "sileo-badge-on-dark",
         button: isDark ? "sileo-button-on-light" : "sileo-button-on-dark"

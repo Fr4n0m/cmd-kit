@@ -186,16 +186,8 @@ button {
   cursor: pointer;
 }
 
-.sileo-title-on-dark {
-  color: #f8fbff !important;
-}
-
 .sileo-desc-on-dark {
   color: rgba(238, 246, 255, 0.88) !important;
-}
-
-.sileo-title-on-light {
-  color: #0f1720 !important;
 }
 
 .sileo-desc-on-light {
