@@ -16,15 +16,25 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
     }
 
+    const requestUrl = new URL(request.url);
+    const redirectBase = requestUrl.origin;
+
     const { error } = await supabasePublic.auth.signInWithOtp({
       email,
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: `${env.appBaseUrl}/admin`
+        emailRedirectTo: `${redirectBase}/admin`
       }
     });
 
     if (error) {
+      console.error("[admin-auth] magic link failed", {
+        message: error.message,
+        code: error.code,
+        status: error.status,
+        configuredBaseUrl: env.appBaseUrl,
+        requestOrigin: redirectBase
+      });
       return new Response(JSON.stringify({ ok: false, error: "auth_email_failed" }), { status: 500 });
     }
 

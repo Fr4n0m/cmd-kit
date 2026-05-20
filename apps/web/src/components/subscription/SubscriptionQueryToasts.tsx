@@ -10,11 +10,11 @@ export function SubscriptionQueryToasts() {
     }
 
     if (state === "confirmed") {
-      sileo.success({ title: "Subscription confirmed" });
+      sileo.success({ title: "Confirmada", description: "Suscripción activada correctamente." });
     } else if (state === "unsubscribed") {
-      sileo.success({ title: "Unsubscribed successfully" });
+      sileo.success({ title: "Baja hecha", description: "Ya no recibirás más avisos." });
     } else if (state === "error") {
-      sileo.error({ title: "Subscription error" });
+      sileo.error({ title: "Error suscripción", description: "No se pudo completar la operación." });
     }
 
     url.searchParams.delete("subscription");

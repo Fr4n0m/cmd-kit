@@ -64,7 +64,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         }
       })
       .catch(() => {
-        sileo.error({ title: "Admin session denied" });
+        sileo.error({ title: "Sesión", description: "Acceso admin denegado." });
       });
   }, [accessToken]);
 
@@ -103,9 +103,12 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         return response.json();
       })),
       {
-        loading: { title: "Sending access link..." },
-        success: { title: "Check your email" },
-        error: () => ({ title: "Could not send access link" })
+        loading: { title: "Enviando", description: "Generando enlace de acceso..." },
+        success: { title: "Revisa email", description: "Abre el magic link para entrar al panel." },
+        error: () => ({
+          title: "Error enlace",
+          description: "No se pudo enviar. Revisa ADMIN_ALLOWED_EMAILS y Redirect URLs en Supabase."
+        })
       }
     );
   }
@@ -121,9 +124,9 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         return payload;
       }),
       {
-        loading: { title: "Loading subscriptions..." },
-        success: { title: "Subscriptions loaded" },
-        error: () => ({ title: "Could not load subscriptions" })
+        loading: { title: "Cargando", description: "Obteniendo suscriptores..." },
+        success: { title: "Lista lista", description: "Suscriptores actualizados." },
+        error: () => ({ title: "Error carga", description: "No se pudo cargar la lista." })
       }
     );
   }
@@ -141,9 +144,9 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         await loadItems();
       }),
       {
-        loading: { title: "Updating status..." },
-        success: { title: "Status updated" },
-        error: () => ({ title: "Could not update status" })
+        loading: { title: "Actualizando", description: "Guardando estado..." },
+        success: { title: "Estado ok", description: "Estado actualizado." },
+        error: () => ({ title: "Error estado", description: "No se pudo actualizar." })
       }
     );
   }
@@ -160,9 +163,9 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         await loadItems();
       }),
       {
-        loading: { title: "Removing subscriber..." },
-        success: { title: "Subscriber removed" },
-        error: () => ({ title: "Could not remove subscriber" })
+        loading: { title: "Eliminando", description: "Quitando suscriptor..." },
+        success: { title: "Borrado ok", description: "Suscriptor eliminado." },
+        error: () => ({ title: "Error borrar", description: "No se pudo eliminar." })
       }
     );
   }
@@ -187,9 +190,9 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         return response.json();
       }),
       {
-        loading: { title: "Sending notifications..." },
-        success: { title: "Notifications sent" },
-        error: () => ({ title: "Could not send notifications" })
+        loading: { title: "Enviando", description: "Lanzando notificaciones..." },
+        success: { title: "Envío ok", description: "Notificaciones enviadas." },
+        error: () => ({ title: "Error envío", description: "No se pudieron enviar." })
       }
     );
   }
@@ -200,7 +203,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
       await supabase.auth.signOut();
     }
     setItems([]);
-    sileo.success({ title: "Signed out" });
+    sileo.success({ title: "Sesión cerrada" });
   }
 
   return (

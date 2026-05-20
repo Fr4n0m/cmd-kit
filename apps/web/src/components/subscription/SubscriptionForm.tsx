@@ -15,17 +15,23 @@ export function SubscriptionForm({ locale, source = "other" }: Props) {
         email: "Tu email",
         terms: "Acepto política de privacidad y términos",
         submit: "Recibir novedades",
-        loading: "Enviando verificación...",
-        success: "Revisa tu email para confirmar",
-        error: "No se pudo completar"
+        loadingTitle: "Enviando",
+        loadingDescription: "Preparando email de verificación...",
+        successTitle: "Revisa email",
+        successDescription: "Confirma la suscripción desde tu bandeja de entrada.",
+        errorTitle: "Error envío",
+        errorDescription: "No se pudo completar la suscripción."
       }
     : {
         email: "Your email",
         terms: "I accept privacy policy and terms",
         submit: "Get updates",
-        loading: "Sending verification...",
-        success: "Check your inbox to confirm",
-        error: "Could not complete request"
+        loadingTitle: "Sending",
+        loadingDescription: "Preparing verification email...",
+        successTitle: "Check inbox",
+        successDescription: "Confirm your subscription from your inbox.",
+        errorTitle: "Send error",
+        errorDescription: "Could not complete the subscription."
       };
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -44,14 +50,14 @@ export function SubscriptionForm({ locale, source = "other" }: Props) {
         })
       }).then(async (response) => {
         if (!response.ok) {
-          throw new Error(copy.error);
+          throw new Error(copy.errorDescription);
         }
         return response.json();
       }),
       {
-        loading: { title: copy.loading },
-        success: { title: copy.success },
-        error: () => ({ title: copy.error })
+        loading: { title: copy.loadingTitle, description: copy.loadingDescription },
+        success: { title: copy.successTitle, description: copy.successDescription },
+        error: () => ({ title: copy.errorTitle, description: copy.errorDescription })
       }
     );
 
