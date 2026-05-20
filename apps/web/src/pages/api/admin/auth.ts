@@ -1,9 +1,23 @@
 import { env } from "@/server/env";
 import { supabaseAdmin } from "@/server/supabase";
 
+export const ADMIN_SESSION_COOKIE = "cmdkit_admin_session";
+
+function readCookieToken(request: Request) {
+  const raw = request.headers.get("cookie") ?? "";
+  const parts = raw.split(";").map((part) => part.trim());
+  const match = parts.find((part) => part.startsWith(`${ADMIN_SESSION_COOKIE}=`));
+  if (!match) {
+    return "";
+  }
+  return decodeURIComponent(match.slice(`${ADMIN_SESSION_COOKIE}=`.length));
+}
+
 export async function guardAdmin(request: Request) {
   const auth = request.headers.get("authorization") ?? "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  const bearerToken = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  const cookieToken = readCookieToken(request);
+  const token = bearerToken || cookieToken;
 
   if (!token) {
     return false;

@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
       email,
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: `${env.appBaseUrl}/admin/subscriptions`
+        emailRedirectTo: `${env.appBaseUrl}/admin`
       }
     });
 

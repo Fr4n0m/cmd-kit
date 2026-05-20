@@ -12,6 +12,7 @@ type SubscriptionItem = {
   updatedAt: string;
   createdAt: string;
 };
+type AdminPanelMode = "gate" | "full";
 
 const publicSupabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL as string | undefined;
 const publicSupabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string | undefined;
@@ -20,7 +21,7 @@ const supabase =
     ? createClient(publicSupabaseUrl, publicSupabaseAnonKey)
     : null;
 
-export function AdminSubscriptionsPanel() {
+export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMode }) {
   const [email, setEmail] = useState("");
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [items, setItems] = useState<SubscriptionItem[]>([]);
@@ -43,6 +44,30 @@ export function AdminSubscriptionsPanel() {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (!accessToken) {
+      return;
+    }
+
+    fetch("/api/admin/auth/session", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ accessToken })
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("session_failed");
+        }
+
+        if (window.location.pathname === "/admin") {
+          window.location.assign("/admin/subscriptions");
+        }
+      })
+      .catch(() => {
+        sileo.error({ title: "Admin session denied" });
+      });
+  }, [accessToken]);
+
   const authHeaders = useMemo(() => {
     if (!accessToken) {
       return null;
@@ -52,6 +77,13 @@ export function AdminSubscriptionsPanel() {
       "content-type": "application/json"
     };
   }, [accessToken]);
+
+  useEffect(() => {
+    if (mode === "full") {
+      void loadItems();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
 
   async function requestMagicLink() {
     await sileo.promise(
@@ -79,13 +111,8 @@ export function AdminSubscriptionsPanel() {
   }
 
   async function loadItems() {
-    if (!authHeaders) {
-      sileo.error({ title: "Admin session required" });
-      return;
-    }
-
     await sileo.promise(
-      fetch("/api/admin/subscriptions", { headers: authHeaders }).then(async (response) => {
+      fetch("/api/admin/subscriptions", { headers: authHeaders ?? undefined }).then(async (response) => {
         if (!response.ok) {
           throw new Error("Unauthorized");
         }
@@ -102,15 +129,10 @@ export function AdminSubscriptionsPanel() {
   }
 
   async function updateStatus(emailValue: string, status: SubscriptionStatus) {
-    if (!authHeaders) {
-      sileo.error({ title: "Admin session required" });
-      return;
-    }
-
     await sileo.promise(
       fetch("/api/admin/subscriptions", {
         method: "PUT",
-        headers: authHeaders,
+        headers: authHeaders ?? { "content-type": "application/json" },
         body: JSON.stringify({ email: emailValue, status })
       }).then(async (response) => {
         if (!response.ok) {
@@ -127,15 +149,10 @@ export function AdminSubscriptionsPanel() {
   }
 
   async function removeSubscription(emailValue: string) {
-    if (!authHeaders) {
-      sileo.error({ title: "Admin session required" });
-      return;
-    }
-
     await sileo.promise(
       fetch(`/api/admin/subscriptions?email=${encodeURIComponent(emailValue)}`, {
         method: "DELETE",
-        headers: authHeaders
+        headers: authHeaders ?? undefined
       }).then(async (response) => {
         if (!response.ok) {
           throw new Error("Delete failed");
@@ -151,11 +168,6 @@ export function AdminSubscriptionsPanel() {
   }
 
   async function sendNotify() {
-    if (!authHeaders) {
-      sileo.error({ title: "Admin session required" });
-      return;
-    }
-
     const id = window.prompt("Resource ID");
     const title = window.prompt("Resource title");
     const url = window.prompt("Resource URL");
@@ -166,7 +178,7 @@ export function AdminSubscriptionsPanel() {
     await sileo.promise(
       fetch("/api/admin/subscriptions/notify", {
         method: "POST",
-        headers: authHeaders,
+        headers: authHeaders ?? { "content-type": "application/json" },
         body: JSON.stringify({ id, title, url })
       }).then(async (response) => {
         if (!response.ok) {
@@ -183,6 +195,7 @@ export function AdminSubscriptionsPanel() {
   }
 
   async function signOut() {
+    await fetch("/api/admin/auth/logout", { method: "POST" });
     if (supabase) {
       await supabase.auth.signOut();
     }
@@ -203,6 +216,8 @@ export function AdminSubscriptionsPanel() {
         <button className="primary-button compact-button" type="button" onClick={requestMagicLink}>
           Send access link
         </button>
+        {mode === "full" && (
+          <>
         <button className="ghost-button compact-button" type="button" onClick={loadItems}>
           Refresh list
         </button>
@@ -212,8 +227,13 @@ export function AdminSubscriptionsPanel() {
         <button className="ghost-button compact-button" type="button" onClick={signOut}>
           Sign out
         </button>
+          </>
+        )}
       </div>
-
+      {mode === "gate" && (
+        <p className="content-paragraph">Magic link required. Direct access to subscriptions is blocked.</p>
+      )}
+      {mode === "full" && (
       <div className="admin-table-wrap">
         <table className="admin-table">
           <thead>
@@ -253,6 +273,7 @@ export function AdminSubscriptionsPanel() {
           </tbody>
         </table>
       </div>
+      )}
     </section>
   );
 }

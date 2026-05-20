@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { AdminSubscriptionsPanel } from "@/components/admin/AdminSubscriptionsPanel";
+
+export const prerender = false;
+---
+
+<BaseLayout locale="en" title="Cmd+kit | Admin access" description="Admin access via email magic link">
+  <main id="main-content" class="content-shell">
+    <section class="content-card">
+      <h1>Admin access</h1>
+      <p>Enter your admin email to receive a secure magic link.</p>
+      <AdminSubscriptionsPanel client:load mode="gate" />
+    </section>
+  </main>
+</BaseLayout>
+
