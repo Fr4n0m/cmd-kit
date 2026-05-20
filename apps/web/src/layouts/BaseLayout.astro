@@ -25,9 +25,18 @@ interface Props {
   image?: string;
   docsHeadings?: DocsSectionItem[];
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
+  showFooter?: boolean;
 }
 
-const { description, docsHeadings = [], image, locale = defaultLocale, structuredData, title } =
+const {
+  description,
+  docsHeadings = [],
+  image,
+  locale = defaultLocale,
+  structuredData,
+  title,
+  showFooter = true
+} =
   Astro.props;
 const pathname = Astro.url.pathname;
 const hasPublicSite = Boolean(Astro.site);
@@ -278,7 +287,7 @@ function isCurrentPath(target: string) {
     }
     <slot />
     {showSubscriptionBanner ? <SubscriptionBanner locale={locale} /> : null}
-    <SiteFooter locale={locale} />
+    {showFooter ? <SiteFooter locale={locale} /> : null}
     <script is:inline set:html={themeToggleScript} />
     <script is:inline set:html={menuScript} />
     <script is:inline set:html={localeMenuScript} />
