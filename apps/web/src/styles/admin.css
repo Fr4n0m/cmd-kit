@@ -136,9 +136,19 @@ html[data-theme="light"] .content-card {
 }
 
 .admin-modal-search {
-  display: grid;
+  display: flex;
   gap: 0.55rem;
-  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+}
+
+.admin-modal-search select.admin-panel-key {
+  flex: 0 0 124px;
+  min-width: 124px;
+}
+
+.admin-modal-search input.admin-panel-key {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .admin-search-results {
@@ -203,5 +213,14 @@ html[data-theme="light"] .content-card {
   .content-shell {
     width: min(1380px, calc(100vw - 1.4rem));
     padding-top: 0.95rem;
+  }
+
+  .admin-modal-search {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .admin-modal-search select.admin-panel-key {
+    min-width: 0;
   }
 }
