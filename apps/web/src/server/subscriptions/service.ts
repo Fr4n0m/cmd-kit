@@ -19,6 +19,15 @@ function nowIso() {
   return new Date().toISOString();
 }
 
+const VERIFY_RESEND_COOLDOWN_MS = 5 * 60 * 1000;
+
+function isWithinCooldown(isoDate?: string) {
+  if (!isoDate) return false;
+  const ts = Date.parse(isoDate);
+  if (Number.isNaN(ts)) return false;
+  return Date.now() - ts < VERIFY_RESEND_COOLDOWN_MS;
+}
+
 function buildVerifyUrl(rawToken: string) {
   return `${env.appBaseUrl}/api/subscriptions/verify?token=${encodeURIComponent(rawToken)}`;
 }
@@ -31,6 +40,16 @@ export async function subscribe(input: unknown, meta: { ip: string; userAgent: s
   const payload = subscribeInputSchema.parse(input);
   const email = normalizeEmail(payload.email);
   const current = await repo.findByEmail(email);
+
+  // Security/privacy: do not alter already active subscriptions from public form.
+  if (current?.status === "active") {
+    return { ok: true, state: "already_active" as const };
+  }
+
+  // Anti-abuse: avoid repeated verification email spam for pending entries.
+  if (current?.status === "pending" && isWithinCooldown(current.updatedAt)) {
+    return { ok: true, state: "cooldown" as const };
+  }
 
   const verifyRaw = createRawToken();
   const unsubscribeRaw = createRawToken();
@@ -64,7 +83,7 @@ export async function subscribe(input: unknown, meta: { ip: string; userAgent: s
     unsubscribeUrl: buildUnsubscribeUrl(unsubscribeRaw)
   });
 
-  return { ok: true };
+  return { ok: true, state: "verification_sent" as const };
 }
 
 export async function verifySubscription(input: unknown) {
