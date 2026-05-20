@@ -1,0 +1,16 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { AdminSubscriptionsPanel } from "@/components/admin/AdminSubscriptionsPanel";
+
+export const prerender = false;
+---
+
+<BaseLayout locale="en" title="Cmd+kit | Admin subscriptions" description="Admin subscriptions panel">
+  <main id="main-content" class="content-shell">
+    <section class="content-card">
+      <h1>Subscriptions admin</h1>
+      <p>Manage subscriber status, cleanup records, and trigger resource notifications.</p>
+      <AdminSubscriptionsPanel client:load />
+    </section>
+  </main>
+</BaseLayout>

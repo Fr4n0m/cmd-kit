@@ -8,10 +8,20 @@ const envSchema = z.object({
   SMTP_PASS: z.string().min(1).optional(),
   SMTP_FROM: z.string().min(1).optional(),
   SUBSCRIPTION_TOKEN_SECRET: z.string().min(16).default("dev-subscription-token-secret"),
-  ADMIN_API_KEY: z.string().min(16).optional()
+  ADMIN_API_KEY: z.string().min(16).optional(),
+  ADMIN_ALLOWED_EMAILS: z.string().optional(),
+  SUPABASE_URL: z.string().url(),
+  SUPABASE_ANON_KEY: z.string().min(1),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional()
 });
 
 const parsed = envSchema.parse(process.env);
+const adminAllowedEmails = (parsed.ADMIN_ALLOWED_EMAILS ?? "")
+  .split(",")
+  .map((entry) => entry.trim().toLowerCase())
+  .filter(Boolean);
 
 export const env = {
   appBaseUrl: parsed.APP_BASE_URL ?? "http://localhost:4321",
@@ -21,7 +31,13 @@ export const env = {
   smtpPass: parsed.SMTP_PASS,
   smtpFrom: parsed.SMTP_FROM,
   tokenSecret: parsed.SUBSCRIPTION_TOKEN_SECRET,
-  adminApiKey: parsed.ADMIN_API_KEY
+  adminApiKey: parsed.ADMIN_API_KEY,
+  adminAllowedEmails,
+  supabaseUrl: parsed.SUPABASE_URL,
+  supabaseAnonKey: parsed.SUPABASE_ANON_KEY,
+  supabaseServiceRoleKey: parsed.SUPABASE_SERVICE_ROLE_KEY,
+  publicSupabaseUrl: parsed.PUBLIC_SUPABASE_URL ?? parsed.SUPABASE_URL,
+  publicSupabaseAnonKey: parsed.PUBLIC_SUPABASE_ANON_KEY ?? parsed.SUPABASE_ANON_KEY
 };
 
 export function hasSmtpConfig() {

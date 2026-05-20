@@ -12,7 +12,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
   try {
     const body = await request.json();
-    const result = unsubscribe(body);
+    const result = await unsubscribe(body);
     if (!result.ok) {
       return new Response(JSON.stringify({ ok: false, error: "invalid_token" }), { status: 400 });
     }
@@ -28,3 +28,4 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return new Response(JSON.stringify({ ok: false, error: "unknown_error" }), { status: 500 });
   }
 };
+

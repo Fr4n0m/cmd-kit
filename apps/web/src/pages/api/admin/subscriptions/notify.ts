@@ -6,7 +6,7 @@ import { guardAdmin, unauthorized } from "../auth";
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
-  if (!guardAdmin(request)) {
+  if (!(await guardAdmin(request))) {
     return unauthorized();
   }
 
@@ -25,3 +25,4 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ ok: false, error: "unknown_error" }), { status: 500 });
   }
 };
+

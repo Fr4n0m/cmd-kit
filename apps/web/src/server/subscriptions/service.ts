@@ -30,7 +30,7 @@ function buildUnsubscribeUrl(rawToken: string) {
 export async function subscribe(input: unknown, meta: { ip: string; userAgent: string }) {
   const payload = subscribeInputSchema.parse(input);
   const email = normalizeEmail(payload.email);
-  const current = repo.findByEmail(email);
+  const current = await repo.findByEmail(email);
 
   const verifyRaw = createRawToken();
   const unsubscribeRaw = createRawToken();
@@ -56,7 +56,7 @@ export async function subscribe(input: unknown, meta: { ip: string; userAgent: s
     lastNotifiedResourceId: current?.lastNotifiedResourceId
   };
 
-  repo.upsert(next);
+  await repo.upsert(next);
   await sendVerificationEmail({ email, locale: payload.locale, verifyUrl: buildVerifyUrl(verifyRaw) });
 
   return { ok: true };
@@ -65,7 +65,7 @@ export async function subscribe(input: unknown, meta: { ip: string; userAgent: s
 export async function verifySubscription(input: unknown) {
   const payload = verifyInputSchema.parse(input);
   const tokenHash = hashToken(payload.token, env.tokenSecret);
-  const current = repo.findByVerifyTokenHash(tokenHash);
+  const current = await repo.findByVerifyTokenHash(tokenHash);
   if (!current) {
     return { ok: false as const };
   }
@@ -81,7 +81,7 @@ export async function verifySubscription(input: unknown) {
     updatedAt: nowIso()
   };
 
-  repo.upsert(updated);
+  await repo.upsert(updated);
   await sendWelcomeEmail({
     email: updated.email,
     locale: updated.locale,
@@ -91,22 +91,22 @@ export async function verifySubscription(input: unknown) {
   return { ok: true as const, alreadyActive: false };
 }
 
-export function getUnsubscribePreview(input: unknown) {
+export async function getUnsubscribePreview(input: unknown) {
   const payload = unsubscribeInputSchema.parse(input);
   const tokenHash = hashToken(payload.token, env.tokenSecret);
-  const current = repo.findByUnsubscribeTokenHash(tokenHash);
+  const current = await repo.findByUnsubscribeTokenHash(tokenHash);
   return { exists: Boolean(current), email: current?.email ?? null };
 }
 
-export function unsubscribe(input: unknown) {
+export async function unsubscribe(input: unknown) {
   const payload = unsubscribeInputSchema.parse(input);
   const tokenHash = hashToken(payload.token, env.tokenSecret);
-  const current = repo.findByUnsubscribeTokenHash(tokenHash);
+  const current = await repo.findByUnsubscribeTokenHash(tokenHash);
   if (!current) {
     return { ok: false as const };
   }
 
-  repo.upsert({
+  await repo.upsert({
     ...current,
     status: "unsubscribed",
     unsubscribedAt: nowIso(),
@@ -116,30 +116,30 @@ export function unsubscribe(input: unknown) {
   return { ok: true as const };
 }
 
-export function listSubscriptions() {
+export async function listSubscriptions() {
   return repo.listAll();
 }
 
-export function adminUpdateStatus(input: unknown) {
+export async function adminUpdateStatus(input: unknown) {
   const payload = adminUpdateSubscriptionSchema.parse(input);
   const email = normalizeEmail(payload.email);
-  const current = repo.findByEmail(email);
+  const current = await repo.findByEmail(email);
   if (!current) {
     return { ok: false as const };
   }
 
-  repo.upsert({ ...current, status: payload.status, updatedAt: nowIso() });
+  await repo.upsert({ ...current, status: payload.status, updatedAt: nowIso() });
   return { ok: true as const };
 }
 
-export function adminDelete(email: string) {
-  repo.remove(normalizeEmail(email));
+export async function adminDelete(email: string) {
+  await repo.remove(normalizeEmail(email));
   return { ok: true as const };
 }
 
 export async function notifyPublishedResource(input: unknown) {
   const payload = publishResourceSchema.parse(input);
-  const active = repo.listAll().filter((entry) => entry.status === "active");
+  const active = (await repo.listAll()).filter((entry) => entry.status === "active");
 
   let sent = 0;
   for (const subscription of active) {
@@ -159,7 +159,7 @@ export async function notifyPublishedResource(input: unknown) {
       unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken)
     });
 
-    repo.upsert({
+    await repo.upsert({
       ...subscription,
       unsubscribeTokenHash,
       lastNotifiedResourceId: payload.id,
