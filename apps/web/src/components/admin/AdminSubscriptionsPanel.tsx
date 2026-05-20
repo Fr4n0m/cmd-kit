@@ -206,8 +206,9 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
     if (supabase) {
       await supabase.auth.signOut();
     }
+    setAccessToken(null);
     setItems([]);
-    sileo.success({ title: "Sesión cerrada" });
+    window.location.assign("/admin");
   }
 
   return (
