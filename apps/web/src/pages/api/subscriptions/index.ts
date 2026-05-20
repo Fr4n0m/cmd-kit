@@ -23,6 +23,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     if (error instanceof ZodError) {
       return new Response(JSON.stringify({ ok: false, error: "invalid_payload" }), { status: 400 });
     }
-    return new Response(JSON.stringify({ ok: true, state: "verification_sent" }), { status: 200 });
+    console.error("[subscriptions] subscribe failed", {
+      message: error instanceof Error ? error.message : "unknown_error"
+    });
+    return new Response(JSON.stringify({ ok: false, error: "subscription_failed" }), {
+      status: 500,
+      headers: { "content-type": "application/json" }
+    });
   }
 };
