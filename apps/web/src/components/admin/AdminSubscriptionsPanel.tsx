@@ -87,11 +87,6 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
 
   async function requestMagicLink() {
     await sileo.promise(
-      Promise.resolve().then(async () => {
-        if (!supabase) {
-          throw new Error("missing_public_supabase_env");
-        }
-      }).then(() =>
       fetch("/api/admin/auth/request-link", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -101,7 +96,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
           throw new Error("auth_failed");
         }
         return response.json();
-      })),
+      }),
       {
         loading: { title: "Enviando", description: "Generando enlace de acceso..." },
         success: { title: "Revisa email", description: "Abre el magic link para entrar al panel." },
