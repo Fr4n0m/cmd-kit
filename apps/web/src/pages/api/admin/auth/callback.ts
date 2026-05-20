@@ -8,17 +8,17 @@ export const prerender = false;
 const ALLOWED_OTP_TYPES = new Set(["magiclink", "email", "recovery", "invite", "email_change"]);
 
 function sanitizeNextPath(value: string) {
-  if (!value.startsWith("/")) return "/admin/subscriptions";
-  if (value.startsWith("//")) return "/admin/subscriptions";
-  if (!value.startsWith("/admin")) return "/admin/subscriptions";
-  return value.split("#")[0] || "/admin/subscriptions";
+  if (!value.startsWith("/")) return "/admin";
+  if (value.startsWith("//")) return "/admin";
+  if (value !== "/admin") return "/admin";
+  return "/admin";
 }
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
   const code = url.searchParams.get("code");
   const tokenHash = url.searchParams.get("token_hash");
   const type = url.searchParams.get("type");
-  const next = sanitizeNextPath(url.searchParams.get("next") ?? "/admin/subscriptions");
+  const next = sanitizeNextPath(url.searchParams.get("next") ?? "/admin");
 
   let accessToken = "";
 

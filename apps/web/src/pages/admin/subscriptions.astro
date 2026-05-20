@@ -1,22 +1,4 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { AdminSubscriptionsPanel } from "@/components/admin/AdminSubscriptionsPanel";
-import { guardAdmin } from "@/pages/api/admin/auth";
-
 export const prerender = false;
-
-const isAdmin = await guardAdmin(Astro.request);
-if (!isAdmin) {
-  return Astro.redirect("/admin", 302);
-}
+return Astro.redirect("/admin", 302);
 ---
-
-<BaseLayout locale="en" title="Cmd+kit | Admin subscriptions" description="Admin subscriptions panel" showFooter={false}>
-  <main id="main-content" class="content-shell">
-    <section class="content-card">
-      <h1>Subscriptions admin</h1>
-      <p>Manage subscriber status, cleanup records, and trigger resource notifications.</p>
-      <AdminSubscriptionsPanel client:load />
-    </section>
-  </main>
-</BaseLayout>

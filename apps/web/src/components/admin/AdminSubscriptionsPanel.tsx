@@ -69,7 +69,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         }
 
         if (window.location.pathname === "/admin") {
-          window.location.assign("/admin/subscriptions");
+          window.location.assign("/admin");
         }
       })
       .catch(() => {

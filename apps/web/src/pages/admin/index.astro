@@ -6,17 +6,24 @@ import { guardAdmin } from "@/pages/api/admin/auth";
 export const prerender = false;
 
 const isAdmin = await guardAdmin(Astro.request);
-if (isAdmin) {
-  return Astro.redirect("/admin/subscriptions");
-}
 ---
 
 <BaseLayout locale="en" title="Cmd+kit | Admin access" description="Admin access via email magic link" showFooter={false}>
   <main id="main-content" class="content-shell">
     <section class="content-card">
-      <h1>Admin access</h1>
-      <p>Enter your admin email to receive a secure magic link.</p>
-      <AdminSubscriptionsPanel client:load mode="gate" />
+      {isAdmin ? (
+        <>
+          <h1>Subscriptions admin</h1>
+          <p>Manage subscriber status, cleanup records, and trigger resource notifications.</p>
+          <AdminSubscriptionsPanel client:load mode="full" />
+        </>
+      ) : (
+        <>
+          <h1>Admin access</h1>
+          <p>Enter your admin email to receive a secure magic link.</p>
+          <AdminSubscriptionsPanel client:load mode="gate" />
+        </>
+      )}
     </section>
   </main>
 </BaseLayout>
