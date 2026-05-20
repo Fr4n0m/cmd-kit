@@ -1,0 +1,50 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { UnsubscribeConfirm } from "@/components/subscription/UnsubscribeConfirm";
+import { defaultLocale, secondaryLocales, type Locale } from "@/i18n/site";
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...secondaryLocales.map((locale) => ({
+      params: { locale }
+    }))
+  ];
+}
+
+export const prerender = false;
+
+const locale = (Astro.params.locale as Locale | undefined) ?? defaultLocale;
+const token = Astro.url.searchParams.get("token") ?? "";
+const copy = locale === "es"
+  ? {
+      title: "Cancelar suscripción",
+      description: "Puedes dejar de recibir emails cuando quieras.",
+      invalid: "Token de baja no válido o caducado.",
+      note: "Esta acción solo afecta a las notificaciones por email de Cmd+kit."
+    }
+  : {
+      title: "Unsubscribe",
+      description: "You can stop email updates at any time.",
+      invalid: "Invalid or expired unsubscribe token.",
+      note: "This action only affects Cmd+kit email updates."
+    };
+---
+
+<BaseLayout locale={locale} title={`Cmd+kit | ${copy.title}`} description={copy.description}>
+  <main id="main-content" class="content-shell unsubscribe-shell">
+    <section class="content-card unsubscribe-card">
+      <p class="unsubscribe-kicker">Cmd+kit updates</p>
+      <h1 class="unsubscribe-title">{copy.title}</h1>
+      <p class="unsubscribe-copy">{copy.description}</p>
+      {token ? (
+        <>
+          <UnsubscribeConfirm client:load token={token} locale={locale} />
+          <p class="unsubscribe-alert">{copy.note}</p>
+        </>
+      ) : (
+        <p class="unsubscribe-alert">{copy.invalid}</p>
+      )}
+    </section>
+  </main>
+</BaseLayout>

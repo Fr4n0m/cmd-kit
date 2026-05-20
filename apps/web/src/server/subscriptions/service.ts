@@ -1,6 +1,7 @@
 import { env } from "../env";
 import {
   adminUpdateSubscriptionSchema,
+  type Locale,
   publishResourceSchema,
   subscribeInputSchema,
   type SubscribeInput,
@@ -32,8 +33,9 @@ function buildVerifyUrl(rawToken: string) {
   return `${env.appBaseUrl}/api/subscriptions/verify?token=${encodeURIComponent(rawToken)}`;
 }
 
-function buildUnsubscribeUrl(rawToken: string) {
-  return `${env.appBaseUrl}/unsubscribe?token=${encodeURIComponent(rawToken)}`;
+function buildUnsubscribeUrl(rawToken: string, locale: Locale) {
+  const basePath = locale === "es" ? "/es/unsubscribe" : "/unsubscribe";
+  return `${env.appBaseUrl}${basePath}?token=${encodeURIComponent(rawToken)}`;
 }
 
 export async function subscribe(input: unknown, meta: { ip: string; userAgent: string }) {
@@ -80,7 +82,7 @@ export async function subscribe(input: unknown, meta: { ip: string; userAgent: s
     email,
     locale: payload.locale,
     verifyUrl: buildVerifyUrl(verifyRaw),
-    unsubscribeUrl: buildUnsubscribeUrl(unsubscribeRaw)
+    unsubscribeUrl: buildUnsubscribeUrl(unsubscribeRaw, payload.locale)
   });
 
   return { ok: true, state: "verification_sent" as const };
@@ -109,7 +111,7 @@ export async function verifySubscription(input: unknown) {
   await sendWelcomeEmail({
     email: updated.email,
     locale: updated.locale,
-    unsubscribeUrl: buildUnsubscribeUrl(payload.token)
+    unsubscribeUrl: buildUnsubscribeUrl(payload.token, updated.locale)
   });
 
   return { ok: true as const, alreadyActive: false };
@@ -180,7 +182,7 @@ export async function notifyPublishedResource(input: unknown) {
       title: payload.title,
       summary: payload.summary,
       url: payload.url,
-      unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken)
+      unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale)
     });
 
     await repo.upsert({

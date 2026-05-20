@@ -5,13 +5,28 @@ import { UnsubscribeConfirm } from "@/components/subscription/UnsubscribeConfirm
 export const prerender = false;
 
 const token = Astro.url.searchParams.get("token") ?? "";
+const copy = {
+  title: "Unsubscribe",
+  description: "You can stop email updates at any time.",
+  invalid: "Invalid or expired unsubscribe token.",
+  note: "This action only affects Cmd+kit email updates."
+};
 ---
 
 <BaseLayout locale="en" title="Cmd+kit | Unsubscribe" description="Unsubscribe confirmation">
-  <main id="main-content" class="content-shell">
-    <section class="content-card">
-      <h1>Unsubscribe</h1>
-      {token ? <UnsubscribeConfirm client:load token={token} locale="en" /> : <p>Invalid token</p>}
+  <main id="main-content" class="content-shell unsubscribe-shell">
+    <section class="content-card unsubscribe-card">
+      <p class="unsubscribe-kicker">Cmd+kit updates</p>
+      <h1 class="unsubscribe-title">{copy.title}</h1>
+      <p class="unsubscribe-copy">{copy.description}</p>
+      {token ? (
+        <>
+          <UnsubscribeConfirm client:load token={token} locale="en" />
+          <p class="unsubscribe-alert">{copy.note}</p>
+        </>
+      ) : (
+        <p class="unsubscribe-alert">{copy.invalid}</p>
+      )}
     </section>
   </main>
 </BaseLayout>

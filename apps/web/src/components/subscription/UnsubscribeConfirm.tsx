@@ -6,6 +6,7 @@ export function UnsubscribeConfirm({ token, locale }: Props) {
   const copy = locale === "es"
     ? {
         button: "Confirmar baja",
+        back: "Volver al inicio",
         loadingTitle: "Procesando",
         loadingDescription: "Tramitando la baja...",
         successTitle: "Baja hecha",
@@ -15,6 +16,7 @@ export function UnsubscribeConfirm({ token, locale }: Props) {
       }
     : {
         button: "Confirm unsubscribe",
+        back: "Back to home",
         loadingTitle: "Processing",
         loadingDescription: "Handling unsubscribe...",
         successTitle: "Unsubscribed",
@@ -46,8 +48,13 @@ export function UnsubscribeConfirm({ token, locale }: Props) {
   }
 
   return (
-    <button className="subscription-submit" type="button" onClick={onConfirm}>
-      {copy.button}
-    </button>
+    <div className="unsubscribe-actions">
+      <button className="subscription-submit" type="button" onClick={onConfirm}>
+        {copy.button}
+      </button>
+      <a className="ghost-button compact-button" href={locale === "es" ? "/es" : "/"}>
+        {copy.back}
+      </a>
+    </div>
   );
 }
