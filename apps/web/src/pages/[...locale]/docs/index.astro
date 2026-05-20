@@ -1,0 +1,9 @@
+---
+import { defaultLocale, localizedPath, type Locale } from "@/i18n/site";
+
+export const prerender = false;
+
+const locale = (Astro.params.locale as Locale | undefined) ?? defaultLocale;
+
+return Astro.redirect(localizedPath(locale, "/docs/getting-started"), 302);
+---
