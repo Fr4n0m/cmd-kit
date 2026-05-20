@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { sileo } from "sileo";
 
 type SubscriptionStatus = "pending" | "active" | "unsubscribed";
+type NotifyResource = { id: string; title: string; url: string; summary: string };
 
 type SubscriptionItem = {
   email: string;
@@ -25,6 +26,10 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
   const [email, setEmail] = useState("");
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [items, setItems] = useState<SubscriptionItem[]>([]);
+  const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
+  const [resources, setResources] = useState<NotifyResource[]>([
+    { id: "", title: "", url: "", summary: "" }
+  ]);
 
   useEffect(() => {
     const hash = window.location.hash.startsWith("#")
@@ -175,18 +180,27 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
   }
 
   async function sendNotify() {
-    const id = window.prompt("Resource ID");
-    const title = window.prompt("Resource title");
-    const url = window.prompt("Resource URL");
-    if (!id || !title || !url) {
+    const cleanResources = resources
+      .map((entry) => ({
+        id: entry.id.trim(),
+        title: entry.title.trim(),
+        url: entry.url.trim(),
+        summary: entry.summary.trim()
+      }))
+      .filter((entry) => entry.id && entry.title && entry.url)
+      .map((entry) => ({
+        ...entry,
+        summary: entry.summary || undefined
+      }));
+    if (!cleanResources.length) {
+      sileo.error({ title: "Error envío", description: "Añade al menos un recurso válido." });
       return;
     }
-
     await sileo.promise(
       fetch("/api/admin/subscriptions/notify", {
         method: "POST",
         headers: authHeaders ?? { "content-type": "application/json" },
-        body: JSON.stringify({ id, title, url })
+        body: JSON.stringify({ resources: cleanResources })
       }).then(async (response) => {
         if (!response.ok) {
           throw new Error("Notify failed");
@@ -199,6 +213,20 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         error: () => ({ title: "Error envío", description: "No se pudieron enviar." })
       }
     );
+    setIsNotifyModalOpen(false);
+    setResources([{ id: "", title: "", url: "", summary: "" }]);
+  }
+
+  function updateResource(index: number, key: keyof NotifyResource, value: string) {
+    setResources((prev) => prev.map((item, itemIndex) => (itemIndex === index ? { ...item, [key]: value } : item)));
+  }
+
+  function addResourceRow() {
+    setResources((prev) => [...prev, { id: "", title: "", url: "", summary: "" }]);
+  }
+
+  function removeResourceRow(index: number) {
+    setResources((prev) => (prev.length === 1 ? prev : prev.filter((_, itemIndex) => itemIndex !== index)));
   }
 
   async function signOut() {
@@ -231,7 +259,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         <button className="ghost-button compact-button" type="button" onClick={loadItems}>
           Refresh list
         </button>
-        <button className="primary-button compact-button" type="button" onClick={sendNotify}>
+        <button className="primary-button compact-button" type="button" onClick={() => setIsNotifyModalOpen(true)}>
           Send notify
         </button>
         <button className="ghost-button compact-button" type="button" onClick={signOut}>
@@ -283,6 +311,63 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
           </tbody>
         </table>
       </div>
+      )}
+      {isNotifyModalOpen && (
+        <div className="admin-modal-backdrop" role="dialog" aria-modal="true">
+          <div className="admin-modal-card">
+            <div className="admin-modal-header">
+              <h2>Send notification</h2>
+              <button className="ghost-button compact-button" type="button" onClick={() => setIsNotifyModalOpen(false)}>
+                Close
+              </button>
+            </div>
+            <p className="content-paragraph">Add one or multiple resources. Subscribers receive one email per send.</p>
+            <div className="admin-modal-list">
+              {resources.map((resource, index) => (
+                <div key={`resource-${index}`} className="admin-resource-item">
+                  <input
+                    className="admin-panel-key"
+                    type="text"
+                    placeholder="Resource ID"
+                    value={resource.id}
+                    onChange={(event) => updateResource(index, "id", event.target.value)}
+                  />
+                  <input
+                    className="admin-panel-key"
+                    type="text"
+                    placeholder="Resource title"
+                    value={resource.title}
+                    onChange={(event) => updateResource(index, "title", event.target.value)}
+                  />
+                  <input
+                    className="admin-panel-key"
+                    type="url"
+                    placeholder="https://..."
+                    value={resource.url}
+                    onChange={(event) => updateResource(index, "url", event.target.value)}
+                  />
+                  <textarea
+                    className="admin-panel-key"
+                    placeholder="Summary (optional)"
+                    value={resource.summary}
+                    onChange={(event) => updateResource(index, "summary", event.target.value)}
+                  />
+                  <button className="ghost-button compact-button" type="button" onClick={() => removeResourceRow(index)}>
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="admin-modal-actions">
+              <button className="ghost-button compact-button" type="button" onClick={addResourceRow}>
+                Add resource
+              </button>
+              <button className="primary-button compact-button" type="button" onClick={sendNotify}>
+                Send now
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </section>
   );

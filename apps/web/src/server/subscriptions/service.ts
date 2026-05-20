@@ -2,6 +2,7 @@ import { env } from "../env";
 import {
   adminUpdateSubscriptionSchema,
   type Locale,
+  notifyResourcesSchema,
   publishResourceSchema,
   subscribeInputSchema,
   type SubscribeInput,
@@ -11,6 +12,7 @@ import {
 import { normalizeEmail, createRawToken, hashToken } from "./tokens";
 import * as repo from "./repository";
 import {
+  sendResourcesDigestEmail,
   sendResourcePublishedEmail,
   sendVerificationEmail,
   sendWelcomeEmail
@@ -164,31 +166,43 @@ export async function adminDelete(email: string) {
 }
 
 export async function notifyPublishedResource(input: unknown) {
-  const payload = publishResourceSchema.parse(input);
+  const payload = notifyResourcesSchema.parse(input);
+  const resources = payload.resources;
+  const dedupeId = resources.map((resource) => resource.id).sort().join("|");
   const active = (await repo.listAll()).filter((entry) => entry.status === "active");
 
   let sent = 0;
   for (const subscription of active) {
-    if (subscription.lastNotifiedResourceId === payload.id) {
+    if (subscription.lastNotifiedResourceId === dedupeId) {
       continue;
     }
 
     const rawUnsubscribeToken = createRawToken();
     const unsubscribeTokenHash = hashToken(rawUnsubscribeToken, env.tokenSecret);
 
-    await sendResourcePublishedEmail({
-      email: subscription.email,
-      locale: subscription.locale,
-      title: payload.title,
-      summary: payload.summary,
-      url: payload.url,
-      unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale)
-    });
+    if (resources.length === 1) {
+      const single = publishResourceSchema.parse(resources[0]);
+      await sendResourcePublishedEmail({
+        email: subscription.email,
+        locale: subscription.locale,
+        title: single.title,
+        summary: single.summary,
+        url: single.url,
+        unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale)
+      });
+    } else {
+      await sendResourcesDigestEmail({
+        email: subscription.email,
+        locale: subscription.locale,
+        resources,
+        unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale)
+      });
+    }
 
     await repo.upsert({
       ...subscription,
       unsubscribeTokenHash,
-      lastNotifiedResourceId: payload.id,
+      lastNotifiedResourceId: dedupeId,
       updatedAt: nowIso()
     });
     sent += 1;

@@ -4,6 +4,7 @@ import * as React from "react";
 import { env } from "../env";
 import type { Locale } from "./schemas";
 import NewResourceEmail from "./templates/NewResourceEmail";
+import NewResourcesDigestEmail from "./templates/NewResourcesDigestEmail";
 import VerifyEmail from "./templates/VerifyEmail";
 import WelcomeEmail from "./templates/WelcomeEmail";
 import { isSpanishEmailLocale } from "./locale";
@@ -75,6 +76,27 @@ export async function sendResourcePublishedEmail(params: {
       resourceTitle: params.title,
       resourceDescription: params.summary,
       resourceUrl: params.url,
+      locale: params.locale,
+      unsubscribeUrl: params.unsubscribeUrl,
+      recipientEmail: params.email
+    })
+  );
+  await sendMail({ to: params.email, subject, html });
+}
+
+export async function sendResourcesDigestEmail(params: {
+  email: string;
+  locale: Locale;
+  unsubscribeUrl: string;
+  resources: Array<{ id: string; title: string; url: string; summary?: string }>;
+}) {
+  const isEs = isSpanishEmailLocale(params.locale);
+  const subject = isEs
+    ? `Nuevos recursos (${params.resources.length})`
+    : `New resources (${params.resources.length})`;
+  const html = await render(
+    React.createElement(NewResourcesDigestEmail, {
+      resources: params.resources,
       locale: params.locale,
       unsubscribeUrl: params.unsubscribeUrl,
       recipientEmail: params.email

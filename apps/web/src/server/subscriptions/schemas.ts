@@ -32,6 +32,10 @@ export const publishResourceSchema = z.object({
   summary: z.string().max(800).optional()
 });
 
+export const notifyResourcesSchema = z.object({
+  resources: z.array(publishResourceSchema).min(1).max(20)
+});
+
 export type Source = z.infer<typeof sourceSchema>;
 export type Locale = z.infer<typeof localeSchema>;
 export type SubscriptionStatus = z.infer<typeof subscriptionStatusSchema>;
@@ -40,3 +44,4 @@ export type VerifyInput = z.infer<typeof verifyInputSchema>;
 export type UnsubscribeInput = z.infer<typeof unsubscribeInputSchema>;
 export type AdminUpdateSubscriptionInput = z.infer<typeof adminUpdateSubscriptionSchema>;
 export type PublishResourceInput = z.infer<typeof publishResourceSchema>;
+export type NotifyResourcesInput = z.infer<typeof notifyResourcesSchema>;
