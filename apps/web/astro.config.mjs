@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
 import react from "@astrojs/react";
+import node from "@astrojs/node";
 
 const productionSite = "https://cmd-kit.vercel.app";
 const site = productionSite;
@@ -13,6 +14,8 @@ const astroComponentSource = fileURLToPath(
 );
 
 export default defineConfig({
+  output: "server",
+  adapter: node({ mode: "standalone" }),
   integrations: [react()],
   site,
   vite: {

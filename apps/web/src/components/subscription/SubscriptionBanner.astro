@@ -1,0 +1,69 @@
+---
+import { SubscriptionForm } from "@/components/subscription/SubscriptionForm";
+import Icon from "@/components/Icon.astro";
+import type { Locale } from "@/i18n/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const copy =
+  locale === "es"
+    ? {
+        title: "Suscríbete a novedades",
+        body: "Recibe nuevos recursos y lanzamientos con confirmación doble opt-in.",
+        legal: "Puedes darte de baja en cualquier momento con enlace seguro.",
+        pillA: "Nuevos recursos",
+        pillB: "Sin spam",
+        pillC: "Doble verificación",
+        statLabel: "Frecuencia",
+        statValue: "Solo lanzamientos",
+        sideTitle: "Email",
+        sideHint: "Confirmas por email antes de activar avisos."
+      }
+    : {
+        title: "Subscribe to updates",
+        body: "Get new resources and releases with double opt-in confirmation.",
+        legal: "You can unsubscribe anytime with a secure link.",
+        pillA: "New resources",
+        pillB: "No spam",
+        pillC: "Double opt-in",
+        statLabel: "Frequency",
+        statValue: "Release-only",
+        sideTitle: "Email",
+        sideHint: "You confirm by email before updates are enabled."
+      };
+---
+
+<section id="subscribe-banner" class="subscribe-banner" aria-label={copy.title}>
+  <div class="subscribe-banner-inner">
+    <div class="subscribe-banner-aura" aria-hidden="true"></div>
+    <div class="subscribe-banner-copy">
+      <p class="subscribe-banner-kicker">
+        <Icon className="subscribe-banner-kicker-icon" name="spark" />
+        <span>Cmd+kit updates</span>
+      </p>
+      <h2>{copy.title}</h2>
+      <p>{copy.body}</p>
+      <div class="subscribe-banner-pills" aria-label={copy.title}>
+        <span class="subscribe-banner-pill">{copy.pillA}</span>
+        <span class="subscribe-banner-pill">{copy.pillB}</span>
+        <span class="subscribe-banner-pill">{copy.pillC}</span>
+      </div>
+      <div class="subscribe-banner-stat">
+        <span>{copy.statLabel}</span>
+        <strong>{copy.statValue}</strong>
+      </div>
+      <p class="subscribe-banner-legal">{copy.legal}</p>
+    </div>
+    <div class="subscribe-banner-form-wrap">
+      <div class="subscribe-banner-form-head">
+        <p>{copy.sideTitle}</p>
+        <span>{copy.sideHint}</span>
+      </div>
+      <SubscriptionForm client:load locale={locale} source="banner" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,283 @@
+.subscribe-banner {
+  margin: clamp(1.8rem, 5vh, 3.25rem) auto clamp(2.4rem, 6vh, 4rem);
+  width: min(1380px, calc(100vw - 2.5rem));
+}
+
+.subscribe-banner-inner {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  padding: 1.2rem;
+  border-radius: 1.15rem;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 120% at 0% 0%, rgba(53, 215, 255, 0.14), transparent 56%),
+    radial-gradient(100% 100% at 100% 100%, rgba(138, 242, 188, 0.12), transparent 54%),
+    linear-gradient(160deg, rgba(7, 14, 20, 0.97), rgba(10, 16, 23, 0.95));
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.24);
+}
+
+.subscribe-banner-aura {
+  position: absolute;
+  inset: -30% auto auto -16%;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(53, 215, 255, 0.24), rgba(53, 215, 255, 0));
+  pointer-events: none;
+}
+
+html[data-theme="light"] .subscribe-banner-inner {
+  background:
+    radial-gradient(120% 120% at 0% 0%, rgba(15, 166, 216, 0.18), transparent 56%),
+    radial-gradient(100% 100% at 100% 100%, rgba(52, 184, 131, 0.14), transparent 54%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 253, 0.98));
+  box-shadow: 0 20px 46px rgba(40, 64, 81, 0.12);
+}
+
+.subscribe-banner-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  width: fit-content;
+  padding: 0.28rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid rgba(53, 215, 255, 0.2);
+  background: rgba(53, 215, 255, 0.1);
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(205, 235, 248, 0.96);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+html[data-theme="light"] .subscribe-banner-kicker {
+  border-color: rgba(15, 166, 216, 0.25);
+  background: rgba(15, 166, 216, 0.1);
+  color: #0d6f95;
+}
+
+.subscribe-banner-kicker-icon {
+  width: 0.72rem;
+  height: 0.72rem;
+}
+
+.subscribe-banner-copy h2 {
+  margin: 0.44rem 0 0.28rem;
+  font-size: clamp(1.16rem, 1.75vw, 1.62rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.subscribe-banner-copy p {
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+.subscribe-banner-copy {
+  display: grid;
+  align-content: start;
+  gap: 0.62rem;
+}
+
+.subscribe-banner-pills {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.subscribe-banner-pill {
+  padding: 0.3rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 155, 174, 0.22);
+  background: rgba(129, 155, 174, 0.1);
+  font-size: 0.72rem;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.subscribe-banner-stat {
+  margin-top: 0.35rem;
+  display: inline-grid;
+  gap: 0.24rem;
+}
+
+.subscribe-banner-stat span {
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.subscribe-banner-stat strong {
+  font-size: 0.94rem;
+  color: var(--ink);
+}
+
+.subscribe-banner-legal {
+  margin-top: 0.18rem !important;
+  font-size: 0.86rem;
+  max-width: 42ch;
+}
+
+.subscribe-banner-form-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.72rem;
+  border: 1px solid rgba(129, 155, 174, 0.22);
+  border-radius: 0.95rem;
+  padding: 0.82rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    rgba(8, 13, 17, 0.76);
+}
+
+html[data-theme="light"] .subscribe-banner-form-wrap {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent),
+    rgba(255, 255, 255, 0.78);
+  border-color: rgba(83, 112, 136, 0.2);
+}
+
+.subscribe-banner-form-head {
+  margin-bottom: 0;
+  display: grid;
+  gap: 0.18rem;
+}
+
+.subscribe-banner-form-head p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.subscribe-banner-form-head span {
+  font-size: 0.79rem;
+  color: var(--ink-muted);
+}
+
+.subscribe-banner-form-wrap .subscription-form {
+  margin-top: 0;
+  max-width: none;
+  gap: 0.72rem;
+}
+
+@media (max-width: 880px) {
+  .subscribe-banner-inner {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .subscribe-banner-form-wrap {
+    padding: 0.9rem;
+  }
+
+  .subscription-submit {
+    max-width: none;
+    margin-left: 0;
+  }
+}
+
+.subscription-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.52rem;
+  max-width: 28rem;
+  flex: 1 1 auto;
+}
+
+.subscription-input {
+  border: 1px solid rgba(129, 155, 174, 0.34);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-strong);
+  padding: 0.56rem 0.74rem;
+  min-height: 2.55rem;
+}
+
+.subscription-input:focus-visible {
+  outline: 2px solid rgba(53, 215, 255, 0.45);
+  outline-offset: 1px;
+  border-color: rgba(53, 215, 255, 0.5);
+}
+
+html[data-theme="light"] .subscription-input {
+  border-color: rgba(83, 112, 136, 0.34);
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.subscription-terms {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.subscription-terms input[type="checkbox"] {
+  margin: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  flex: 0 0 auto;
+}
+
+.subscription-terms span {
+  display: inline-block;
+}
+
+.subscription-submit {
+  border: 1px solid rgba(53, 215, 255, 0.26);
+  border-radius: 0.9rem;
+  background: rgba(53, 215, 255, 0.1);
+  color: rgba(208, 232, 243, 0.95);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-size: 0.72rem;
+  padding: 0.62rem 1rem;
+  width: 100%;
+  max-width: none;
+  min-height: 2.35rem;
+  margin-left: 0;
+  margin-top: auto;
+  transition:
+    transform var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 26px rgba(7, 18, 26, 0.22);
+}
+
+.subscription-submit:hover {
+  transform: translateY(-1px);
+  background: rgba(53, 215, 255, 0.16);
+  border-color: rgba(53, 215, 255, 0.38);
+  color: #f5fcff;
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.18);
+}
+
+.subscription-submit:focus-visible {
+  outline: 2px solid rgba(147, 233, 255, 0.92);
+  outline-offset: 2px;
+}
+
+html[data-theme="light"] .subscription-submit {
+  background: rgba(15, 166, 216, 0.1);
+  border-color: rgba(15, 166, 216, 0.24);
+  color: #0d6f95;
+  box-shadow: 0 10px 22px rgba(40, 64, 81, 0.1);
+}
+
+html[data-theme="light"] .subscription-submit:hover {
+  background: rgba(15, 166, 216, 0.16);
+  border-color: rgba(15, 166, 216, 0.32);
+  color: #085f82;
+}

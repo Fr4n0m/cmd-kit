@@ -9,3 +9,10 @@ coverage
 docs/roadmap.md
 .env
 .env.*
+vscode/settings.json
+
+# Local agent files
+CLAUDE.md
+CLAUDE.local.md
+CLAUDE.*
+.claude/

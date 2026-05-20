@@ -6,6 +6,9 @@ import Icon from "@/components/Icon.astro";
 import MoonIcon from "@/components/icons/MoonIcon.astro";
 import SunIcon from "@/components/icons/SunIcon.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
+import SubscriptionBanner from "@/components/subscription/SubscriptionBanner.astro";
+import { GlobalToaster } from "@/components/subscription/GlobalToaster";
+import { SubscriptionQueryToasts } from "@/components/subscription/SubscriptionQueryToasts";
 import {
   defaultLocale,
   layoutCopy,
@@ -63,6 +66,11 @@ const localeSwitchHref = swapLocalePath(pathname, locale === "en" ? "es" : "en")
 const currentLanguageLabel = locale === "en" ? "EN" : "ES";
 const isDocsPage = pathname.startsWith("/docs") || pathname.startsWith("/es/docs");
 const isPlaygroundPage = pathname === "/playground" || pathname === "/es/playground";
+const showSubscriptionBanner =
+  pathname === "/" ||
+  pathname === "/es" ||
+  pathname === "/docs/getting-started" ||
+  pathname === "/es/docs/getting-started";
 const docsNavigation = isDocsPage ? getDocsNavigation(locale) : [];
 const themeScript = `(function(){const storageKey='cmd-kit-theme';const root=document.documentElement;const meta=document.querySelector('meta[name="theme-color"]');const emit=(theme)=>{window.dispatchEvent(new CustomEvent('cmd-kit-theme-change',{detail:{theme}}));};const isTheme=(value)=>value==='light'||value==='dark';const readStored=()=>{try{return localStorage.getItem(storageKey);}catch{return null;}};const writeStored=(theme)=>{try{localStorage.setItem(storageKey,theme);}catch{}};const apply=(theme)=>{const resolved=isTheme(theme)?theme:'dark';root.dataset.theme=resolved;root.style.colorScheme=resolved;if(meta){meta.setAttribute('content',resolved==='light'?'#f3f7fb':'#07111f');}emit(resolved);};const stored=readStored();const initial=isTheme(stored)?stored:'dark';apply(initial);window.__cmdKitTheme={apply,storageKey,readStored,writeStored};})();`;
 const themeToggleScript = `(function(){const root=document.documentElement;const api=window.__cmdKitTheme;if(!api){return;}const sync=()=>{const theme=root.dataset.theme==='light'?'light':'dark';document.querySelectorAll('[data-theme-toggle]').forEach((button)=>{button.setAttribute('aria-pressed',String(theme==='light'));button.setAttribute('data-theme-current',theme);});};const toggle=()=>{const next=root.dataset.theme==='light'?'dark':'light';api.apply(next);api.writeStored(next);sync();};document.addEventListener('click',(event)=>{const button=event.target instanceof Element?event.target.closest('[data-theme-toggle]'):null;if(button){toggle();}});sync();})();`;
@@ -127,6 +135,8 @@ function isCurrentPath(target: string) {
     <title>{title}</title>
   </head>
   <body>
+    <GlobalToaster client:load />
+    <SubscriptionQueryToasts client:load />
     <div class="page-aura" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">{copy.skipToContent}</a>
     <header class="topbar">
@@ -267,6 +277,7 @@ function isCurrentPath(target: string) {
       ) : null
     }
     <slot />
+    {showSubscriptionBanner ? <SubscriptionBanner locale={locale} /> : null}
     <SiteFooter locale={locale} />
     <script is:inline set:html={themeToggleScript} />
     <script is:inline set:html={menuScript} />

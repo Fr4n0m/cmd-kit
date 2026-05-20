@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { UnsubscribeConfirm } from "@/components/subscription/UnsubscribeConfirm";
+
+export const prerender = false;
+
+const token = Astro.url.searchParams.get("token") ?? "";
+---
+
+<BaseLayout locale="en" title="Cmd+kit | Unsubscribe" description="Unsubscribe confirmation">
+  <main id="main-content" class="content-shell">
+    <section class="content-card">
+      <h1>Unsubscribe</h1>
+      {token ? <UnsubscribeConfirm client:load token={token} locale="en" /> : <p>Invalid token</p>}
+    </section>
+  </main>
+</BaseLayout>

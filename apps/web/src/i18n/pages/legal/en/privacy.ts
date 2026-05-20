@@ -5,7 +5,7 @@ export const legalPrivacyEn: LegalPageCopy = {
   eyebrow: "Legal",
   heading: "Privacy Policy",
   lastUpdatedLabel: "Last updated",
-  lastUpdatedValue: "April 16, 2026",
+  lastUpdatedValue: "May 20, 2026",
   sections: [
     {
       id: "controller",
@@ -23,7 +23,7 @@ export const legalPrivacyEn: LegalPageCopy = {
         "<strong>Basic technical data:</strong> connection-level and infrastructure logs (for example IP address, user agent, and error traces), handled by hosting/CDN providers for security and operations.",
         "<strong>Local preferences:</strong> we store light/dark theme preference in browser <code>localStorage</code> (<code>cmd-kit-theme</code>).",
         "<strong>No user accounts:</strong> there is currently no sign-up/login or private app area.",
-        "<strong>No active forms:</strong> the site does not currently collect data through contact or support forms."
+        "<strong>Subscription form:</strong> if you subscribe, we process email, locale, consent metadata (timestamp, IP, user-agent, consent version), and token hashes for double opt-in and secure unsubscribe."
       ]
     },
     {
