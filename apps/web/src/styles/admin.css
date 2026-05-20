@@ -268,7 +268,15 @@ html[data-theme="light"] .content-card {
 .admin-modal-actions {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 0.65rem;
+}
+
+.admin-modal-actions-right {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 @media (max-width: 640px) {

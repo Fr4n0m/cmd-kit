@@ -51,6 +51,22 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
     setResources((prev) => prev.filter((_, itemIndex) => itemIndex !== index));
   }
 
+  function addAllVisibleResources() {
+    setResources((prev) => {
+      const next = [...prev];
+      for (const item of resourceResults) {
+        if (!next.some((resource) => resource.id === item.id)) {
+          next.push(item);
+        }
+      }
+      return next;
+    });
+  }
+
+  function clearResources() {
+    setResources([]);
+  }
+
   async function sendNotify() {
     const cleanResources = resources
       .map((entry) => ({
@@ -135,7 +151,9 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         onResourceQueryChange={setResourceQuery}
         onResourceLocaleChange={setResourceLocale}
         onAddResource={addResourceFromSearch}
+        onAddAllResources={addAllVisibleResources}
         onRemoveResource={removeResourceRow}
+        onClearResources={clearResources}
         onSend={sendNotify}
       />
     </section>

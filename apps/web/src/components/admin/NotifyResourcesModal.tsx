@@ -12,7 +12,9 @@ type NotifyResourcesModalProps = {
   onResourceQueryChange: (value: string) => void;
   onResourceLocaleChange: (value: "en" | "es") => void;
   onAddResource: (item: CatalogResource) => void;
+  onAddAllResources: () => void;
   onRemoveResource: (index: number) => void;
+  onClearResources: () => void;
   onSend: () => void;
 };
 
@@ -27,7 +29,9 @@ export function NotifyResourcesModal({
   onResourceQueryChange,
   onResourceLocaleChange,
   onAddResource,
+  onAddAllResources,
   onRemoveResource,
+  onClearResources,
   onSend
 }: NotifyResourcesModalProps) {
   if (!isOpen) {
@@ -110,10 +114,20 @@ export function NotifyResourcesModal({
         </div>
         <div className="admin-modal-actions">
           <span className="content-paragraph">{resources.length} selected packages</span>
-          <button className="primary-button compact-button" type="button" onClick={onSend}>
-            <IconSend2 size={16} />
-            Send now
-          </button>
+          <div className="admin-modal-actions-right">
+            <button className="ghost-button compact-button" type="button" onClick={onAddAllResources}>
+              <IconPlus size={16} />
+              Select all
+            </button>
+            <button className="ghost-button compact-button" type="button" onClick={onClearResources}>
+              <IconTrash size={16} />
+              Clear
+            </button>
+            <button className="primary-button compact-button" type="button" onClick={onSend}>
+              <IconSend2 size={16} />
+              Send now
+            </button>
+          </div>
         </div>
       </div>
     </div>
