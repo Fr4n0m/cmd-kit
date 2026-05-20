@@ -27,6 +27,15 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
   const [items, setItems] = useState<SubscriptionItem[]>([]);
 
   useEffect(() => {
+    const hash = window.location.hash.startsWith("#")
+      ? new URLSearchParams(window.location.hash.slice(1))
+      : null;
+    const tokenFromHash = hash?.get("access_token");
+    if (tokenFromHash) {
+      setAccessToken(tokenFromHash);
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+
     if (!supabase) {
       return;
     }
