@@ -45,8 +45,8 @@ export default function EmailLayout({
   sigName,
   children
 }: Props) {
-  const brandIcon = `${siteBaseUrl}/assets/brand/cmd-kit-logo-light.png`;
-  const avatarUrl = `${siteBaseUrl}/assets/lanyard/memoji-avatar.png`;
+  const brandIcon = `${siteBaseUrl}/brand/cmd-kit-logo-light.png`;
+  const avatarUrl = `${siteBaseUrl}/web-app-manifest-192x192.png`;
 
   return (
     <Html lang={locale}>
