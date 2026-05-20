@@ -17,19 +17,19 @@ export default function NewResourcesDigestEmail({ resources, locale, unsubscribe
   const siteBaseUrl = buildSiteBaseUrl(firstUrl);
   const copy = isEs
     ? {
-        preview: `Nuevos recursos (${resources.length})`,
-        label: "Resumen",
-        heading: "Nuevos recursos publicados",
-        cta: "Abrir recurso",
+        preview: `Nuevas versiones npm (${resources.length})`,
+        label: "NPM digest",
+        heading: "Nuevas versiones publicadas en npm",
+        cta: "Ver en npm",
         unsub: "Cancelar suscripción",
         footer: "Fran · Cmd+kit",
         footerNote: `Este mensaje se envió a ${recipientEmail} por un sistema automático.`
       }
     : {
-        preview: `New resources (${resources.length})`,
-        label: "Digest",
-        heading: "New resources published",
-        cta: "Open resource",
+        preview: `New npm releases (${resources.length})`,
+        label: "NPM digest",
+        heading: "New versions published on npm",
+        cta: "View on npm",
         unsub: "Unsubscribe",
         footer: "Fran · Cmd+kit",
         footerNote: `This message was sent to ${recipientEmail} by an automated system.`

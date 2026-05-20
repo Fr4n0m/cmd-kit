@@ -70,7 +70,7 @@ export async function sendResourcePublishedEmail(params: {
   summary?: string;
 }) {
   const isEs = isSpanishEmailLocale(params.locale);
-  const subject = isEs ? `Nuevo recurso: ${params.title}` : `New resource: ${params.title}`;
+  const subject = isEs ? `Nueva versión npm: ${params.title}` : `New npm release: ${params.title}`;
   const html = await render(
     React.createElement(NewResourceEmail, {
       resourceTitle: params.title,
@@ -92,8 +92,8 @@ export async function sendResourcesDigestEmail(params: {
 }) {
   const isEs = isSpanishEmailLocale(params.locale);
   const subject = isEs
-    ? `Nuevos recursos (${params.resources.length})`
-    : `New resources (${params.resources.length})`;
+    ? `Nuevas versiones npm (${params.resources.length})`
+    : `New npm releases (${params.resources.length})`;
   const html = await render(
     React.createElement(NewResourcesDigestEmail, {
       resources: params.resources,

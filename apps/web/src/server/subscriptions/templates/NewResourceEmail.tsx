@@ -24,19 +24,19 @@ export default function NewResourceEmail({
   const siteBaseUrl = buildSiteBaseUrl(resourceUrl);
   const copy = isEs
     ? {
-        preview: `Nuevo recurso: ${resourceTitle}`,
-        label: "Nuevo recurso",
-        heading: "Nuevo recurso publicado en Cmd+kit",
-        cta: "Abrir recurso",
+        preview: `Nueva versión npm: ${resourceTitle}`,
+        label: "NPM release",
+        heading: "Nueva versión publicada en npm",
+        cta: "Ver en npm",
         unsub: "Cancelar suscripción",
         footer: "Fran · Cmd+kit",
         footerNote: `Este mensaje se envió a ${recipientEmail} por un sistema automático.`
       }
     : {
-        preview: `New resource: ${resourceTitle}`,
-        label: "New resource",
-        heading: "New resource published on Cmd+kit",
-        cta: "Open resource",
+        preview: `New npm release: ${resourceTitle}`,
+        label: "NPM release",
+        heading: "New version published on npm",
+        cta: "View on npm",
         unsub: "Unsubscribe",
         footer: "Fran · Cmd+kit",
         footerNote: `This message was sent to ${recipientEmail} by an automated system.`

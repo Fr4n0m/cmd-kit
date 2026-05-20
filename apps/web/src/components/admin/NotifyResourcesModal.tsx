@@ -38,7 +38,7 @@ export function NotifyResourcesModal({
     <div className="admin-modal-backdrop" role="dialog" aria-modal="true">
       <div className="admin-modal-card">
         <div className="admin-modal-header">
-          <h2>Send notification</h2>
+          <h2>Send npm release notification</h2>
           <button
             className="ghost-button compact-button icon-only-button"
             type="button"
@@ -49,7 +49,7 @@ export function NotifyResourcesModal({
           </button>
         </div>
         <p className="content-paragraph">
-          Add one or multiple resources. Subscribers receive one email per send.
+          Select one or multiple npm package releases. Subscribers receive one email per send.
         </p>
         <div className="admin-modal-search">
           <select
@@ -57,13 +57,13 @@ export function NotifyResourcesModal({
             value={resourceLocale}
             onChange={(event) => onResourceLocaleChange(event.target.value as "en" | "es")}
           >
-            <option value="en">Catalog EN</option>
-            <option value="es">Catalog ES</option>
+            <option value="en">NPM catalog EN</option>
+            <option value="es">NPM catálogo ES</option>
           </select>
           <input
             className="admin-panel-key"
             type="text"
-            placeholder="Search resources..."
+            placeholder="Search npm packages..."
             value={resourceQuery}
             onChange={(event) => onResourceQueryChange(event.target.value)}
           />
@@ -71,7 +71,7 @@ export function NotifyResourcesModal({
         <div className="admin-search-results">
           {resourceSearchBusy ? <p className="content-paragraph">Searching...</p> : null}
           {!resourceSearchBusy && resourceResults.length === 0 ? (
-            <p className="content-paragraph">No resources found.</p>
+            <p className="content-paragraph">No npm packages found.</p>
           ) : null}
           {!resourceSearchBusy &&
             resourceResults.map((item) => (
@@ -109,7 +109,7 @@ export function NotifyResourcesModal({
           ))}
         </div>
         <div className="admin-modal-actions">
-          <span className="content-paragraph">{resources.length} selected</span>
+          <span className="content-paragraph">{resources.length} selected packages</span>
           <button className="primary-button compact-button" type="button" onClick={onSend}>
             <IconSend2 size={16} />
             Send now

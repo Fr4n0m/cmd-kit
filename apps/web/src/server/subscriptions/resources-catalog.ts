@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/site";
+import { readFileSync } from "node:fs";
 
 export type CatalogResource = {
   id: string;
@@ -7,71 +8,42 @@ export type CatalogResource = {
   summary: string;
 };
 
+type PackageMeta = {
+  pkg: string;
+  version: string;
+};
+
+function readPackageMeta(relativePath: string, pkg: string): PackageMeta {
+  try {
+    const raw = readFileSync(new URL(relativePath, import.meta.url), "utf8");
+    const parsed = JSON.parse(raw) as { version?: string };
+    return { pkg, version: parsed.version ?? "latest" };
+  } catch {
+    return { pkg, version: "latest" };
+  }
+}
+
+const packageMeta = [
+  readPackageMeta("../../../../../packages/core/package.json", "@cmd-kit/core"),
+  readPackageMeta("../../../../../packages/react/package.json", "@cmd-kit/react"),
+  readPackageMeta("../../../../../packages/vue/package.json", "@cmd-kit/vue"),
+  readPackageMeta("../../../../../packages/preact/package.json", "@cmd-kit/preact"),
+  readPackageMeta("../../../../../packages/astro/package.json", "@cmd-kit/astro")
+];
+
 const resourcesByLocale: Record<Locale, CatalogResource[]> = {
-  es: [
-    {
-      id: "resource:playground",
-      title: "Playground cmd+kit",
-      url: "https://cmd-kit.vercel.app/es/playground",
-      summary: "Prueba configuración, comandos y exportes en vivo."
-    },
-    {
-      id: "resource:dev-crate",
-      title: "Dev Crate",
-      url: "https://dev-crate-kappa.vercel.app/",
-      summary: "Repositorio de recursos y utilidades para desarrollo."
-    },
-    {
-      id: "resource:contract-kit",
-      title: "Contract Kit",
-      url: "https://ngx-contract-kit-docs.vercel.app/",
-      summary: "Toolkit para contratos y capa de integración."
-    },
-    {
-      id: "resource:local-tools",
-      title: "Local Tools",
-      url: "https://local-tools-omega.vercel.app/",
-      summary: "Colección de herramientas locales para flujos técnicos."
-    },
-    {
-      id: "resource:github",
-      title: "Repositorio GitHub",
-      url: "https://github.com/Fr4n0m/cmd-kit",
-      summary: "Código fuente, issues y PRs del proyecto."
-    }
-  ],
-  en: [
-    {
-      id: "resource:playground",
-      title: "cmd+kit Playground",
-      url: "https://cmd-kit.vercel.app/playground",
-      summary: "Try command setup, flows, and exports live."
-    },
-    {
-      id: "resource:dev-crate",
-      title: "Dev Crate",
-      url: "https://dev-crate-kappa.vercel.app/",
-      summary: "Resource hub and utilities for development workflows."
-    },
-    {
-      id: "resource:contract-kit",
-      title: "Contract Kit",
-      url: "https://ngx-contract-kit-docs.vercel.app/",
-      summary: "Toolkit for contracts and integration layers."
-    },
-    {
-      id: "resource:local-tools",
-      title: "Local Tools",
-      url: "https://local-tools-omega.vercel.app/",
-      summary: "Collection of local tools for technical workflows."
-    },
-    {
-      id: "resource:github",
-      title: "GitHub Repository",
-      url: "https://github.com/Fr4n0m/cmd-kit",
-      summary: "Source code, issues, and PRs for the project."
-    }
-  ]
+  es: packageMeta.map((item) => ({
+    id: `npm:${item.pkg}`,
+    title: `${item.pkg} v${item.version}`,
+    url: `https://www.npmjs.com/package/${encodeURIComponent(item.pkg)}`,
+    summary: "Nueva versión publicada en npm."
+  })),
+  en: packageMeta.map((item) => ({
+    id: `npm:${item.pkg}`,
+    title: `${item.pkg} v${item.version}`,
+    url: `https://www.npmjs.com/package/${encodeURIComponent(item.pkg)}`,
+    summary: "New version published on npm."
+  }))
 };
 
 export function getResourcesCatalog(locale: Locale): CatalogResource[] {
