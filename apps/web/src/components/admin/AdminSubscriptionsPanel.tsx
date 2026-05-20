@@ -1,9 +1,20 @@
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useMemo, useState } from "react";
 import { sileo } from "sileo";
+import {
+  IconBellRinging,
+  IconLogout,
+  IconMail,
+  IconPlus,
+  IconRefresh,
+  IconSend2,
+  IconTrash,
+  IconX
+} from "@tabler/icons-react";
 
 type SubscriptionStatus = "pending" | "active" | "unsubscribed";
 type NotifyResource = { id: string; title: string; url: string; summary: string };
+type CatalogResource = NotifyResource;
 
 type SubscriptionItem = {
   email: string;
@@ -27,9 +38,11 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [items, setItems] = useState<SubscriptionItem[]>([]);
   const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
-  const [resources, setResources] = useState<NotifyResource[]>([
-    { id: "", title: "", url: "", summary: "" }
-  ]);
+  const [resources, setResources] = useState<NotifyResource[]>([]);
+  const [resourceQuery, setResourceQuery] = useState("");
+  const [resourceLocale, setResourceLocale] = useState<"en" | "es">("en");
+  const [resourceResults, setResourceResults] = useState<CatalogResource[]>([]);
+  const [resourceSearchBusy, setResourceSearchBusy] = useState(false);
 
   useEffect(() => {
     const hash = window.location.hash.startsWith("#")
@@ -214,20 +227,46 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
       }
     );
     setIsNotifyModalOpen(false);
-    setResources([{ id: "", title: "", url: "", summary: "" }]);
+    setResources([]);
+    setResourceQuery("");
+    setResourceResults([]);
   }
-
-  function updateResource(index: number, key: keyof NotifyResource, value: string) {
-    setResources((prev) => prev.map((item, itemIndex) => (itemIndex === index ? { ...item, [key]: value } : item)));
-  }
-
-  function addResourceRow() {
-    setResources((prev) => [...prev, { id: "", title: "", url: "", summary: "" }]);
-  }
-
   function removeResourceRow(index: number) {
-    setResources((prev) => (prev.length === 1 ? prev : prev.filter((_, itemIndex) => itemIndex !== index)));
+    setResources((prev) => prev.filter((_, itemIndex) => itemIndex !== index));
   }
+
+  function addResourceFromSearch(item: CatalogResource) {
+    setResources((prev) => (prev.some((resource) => resource.id === item.id) ? prev : [...prev, item]));
+  }
+
+  useEffect(() => {
+    if (!isNotifyModalOpen) {
+      return;
+    }
+
+    const controller = new AbortController();
+    setResourceSearchBusy(true);
+    fetch(`/api/admin/resources?locale=${resourceLocale}&query=${encodeURIComponent(resourceQuery)}`, {
+      signal: controller.signal
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("search_failed");
+        }
+        return response.json();
+      })
+      .then((payload: { ok: boolean; items: CatalogResource[] }) => {
+        setResourceResults(payload.items ?? []);
+      })
+      .catch(() => {
+        setResourceResults([]);
+      })
+      .finally(() => {
+        setResourceSearchBusy(false);
+      });
+
+    return () => controller.abort();
+  }, [isNotifyModalOpen, resourceLocale, resourceQuery]);
 
   async function signOut() {
     try {
@@ -252,17 +291,21 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
           onChange={(event) => setEmail(event.target.value)}
         />
         <button className="primary-button compact-button" type="button" onClick={requestMagicLink}>
+          <IconMail size={16} />
           Send access link
         </button>
         {mode === "full" && (
           <>
         <button className="ghost-button compact-button" type="button" onClick={loadItems}>
+          <IconRefresh size={16} />
           Refresh list
         </button>
         <button className="primary-button compact-button" type="button" onClick={() => setIsNotifyModalOpen(true)}>
+          <IconBellRinging size={16} />
           Send notify
         </button>
         <button className="ghost-button compact-button" type="button" onClick={signOut}>
+          <IconLogout size={16} />
           Sign out
         </button>
           </>
@@ -303,6 +346,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
                 <td>{new Date(item.updatedAt).toLocaleString()}</td>
                 <td>
                   <button className="ghost-button compact-button" type="button" onClick={() => removeSubscription(item.email)}>
+                    <IconTrash size={16} />
                     Delete
                   </button>
                 </td>
@@ -317,52 +361,64 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
           <div className="admin-modal-card">
             <div className="admin-modal-header">
               <h2>Send notification</h2>
-              <button className="ghost-button compact-button" type="button" onClick={() => setIsNotifyModalOpen(false)}>
-                Close
+              <button className="ghost-button compact-button icon-only-button" type="button" onClick={() => setIsNotifyModalOpen(false)} aria-label="Close">
+                <IconX size={16} />
               </button>
             </div>
             <p className="content-paragraph">Add one or multiple resources. Subscribers receive one email per send.</p>
+            <div className="admin-modal-search">
+              <select
+                className="admin-panel-key"
+                value={resourceLocale}
+                onChange={(event) => setResourceLocale(event.target.value as "en" | "es")}
+              >
+                <option value="en">Catalog EN</option>
+                <option value="es">Catalog ES</option>
+              </select>
+              <input
+                className="admin-panel-key"
+                type="text"
+                placeholder="Search resources..."
+                value={resourceQuery}
+                onChange={(event) => setResourceQuery(event.target.value)}
+              />
+            </div>
+            <div className="admin-search-results">
+              {resourceSearchBusy ? <p className="content-paragraph">Searching...</p> : null}
+              {!resourceSearchBusy && resourceResults.length === 0 ? (
+                <p className="content-paragraph">No resources found.</p>
+              ) : null}
+              {!resourceSearchBusy &&
+                resourceResults.map((item) => (
+                  <div className="admin-search-item" key={item.id}>
+                    <div>
+                      <strong>{item.title}</strong>
+                      <p>{item.summary}</p>
+                    </div>
+                    <button className="ghost-button compact-button" type="button" onClick={() => addResourceFromSearch(item)}>
+                      <IconPlus size={16} />
+                      Add
+                    </button>
+                  </div>
+                ))}
+            </div>
             <div className="admin-modal-list">
               {resources.map((resource, index) => (
                 <div key={`resource-${index}`} className="admin-resource-item">
-                  <input
-                    className="admin-panel-key"
-                    type="text"
-                    placeholder="Resource ID"
-                    value={resource.id}
-                    onChange={(event) => updateResource(index, "id", event.target.value)}
-                  />
-                  <input
-                    className="admin-panel-key"
-                    type="text"
-                    placeholder="Resource title"
-                    value={resource.title}
-                    onChange={(event) => updateResource(index, "title", event.target.value)}
-                  />
-                  <input
-                    className="admin-panel-key"
-                    type="url"
-                    placeholder="https://..."
-                    value={resource.url}
-                    onChange={(event) => updateResource(index, "url", event.target.value)}
-                  />
-                  <textarea
-                    className="admin-panel-key"
-                    placeholder="Summary (optional)"
-                    value={resource.summary}
-                    onChange={(event) => updateResource(index, "summary", event.target.value)}
-                  />
+                  <strong>{resource.title}</strong>
+                  <p>{resource.summary}</p>
+                  <code>{resource.url}</code>
                   <button className="ghost-button compact-button" type="button" onClick={() => removeResourceRow(index)}>
+                    <IconTrash size={16} />
                     Remove
                   </button>
                 </div>
               ))}
             </div>
             <div className="admin-modal-actions">
-              <button className="ghost-button compact-button" type="button" onClick={addResourceRow}>
-                Add resource
-              </button>
+              <span className="content-paragraph">{resources.length} selected</span>
               <button className="primary-button compact-button" type="button" onClick={sendNotify}>
+                <IconSend2 size={16} />
                 Send now
               </button>
             </div>
