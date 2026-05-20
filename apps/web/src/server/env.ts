@@ -18,7 +18,12 @@ const envSchema = z.object({
   PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional()
 });
 
-const parsed = envSchema.parse(process.env);
+const runtimeEnv = {
+  ...process.env,
+  ...import.meta.env
+};
+
+const parsed = envSchema.parse(runtimeEnv);
 const resolvedSupabaseAnonKey = parsed.SUPABASE_ANON_KEY ?? parsed.SUPABASE_KEY;
 if (!resolvedSupabaseAnonKey) {
   throw new Error("Missing SUPABASE_ANON_KEY (or SUPABASE_KEY alias).");
