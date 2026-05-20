@@ -202,14 +202,15 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
   }
 
   async function signOut() {
-    await fetch("/api/admin/auth/logout", { method: "POST" });
-    if (supabase) {
-      await supabase.auth.signOut();
+    try {
+      if (supabase) {
+        await supabase.auth.signOut();
+      }
+    } finally {
+      setAccessToken(null);
+      setItems([]);
+      window.location.assign(`/api/admin/auth/logout?t=${Date.now()}`);
     }
-    setAccessToken(null);
-    setItems([]);
-    window.history.replaceState(null, "", "/admin");
-    window.location.replace(`/admin?t=${Date.now()}`);
   }
 
   return (
