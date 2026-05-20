@@ -208,7 +208,8 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
     }
     setAccessToken(null);
     setItems([]);
-    window.location.assign("/admin");
+    window.history.replaceState(null, "", "/admin");
+    window.location.replace(`/admin?t=${Date.now()}`);
   }
 
   return (
