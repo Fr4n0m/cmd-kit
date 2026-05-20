@@ -17,12 +17,12 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const requestUrl = new URL(request.url);
-    const redirectBase = requestUrl.origin;
+    const redirectBase = env.appBaseUrl || requestUrl.origin;
 
     const { error } = await supabasePublic.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: false,
+        shouldCreateUser: true,
         emailRedirectTo: `${redirectBase}/admin`
       }
     });
