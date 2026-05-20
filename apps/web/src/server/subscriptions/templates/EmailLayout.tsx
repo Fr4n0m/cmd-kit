@@ -13,6 +13,8 @@ import {
 import * as React from "react";
 
 const GRAVATAR_PROFILE = "https://gravatar.com/fr4n0m";
+const GRAVATAR_AVATAR =
+  "https://0.gravatar.com/avatar/45f9e6ff5a1ed8b109f19dc13f59c26e7d39fceb75f9344ac30ea6db18f6fbde?s=80&d=mp";
 
 type Props = {
   locale: string;
@@ -45,8 +47,8 @@ export default function EmailLayout({
   sigName,
   children
 }: Props) {
-  const brandIcon = `${siteBaseUrl}/brand/cmd-kit-logo-light.png`;
-  const avatarUrl = `${siteBaseUrl}/web-app-manifest-192x192.png`;
+  const brandIcon = `${siteBaseUrl}/favicon-96x96.png`;
+  const avatarUrl = GRAVATAR_AVATAR;
 
   return (
     <Html lang={locale}>
