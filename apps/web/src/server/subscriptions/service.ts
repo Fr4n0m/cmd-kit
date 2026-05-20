@@ -17,6 +17,7 @@ import {
   sendVerificationEmail,
   sendWelcomeEmail
 } from "./subscriptions";
+import { TRACKED_NPM_PACKAGE_IDS } from "./resources-catalog";
 
 function nowIso() {
   return new Date().toISOString();
@@ -170,6 +171,13 @@ export async function notifyPublishedResource(input: unknown) {
   const resources = payload.resources;
   const dedupeId = resources.map((resource) => resource.id).sort().join("|");
   const active = (await repo.listAll()).filter((entry) => entry.status === "active");
+  const releaseScope =
+    resources.length === 1
+      ? "single"
+      : resources.every((resource) => TRACKED_NPM_PACKAGE_IDS.has(resource.id)) &&
+          resources.length === TRACKED_NPM_PACKAGE_IDS.size
+        ? "all"
+        : "some";
 
   let sent = 0;
   for (const subscription of active) {
@@ -188,14 +196,17 @@ export async function notifyPublishedResource(input: unknown) {
         title: single.title,
         summary: single.summary,
         url: single.url,
-        unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale)
+        unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale),
+        releaseScope: "single"
       });
     } else {
+      const digestScope = releaseScope === "all" ? "all" : "some";
       await sendResourcesDigestEmail({
         email: subscription.email,
         locale: subscription.locale,
         resources,
-        unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale)
+        unsubscribeUrl: buildUnsubscribeUrl(rawUnsubscribeToken, subscription.locale),
+        releaseScope: digestScope
       });
     }
 

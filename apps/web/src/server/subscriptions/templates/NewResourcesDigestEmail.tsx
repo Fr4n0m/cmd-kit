@@ -9,9 +9,16 @@ type Props = {
   locale: string;
   unsubscribeUrl: string;
   recipientEmail: string;
+  releaseScope: "some" | "all";
 };
 
-export default function NewResourcesDigestEmail({ resources, locale, unsubscribeUrl, recipientEmail }: Props) {
+export default function NewResourcesDigestEmail({
+  resources,
+  locale,
+  unsubscribeUrl,
+  recipientEmail,
+  releaseScope
+}: Props) {
   const isEs = isSpanishEmailLocale(locale);
   const firstUrl = resources[0]?.url ?? "https://cmd-kit.vercel.app";
   const siteBaseUrl = buildSiteBaseUrl(firstUrl);
@@ -20,6 +27,10 @@ export default function NewResourcesDigestEmail({ resources, locale, unsubscribe
         preview: `Nuevas versiones npm (${resources.length})`,
         label: "NPM digest",
         heading: "Nuevas versiones publicadas en npm",
+        intro:
+          releaseScope === "all"
+            ? "Se han actualizado todos los paquetes principales."
+            : "Se han actualizado varios paquetes.",
         cta: "Ver en npm",
         unsub: "Cancelar suscripción",
         footer: "Fran · Cmd+kit",
@@ -29,6 +40,10 @@ export default function NewResourcesDigestEmail({ resources, locale, unsubscribe
         preview: `New npm releases (${resources.length})`,
         label: "NPM digest",
         heading: "New versions published on npm",
+        intro:
+          releaseScope === "all"
+            ? "All core packages have been updated."
+            : "Multiple packages have been updated.",
         cta: "View on npm",
         unsub: "Unsubscribe",
         footer: "Fran · Cmd+kit",
@@ -48,6 +63,7 @@ export default function NewResourcesDigestEmail({ resources, locale, unsubscribe
       <Section style={card}>
         <Text style={eyebrow}>{copy.label}</Text>
         <Heading style={heading}>{copy.heading}</Heading>
+        <Text style={resourceSummary}>{copy.intro}</Text>
         {resources.map((resource) => (
           <Section key={resource.id} style={resourceCard}>
             <Text style={resourceTitle}>{resource.title}</Text>

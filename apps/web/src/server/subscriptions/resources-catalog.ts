@@ -31,6 +31,8 @@ const packageMeta = [
   readPackageMeta("../../../../../packages/astro/package.json", "@cmd-kit/astro")
 ];
 
+export const TRACKED_NPM_PACKAGE_IDS = new Set(packageMeta.map((item) => `npm:${item.pkg}`));
+
 const resourcesByLocale: Record<Locale, CatalogResource[]> = {
   es: packageMeta.map((item) => ({
     id: `npm:${item.pkg}`,

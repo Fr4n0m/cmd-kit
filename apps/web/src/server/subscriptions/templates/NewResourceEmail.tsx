@@ -10,6 +10,7 @@ type Props = {
   locale: string;
   unsubscribeUrl: string;
   recipientEmail: string;
+  releaseScope: "single";
 };
 
 export default function NewResourceEmail({
@@ -27,6 +28,7 @@ export default function NewResourceEmail({
         preview: `Nueva versión npm: ${resourceTitle}`,
         label: "NPM release",
         heading: "Nueva versión publicada en npm",
+        intro: "Se ha publicado una nueva versión de un paquete.",
         cta: "Ver en npm",
         unsub: "Cancelar suscripción",
         footer: "Fran · Cmd+kit",
@@ -36,6 +38,7 @@ export default function NewResourceEmail({
         preview: `New npm release: ${resourceTitle}`,
         label: "NPM release",
         heading: "New version published on npm",
+        intro: "A new version has been published for one package.",
         cta: "View on npm",
         unsub: "Unsubscribe",
         footer: "Fran · Cmd+kit",
@@ -55,6 +58,7 @@ export default function NewResourceEmail({
       <Section style={card}>
         <Text style={eyebrow}>{copy.label}</Text>
         <Heading style={heading}>{copy.heading}</Heading>
+        <Text style={descStyle}>{copy.intro}</Text>
         <Text style={titleStyle}>{resourceTitle}</Text>
         {resourceDescription ? <Text style={descStyle}>{resourceDescription}</Text> : null}
         <Link href={resourceUrl} style={plainCta}>

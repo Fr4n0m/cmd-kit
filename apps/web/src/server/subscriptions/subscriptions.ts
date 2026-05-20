@@ -68,6 +68,7 @@ export async function sendResourcePublishedEmail(params: {
   title: string;
   url: string;
   summary?: string;
+  releaseScope?: "single";
 }) {
   const isEs = isSpanishEmailLocale(params.locale);
   const subject = isEs ? `Nueva versión npm: ${params.title}` : `New npm release: ${params.title}`;
@@ -78,7 +79,8 @@ export async function sendResourcePublishedEmail(params: {
       resourceUrl: params.url,
       locale: params.locale,
       unsubscribeUrl: params.unsubscribeUrl,
-      recipientEmail: params.email
+      recipientEmail: params.email,
+      releaseScope: params.releaseScope ?? "single"
     })
   );
   await sendMail({ to: params.email, subject, html });
@@ -89,6 +91,7 @@ export async function sendResourcesDigestEmail(params: {
   locale: Locale;
   unsubscribeUrl: string;
   resources: Array<{ id: string; title: string; url: string; summary?: string }>;
+  releaseScope?: "some" | "all";
 }) {
   const isEs = isSpanishEmailLocale(params.locale);
   const subject = isEs
@@ -99,7 +102,8 @@ export async function sendResourcesDigestEmail(params: {
       resources: params.resources,
       locale: params.locale,
       unsubscribeUrl: params.unsubscribeUrl,
-      recipientEmail: params.email
+      recipientEmail: params.email,
+      releaseScope: params.releaseScope ?? "some"
     })
   );
   await sendMail({ to: params.email, subject, html });
