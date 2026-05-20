@@ -1,5 +1,6 @@
 import {
   IconBellRinging,
+  IconHeartbeat,
   IconLogout,
   IconMail,
   IconRefresh
@@ -13,6 +14,7 @@ type AdminToolbarProps = {
   onRequestMagicLink: () => void;
   onRefresh: () => void;
   onOpenNotify: () => void;
+  onOpenHealth: () => void;
   onSignOut: () => void;
 };
 
@@ -23,6 +25,7 @@ export function AdminToolbar({
   onRequestMagicLink,
   onRefresh,
   onOpenNotify,
+  onOpenHealth,
   onSignOut
 }: AdminToolbarProps) {
   return (
@@ -47,6 +50,10 @@ export function AdminToolbar({
           <button className="primary-button compact-button" type="button" onClick={onOpenNotify}>
             <IconBellRinging size={16} />
             Send notify
+          </button>
+          <button className="ghost-button compact-button" type="button" onClick={onOpenHealth}>
+            <IconHeartbeat size={16} />
+            Check health
           </button>
           <button className="ghost-button compact-button" type="button" onClick={onSignOut}>
             <IconLogout size={16} />

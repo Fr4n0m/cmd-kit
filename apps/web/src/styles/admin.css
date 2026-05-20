@@ -59,6 +59,68 @@ html[data-theme="light"] .content-card {
   border-radius: 0.9rem;
 }
 
+.admin-health-card {
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.admin-health-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.admin-health-header h2 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.admin-health-badge {
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  padding: 0.2rem 0.55rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.admin-health-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.admin-health-item {
+  border: 1px solid rgba(129, 155, 174, 0.16);
+  border-radius: 0.7rem;
+  padding: 0.55rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.admin-health-item strong {
+  text-transform: capitalize;
+}
+
+.admin-health-item p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+}
+
+.is-ok {
+  color: #56db9f;
+}
+
+.is-fail {
+  color: #ff7f9b;
+}
+
 .admin-table {
   width: 100%;
   border-collapse: collapse;
@@ -222,5 +284,9 @@ html[data-theme="light"] .content-card {
 
   .admin-modal-search select.admin-panel-key {
     min-width: 0;
+  }
+
+  .admin-health-grid {
+    grid-template-columns: 1fr;
   }
 }

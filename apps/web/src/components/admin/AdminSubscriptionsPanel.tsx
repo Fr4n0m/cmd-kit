@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { sileo } from "sileo";
+import { AdminHealthCard } from "./AdminHealthCard";
 import { AdminToolbar } from "./AdminToolbar";
 import { NotifyResourcesModal } from "./NotifyResourcesModal";
 import { SubscriptionsTable } from "./SubscriptionsTable";
 import type { AdminPanelMode, CatalogResource, NotifyResource } from "./types";
+import { useAdminHealth } from "./useAdminHealth";
 import { useAdminSession } from "./useAdminSession";
 import { useResourceCatalog } from "./useResourceCatalog";
 import { useSubscriptionsAdmin } from "./useSubscriptionsAdmin";
@@ -12,6 +14,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
   const { email, setEmail, authHeaders, requestMagicLink, signOut } = useAdminSession();
   const { items, loadItems, updateStatus, removeSubscription, clearItems } =
     useSubscriptionsAdmin(authHeaders);
+  const { health, loadHealth } = useAdminHealth(authHeaders);
 
   const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
   const [resources, setResources] = useState<NotifyResource[]>([]);
@@ -102,6 +105,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         onRequestMagicLink={requestMagicLink}
         onRefresh={loadItems}
         onOpenNotify={() => setIsNotifyModalOpen(true)}
+        onOpenHealth={loadHealth}
         onSignOut={handleSignOut}
       />
 
@@ -110,11 +114,14 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
       )}
 
       {mode === "full" && (
-        <SubscriptionsTable
-          items={items}
-          onUpdateStatus={updateStatus}
-          onDelete={removeSubscription}
-        />
+        <>
+          {health ? <AdminHealthCard healthy={health.healthy} checks={health.checks} /> : null}
+          <SubscriptionsTable
+            items={items}
+            onUpdateStatus={updateStatus}
+            onDelete={removeSubscription}
+          />
+        </>
       )}
 
       <NotifyResourcesModal
