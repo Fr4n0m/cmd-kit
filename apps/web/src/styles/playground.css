@@ -597,6 +597,16 @@ html[data-theme="light"] .summary-theme-tabs {
     color 160ms ease;
 }
 
+.summary-theme-tab:hover {
+  color: #eaf7ff;
+  background: rgba(53, 215, 255, 0.08);
+}
+
+html[data-theme="light"] .summary-theme-tab:hover {
+  color: #0f2b3d;
+  background: rgba(15, 166, 216, 0.08);
+}
+
 .summary-theme-tab.is-active {
   color: var(--playground-ink);
 }
@@ -1095,6 +1105,12 @@ html[data-theme="light"] .playground-select-trigger.is-open {
   cursor: pointer;
 }
 
+.playground-select-item:hover {
+  background: rgba(53, 215, 255, 0.1);
+  border-color: rgba(53, 215, 255, 0.2);
+  color: #eef9ff;
+}
+
 .playground-select-item[aria-current="true"] {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.1);
@@ -1106,6 +1122,12 @@ html[data-theme="light"] .playground-select-item[aria-current="true"] {
   color: #0e1720;
   background: rgba(15, 166, 216, 0.14);
   border-color: rgba(15, 166, 216, 0.2);
+}
+
+html[data-theme="light"] .playground-select-item:hover {
+  background: rgba(15, 166, 216, 0.08);
+  border-color: rgba(15, 166, 216, 0.16);
+  color: #102130;
 }
 
 .color-field {
@@ -1420,6 +1442,13 @@ html[data-theme="light"] .nested-card {
   padding: 0.48rem 0.72rem;
   font-size: 0.84rem;
   font-weight: 500;
+}
+
+.playground-page .inline-button:hover,
+.playground-page .ghost-button:hover {
+  background: rgba(53, 215, 255, 0.1);
+  border-color: rgba(53, 215, 255, 0.26);
+  color: #f0fbff;
 }
 
 html[data-theme="light"] .playground-page .inline-button {
