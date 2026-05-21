@@ -6,6 +6,7 @@ export const preactENDoc: DocPageData = {
     intro: ["<code>@cmd-kit/preact</code> mirrors the React-facing API while targeting Preact."],
     sections: [
       { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "preact", showAdapter: false, showLink: false }] },
+      { id: "package-links", label: "Package links", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/preact" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/preact</a>'] }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/preact";
 
 const sections = [

@@ -7,6 +7,7 @@ export const astroESDoc: DocPageData = {
     sections: [
       { id: "cuando-usar-el-paquete-de-astro", label: "Cuándo usar el paquete de Astro", blocks: [{ type: "list", items: ["Usa <code>@cmd-kit/astro</code> cuando Astro sea el shell de la página y quieras la integración empaquetada más rápida sin depender de React.", "Quédate en el paquete de Astro si tu palette puede configurarse con props serializables como secciones, mensajes, tema y recientes.", "Pasa a <code>@cmd-kit/core</code> solo cuando necesites un render totalmente custom más allá del componente empaquetado de Astro.", "Usa otro adaptador solo si tu producto ya depende de ese framework para UI interactiva."] }] },
       { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "astro", showAdapter: false, showLink: false }] },
+      { id: "enlaces-paquete", label: "Enlaces del paquete", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/astro" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/astro</a>'] }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "astro", label: "astro", code: `---
 import CommandPalette from "@cmd-kit/astro/component";
 

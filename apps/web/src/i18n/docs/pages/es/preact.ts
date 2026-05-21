@@ -6,6 +6,7 @@ export const preactESDoc: DocPageData = {
     intro: ["<code>@cmd-kit/preact</code> replica la API pública de React sobre Preact."],
     sections: [
       { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "preact", showAdapter: false, showLink: false }] },
+      { id: "enlaces-paquete", label: "Enlaces del paquete", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/preact" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/preact</a>'] }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/preact";
 
 const sections = [

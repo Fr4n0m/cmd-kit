@@ -6,6 +6,7 @@ export const coreENDoc: DocPageData = {
     intro: ["<code>@cmd-kit/core</code> is the engine layer. It exports the command types, message and theme helpers, filtering utilities, snapshot creation, source loading, recent-command helpers, and execution primitives."],
     sections: [
       { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "core", showAdapter: false, showLink: false }] },
+      { id: "package-links", label: "Package links", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/core" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/core</a>'] }] },
       { id: "what-core-is-for", label: "What Core is for", blocks: [{ type: "list", items: ["build your own dialog, input, and item list UI", "keep the command model framework-agnostic", "integrate the engine into a custom framework adapter", "reuse theme and message helpers even when you do not use the packaged UI"] }] },
       { id: "build-a-resolved-config", label: "Build a resolved config", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import { createResolvedConfig } from "@cmd-kit/core";
 

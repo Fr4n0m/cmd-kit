@@ -10,6 +10,7 @@ export const reactENDoc: DocPageData = {
     intro: ["<code>@cmd-kit/react</code> ships a ready-to-use <code>CommandPalette</code> component plus the <code>useCommandPalette</code> hook for custom integrations."],
     sections: [
       { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "react", showAdapter: false, showLink: false }] },
+      { id: "package-links", label: "Package links", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/react" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/react</a>'] }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "paragraph", html: "Start with one section and one item. That is enough to confirm the integration before you spend time on styling." }, { type: "code", lang: "tsx", label: "tsx", code: `import { CommandPalette } from "@cmd-kit/react";
 
 const sections = [

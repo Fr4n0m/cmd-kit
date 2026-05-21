@@ -6,6 +6,7 @@ export const vueESDoc: DocPageData = {
     intro: ["<code>@cmd-kit/vue</code> ofrece un componente <code>CommandPalette</code> y una API composable para los casos donde quieres controlar más directamente el estado de la palette."],
     sections: [
       { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "vue", showAdapter: false, showLink: false }] },
+      { id: "enlaces-paquete", label: "Enlaces del paquete", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/vue" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/vue</a>'] }] },
       { id: "uso-basico", label: "Uso básico", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
 import { CommandPalette } from "@cmd-kit/vue";
 

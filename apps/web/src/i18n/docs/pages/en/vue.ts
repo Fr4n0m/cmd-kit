@@ -6,6 +6,7 @@ export const vueENDoc: DocPageData = {
     intro: ["<code>@cmd-kit/vue</code> provides a <code>CommandPalette</code> component plus a Vue composable for cases where you want to orchestrate state more directly."],
     sections: [
       { id: "install", label: "Install", blocks: [{ type: "install-selector", adapter: "vue", showAdapter: false, showLink: false }] },
+      { id: "package-links", label: "Package links", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/vue" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/vue</a>'] }] },
       { id: "basic-usage", label: "Basic usage", blocks: [{ type: "code", lang: "vue", label: "vue", code: `<script setup lang="ts">
 import { CommandPalette } from "@cmd-kit/vue";
 

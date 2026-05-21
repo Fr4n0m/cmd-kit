@@ -6,6 +6,7 @@ export const coreESDoc: DocPageData = {
     intro: ["<code>@cmd-kit/core</code> es el centro agnóstico al framework del proyecto. Te da secciones tipadas, fuzzy search, snapshot building, primitivas de ejecución, seguimiento de recientes y helpers de tema sin imponer ninguna capa de render."],
     sections: [
       { id: "instalacion", label: "Instalación", blocks: [{ type: "install-selector", adapter: "core", showAdapter: false, showLink: false }] },
+      { id: "enlaces-paquete", label: "Enlaces del paquete", blocks: [{ type: "list", items: ['<a href="https://www.npmjs.com/package/@cmd-kit/core" target="_blank" rel="noopener noreferrer">NPM: @cmd-kit/core</a>'] }] },
       { id: "que-cubre", label: "Qué cubre", blocks: [{ type: "list", items: ["ítems y secciones de comandos", "filtrado fuzzy mediante el pipeline de búsqueda compartido", "snapshots agrupados para renderizado", "modelado de navegación anidada", "despacho de ejecución para callbacks, links y páginas anidadas", "primitivas de estado para recientes", "resolución de tema (simple o dual) y helpers de CSS variables"] }] },
       { id: "ejemplo-minimo", label: "Ejemplo mínimo", blocks: [{ type: "code", lang: "ts", label: "ts", code: `import {
   createCommandSnapshot,
