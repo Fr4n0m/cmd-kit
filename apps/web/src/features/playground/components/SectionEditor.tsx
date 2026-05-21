@@ -38,7 +38,7 @@ function ItemFields({
 }) {
   return (
     <div className="item-grid">
-      <Field helpText={help.itemTitle} label={labels.itemTitle}>
+      <Field anchor="item-title" helpText={help.itemTitle} label={labels.itemTitle}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -60,7 +60,7 @@ function ItemFields({
           value={item.icon ?? ""}
         />
       </Field>
-      <Field helpText={help.itemSubtitle} label={labels.itemSubtitle}>
+      <Field anchor="item-subtitle" helpText={help.itemSubtitle} label={labels.itemSubtitle}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -71,7 +71,7 @@ function ItemFields({
           value={item.subtitle ?? ""}
         />
       </Field>
-      <Field helpText={help.itemShortcut} label={labels.itemShortcut}>
+      <Field anchor="shortcut" helpText={help.itemShortcut} label={labels.itemShortcut}>
         <input
           onChange={(event) =>
             onUpdate((current) => ({
@@ -305,7 +305,7 @@ export function SectionEditor({
       </summary>
       <div className="editor-detail-body">
         <div className="editor-topbar">
-          <Field helpText={help.sectionTitle} label={labels.sectionTitle}>
+          <Field anchor="section" helpText={help.sectionTitle} label={labels.sectionTitle}>
             <input
               onChange={(event) => onUpdateTitle(event.target.value)}
               value={section.title}

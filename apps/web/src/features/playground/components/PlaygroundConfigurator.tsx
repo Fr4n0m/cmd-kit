@@ -136,6 +136,7 @@ export function PlaygroundConfigurator({
   onUpdateNestedSectionTitle,
   onUpdateSection
 }: PlaygroundConfiguratorProps) {
+  const rootRef = React.useRef<HTMLElement | null>(null);
   const commandCount = config.sections.reduce(
     (total, section) => total + section.items.length,
     0
@@ -221,8 +222,43 @@ export function PlaygroundConfigurator({
     [labels]
   );
 
+  const handleHotspotClick = React.useCallback((anchor: string) => {
+    const root = rootRef.current;
+    if (!(root instanceof HTMLElement)) {
+      return;
+    }
+
+    const target = root.querySelector<HTMLElement>(`[data-playground-anchor="${anchor}"]`);
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    const parentAccordions = target.closest(".config-accordion");
+    if (parentAccordions instanceof HTMLDetailsElement) {
+      parentAccordions.open = true;
+    }
+
+    target.querySelectorAll("details").forEach((details) => {
+      if (details instanceof HTMLDetailsElement) {
+        details.open = true;
+      }
+    });
+
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest"
+    });
+
+    const focusable =
+      target.querySelector<HTMLElement>("input, textarea, select, button") ?? target;
+    window.setTimeout(() => {
+      focusable.focus({ preventScroll: true });
+    }, 180);
+  }, []);
+
   return (
-    <section className="panel configurator-panel">
+    <section className="panel configurator-panel" ref={rootRef}>
       <div className="panel-heading panel-heading-with-tools">
         <div className="panel-heading-copy">
           <p className="eyebrow">{labels.config}</p>
@@ -267,23 +303,26 @@ export function PlaygroundConfigurator({
           </h3>
           <div className="playground-live-preview-frame">
             <div className="playground-live-preview-shell">{preview}</div>
-            <div className="playground-preview-hotspots" aria-hidden="true">
+            <div className="playground-preview-hotspots">
               {previewHotspots.map((hotspot) => (
-                <span
+                <button
+                  aria-label={hotspot.label}
                   className="playground-preview-hotspot"
                   key={hotspot.id}
+                  onClick={() => handleHotspotClick(hotspot.id)}
                   style={
                     {
                       "--hotspot-left": `${hotspot.left}%`,
                       "--hotspot-top": `${hotspot.top}%`
                     } as React.CSSProperties
                   }
+                  type="button"
                 >
                   <span className="playground-preview-hotspot-dot" />
                   <span className="playground-preview-hotspot-tooltip">
                     {hotspot.label}
                   </span>
-                </span>
+                </button>
               ))}
             </div>
           </div>

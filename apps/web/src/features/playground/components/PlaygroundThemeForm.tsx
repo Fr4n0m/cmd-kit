@@ -118,12 +118,14 @@ export function PlaygroundThemeForm({
         </h4>
         <div className="form-grid">
           <ColorField
+            anchor="accent"
             helpText={help.accent}
             label={labels.accent}
             onChange={(value) => updateThemeField("accentColor", value)}
             value={currentTheme.accentColor}
           />
           <ColorField
+            anchor="surface"
             helpText={help.surface}
             label={labels.surface}
             onChange={(value) => updateThemeField("backgroundColor", value)}

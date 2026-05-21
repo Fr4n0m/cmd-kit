@@ -46,16 +46,18 @@ function FieldLabel({ helpText, label }: BaseFieldProps) {
 }
 
 export function Field({
+  anchor,
   children,
   helpText,
   label
 }: {
+  anchor?: string;
   children: ReactNode;
   helpText?: string;
   label: string;
 }) {
   return (
-    <label className="field">
+    <label className="field" data-playground-anchor={anchor}>
       <FieldLabel helpText={helpText} label={label} />
       {children}
     </label>
@@ -63,11 +65,13 @@ export function Field({
 }
 
 export function ColorField({
+  anchor,
   helpText,
   label,
   onChange,
   value
 }: {
+  anchor?: string;
   helpText?: string;
   label: string;
   onChange: (value: string) => void;
@@ -76,7 +80,7 @@ export function ColorField({
   const fallbackHex = normalizeColorForPicker(value);
 
   return (
-    <label className="field">
+    <label className="field" data-playground-anchor={anchor}>
       <FieldLabel helpText={helpText} label={label} />
       <div className="color-field">
         <input

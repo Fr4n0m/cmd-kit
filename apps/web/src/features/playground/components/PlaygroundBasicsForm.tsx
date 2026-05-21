@@ -74,7 +74,7 @@ export function PlaygroundBasicsForm({
         value={config.language}
       />
 
-      <Field helpText={help.title} label={labels.title}>
+      <Field anchor="title" helpText={help.title} label={labels.title}>
         <input
           onChange={(event) =>
             onUpdateConfig((current) => ({
@@ -92,7 +92,7 @@ export function PlaygroundBasicsForm({
         value={activeTitleColor}
       />
 
-      <Field helpText={help.placeholder} label={labels.placeholder}>
+      <Field anchor="placeholder" helpText={help.placeholder} label={labels.placeholder}>
         <input
           onChange={(event) =>
             onUpdateConfig((current) => ({
