@@ -462,7 +462,9 @@ function ensureStyles() {
   document.head.appendChild(style);
 }
 
-function parseColorToRgb(color: string | undefined) {
+function parseColorToRgb(
+  color: string | undefined
+): [number, number, number] | null {
   const value = String(color ?? "").trim();
   if (value.startsWith("#")) {
     const hex = value.slice(1);
@@ -498,6 +500,64 @@ function isLightTheme(backgroundColor: string | undefined) {
   const [r, g, b] = rgb;
   const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
   return luminance > 0.72;
+}
+
+function toAlphaColor(
+  rgb: [number, number, number] | null,
+  alpha: number,
+  fallback = "transparent"
+): string {
+  if (!rgb) {
+    return fallback;
+  }
+
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+}
+
+function mixRgbAsColor(
+  a: [number, number, number] | null,
+  b: [number, number, number] | null,
+  ratioOfB: number,
+  fallback: string
+): string {
+  if (!a && !b) {
+    return fallback;
+  }
+
+  if (!a) {
+    return `rgb(${b![0]}, ${b![1]}, ${b![2]})`;
+  }
+
+  if (!b) {
+    return `rgb(${a[0]}, ${a[1]}, ${a[2]})`;
+  }
+
+  const ratio = Math.min(Math.max(ratioOfB, 0), 1);
+  const inv = 1 - ratio;
+  const r = Math.round(a[0] * inv + b[0] * ratio);
+  const g = Math.round(a[1] * inv + b[1] * ratio);
+  const bChannel = Math.round(a[2] * inv + b[2] * ratio);
+  return `rgb(${r}, ${g}, ${bChannel})`;
+}
+
+function getCloseInteractionTokens(theme: CommandTheme) {
+  const backgroundColor = theme.backgroundColor ?? "#07101a";
+  const borderColor = theme.borderColor ?? "rgba(120, 170, 220, 0.28)";
+  const textColor = theme.textColor ?? "#eaf2ff";
+  const mutedColor = theme.mutedColor ?? "rgba(200, 216, 235, 0.72)";
+  const accentColor = theme.accentColor ?? "#3aa7ff";
+  const light = isLightTheme(backgroundColor);
+  const accent = parseColorToRgb(accentColor);
+  const text = parseColorToRgb(textColor);
+  const muted = parseColorToRgb(mutedColor) ?? text;
+
+  return {
+    closeBackground: toAlphaColor(accent, light ? 0.06 : 0.12),
+    closeBorder: toAlphaColor(accent, light ? 0.22 : 0.3, borderColor),
+    closeColor: mixRgbAsColor(muted, text, light ? 0.35 : 0.5, mutedColor),
+    closeHoverBackground: toAlphaColor(accent, light ? 0.14 : 0.2),
+    closeHoverBorder: toAlphaColor(accent, light ? 0.34 : 0.44, borderColor)
+  };
 }
 
 function resolveAdaptiveTheme(theme: CommandThemeInput | undefined) {
@@ -778,6 +838,7 @@ export function createCommandPalette(
 
   const updateTheme = (theme: CommandTheme) => {
     const light = isLightTheme(theme.backgroundColor);
+    const closeTokens = getCloseInteractionTokens(theme);
     dialog.style.borderRadius = theme.radius ?? "22px";
     dialog.dataset.mode = light ? "light" : "dark";
     dialog.dataset.reducedMotion = options.reducedMotion ? "true" : "false";
@@ -794,13 +855,9 @@ export function createCommandPalette(
     closeButton.style.height = "2.4rem";
     closeButton.style.minWidth = "2.4rem";
     closeButton.style.minHeight = "2.4rem";
-    closeButton.style.border = light
-      ? `1px solid ${theme.borderColor}`
-      : "1px solid rgba(146, 173, 194, 0.22)";
-    closeButton.style.color = light ? theme.mutedColor ?? "" : "rgba(216, 232, 244, 0.92)";
-    closeButton.style.background = light
-      ? "rgba(15, 166, 216, 0.05)"
-      : "rgba(166, 191, 212, 0.08)";
+    closeButton.style.border = `1px solid ${closeTokens.closeBorder}`;
+    closeButton.style.color = closeTokens.closeColor;
+    closeButton.style.background = closeTokens.closeBackground;
     backButton.style.color = theme.mutedColor ?? "";
   };
 
@@ -1106,19 +1163,17 @@ export function createCommandPalette(
       return;
     }
     const runtime = buildRuntime();
-    const light = isLightTheme(runtime.theme.backgroundColor);
-    closeButton.style.background = light ? "rgba(15, 166, 216, 0.12)" : "rgba(166, 191, 212, 0.18)";
-    closeButton.style.borderColor = light
-      ? "rgba(15, 166, 216, 0.26)"
-      : "rgba(146, 173, 194, 0.34)";
+    const closeTokens = getCloseInteractionTokens(runtime.theme);
+    closeButton.style.background = closeTokens.closeHoverBackground;
+    closeButton.style.borderColor = closeTokens.closeHoverBorder;
     closeButton.style.transform = "translateY(-1px)";
   });
 
   closeButton.addEventListener("mouseleave", () => {
     const runtime = buildRuntime();
-    const light = isLightTheme(runtime.theme.backgroundColor);
-    closeButton.style.background = light ? "rgba(15, 166, 216, 0.05)" : "rgba(166, 191, 212, 0.08)";
-    closeButton.style.borderColor = light ? runtime.theme.borderColor ?? "" : "rgba(146, 173, 194, 0.22)";
+    const closeTokens = getCloseInteractionTokens(runtime.theme);
+    closeButton.style.background = closeTokens.closeBackground;
+    closeButton.style.borderColor = closeTokens.closeBorder;
     closeButton.style.transform = "translateY(0)";
   });
 

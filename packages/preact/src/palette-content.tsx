@@ -13,6 +13,7 @@ import {
   captionStyle,
   closeButtonStyle,
   emptyStateStyle,
+  getCloseInteractionTokens,
   headerActionsStyle,
   headerStyle,
   iconStyle,
@@ -69,6 +70,7 @@ export function PaletteHeader({
   reducedMotion = false
 }: PaletteHeaderProps) {
   const light = isLightTheme(theme);
+  const interactionTokens = getCloseInteractionTokens(theme);
 
   return (
     <div className={classNames?.header} style={headerStyle}>
@@ -111,12 +113,10 @@ export function PaletteHeader({
             if (reducedMotion) {
               return;
             }
-            event.currentTarget.style.background = light
-              ? "rgba(15, 166, 216, 0.12)"
-              : "rgba(166, 191, 212, 0.18)";
-            event.currentTarget.style.borderColor = light
-              ? "rgba(15, 166, 216, 0.26)"
-              : "rgba(146, 173, 194, 0.34)";
+            event.currentTarget.style.background =
+              interactionTokens.closeHoverBackground;
+            event.currentTarget.style.borderColor =
+              interactionTokens.closeHoverBorder;
             event.currentTarget.style.transform = "translateY(-1px)";
           }}
           onMouseLeave={(event) => {
@@ -124,12 +124,10 @@ export function PaletteHeader({
               event.currentTarget.style.transform = "translateY(0)";
               return;
             }
-            event.currentTarget.style.background = light
-              ? "rgba(15, 166, 216, 0.05)"
-              : "rgba(166, 191, 212, 0.08)";
-            event.currentTarget.style.borderColor = light
-              ? theme.borderColor
-              : "rgba(146, 173, 194, 0.22)";
+            event.currentTarget.style.background =
+              interactionTokens.closeBackground;
+            event.currentTarget.style.borderColor =
+              interactionTokens.closeBorder;
             event.currentTarget.style.transform = "translateY(0)";
           }}
           style={closeButtonStyle(theme)}

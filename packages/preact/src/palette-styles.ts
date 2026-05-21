@@ -1,6 +1,14 @@
 import type { CommandTheme } from "@cmd-kit/core";
 import type { CSSProperties } from "preact/compat";
 
+interface CloseInteractionTokens {
+  closeBackground: string;
+  closeBorder: string;
+  closeColor: string;
+  closeHoverBackground: string;
+  closeHoverBorder: string;
+}
+
 export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
   return {
     width: "min(700px, calc(100vw - 4rem))",
@@ -35,14 +43,12 @@ export function overlayStyle(color: string): CSSProperties {
 }
 
 export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
-  const light = isLightTheme(theme);
+  const tokens = getCloseInteractionTokens(theme);
   return {
     borderRadius: "999px",
-    border: light
-      ? `1px solid ${theme.borderColor}`
-      : "1px solid rgba(146, 173, 194, 0.22)",
-    background: light ? "rgba(15, 166, 216, 0.05)" : "rgba(166, 191, 212, 0.08)",
-    color: light ? theme.mutedColor : "rgba(216, 232, 244, 0.92)",
+    border: `1px solid ${tokens.closeBorder}`,
+    background: tokens.closeBackground,
+    color: tokens.closeColor,
     appearance: "none",
     width: "2.4rem",
     height: "2.4rem",
@@ -59,6 +65,23 @@ export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     cursor: "pointer",
     transition:
       "background-color 160ms ease, border-color 160ms ease, transform 140ms ease"
+  };
+}
+
+export function getCloseInteractionTokens(
+  theme: Required<CommandTheme>
+): CloseInteractionTokens {
+  const light = isLightTheme(theme);
+  const accent = parseColorToRgb(theme.accentColor);
+  const text = parseColorToRgb(theme.textColor);
+  const muted = parseColorToRgb(theme.mutedColor) ?? text;
+
+  return {
+    closeBackground: toAlphaColor(accent, light ? 0.06 : 0.12),
+    closeBorder: toAlphaColor(accent, light ? 0.22 : 0.3, theme.borderColor),
+    closeColor: mixRgbAsColor(muted, text, light ? 0.35 : 0.5, theme.mutedColor),
+    closeHoverBackground: toAlphaColor(accent, light ? 0.14 : 0.2),
+    closeHoverBorder: toAlphaColor(accent, light ? 0.34 : 0.44, theme.borderColor)
   };
 }
 
@@ -331,4 +354,42 @@ function parseColorToRgb(color: string): [number, number, number] | null {
   }
 
   return null;
+}
+
+function toAlphaColor(
+  rgb: [number, number, number] | null,
+  alpha: number,
+  fallback = "transparent"
+): string {
+  if (!rgb) {
+    return fallback;
+  }
+
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+}
+
+function mixRgbAsColor(
+  a: [number, number, number] | null,
+  b: [number, number, number] | null,
+  ratioOfB: number,
+  fallback: string
+): string {
+  if (!a && !b) {
+    return fallback;
+  }
+
+  if (!a) {
+    return `rgb(${b![0]}, ${b![1]}, ${b![2]})`;
+  }
+
+  if (!b) {
+    return `rgb(${a[0]}, ${a[1]}, ${a[2]})`;
+  }
+
+  const ratio = Math.min(Math.max(ratioOfB, 0), 1);
+  const inv = 1 - ratio;
+  const r = Math.round(a[0] * inv + b[0] * ratio);
+  const g = Math.round(a[1] * inv + b[1] * ratio);
+  const bChannel = Math.round(a[2] * inv + b[2] * ratio);
+  return `rgb(${r}, ${g}, ${bChannel})`;
 }
