@@ -399,7 +399,7 @@ html[data-theme="light"] .docs-sidebar-card {
   position: relative;
   display: grid;
   gap: 0.18rem;
-  padding: 0.18rem 0 0.4rem 1.24rem;
+  padding: 0.24rem 0 0.44rem 1.16rem;
   animation: ui-reveal-down var(--motion-medium) var(--motion-ease-standard);
   transform-origin: top left;
   will-change: transform, opacity, clip-path;
@@ -407,9 +407,9 @@ html[data-theme="light"] .docs-sidebar-card {
 
 .docs-subnav-rail {
   position: absolute;
-  left: 0.52rem;
-  top: 0.28rem;
-  bottom: 0.35rem;
+  left: 0.58rem;
+  top: 0.58rem;
+  bottom: 0.52rem;
   width: 1px;
   background: linear-gradient(180deg, rgba(53, 215, 255, 0.48), rgba(53, 215, 255, 0.16));
   transform-origin: top;
