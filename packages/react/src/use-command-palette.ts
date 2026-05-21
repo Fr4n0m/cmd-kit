@@ -10,6 +10,7 @@ import {
   type CommandItem,
   type CommandItemRecord,
   type CommandMessages,
+  type CommandPaletteSize,
   type CommandSection,
   type CommandSource,
   type CommandTheme,
@@ -38,6 +39,7 @@ export interface UseCommandPaletteOptions {
   title?: string;
   shortcut?: string;
   reducedMotion?: boolean;
+  size?: CommandPaletteSize;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -183,6 +185,7 @@ export function useCommandPalette({
   title = "Command menu",
   shortcut = "mod+k",
   reducedMotion = false,
+  size = "normal",
   open,
   defaultOpen = false,
   onOpenChange,
@@ -232,9 +235,10 @@ export function useCommandPalette({
         messages,
         theme: resolvedTheme,
         shortcut,
-        reducedMotion
+        reducedMotion,
+        size
       }),
-    [messages, reducedMotion, resolvedTheme, rootItems, rootSections, shortcut]
+    [messages, reducedMotion, resolvedTheme, rootItems, rootSections, shortcut, size]
   );
   const recentItems = useMemo(() => {
     if (!recents) {
@@ -256,7 +260,8 @@ export function useCommandPalette({
         messages,
         theme: resolvedTheme,
         shortcut,
-        reducedMotion
+        reducedMotion,
+        size
       }),
     [
       activeSections,
@@ -267,6 +272,7 @@ export function useCommandPalette({
       reducedMotion,
       rootItems,
       shortcut,
+      size,
       resolvedTheme
     ]
   );

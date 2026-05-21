@@ -33,6 +33,7 @@ export function createResolvedConfig(config: CommandKitConfig) {
     messages: resolveMessages(config.messages),
     theme: resolveTheme(config.theme),
     shortcut: config.shortcut ?? "mod+k",
-    reducedMotion: config.reducedMotion ?? false
+    reducedMotion: config.reducedMotion ?? false,
+    size: config.size ?? "normal"
   };
 }

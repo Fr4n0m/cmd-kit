@@ -8,6 +8,7 @@ import type {
   CommandItem,
   CommandItemRecord,
   CommandMessages,
+  CommandPaletteSize,
   CommandSection,
   CommandSource,
   CommandTheme,
@@ -157,6 +158,7 @@ export interface VanillaCommandPaletteOptions {
   title?: string;
   shortcut?: string;
   reducedMotion?: boolean;
+  size?: CommandPaletteSize;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -560,6 +562,12 @@ function getCloseInteractionTokens(theme: CommandTheme) {
   };
 }
 
+function resolvePaletteScale(size: CommandPaletteSize | undefined): number {
+  if (size === "small") return 0.9;
+  if (size === "large") return 1.08;
+  return 1;
+}
+
 function resolveAdaptiveTheme(theme: CommandThemeInput | undefined) {
   if (theme) {
     if (isThemeModes(theme)) {
@@ -766,6 +774,7 @@ export function createCommandPalette(
       messages: options.messages,
       shortcut: options.shortcut ?? "mod+k",
       reducedMotion: options.reducedMotion ?? false,
+      size: options.size ?? "normal",
       theme: resolveAdaptiveTheme(options.theme)
     });
 
@@ -783,6 +792,7 @@ export function createCommandPalette(
       messages: options.messages,
       shortcut: options.shortcut ?? "mod+k",
       reducedMotion: options.reducedMotion ?? false,
+      size: options.size ?? "normal",
       theme: resolveAdaptiveTheme(options.theme)
     });
 
@@ -799,7 +809,8 @@ export function createCommandPalette(
       flatItems,
       messages: resolved.messages,
       snapshot,
-      theme: resolved.theme
+      theme: resolved.theme,
+      size: resolved.size
     };
   };
 
@@ -836,7 +847,7 @@ export function createCommandPalette(
     list.style.webkitMaskImage = "none";
   };
 
-  const updateTheme = (theme: CommandTheme) => {
+  const updateTheme = (theme: CommandTheme, size: CommandPaletteSize) => {
     const light = isLightTheme(theme.backgroundColor);
     const closeTokens = getCloseInteractionTokens(theme);
     dialog.style.borderRadius = theme.radius ?? "22px";
@@ -846,6 +857,8 @@ export function createCommandPalette(
     dialog.style.background = theme.backgroundColor ?? "";
     dialog.style.color = theme.textColor ?? "";
     dialog.style.boxShadow = theme.shadow ?? "";
+    dialog.style.transform = `scale(${resolvePaletteScale(size)})`;
+    dialog.style.transformOrigin = "center center";
     overlay.style.background = theme.overlayColor ?? "";
     input.style.border = `1px solid ${theme.borderColor}`;
     input.style.background = light ? "rgba(171, 189, 205, 0.16)" : "rgba(255, 255, 255, 0.03)";
@@ -925,7 +938,7 @@ export function createCommandPalette(
     overlay.hidden = !open;
     if (!open) return;
 
-    updateTheme(runtime.theme);
+    updateTheme(runtime.theme, runtime.size);
     input.placeholder = runtime.messages.searchPlaceholder;
     input.value = query;
     titleText.textContent = runtime.activeTitle;

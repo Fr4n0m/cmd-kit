@@ -1,6 +1,7 @@
 import type {
   CommandItem,
   CommandMessages,
+  CommandPaletteSize,
   CommandSection,
   CommandSourcePayload,
   CommandThemeInput
@@ -35,6 +36,7 @@ export interface CommandPaletteProps {
   title?: string;
   shortcut?: string;
   reducedMotion?: boolean;
+  size?: CommandPaletteSize;
   open?: boolean;
   defaultOpen?: boolean;
   className?: string;

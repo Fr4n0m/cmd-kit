@@ -58,6 +58,7 @@ export interface CommandThemeModes {
 }
 
 export type CommandThemeInput = CommandTheme | CommandThemeModes;
+export type CommandPaletteSize = "small" | "normal" | "large";
 
 export interface CommandSourcePayload {
   items?: CommandItem[];
@@ -76,6 +77,7 @@ export interface CommandKitConfig {
   theme?: CommandThemeInput;
   shortcut?: string;
   reducedMotion?: boolean;
+  size?: CommandPaletteSize;
 }
 
 export interface CommandSnapshot {

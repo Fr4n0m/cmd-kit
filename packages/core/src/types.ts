@@ -7,6 +7,7 @@ export type {
   CommandItemRecord,
   CommandKitConfig,
   CommandMessages,
+  CommandPaletteSize,
   CommandSection,
   CommandSource,
   CommandSourcePayload,

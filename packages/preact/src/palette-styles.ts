@@ -1,4 +1,4 @@
-import type { CommandTheme } from "@cmd-kit/core";
+import type { CommandPaletteSize, CommandTheme } from "@cmd-kit/core";
 import type { CSSProperties } from "preact/compat";
 
 interface CloseInteractionTokens {
@@ -9,7 +9,10 @@ interface CloseInteractionTokens {
   closeHoverBorder: string;
 }
 
-export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
+export function paletteStyle(
+  theme: Required<CommandTheme>,
+  size: CommandPaletteSize = "normal"
+): CSSProperties {
   return {
     width: "min(700px, calc(100vw - 4rem))",
     maxHeight: "min(720px, calc(100vh - 2rem))",
@@ -22,6 +25,8 @@ export function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
     fontFamily:
       'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif',
     boxShadow: theme.shadow,
+    transform: `scale(${resolvePaletteScale(size)})`,
+    transformOrigin: "center center",
     padding: "1.6rem",
     display: "flex",
     flexDirection: "column",
@@ -66,6 +71,12 @@ export function closeButtonStyle(theme: Required<CommandTheme>): CSSProperties {
     transition:
       "background-color 160ms ease, border-color 160ms ease, transform 140ms ease"
   };
+}
+
+function resolvePaletteScale(size: CommandPaletteSize): number {
+  if (size === "small") return 0.9;
+  if (size === "large") return 1.08;
+  return 1;
 }
 
 export function getCloseInteractionTokens(

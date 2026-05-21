@@ -1,6 +1,7 @@
 import {
   type CommandItem,
   type CommandMessages,
+  type CommandPaletteSize,
   type CommandSection,
   type CommandSource,
   type CommandTheme,
@@ -61,6 +62,10 @@ export const CommandPalette = defineComponent({
       type: Boolean,
       default: false
     },
+    size: {
+      type: String as PropType<CommandPaletteSize>,
+      default: "normal"
+    },
     open: {
       type: Boolean,
       default: undefined
@@ -92,6 +97,7 @@ export const CommandPalette = defineComponent({
       title: computed(() => props.title),
       shortcut: computed(() => props.shortcut),
       reducedMotion: computed(() => props.reducedMotion),
+      size: computed(() => props.size),
       open: computed(() => props.open),
       defaultOpen: computed(() => props.defaultOpen),
       recents: computed(() => props.recents),
@@ -253,7 +259,10 @@ export const CommandPalette = defineComponent({
                 event.stopPropagation();
               },
               role: "dialog",
-              style: paletteStyle(palette.resolvedConfig.value.theme)
+              style: paletteStyle(
+                palette.resolvedConfig.value.theme,
+                palette.resolvedConfig.value.size
+              )
             },
             [
               h(
@@ -721,7 +730,10 @@ function renderDefaultTitle({
   );
 }
 
-function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
+function paletteStyle(
+  theme: Required<CommandTheme>,
+  size: CommandPaletteSize = "normal"
+): CSSProperties {
   return {
     width: "min(700px, calc(100vw - 4rem))",
     maxHeight: "min(720px, calc(100vh - 2rem))",
@@ -734,6 +746,8 @@ function paletteStyle(theme: Required<CommandTheme>): CSSProperties {
     fontFamily:
       'Sora, Inter, "Segoe UI", system-ui, -apple-system, sans-serif',
     boxShadow: theme.shadow,
+    transform: `scale(${resolvePaletteScale(size)})`,
+    transformOrigin: "center center",
     padding: "1.6rem",
     display: "flex",
     flexDirection: "column",
@@ -782,6 +796,12 @@ function closeButtonStyle(
       ? "none"
       : "background-color 160ms ease, border-color 160ms ease, transform 140ms ease"
   };
+}
+
+function resolvePaletteScale(size: CommandPaletteSize): number {
+  if (size === "small") return 0.9;
+  if (size === "large") return 1.08;
+  return 1;
 }
 
 function getCloseInteractionTokens(theme: Required<CommandTheme>) {

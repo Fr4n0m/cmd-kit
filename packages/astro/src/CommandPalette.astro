@@ -13,8 +13,9 @@ const payload = JSON.stringify({
   open: props.open,
   recents: props.recents ?? false,
   reducedMotion: props.reducedMotion ?? false,
+  size: props.size ?? "normal",
   sections: props.sections,
-  shortcut: props.shortcut ?? "mod+k",
+    shortcut: props.shortcut ?? "mod+k",
   source: props.source,
   theme: props.theme,
   title: props.title ?? "Command menu"
@@ -85,6 +86,7 @@ const payload = JSON.stringify({
     const classNames = props.classNames ?? {};
     const recents = props.recents ?? false;
     const reducedMotion = Boolean(props.reducedMotion);
+    const size = props.size ?? "normal";
     const neutralInputBackground = "rgba(255, 255, 255, 0.03)";
     const neutralLightInputBackground = "rgba(171, 189, 205, 0.16)";
     const defaultLightTheme = {
@@ -252,6 +254,7 @@ const payload = JSON.stringify({
     messages: props.messages,
     shortcut: props.shortcut,
     reducedMotion,
+    size,
     theme: resolveAdaptiveTheme(props.theme)
   });
 
@@ -480,6 +483,7 @@ const payload = JSON.stringify({
       messages: props.messages,
       shortcut: props.shortcut,
       reducedMotion,
+      size,
       theme: resolveAdaptiveTheme(props.theme)
     });
 
@@ -497,11 +501,18 @@ const payload = JSON.stringify({
       flatItems,
       messages: resolved.messages,
       snapshot,
-      theme: resolved.theme
+      theme: resolved.theme,
+      size: resolved.size
     };
   };
 
-  const updateTheme = (theme) => {
+  const resolvePaletteScale = (size) => {
+    if (size === "small") return 0.9;
+    if (size === "large") return 1.08;
+    return 1;
+  };
+
+  const updateTheme = (theme, size) => {
     if (
       !(dialog instanceof HTMLElement) ||
       !(overlay instanceof HTMLElement) ||
@@ -518,6 +529,8 @@ const payload = JSON.stringify({
     dialog.style.background = theme.backgroundColor;
     dialog.style.color = theme.textColor;
     dialog.style.boxShadow = theme.shadow;
+    dialog.style.transform = `scale(${resolvePaletteScale(size)})`;
+    dialog.style.transformOrigin = "center center";
     overlay.style.background = theme.overlayColor;
     input.style.border = `1px solid ${theme.borderColor}`;
     input.style.background = light ? neutralLightInputBackground : neutralInputBackground;
@@ -745,7 +758,7 @@ const payload = JSON.stringify({
       return;
     }
 
-    updateTheme(runtime.theme);
+    updateTheme(runtime.theme, runtime.size);
     input.placeholder = runtime.messages.searchPlaceholder;
     input.value = query;
 

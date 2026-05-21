@@ -24,6 +24,7 @@ export function CommandPalette({
   title = "Command menu",
   shortcut = "mod+k",
   reducedMotion = false,
+  size = "normal",
   open,
   defaultOpen = false,
   onOpenChange,
@@ -66,6 +67,7 @@ export function CommandPalette({
     title,
     shortcut,
     reducedMotion,
+    size,
     open,
     defaultOpen,
     onOpenChange,
@@ -106,7 +108,7 @@ export function CommandPalette({
         onKeyDown={createDialogKeyDownHandler(dialogRef)}
         ref={dialogRef}
         role="dialog"
-        style={paletteStyle(resolvedConfig.theme)}
+        style={paletteStyle(resolvedConfig.theme, resolvedConfig.size)}
       >
         <PaletteHeader
           activeTitle={activeTitle}

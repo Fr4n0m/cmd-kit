@@ -8,6 +8,7 @@ import {
   type CommandItem,
   type CommandItemRecord,
   type CommandMessages,
+  type CommandPaletteSize,
   type CommandSection,
   type CommandSource,
   type CommandTheme,
@@ -41,6 +42,7 @@ export interface UseCommandPaletteOptions {
   title?: MaybeRefOrGetter<string | undefined>;
   shortcut?: MaybeRefOrGetter<string | undefined>;
   reducedMotion?: MaybeRefOrGetter<boolean | undefined>;
+  size?: MaybeRefOrGetter<CommandPaletteSize | undefined>;
   open?: MaybeRefOrGetter<boolean | undefined>;
   defaultOpen?: MaybeRefOrGetter<boolean | undefined>;
   onOpenChange?: (open: boolean) => void;
@@ -217,6 +219,7 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
   );
   const resolvedShortcut = computed(() => toValue(options.shortcut) ?? "mod+k");
   const reducedMotion = computed(() => toValue(options.reducedMotion) ?? false);
+  const resolvedSize = computed<CommandPaletteSize>(() => toValue(options.size) ?? "normal");
   const rootItems = computed(() => loadedItems.value ?? toValue(options.items));
   const rootSections = computed(
     () =>
@@ -241,7 +244,8 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
       messages: toValue(options.messages),
       theme: effectiveTheme.value,
       shortcut: resolvedShortcut.value,
-      reducedMotion: reducedMotion.value
+      reducedMotion: reducedMotion.value,
+      size: resolvedSize.value
     })
   );
   const recentItems = computed(() =>
@@ -263,7 +267,8 @@ export function useCommandPalette(options: UseCommandPaletteOptions) {
       messages: toValue(options.messages),
       theme: effectiveTheme.value,
       shortcut: resolvedShortcut.value,
-      reducedMotion: reducedMotion.value
+      reducedMotion: reducedMotion.value,
+      size: resolvedSize.value
     })
   );
   const snapshot = computed(() =>
