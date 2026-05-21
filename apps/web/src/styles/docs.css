@@ -361,10 +361,6 @@ html[data-theme="light"] .inline-code-block {
 .docs-sidebar {
   position: sticky;
   top: 5.7rem;
-  max-height: calc(100vh - 6.4rem);
-  overflow: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
 }
 
 .docs-sidebar-card {
