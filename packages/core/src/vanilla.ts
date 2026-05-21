@@ -554,9 +554,9 @@ function getCloseInteractionTokens(theme: CommandTheme) {
   const muted = parseColorToRgb(mutedColor) ?? text;
 
   return {
-    closeBackground: toAlphaColor(accent, light ? 0.06 : 0.12),
-    closeBorder: toAlphaColor(accent, light ? 0.22 : 0.3, borderColor),
-    closeColor: mixRgbAsColor(muted, text, light ? 0.35 : 0.5, mutedColor),
+    closeBackground: toAlphaColor(muted, light ? 0.12 : 0.14),
+    closeBorder: toAlphaColor(muted, light ? 0.28 : 0.34, borderColor),
+    closeColor: mixRgbAsColor(muted, text, light ? 0.22 : 0.32, mutedColor),
     closeHoverBackground: toAlphaColor(accent, light ? 0.14 : 0.2),
     closeHoverBorder: toAlphaColor(accent, light ? 0.34 : 0.44, borderColor)
   };
