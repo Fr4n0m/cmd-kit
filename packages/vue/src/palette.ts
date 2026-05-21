@@ -475,9 +475,49 @@ export const CommandPalette = defineComponent({
                                   id: `${listboxId}-${item.id}`,
                                   key: item.id,
                                   onClick: () => void palette.runItem(item),
-                                  onMouseenter: () => {
+                                  onMouseenter: (event: MouseEvent) => {
                                     if (itemIndex >= 0) {
                                       palette.setActiveIndex(itemIndex);
+                                    }
+                                    if (
+                                      palette.resolvedConfig.value.reducedMotion
+                                    ) {
+                                      return;
+                                    }
+                                    const target =
+                                      event.currentTarget as HTMLElement | null;
+                                    const iconElement = target?.querySelector(
+                                      "[data-cmdkit-icon]"
+                                    ) as HTMLElement | null;
+                                    const titleElement = target?.querySelector(
+                                      "[data-cmdkit-title]"
+                                    ) as HTMLElement | null;
+                                    if (iconElement) {
+                                      iconElement.style.transform = "scale(1.08)";
+                                    }
+                                    if (titleElement) {
+                                      titleElement.style.transform = "scale(1.03)";
+                                    }
+                                  },
+                                  onMouseleave: (event: MouseEvent) => {
+                                    if (
+                                      palette.resolvedConfig.value.reducedMotion
+                                    ) {
+                                      return;
+                                    }
+                                    const target =
+                                      event.currentTarget as HTMLElement | null;
+                                    const iconElement = target?.querySelector(
+                                      "[data-cmdkit-icon]"
+                                    ) as HTMLElement | null;
+                                    const titleElement = target?.querySelector(
+                                      "[data-cmdkit-title]"
+                                    ) as HTMLElement | null;
+                                    if (iconElement) {
+                                      iconElement.style.transform = "scale(1)";
+                                    }
+                                    if (titleElement) {
+                                      titleElement.style.transform = "scale(1)";
                                     }
                                   },
                                   role: "option",
