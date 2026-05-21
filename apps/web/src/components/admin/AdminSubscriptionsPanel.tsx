@@ -112,6 +112,26 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
     await signOut();
   }
 
+  async function sendTestEmail() {
+    await sileo.promise(
+      fetch("/api/admin/health/test-email", {
+        method: "POST",
+        headers: authHeaders ?? { "content-type": "application/json" },
+        body: JSON.stringify({ locale: "en", email })
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error("test_email_failed");
+        }
+        return response.json();
+      }),
+      {
+        loading: { title: "Sending", description: "Dispatching SMTP test email..." },
+        success: { title: "Sent", description: "Test email delivered to admin mailbox." },
+        error: () => ({ title: "Send error", description: "Could not send test email." })
+      }
+    );
+  }
+
   return (
     <section className="admin-panel-wrap">
       <AdminToolbar
@@ -122,6 +142,7 @@ export function AdminSubscriptionsPanel({ mode = "full" }: { mode?: AdminPanelMo
         onRefresh={loadItems}
         onOpenNotify={() => setIsNotifyModalOpen(true)}
         onOpenHealth={loadHealth}
+        onSendTestEmail={sendTestEmail}
         onSignOut={handleSignOut}
       />
 

@@ -15,6 +15,7 @@ type AdminToolbarProps = {
   onRefresh: () => void;
   onOpenNotify: () => void;
   onOpenHealth: () => void;
+  onSendTestEmail: () => void;
   onSignOut: () => void;
 };
 
@@ -26,6 +27,7 @@ export function AdminToolbar({
   onRefresh,
   onOpenNotify,
   onOpenHealth,
+  onSendTestEmail,
   onSignOut
 }: AdminToolbarProps) {
   return (
@@ -54,6 +56,10 @@ export function AdminToolbar({
           <button className="ghost-button compact-button" type="button" onClick={onOpenHealth}>
             <IconHeartbeat size={16} />
             Check health
+          </button>
+          <button className="ghost-button compact-button" type="button" onClick={onSendTestEmail}>
+            <IconMail size={16} />
+            Send test email
           </button>
           <button className="ghost-button compact-button" type="button" onClick={onSignOut}>
             <IconLogout size={16} />
