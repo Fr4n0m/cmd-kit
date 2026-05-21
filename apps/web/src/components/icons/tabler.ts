@@ -23,6 +23,7 @@ import moon from "@tabler/icons/outline/moon.svg?raw";
 import packageIcon from "@tabler/icons/outline/package.svg?raw";
 import playerPlay from "@tabler/icons/outline/player-play.svg?raw";
 import plus from "@tabler/icons/outline/plus.svg?raw";
+import search from "@tabler/icons/outline/search.svg?raw";
 import settingsAutomation from "@tabler/icons/outline/settings-automation.svg?raw";
 import shield from "@tabler/icons/outline/shield.svg?raw";
 import sun from "@tabler/icons/outline/sun.svg?raw";
@@ -56,6 +57,7 @@ const tablerIcons = {
   package: packageIcon,
   "player-play": playerPlay,
   plus,
+  search,
   "settings-automation": settingsAutomation,
   shield,
   sun,
