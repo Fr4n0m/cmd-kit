@@ -326,3 +326,10 @@ html[data-theme="light"] .subscription-submit:hover {
   border-color: rgba(15, 166, 216, 0.32);
   color: #085f82;
 }
+
+@media (max-width: 640px) {
+  .subscription-terms {
+    font-size: 0.68rem;
+    white-space: nowrap;
+  }
+}
