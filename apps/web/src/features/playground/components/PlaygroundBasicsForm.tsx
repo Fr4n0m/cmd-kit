@@ -121,6 +121,22 @@ export function PlaygroundBasicsForm({
           value={config.shortcut}
         />
       </Field>
+      <PlaygroundSelectField
+        helpText={help.size}
+        label={labels.size}
+        onChange={(value) =>
+          onUpdateConfig((current) => ({
+            ...current,
+            size: value as PlaygroundConfig["size"]
+          }))
+        }
+        options={[
+          { label: labels.sizeSmall, value: "small" },
+          { label: labels.sizeNormal, value: "normal" },
+          { label: labels.sizeLarge, value: "large" }
+        ]}
+        value={config.size}
+      />
       <ColorField
         helpText={help.shortcutColor}
         label={labels.shortcutColor}
@@ -154,6 +170,7 @@ function getBasicsHelp(language: PlaygroundConfig["language"]) {
       language: "Idioma del configurador y de los textos por defecto generados en el snippet.",
       placeholder: "Texto de búsqueda visible dentro del input de la command palette.",
       recents: "Activa una sección de elementos recientes ejecutados por el usuario.",
+      size: "Escala global de la paleta completa: pequeño, normal o grande.",
       shortcut: "Atajo global para abrir/cerrar la paleta (ejemplo: mod+k).",
       shortcutColor: "Color de la etiqueta del atajo en la vista previa y en la paleta.",
       title: "Título principal que aparece en la cabecera de la command palette.",
@@ -166,6 +183,7 @@ function getBasicsHelp(language: PlaygroundConfig["language"]) {
     language: "Configurator language and default generated copy in exported snippets.",
     placeholder: "Search prompt text displayed inside the command palette input.",
     recents: "Enable a recent-commands section based on executed items.",
+    size: "Global scale of the whole palette: small, normal, or large.",
     shortcut: "Global keybinding used to open/close the palette (example: mod+k).",
     shortcutColor: "Color used by keyboard shortcut labels in preview and palette.",
     title: "Main heading shown at the top of the command palette.",

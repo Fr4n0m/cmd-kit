@@ -76,6 +76,10 @@ export interface PlaygroundLabels {
   shortcutColor: string;
   sourceDelay: string;
   sourceMode: string;
+  size: string;
+  sizeSmall: string;
+  sizeNormal: string;
+  sizeLarge: string;
   staticMode: string;
   showCode: string;
   summaryCommands: string;
@@ -219,6 +223,10 @@ const playgroundCopy = {
       shortcutColor: "Shortcut color",
       sourceDelay: "Async delay",
       sourceMode: "Data mode",
+      size: "Palette size",
+      sizeSmall: "Small",
+      sizeNormal: "Normal",
+      sizeLarge: "Large",
       staticMode: "Static",
       showCode: "Show code",
       summaryCommands: "Commands",
@@ -357,6 +365,10 @@ const playgroundCopy = {
       shortcutColor: "Color de atajo",
       sourceDelay: "Delay async",
       sourceMode: "Modo de datos",
+      size: "Tamaño de paleta",
+      sizeSmall: "Pequeño",
+      sizeNormal: "Normal",
+      sizeLarge: "Grande",
       staticMode: "Estático",
       showCode: "Mostrar código",
       summaryCommands: "Comandos",

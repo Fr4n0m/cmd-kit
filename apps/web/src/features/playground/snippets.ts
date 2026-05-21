@@ -26,6 +26,7 @@ export function buildVueSnippet(config: PlaygroundConfig): string {
     "  <CommandPalette",
     '    :messages="messages"',
     '    :recents="recents"',
+    `    size="${config.size}"`,
     '    :theme="theme"',
     `    shortcut="${escapeString(config.shortcut)}"`,
     `    title="${escapeString(config.title)}"`
@@ -70,6 +71,7 @@ export function buildAstroSnippet(config: PlaygroundConfig): string {
   const componentLines = [
     "  messages={messages}",
     "  recents={recents}",
+    `  size="${config.size}"`,
     `  shortcut="${escapeString(config.shortcut)}"`,
     "  theme={theme}",
     `  title="${escapeString(config.title)}"`
@@ -114,6 +116,7 @@ export function buildVanillaSnippet(config: PlaygroundConfig): string {
     `  defaultOpen: ${config.defaultOpen},`,
     ...toObjectPropertyLines("messages", toObjectLiteralSnippet(toMessagesValue(config)), "  "),
     ...toObjectPropertyLines("recents", toObjectLiteralSnippet(toRecentsValue(config)), "  "),
+    `  size: "${config.size}",`,
     `  shortcut: "${escapeString(config.shortcut)}",`,
     "  theme,",
     `  title: "${escapeString(config.title)}",`
@@ -148,6 +151,7 @@ function buildReactLikeSnippet(packageName: string, config: PlaygroundConfig): s
   const propLines = [
     ...toJsxExpressionPropLines("recents", toRecentsSnippet(config), "      "),
     `      shortcut="${escapeString(config.shortcut)}"`,
+    `      size="${config.size}"`,
     `      title="${escapeString(config.title)}"`,
     ...toJsxExpressionPropLines("messages", toMessagesSnippet(config), "      "),
     "      theme={theme}"

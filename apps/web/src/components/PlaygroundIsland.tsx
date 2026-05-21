@@ -142,6 +142,7 @@ export default function PlaygroundIsland({
             : false
         }
         sections={config.sourceMode === "static" ? config.sections : undefined}
+        size={config.size}
         shortcut={config.shortcut}
         source={asyncSource}
         theme={toTheme(config)}
@@ -308,6 +309,7 @@ export default function PlaygroundIsland({
             : false
         }
         sections={config.sourceMode === "static" ? config.sections : undefined}
+        size={config.size}
         shortcut={config.shortcut}
         source={asyncSource}
         theme={toTheme(config)}

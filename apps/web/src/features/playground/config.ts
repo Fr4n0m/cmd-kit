@@ -47,6 +47,7 @@ export interface PlaygroundConfig {
   darkRadius: string;
   darkShadow: string;
   shortcut: string;
+  size: "small" | "normal" | "large";
   layout: "centered" | "wide";
   sections: CommandSection[];
 }
@@ -167,6 +168,7 @@ export function createDefaultConfig(language: Language): PlaygroundConfig {
     darkRadius: packageDefaultDarkTheme.radius!,
     darkShadow: packageDefaultDarkTheme.shadow!,
     shortcut: "mod+k",
+    size: "normal",
     layout: "centered",
     sections: getDefaultSections(language)
   };
