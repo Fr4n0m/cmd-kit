@@ -76,6 +76,7 @@ function navIconName(href: string): TablerIconName {
                     current && headings.length ? (
                       <div class="docs-subnav" data-docs-subnav>
                         <span class="docs-subnav-rail" aria-hidden="true"></span>
+                        <span class="docs-subnav-dot" aria-hidden="true"></span>
                         {
                           headings.map((heading) => (
                             <a
@@ -125,6 +126,26 @@ function navIconName(href: string): TablerIconName {
             link.removeAttribute("aria-current");
           }
         });
+        updateActiveDot();
+      };
+
+      const updateActiveDot = () => {
+        const subnavs = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-docs-subnav]")
+        );
+
+        for (const subnav of subnavs) {
+          const activeLink = subnav.querySelector<HTMLElement>(
+            ".docs-subnav-link.is-active, .mobile-docs-subnav-link.is-active"
+          );
+
+          if (!activeLink) {
+            continue;
+          }
+
+          const y = activeLink.offsetTop + activeLink.offsetHeight / 2;
+          subnav.style.setProperty("--docs-dot-y", `${y}px`);
+        }
       };
 
       const firstHeading = headings[0];
@@ -166,6 +187,7 @@ function navIconName(href: string): TablerIconName {
       );
 
       headings.forEach((heading) => observer.observe(heading));
+      updateActiveDot();
 
       links.forEach((link) => {
         link.addEventListener("click", () => {
