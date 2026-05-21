@@ -23,7 +23,6 @@ import {
   IconPlayerPlay,
   IconPlus,
   IconSettingsAutomation,
-  IconSparkles,
   IconSun,
   IconTrash,
   IconWorld,
@@ -48,7 +47,6 @@ export type PlaygroundIconName =
   | "preact"
   | "react"
   | "settings-automation"
-  | "spark"
   | "sun"
   | "tailwind"
   | "trash"
@@ -88,7 +86,6 @@ const iconMap: Record<PlaygroundIconName, TablerIconComponent> =
     preact: IconAtom2,
     react: IconBrandReact,
     "settings-automation": IconSettingsAutomation,
-    spark: IconSparkles,
     sun: IconSun,
     tailwind: IconBrandTailwind,
     trash: IconTrash,

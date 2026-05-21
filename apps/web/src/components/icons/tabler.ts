@@ -25,7 +25,6 @@ import playerPlay from "@tabler/icons/outline/player-play.svg?raw";
 import plus from "@tabler/icons/outline/plus.svg?raw";
 import settingsAutomation from "@tabler/icons/outline/settings-automation.svg?raw";
 import shield from "@tabler/icons/outline/shield.svg?raw";
-import sparkles from "@tabler/icons/outline/sparkles.svg?raw";
 import sun from "@tabler/icons/outline/sun.svg?raw";
 import trash from "@tabler/icons/outline/trash.svg?raw";
 import world from "@tabler/icons/outline/world.svg?raw";
@@ -59,7 +58,6 @@ const tablerIcons = {
   plus,
   "settings-automation": settingsAutomation,
   shield,
-  sparkles,
   sun,
   trash,
   world,

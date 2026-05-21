@@ -157,7 +157,7 @@ export function PlaygroundConfigurator({
       value: config.sections.length
     },
     {
-      icon: "spark" as const,
+      icon: "code" as const,
       label: labels.summaryCommands,
       value: commandCount
     },
