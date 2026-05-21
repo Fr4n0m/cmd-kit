@@ -25,9 +25,20 @@ export function PlaygroundSelectField({
   value
 }: PlaygroundSelectFieldProps) {
   const [open, setOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const listboxId = useId();
   const selectedOption = options.find((option) => option.value === value) ?? options[0];
+  const isMenuVisible = open || isClosing;
+
+  const closeMenu = () => {
+    if (!open) {
+      return;
+    }
+
+    setIsClosing(true);
+    setOpen(false);
+  };
 
   useEffect(() => {
     const rootElement = rootRef.current;
@@ -41,13 +52,13 @@ export function PlaygroundSelectField({
       }
 
       if (!rootElement.contains(event.target)) {
-        setOpen(false);
+        closeMenu();
       }
     };
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        closeMenu();
       }
     };
 
@@ -58,6 +69,12 @@ export function PlaygroundSelectField({
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleEscape);
     };
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      setIsClosing(false);
+    }
   }, [open]);
 
   return (
@@ -85,9 +102,16 @@ export function PlaygroundSelectField({
 
         <div
           className="dropdown-menu install-selector-menu playground-select-menu"
-          hidden={!open}
+          data-state={open ? "open" : "closed"}
           id={listboxId}
+          onAnimationEnd={() => {
+            if (!open) {
+              setIsClosing(false);
+            }
+          }}
           role="listbox"
+          aria-hidden={!open}
+          style={{ display: isMenuVisible ? "grid" : "none" }}
         >
           {options.map((option) => (
             <button
@@ -96,7 +120,7 @@ export function PlaygroundSelectField({
               key={option.value}
               onClick={() => {
                 onChange(option.value);
-                setOpen(false);
+                closeMenu();
               }}
               role="option"
               type="button"

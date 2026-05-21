@@ -134,6 +134,9 @@ export default function PlaygroundIsland({
 
     for (const details of detailsNodes) {
       const summary = details.querySelector(":scope > summary");
+      const body = details.querySelector<HTMLElement>(
+        ":scope > .config-accordion-body, :scope > .editor-detail-body"
+      );
 
       if (!(summary instanceof HTMLElement)) {
         continue;
@@ -150,6 +153,10 @@ export default function PlaygroundIsland({
         isExpanding = false;
         details.style.height = "";
         details.style.overflow = "";
+        if (body) {
+          body.style.opacity = "";
+          body.style.transform = "";
+        }
       };
 
       const onAnimationCancel = () => {
@@ -163,6 +170,18 @@ export default function PlaygroundIsland({
         const endHeight = `${summary.offsetHeight}px`;
 
         animation?.cancel();
+        if (body) {
+          body.animate(
+            {
+              opacity: [1, 0],
+              transform: ["translateY(0)", "translateY(-4px)"]
+            },
+            {
+              duration: 180,
+              easing: "ease"
+            }
+          );
+        }
         animation = details.animate(
           {
             height: [startHeight, endHeight]
@@ -183,6 +202,21 @@ export default function PlaygroundIsland({
         const endHeight = `${details.offsetHeight}px`;
 
         animation?.cancel();
+        if (body) {
+          body.style.opacity = "0";
+          body.style.transform = "translateY(-4px)";
+          body.animate(
+            {
+              opacity: [0, 1],
+              transform: ["translateY(-4px)", "translateY(0)"]
+            },
+            {
+              duration: 200,
+              easing: "ease-out",
+              fill: "forwards"
+            }
+          );
+        }
         animation = details.animate(
           {
             height: [startHeight, endHeight]

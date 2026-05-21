@@ -1064,10 +1064,16 @@ html[data-theme="light"] .playground-select-trigger.is-open {
   min-width: 100%;
   display: grid;
   gap: 0.18rem;
+  transform-origin: top left;
+  will-change: opacity, transform;
 }
 
-.playground-select-field .dropdown-menu.playground-select-menu[hidden] {
-  display: none;
+.playground-select-field .dropdown-menu.playground-select-menu[data-state="open"] {
+  animation: playgroundMenuIn 170ms ease-out;
+}
+
+.playground-select-field .dropdown-menu.playground-select-menu[data-state="closed"] {
+  animation: playgroundMenuOut 140ms ease-in forwards;
 }
 
 .playground-select-item {
@@ -1907,6 +1913,30 @@ html[data-theme="light"] .code-fade-mask {
 
 .code-token-operator {
   color: var(--code-token-operator);
+}
+
+@keyframes playgroundMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes playgroundMenuOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
 }
 
 @keyframes copyPulse {
