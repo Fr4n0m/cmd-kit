@@ -361,6 +361,10 @@ html[data-theme="light"] .inline-code-block {
 .docs-sidebar {
   position: sticky;
   top: 5.7rem;
+  max-height: calc(100vh - 6.4rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
 .docs-sidebar-card {
@@ -396,12 +400,75 @@ html[data-theme="light"] .docs-sidebar-card {
 
 .docs-subnav,
 .mobile-docs-subnav {
+  position: relative;
   display: grid;
   gap: 0.18rem;
-  padding: 0.18rem 0 0.4rem 1rem;
+  padding: 0.18rem 0 0.4rem 1.24rem;
   animation: ui-reveal-down var(--motion-medium) var(--motion-ease-standard);
   transform-origin: top left;
   will-change: transform, opacity, clip-path;
+}
+
+.docs-subnav-rail {
+  position: absolute;
+  left: 0.52rem;
+  top: 0.28rem;
+  bottom: 0.35rem;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(53, 215, 255, 0.48), rgba(53, 215, 255, 0.16));
+  transform-origin: top;
+  animation: docsSubnavRailIn var(--motion-medium) var(--motion-ease-emphasis);
+}
+
+html[data-theme="light"] .docs-subnav-rail {
+  background: linear-gradient(180deg, rgba(15, 166, 216, 0.42), rgba(15, 166, 216, 0.16));
+}
+
+@keyframes docsSubnavRailIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.12);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.docs-nav-link-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.docs-nav-folder-icon {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  color: rgba(167, 188, 204, 0.84);
+  flex: 0 0 auto;
+}
+
+.docs-nav-folder-icon svg {
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--motion-fast) var(--motion-ease-standard), transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.docs-nav-folder-icon .docs-folder-open {
+  opacity: 0;
+  transform: translateY(1px) scale(0.97);
+}
+
+.docs-nav a[aria-current="page"] .docs-nav-folder-icon .docs-folder-closed {
+  opacity: 0;
+  transform: translateY(-1px) scale(0.97);
+}
+
+.docs-nav a[aria-current="page"] .docs-nav-folder-icon .docs-folder-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .docs-nav a,

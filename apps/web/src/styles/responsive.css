@@ -209,8 +209,11 @@
     min-height: 13rem;
   }
 
-  .code-panel {
+  .code-panel,
+  .configurator-panel {
     position: static;
+    max-height: none;
+    overflow: visible;
   }
 
   .code-panel-meta {

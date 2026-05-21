@@ -1546,6 +1546,20 @@ html[data-theme="light"] .toggle-field input[type="checkbox"]:checked {
   top: 5.4rem;
   align-self: start;
   min-width: 0;
+  max-height: calc(100vh - 6.2rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.configurator-panel {
+  position: sticky;
+  top: 5.4rem;
+  align-self: start;
+  max-height: calc(100vh - 6.2rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
 .tab-row {

@@ -48,12 +48,29 @@ function isCurrentDocsPath(target: string) {
 
               return (
                 <>
-                  <a aria-current={current ? "page" : undefined} href={href}>
-                    {item.label}
+                  <a
+                    aria-current={current ? "page" : undefined}
+                    class="docs-nav-link"
+                    href={href}
+                  >
+                    <span class="docs-nav-link-main">
+                      <span class="docs-nav-folder-icon" aria-hidden="true">
+                        <svg class="docs-folder-closed" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v2H3z"></path>
+                          <path d="M3 11h18l-1.2 7.2a2 2 0 0 1-2 1.8H6.2a2 2 0 0 1-2-1.8z"></path>
+                        </svg>
+                        <svg class="docs-folder-open" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v1H3z"></path>
+                          <path d="M3 10h18l-2 8a2 2 0 0 1-2 1.5H7a2 2 0 0 1-2-1.5z"></path>
+                        </svg>
+                      </span>
+                      <span>{item.label}</span>
+                    </span>
                   </a>
                   {
                     current && headings.length ? (
                       <div class="docs-subnav" data-docs-subnav>
+                        <span class="docs-subnav-rail" aria-hidden="true"></span>
                         {
                           headings.map((heading) => (
                             <a
