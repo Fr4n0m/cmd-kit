@@ -41,6 +41,7 @@ export interface PlaygroundLabels {
   languageSpanish: string;
   launch: string;
   mobileDesktopNotice: string;
+  mobileDesktopAcknowledge: string;
   mobileDesktopTitle: string;
   layout: string;
   moveDown: string;
@@ -179,6 +180,7 @@ const playgroundCopy = {
       languageEnglish: "English",
       languageSpanish: "Español",
       launch: "Preview",
+      mobileDesktopAcknowledge: "OK, continue",
       mobileDesktopNotice:
         "This playground is optimized for desktop for full editing and preview controls.",
       mobileDesktopTitle: "Better on desktop",
@@ -316,6 +318,7 @@ const playgroundCopy = {
       languageEnglish: "English",
       languageSpanish: "Español",
       launch: "Vista",
+      mobileDesktopAcknowledge: "Vale, continuar",
       mobileDesktopNotice:
         "Este playground está optimizado para escritorio para editar y previsualizar con todos los controles.",
       mobileDesktopTitle: "Mejor en escritorio",

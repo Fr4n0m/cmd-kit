@@ -14,6 +14,8 @@ interface PlaygroundIslandProps {
   mode?: "embedded" | "page";
 }
 
+const MOBILE_ACK_STORAGE_KEY = "cmd-kit:playground-mobile-ack";
+
 export default function PlaygroundIsland({
   initialLanguage = "en",
   mode = "embedded"
@@ -44,6 +46,10 @@ export default function PlaygroundIsland({
     updateSection
   } = usePlaygroundState(initialLanguage);
   const { labels } = getPlaygroundCopy(config.language);
+  const [isMobileViewport, setIsMobileViewport] = React.useState(false);
+  const [hasMobileAcknowledge, setHasMobileAcknowledge] = React.useState(false);
+  const isMobileBlocked =
+    mode === "page" && isMobileViewport && !hasMobileAcknowledge;
   const asyncSource = React.useMemo(
     () =>
       config.sourceMode === "async"
@@ -59,6 +65,30 @@ export default function PlaygroundIsland({
         : undefined,
     [config.sections, config.sourceDelayMs, config.sourceMode]
   );
+  React.useEffect(() => {
+    if (mode !== "page") {
+      return;
+    }
+
+    const media = window.matchMedia("(max-width: 960px)");
+    const syncViewport = () => {
+      setIsMobileViewport(media.matches);
+    };
+
+    syncViewport();
+    const storedAcknowledge =
+      window.sessionStorage.getItem(MOBILE_ACK_STORAGE_KEY) === "1";
+    setHasMobileAcknowledge(storedAcknowledge);
+
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", syncViewport);
+      return () => media.removeEventListener("change", syncViewport);
+    }
+
+    media.addListener(syncViewport);
+    return () => media.removeListener(syncViewport);
+  }, [mode]);
+
   React.useEffect(() => {
     const updateThemeModeFromRoot = () => {
       const isLight = document.documentElement.dataset.theme === "light";
@@ -284,10 +314,26 @@ export default function PlaygroundIsland({
         title={config.title}
       />
 
-      {mode === "page" ? (
-        <div className="playground-mobile-desktop-notice" role="status">
-          <strong>{labels.mobileDesktopTitle}</strong>
-          <p>{labels.mobileDesktopNotice}</p>
+      {isMobileBlocked ? (
+        <div
+          aria-modal="true"
+          className="playground-mobile-ack-overlay"
+          role="dialog"
+        >
+          <div className="playground-mobile-ack-toast">
+            <strong>{labels.mobileDesktopTitle}</strong>
+            <p>{labels.mobileDesktopNotice}</p>
+            <button
+              className="primary-button"
+              onClick={() => {
+                setHasMobileAcknowledge(true);
+                window.sessionStorage.setItem(MOBILE_ACK_STORAGE_KEY, "1");
+              }}
+              type="button"
+            >
+              {labels.mobileDesktopAcknowledge}
+            </button>
+          </div>
         </div>
       ) : null}
 
