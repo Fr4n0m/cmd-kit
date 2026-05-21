@@ -33,6 +33,18 @@ function isCurrentDocsPath(target: string) {
   const targetPath = normalizePath(target);
   return currentPath === targetPath;
 }
+
+function navIconName(href: string) {
+  if (href.includes("/getting-started")) return "getting-started";
+  if (href.includes("/react")) return "react";
+  if (href.includes("/vue")) return "vue";
+  if (href.includes("/preact")) return "preact";
+  if (href.includes("/astro")) return "astro";
+  if (href.includes("/core")) return "core";
+  if (href.includes("/customization")) return "customization";
+  if (href.includes("/playground")) return "playground";
+  return "docs";
+}
 ---
 
 <BaseLayout description={description} docsHeadings={headings} locale={locale} title={title}>
@@ -45,6 +57,7 @@ function isCurrentDocsPath(target: string) {
             navigation.map((item) => {
               const href = localizedPath(locale, item.href);
               const current = isCurrentDocsPath(href);
+              const iconName = navIconName(item.href);
 
               return (
                 <>
@@ -55,14 +68,15 @@ function isCurrentDocsPath(target: string) {
                   >
                     <span class="docs-nav-link-main">
                       <span class="docs-nav-folder-icon" aria-hidden="true">
-                        <svg class="docs-folder-closed" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v2H3z"></path>
-                          <path d="M3 11h18l-1.2 7.2a2 2 0 0 1-2 1.8H6.2a2 2 0 0 1-2-1.8z"></path>
-                        </svg>
-                        <svg class="docs-folder-open" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v1H3z"></path>
-                          <path d="M3 10h18l-2 8a2 2 0 0 1-2 1.5H7a2 2 0 0 1-2-1.5z"></path>
-                        </svg>
+                        {iconName === "getting-started" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"></path><path d="M12 4l8 8-8 8"></path></svg>}
+                        {iconName === "react" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.6"></circle><ellipse cx="12" cy="12" rx="9" ry="3.8"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(120 12 12)"></ellipse></svg>}
+                        {iconName === "vue" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l9 14 9-14"></path><path d="M7 5l5 8 5-8"></path></svg>}
+                        {iconName === "preact" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"></path><path d="M12 8v8"></path></svg>}
+                        {iconName === "astro" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18l5-12 5 12"></path><path d="M9.5 12h5"></path></svg>}
+                        {iconName === "core" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M9 9h6v6H9z"></path></svg>}
+                        {iconName === "customization" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"></path></svg>}
+                        {iconName === "playground" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h8"></path><path d="M8 12h8"></path><path d="M8 18h8"></path><path d="M5 6h.01M5 12h.01M5 18h.01"></path></svg>}
+                        {iconName === "docs" && <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14"></path><path d="M5 12h14"></path><path d="M5 18h10"></path></svg>}
                       </span>
                       <span>{item.label}</span>
                     </span>
