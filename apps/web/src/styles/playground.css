@@ -1000,6 +1000,11 @@ html[data-theme="light"] .field select:focus-visible {
 
 .playground-select-field {
   position: relative;
+  z-index: 6;
+}
+
+.playground-select-field:focus-within {
+  z-index: 80;
 }
 
 .playground-select-trigger {
@@ -2118,7 +2123,7 @@ html[data-theme="light"] .playground-header {
 .section-card,
 .item-card,
 .nested-card {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .config-accordion {
