@@ -20,7 +20,7 @@ const sections = [
 export function Example() {
   return <CommandPalette sections={sections} title="Project commands" />;
 }` }] },
-      { id: "configuration-surface", label: "Configuration surface", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code>, and <code>source</code> for static or async data", "<code>messages</code> for copy overrides", "<code>theme</code> as single mode or dual mode (<code>{ light, dark }</code>)", "<code>classNames</code> for slot-level styling", "<code>renderers</code> for rendering overrides", "<code>recents</code> for automatic recent commands", "<code>reducedMotion</code> to disable hover/motion animations"] }] },
+      { id: "configuration-surface", label: "Configuration surface", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code>, and <code>source</code> for static or async data", "<code>messages</code> for copy overrides", "<code>theme</code> as single mode or dual mode (<code>{ light, dark }</code>)", "<code>classNames</code> for slot-level styling", "<code>renderers</code> for rendering overrides", "<code>recents</code> for automatic recent commands", "<code>reducedMotion</code> to disable hover/motion animations", "<code>size</code>: <code>\"small\" | \"normal\" | \"large\"</code> — uniform palette scaling"] }] },
       { id: "icons-and-item-layout", label: "Icons and item layout", blocks: [{ type: "code", lang: "tsx", label: "tsx", code: `<CommandPalette
   sections={sections}
   renderItem={(item, active) => (

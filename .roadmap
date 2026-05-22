@@ -1,0 +1,94 @@
+# Roadmap
+
+## Status Overview
+
+Current status: `completed`
+
+Progress (approximate):
+
+- Docs: `100%`
+- Legal: `100%`
+- Playground (UI + exports + UX): `100%`
+- Manual QA: `100%`
+- Quality and release readiness: `100%`
+
+## Confirmed Completed
+
+- Core + adapters (React, Vue, Preact, Astro) are feature-complete for current scope.
+- Playground is finalized and aligned with shipped API (including dual-theme exports).
+- Web docs and package READMEs are aligned with current product behavior.
+- Legal pages are finalized in EN/ES.
+- **1.0.0 stable released (2026-05-22)** across all packages: `@cmd-kit/core`, `@cmd-kit/react`, `@cmd-kit/vue`, `@cmd-kit/preact`, `@cmd-kit/astro`.
+- CHANGELOG.md per package, included in npm publish.
+- `size` prop (`"small" | "normal" | "large"`) shipped and documented in web docs + READMEs.
+- Docs subnav rail animation: line grows first, then items appear.
+- Production SEO baseline is active on `https://cmd-kit.vercel.app`:
+  - canonical + hreflang
+  - robots/sitemap
+  - Lighthouse evidence captured in light/dark modes
+- Public npm release is published for:
+  - `@cmd-kit/core`
+  - `@cmd-kit/react`
+  - `@cmd-kit/vue`
+  - `@cmd-kit/preact`
+  - `@cmd-kit/astro`
+
+## Remaining Work To Reach 100%
+
+No blocking work remaining for the initial public release scope.
+
+## Phase Snapshot
+
+## Phase 0 - Definition
+
+Status: `hecho`
+
+## Phase 1 - Monorepo and Tooling
+
+Status: `hecho`
+
+## Phase 2 - Core Engine
+
+Status: `hecho`
+
+## Phase 3 - Adapter Packages
+
+Status: `hecho`
+
+## Phase 4 - Docs and Web
+
+Status: `hecho`
+
+## Phase 5 - Playground Product Surface
+
+Status: `hecho`
+
+## Phase 6 - Legal and Compliance
+
+Status: `hecho`
+
+## Phase 7 - Quality and Release Readiness
+
+Status: `hecho`
+
+## Next Milestones
+
+1. Monitor post-release feedback and issues.
+2. Plan the next feature iteration.
+3. Subscription system block (email double opt-in + Sileo notifications) implemented in `apps/web` on 2026-05-20, including standalone subscription banner (moved out of footer) and unsubscribe flow.
+4. Add minimal admin operations surface for subscriptions (list/status change/delete/trigger notify) with secure access strategy.
+5. Roll out production env + SMTP and run end-to-end verification on deployed domain.
+6. Subscription banner form card: added cmd+kit brand logo in form header (theme-aware light/dark asset) on 2026-05-20.
+7. Admin hardening (2026-05-20): add `/admin` gate page, server-side block on `/admin/subscriptions`, and HttpOnly cookie session after magic link.
+8. Magic link delivery hardening (2026-05-20): support `SUPABASE_KEY` env alias, keep canonical redirect on `APP_BASE_URL`, and allow first-login OTP user creation for allowlisted admin emails.
+9. Admin notify UX (2026-05-20): centered custom modal, resource catalog search/add flow, multi-resource digest send, and iconized admin actions.
+10. Admin operational diagnostics (2026-05-20): add protected health endpoint for subscription stack config checks and in-panel health card.
+11. Admin SMTP E2E verification (2026-05-21): add protected `Send test email` action to validate real delivery from admin panel.
+12. NPM release notify flow (2026-05-21): switch admin notify catalog to tracked npm packages, fetch live versions from npm registry with cache, and support one/some/all selection semantics.
+13. Notification email quality (2026-05-21): generic copy by scope (single/some/all), favicon header image, and direct Gravatar avatar URL for stable rendering.
+14. Icon cleanup (2026-05-21): remove spark/sparkles usage across web surfaces and replace with contextual icons (search/code/menu).
+11. Admin SMTP E2E verification (2026-05-21): add protected `Send test email` action to validate real delivery from production/admin panel.
+15. Docs npm linking (2026-05-21): add direct npm package links in docs getting-started and each package page (EN/ES).
+16. Cross-package hover consistency (2026-05-21): unify close `X` hover/border/background tokens with theme accent hover colors in core, Vue, and Preact so custom hover palette is always respected.
+17. Global palette scaling API (2026-05-21): add `size` prop (`small | normal | large`) across core/react/preact/vue/astro so command palette scales uniformly with preserved visual proportions.
+18. Docs subnav polish (2026-05-21): replace per-item markers with one animated rail dot that moves to active section.

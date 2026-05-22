@@ -24,7 +24,7 @@ const sections = [
 <template>
   <CommandPalette :sections="sections" title="Project commands" />
 </template>` }] },
-      { id: "what-you-can-configure", label: "What you can configure", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code>, and <code>source</code>", "<code>messages</code> for localized or product-specific copy", "<code>theme</code> as single mode or dual mode (<code>{ light, dark }</code>)", "<code>classNames</code> for slot-level styling hooks", "<code>recents</code> for automatic recent command tracking", "<code>reducedMotion</code> to disable hover/motion animations"] }] },
+      { id: "what-you-can-configure", label: "What you can configure", blocks: [{ type: "list", items: ["<code>sections</code>, <code>items</code>, and <code>source</code>", "<code>messages</code> for localized or product-specific copy", "<code>theme</code> as single mode or dual mode (<code>{ light, dark }</code>)", "<code>classNames</code> for slot-level styling hooks", "<code>recents</code> for automatic recent command tracking", "<code>reducedMotion</code> to disable hover/motion animations", "<code>size</code>: <code>\"small\" | \"normal\" | \"large\"</code> — uniform palette scaling"] }] },
       { id: "slots-and-icons", label: "Slots and icons", blocks: [{ type: "paragraph", html: "Vue customization is slot-based. Use the <code>item</code> slot to control icons and row layout." }, { type: "code", lang: "vue", label: "vue", code: `<CommandPalette :sections="sections" title="Project commands">
   <template #item="{ item, active }">
     <div :class="['palette-row', { 'is-active': active }]">
