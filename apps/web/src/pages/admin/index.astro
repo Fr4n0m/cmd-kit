@@ -1,29 +1,17 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { AdminSubscriptionsPanel } from "@/components/admin/AdminSubscriptionsPanel";
-import { guardAdmin } from "@/pages/api/admin/auth";
 
 export const prerender = false;
-
-const isAdmin = await guardAdmin(Astro.request);
 ---
 
-<BaseLayout locale="en" title="Cmd+kit | Admin access" description="Admin access via email magic link" showFooter={false}>
+<BaseLayout locale="en" title="Cmd+kit | Admin" description="Admin panel" showFooter={false}>
   <main id="main-content" class="content-shell">
     <section class="content-card">
-      {isAdmin ? (
-        <>
-          <h1>Subscriptions admin</h1>
-          <p>Manage subscriber status, cleanup records, and trigger resource notifications.</p>
-          <AdminSubscriptionsPanel client:load mode="full" />
-        </>
-      ) : (
-        <>
-          <h1>Admin access</h1>
-          <p>Enter your admin email to receive a secure magic link.</p>
-          <AdminSubscriptionsPanel client:load mode="gate" />
-        </>
-      )}
+      <h1>Subscriptions admin</h1>
+      <p>Subscriber management for cmd-kit is now handled centrally in the portfolio hub.</p>
+      <a class="primary-button" href="https://www.codebyfran.es/admin/subscribers" target="_blank" rel="noopener">
+        Open portfolio admin
+      </a>
     </section>
   </main>
 </BaseLayout>
