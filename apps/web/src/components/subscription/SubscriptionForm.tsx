@@ -38,7 +38,7 @@ export function SubscriptionForm({ locale, source = "other" }: Props) {
     event.preventDefault();
 
     await sileo.promise(
-      fetch("https://www.codebyfran.es/api/projects/cmd-kit/subscribe", {
+      fetch("https://codebyfran.es/api/projects/cmd-kit/subscribe", {
         method: "POST",
         credentials: "omit",
         mode: "cors",

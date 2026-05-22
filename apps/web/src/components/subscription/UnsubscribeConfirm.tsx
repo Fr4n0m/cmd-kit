@@ -27,7 +27,7 @@ export function UnsubscribeConfirm({ token, locale }: Props) {
 
   async function onConfirm() {
     await sileo.promise(
-      fetch("https://www.codebyfran.es/api/projects/cmd-kit/unsubscribe", {
+      fetch("https://codebyfran.es/api/projects/cmd-kit/unsubscribe", {
         method: "POST",
         credentials: "omit",
         mode: "cors",
