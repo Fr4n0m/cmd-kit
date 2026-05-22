@@ -6,7 +6,7 @@ type Props = {
   source?: "hero" | "footer" | "banner" | "modal" | "other";
 };
 
-type SubmitState = "idle" | "success" | "already-pending" | "already-active" | "error";
+type SubmitState = "idle" | "already-active";
 
 export function SubscriptionForm({ locale, source = "other" }: Props) {
   const [email, setEmail] = useState("");
@@ -23,11 +23,11 @@ export function SubscriptionForm({ locale, source = "other" }: Props) {
         successTitle: "Revisa email",
         successDescription: "Confirma la suscripción desde tu bandeja de entrada.",
         alreadyPendingTitle: "Revisa email",
-        alreadyPendingDescription: "Ya te enviamos un email de confirmación. Revísalo y confirma la suscripción.",
+        alreadyPendingDescription: "Ya te enviamos un email de confirmación. Revísalo y confirma.",
         alreadyActiveTitle: "Ya estás suscrito",
         alreadyActiveDescription: "Este email ya recibe notificaciones de nuevas versiones.",
         errorTitle: "Error envío",
-        errorDescription: "No se pudo completar la suscripción."
+        errorDescription: "No se pudo completar la suscripción.",
       }
     : {
         email: "Your email",
@@ -42,44 +42,41 @@ export function SubscriptionForm({ locale, source = "other" }: Props) {
         alreadyActiveTitle: "Already subscribed",
         alreadyActiveDescription: "This email is already receiving release notifications.",
         errorTitle: "Send error",
-        errorDescription: "Could not complete the subscription."
+        errorDescription: "Could not complete the subscription.",
       };
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const id = sileo.loading({ title: copy.loadingTitle, description: copy.loadingDescription });
-
-    try {
-      const res = await fetch("https://codebyfran.es/api/projects/cmd-kit/subscribe", {
+    await sileo.promise(
+      fetch("https://codebyfran.es/api/projects/cmd-kit/subscribe", {
         method: "POST",
         credentials: "omit",
         mode: "cors",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email, locale, source, acceptTerms, consentVersion: "2026-05-v1" })
-      });
-
-      if (!res.ok) throw new Error();
-
-      const data = await res.json();
-
-      if (data.alreadyActive) {
-        sileo.success({ id, title: copy.alreadyActiveTitle, description: copy.alreadyActiveDescription });
-        setState("already-active");
-      } else if (data.alreadyPending) {
-        sileo.success({ id, title: copy.alreadyPendingTitle, description: copy.alreadyPendingDescription });
-        setState("already-pending");
-      } else {
-        sileo.success({ id, title: copy.successTitle, description: copy.successDescription });
-        setState("success");
+        body: JSON.stringify({ email, locale, source, acceptTerms, consentVersion: "2026-05-v1" }),
+      }).then(async (res) => {
+        if (!res.ok) throw new Error(copy.errorDescription);
+        return res.json();
+      }),
+      {
+        loading: { title: copy.loadingTitle, description: copy.loadingDescription },
+        success: (data: { alreadyActive?: boolean; alreadyPending?: boolean }) => {
+          if (data.alreadyActive) {
+            setState("already-active");
+            return { title: copy.alreadyActiveTitle, description: copy.alreadyActiveDescription };
+          }
+          if (data.alreadyPending) {
+            return { title: copy.alreadyPendingTitle, description: copy.alreadyPendingDescription };
+          }
+          return { title: copy.successTitle, description: copy.successDescription };
+        },
+        error: () => ({ title: copy.errorTitle, description: copy.errorDescription }),
       }
+    );
 
-      setEmail("");
-      setAcceptTerms(false);
-    } catch {
-      sileo.error({ id, title: copy.errorTitle, description: copy.errorDescription });
-      setState("error");
-    }
+    setEmail("");
+    setAcceptTerms(false);
   }
 
   if (state === "already-active") {
@@ -96,7 +93,7 @@ export function SubscriptionForm({ locale, source = "other" }: Props) {
         required
         type="email"
         value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
         placeholder={copy.email}
         className="subscription-input"
       />
@@ -105,7 +102,7 @@ export function SubscriptionForm({ locale, source = "other" }: Props) {
           required
           type="checkbox"
           checked={acceptTerms}
-          onChange={(event) => setAcceptTerms(event.target.checked)}
+          onChange={(e) => setAcceptTerms(e.target.checked)}
         />
         <span>{copy.terms}</span>
       </label>
