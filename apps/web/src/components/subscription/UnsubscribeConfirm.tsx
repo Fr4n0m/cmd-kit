@@ -40,13 +40,15 @@ export function UnsubscribeConfirm({ token, locale }: Props) {
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ token })
         }).then(async (response) => {
-          if (!response.ok) throw new Error(copy.errorDescription);
-          return response.json();
+          const data = await response.json().catch(() => ({}));
+          console.debug("[unsubscribe] token:", token, "status:", response.status, "body:", data);
+          if (!response.ok) throw new Error(`${response.status}: ${(data as any).message ?? (data as any).error ?? "unknown"}`);
+          return data;
         }),
         {
           loading: { title: copy.loadingTitle, description: copy.loadingDescription },
           success: { title: copy.successTitle, description: copy.successDescription },
-          error: () => ({ title: copy.errorTitle, description: copy.errorDescription })
+          error: (err: unknown) => ({ title: copy.errorTitle, description: err instanceof Error ? err.message : copy.errorDescription })
         }
       );
       window.location.href = "/?subscription=unsubscribed";
