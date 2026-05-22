@@ -36,6 +36,7 @@ npm install @cmd-kit/preact preact
 - Mismos defaults visuales/comportamiento que React.
 - Soporte de `theme` simple o dual (`light`/`dark`).
 - Atajos, navegación por teclado, anidado, async y recientes.
+- `size` — `"small" | "normal" | "large"` para escalar el tamaño del palette uniformemente.
 
 ### 🚀 Uso rápido
 
@@ -74,6 +75,7 @@ Igual que React:
 
 - `theme`
 - `reducedMotion` (disable hover/motion animations)
+- `size` — `"small" | "normal" | "large"`
 - `classNames`
 - `renderers`
 - `renderItem`

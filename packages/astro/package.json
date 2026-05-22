@@ -1,6 +1,6 @@
 {
   "name": "@cmd-kit/astro",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "Astro bindings for cmd+kit",
   "license": "MIT",
   "homepage": "https://cmd-kit.vercel.app/",
@@ -34,7 +34,8 @@
   },
   "files": [
     "dist",
-    "src/CommandPalette.astro"
+    "src/CommandPalette.astro",
+    "CHANGELOG.md"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -47,7 +48,7 @@
     "typecheck": "npm run build --workspace @cmd-kit/core && tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@cmd-kit/core": "^0.1.4"
+    "@cmd-kit/core": "^1.0.0"
   },
   "peerDependencies": {
     "astro": "^5.5.2"

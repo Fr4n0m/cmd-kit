@@ -39,6 +39,7 @@ npm install @cmd-kit/core
 - Soporte de tema simple o dual (`theme.light` / `theme.dark`).
 - Runtime vanilla completo: `createCommandPalette`.
 - Opción `reducedMotion` para desactivar animaciones de hover/movimiento.
+- Prop `size` — `"small" | "normal" | "large"` para escalar el tamaño del palette uniformemente.
 
 ### 🚀 Opción 1: motor headless
 
@@ -131,6 +132,7 @@ npm install @cmd-kit/core
 - Single or dual theme mode support (`theme.light` / `theme.dark`).
 - Full framework-free runtime via `createCommandPalette`.
 - `reducedMotion` option to disable hover/motion animations.
+- `size` prop — `"small" | "normal" | "large"` for uniform palette scaling.
 
 ### 🚀 Option 1: headless engine
 

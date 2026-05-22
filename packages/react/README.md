@@ -41,6 +41,7 @@ npm install @cmd-kit/react react react-dom
 - Estilos por defecto + overrides (`theme`, `classNames`, `renderers`).
 - `theme` admite modo simple o modo dual (`light`/`dark`).
 - `reducedMotion` para desactivar animaciones de hover/movimiento.
+- `size` — `"small" | "normal" | "large"` para escalar el tamaño del palette uniformemente.
 
 ### 🚀 Uso rápido
 
@@ -185,6 +186,7 @@ npm install @cmd-kit/react react react-dom
 - Built-in defaults + overrides (`theme`, `classNames`, `renderers`).
 - `theme` supports single mode or dual mode (`light`/`dark`).
 - `reducedMotion` prop to disable hover/motion animations.
+- `size` prop — `"small" | "normal" | "large"` for uniform palette scaling.
 
 ### 🚀 Quick start
 

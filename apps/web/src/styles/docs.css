@@ -401,9 +401,6 @@ html[data-theme="light"] .docs-sidebar-card {
   display: grid;
   gap: 0.18rem;
   padding: 0.24rem 0 0.44rem 1.16rem;
-  animation: ui-reveal-down var(--motion-medium) var(--motion-ease-standard);
-  transform-origin: top left;
-  will-change: transform, opacity, clip-path;
 }
 
 .docs-subnav-rail {
@@ -414,7 +411,7 @@ html[data-theme="light"] .docs-sidebar-card {
   width: 1px;
   background: linear-gradient(180deg, rgba(53, 215, 255, 0.48), rgba(53, 215, 255, 0.16));
   transform-origin: top;
-  animation: docsSubnavRailIn 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: docsSubnavRailIn 300ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 html[data-theme="light"] .docs-subnav-rail {
@@ -432,6 +429,8 @@ html[data-theme="light"] .docs-subnav-rail {
   background: rgba(53, 215, 255, 0.92);
   border: 1px solid rgba(53, 215, 255, 0.95);
   box-shadow: 0 0 0 4px rgba(53, 215, 255, 0.2);
+  opacity: 0;
+  animation: docsSubnavDotIn 160ms cubic-bezier(0.22, 1, 0.36, 1) 280ms forwards;
   transition: top 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -449,6 +448,17 @@ html[data-theme="light"] .docs-subnav-dot {
   to {
     opacity: 1;
     transform: scaleY(1);
+  }
+}
+
+@keyframes docsSubnavDotIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
@@ -503,32 +513,32 @@ html[data-theme="light"] .docs-subnav-dot {
   opacity: 0;
   transform: translateY(-4px);
   animation: docsSubnavItemIn 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 180ms;
+  animation-delay: 300ms;
 }
 
 .docs-subnav-link:nth-of-type(2),
 .mobile-docs-subnav-link:nth-of-type(2) {
-  animation-delay: 220ms;
+  animation-delay: 340ms;
 }
 
 .docs-subnav-link:nth-of-type(3),
 .mobile-docs-subnav-link:nth-of-type(3) {
-  animation-delay: 250ms;
+  animation-delay: 380ms;
 }
 
 .docs-subnav-link:nth-of-type(4),
 .mobile-docs-subnav-link:nth-of-type(4) {
-  animation-delay: 280ms;
+  animation-delay: 420ms;
 }
 
 .docs-subnav-link:nth-of-type(5),
 .mobile-docs-subnav-link:nth-of-type(5) {
-  animation-delay: 310ms;
+  animation-delay: 460ms;
 }
 
 .docs-subnav-link:nth-of-type(n + 6),
 .mobile-docs-subnav-link:nth-of-type(n + 6) {
-  animation-delay: 340ms;
+  animation-delay: 500ms;
 }
 
 @keyframes docsSubnavItemIn {

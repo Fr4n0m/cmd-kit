@@ -49,6 +49,7 @@ import CommandPalette from "@cmd-kit/astro/component";
 - Tema adaptable (oscuro/claro) por defecto.
 - `theme` en modo simple o dual (`light`/`dark`).
 - `reducedMotion` para desactivar animaciones de hover/movimiento.
+- `size` — `"small" | "normal" | "large"` para escalar el tamaño del palette uniformemente.
 
 ### 🧩 Configuración de comandos
 
@@ -117,6 +118,7 @@ Nota: en Astro, el prop `source` es un `CommandSourcePayload` serializable (no f
 - `classNames`
 - `recents`
 - `reducedMotion`
+- `size`
 
 ### 🤝 Contribuciones
 
@@ -152,6 +154,7 @@ import CommandPalette from "@cmd-kit/astro/component";
 - Default adaptive light/dark theme.
 - `theme` supports single mode or dual mode (`light`/`dark`).
 - `reducedMotion` prop to disable hover/motion animations.
+- `size` prop — `"small" | "normal" | "large"` for uniform palette scaling.
 
 ### 🛝 Playground integration
 

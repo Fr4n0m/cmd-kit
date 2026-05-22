@@ -40,6 +40,7 @@ npm install @cmd-kit/vue vue
 - Personalización por `slots`, `theme` y `classNames`.
 - `theme` en modo simple o dual (`light`/`dark`).
 - `reducedMotion` para desactivar animaciones de hover/movimiento.
+- `size` — `"small" | "normal" | "large"` para escalar el tamaño del palette uniformemente.
 
 ### 🚀 Uso rápido
 
@@ -138,6 +139,7 @@ npm install @cmd-kit/vue vue
 - Slot-based customization + `theme` + `classNames`.
 - `theme` in single mode or dual mode (`light`/`dark`).
 - `reducedMotion` prop to disable hover/motion animations.
+- `size` prop — `"small" | "normal" | "large"` for uniform palette scaling.
 
 ### 🚀 Quick start
 
