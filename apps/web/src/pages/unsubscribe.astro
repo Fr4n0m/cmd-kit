@@ -8,26 +8,33 @@ const token = Astro.url.searchParams.get("token") ?? "";
 const copy = {
   title: "Unsubscribe",
   description: "You can stop email updates at any time.",
-  invalid: "Invalid or expired unsubscribe token.",
-  note: "This action only affects Cmd+kit email updates."
+  invalid: "This unsubscribe link is invalid or has expired.",
+  note: "This action only affects Cmd+kit email updates.",
+  kicker: "Cmd+kit Updates"
 };
 ---
 
 <BaseLayout locale="en" title="Cmd+kit | Unsubscribe" description="Unsubscribe confirmation">
   <main id="main-content" class="content-shell unsubscribe-shell">
     <section class="content-card unsubscribe-card">
-      <p class="unsubscribe-kicker">Cmd+kit updates</p>
+      <p class="unsubscribe-kicker">
+        <svg class="unsubscribe-kicker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+        {copy.kicker}
+      </p>
       <h1 class="unsubscribe-title">{copy.title}</h1>
       <p class="unsubscribe-copy">{copy.description}</p>
       {token ? (
         <>
           <UnsubscribeConfirm client:load token={token} locale="en" />
+          <hr class="unsubscribe-divider" />
           <p class="unsubscribe-alert">{copy.note}</p>
         </>
       ) : (
-        <p class="unsubscribe-alert">{copy.invalid}</p>
+        <p class="unsubscribe-invalid">{copy.invalid}</p>
       )}
     </section>
   </main>
 </BaseLayout>
-
