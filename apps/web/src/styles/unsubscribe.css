@@ -60,7 +60,7 @@ html[data-theme="light"] .unsubscribe-kicker {
 }
 
 .unsubscribe-title {
-  margin: 0;
+  padding-top: 20px;
   font-size: clamp(1.55rem, 5vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -68,7 +68,7 @@ html[data-theme="light"] .unsubscribe-kicker {
 }
 
 .unsubscribe-copy {
-  margin: 0.7rem 0 0;
+  margin-top: 200px;
   color: var(--ink-muted);
   max-width: 52ch;
   font-size: 0.95rem;
